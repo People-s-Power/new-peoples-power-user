@@ -25,14 +25,14 @@ const Header = (): JSX.Element => {
 		{ title: "Home", link: "" },
 		{ title: "My Profile", link: loggedIn ? `profile` : "auth" },
 		{ title: "Messages", link: "messages" },
-		{ title: "My Connection", link: loggedIn ? `connection` : "auth" },
+		{ title: "My Connection"},
 		{ title: "Explore", link: "campaigns" },
 	];
 
 	return (
 		<header>
 			<nav className="navbar sticky-top text-xs">
-				<div className="container header ">
+				<div className="container header">
 					<div className="navbar-brand d-flex justify-content-between align-items-center justify-content-md-start min">
 						<Link href="/">
 							<a className="navbar-brand">
@@ -58,7 +58,7 @@ const Header = (): JSX.Element => {
 									<a
 										className={
 											pathname == `/${nav.link}`
-												? `text-warning fw-bold nav-link`
+												? `border-b border-warning nav-link`
 												: ` nav-link`
 										}
 									>

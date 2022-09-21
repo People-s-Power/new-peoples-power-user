@@ -8,17 +8,19 @@
 .slick-prev:before, .slick-next:before {
     color: black !important;
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300");
 // @import "rsuite/dist/styles/rsuite-default.css";
 
 *,
 html {
-	font-family: "Lato", sans-serif;
+	font-family: "Poppins", sans-serif;
 	scroll-behavior: smooth;
 	font-size: 14px;
 	@media screen and (min-width: 768px) {
 		font-size: 16px;
 	}
+	color: #000;
 }
 body {
 	overflow-x: hidden;
