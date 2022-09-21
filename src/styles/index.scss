@@ -1,0 +1,52 @@
+@import "./variables";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "bootstrap/scss/bootstrap";
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+.slick-prev:before, .slick-next:before {
+    color: black !important;
+}
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300");
+// @import "rsuite/dist/styles/rsuite-default.css";
+
+*,
+html {
+	font-family: "Lato", sans-serif;
+	scroll-behavior: smooth;
+	font-size: 14px;
+	@media screen and (min-width: 768px) {
+		font-size: 16px;
+	}
+}
+body {
+	overflow-x: hidden;
+	&::-webkit-scrollbar {
+		background: #e0e0e0;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #ff9f2f;
+		border-radius: 30px;
+	}
+	
+}
+.btn {
+	outline: none !important;
+	&:active,
+	&:focus {
+		outline: none !important;
+		box-shadow: none;
+	}
+}
+
+a {
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+.notify-bell {
+	padding: 11px 16px;
+border-radius: 100%;
+}
