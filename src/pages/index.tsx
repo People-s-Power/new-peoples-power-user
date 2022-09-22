@@ -1,8 +1,21 @@
 import FrontLayout from "layout/FrontLayout";
 import React, { useEffect } from "react";
 import CampComp from "../components/CampComp"
+import CreatePost from "../components/modals/CreatePost"
+import CreateAdvert from "../components/modals/CreateAdvert"
+import CreateEvent from "../components/modals/CreateEvent"
+
+import { useState } from 'react'
 
 const HomePage = () => {
+    const [openPost, setOpenPost] = useState(false);
+	const [openAd, setOpenAd] = useState(false);
+    const [openEvent, setOpenEvent] = useState(false);
+
+    const handelClick = () => setOpenPost(!openPost);
+	const handelAdClick = () => setOpenAd(!openAd);
+	const handelEventClick = () => setOpenEvent(!openEvent);
+
 	return (
 		<FrontLayout >
 			<main className="flex">
@@ -15,14 +28,21 @@ const HomePage = () => {
 							future as a global weapon</div>
 					</div>
 					<div className="border-b border-gray-200 px-3">
-						<div className="flex justify-between mb-2">
+						<div className="flex justify-between my-2">
 							<div className="text-sm my-auto">Adverts</div>
-							<div className="text-center cursor-pointer">
+							<div onClick={() => handelAdClick()} className="text-center cursor-pointer">
 								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
 								<span className="text-xs text-center">create</span>
 							</div>
 						</div>
-						<div className="flex justify-between my-4">
+						<div className="flex justify-between my-2">
+							<div className="text-sm my-auto">Event</div>
+							<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
+								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+								<span className="text-xs text-center">create</span>
+							</div>
+						</div>
+						<div className="flex justify-between my-2">
 							<div className="text-sm my-auto">Organization</div>
 							<div className="text-center cursor-pointer">
 								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
@@ -35,7 +55,7 @@ const HomePage = () => {
 					<div className="border-b border-gray-200">
 						<div className="flex justify-center">
 							<img src="/images/person.png" className="w-14 h-14 mx-4 rounded-full" alt="" />
-							<div className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm">
+							<div onClick={() => handelClick()} className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm cursor-pointer">
 								What are your social concerns?
 							</div>
 						</div>
@@ -109,6 +129,10 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
+				<CreatePost open={openPost} handelClick={handelClick} />
+				<CreateEvent open={openEvent} handelClick={handelEventClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} />
+
 			</main>
 		</FrontLayout>
 	)

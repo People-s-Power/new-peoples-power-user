@@ -92,13 +92,10 @@ const ManageCampaignPage = (): JSX.Element => {
 				console.log(error);
 			})
 
-		axios({
-			method: 'get',
-			url: 'https://pow-report.herokuapp.com/report',
-		})
+		axios.get('/report')
 			.then(function (response) {
 				console.log(response.data);
-				setReport(response.data)
+				// setReport(response.data)
 			})
 			.catch(function (error) {
 				console.log(error);

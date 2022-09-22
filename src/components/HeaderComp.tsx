@@ -25,7 +25,7 @@ const Header = (): JSX.Element => {
 		{ title: "Home", link: "" },
 		{ title: "My Profile", link: loggedIn ? `profile` : "auth" },
 		{ title: "Messages", link: "messages" },
-		{ title: "My Connection"},
+		{ title: "My Connection", link: "connection"},
 		{ title: "Explore", link: "campaigns" },
 	];
 

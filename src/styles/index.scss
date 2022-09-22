@@ -33,7 +33,7 @@ body {
 	}
 	
 }
-.btn {
+.btn, button,input,textarea {
 	outline: none !important;
 	&:active,
 	&:focus {
