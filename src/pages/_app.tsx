@@ -53,11 +53,11 @@ Router.events.on("routeChangeComplete", () => Nprogress.done());
 Router.events.on("routeChangeError", () => Nprogress.done());
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-	// const client = new ApolloClient({
-	// 	uri: 'https://people-api-vkkzo.ondigitalocean.app',
-	// 	cache: new InMemoryCache(),
-	// });
-	const client = useApollo(pageProps.apollo);
+	const client = new ApolloClient({
+		uri: 'https://people-api-vkkzo.ondigitalocean.app',
+		cache: new InMemoryCache(),
+	});
+	// const client = useApollo(pageProps.apollo);
 
 	return (
 		<Fragment>
