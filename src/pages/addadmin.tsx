@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import FrontLayout from "layout/FrontLayout";
 import Head from "next/head";
@@ -15,8 +16,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import user from './user';
 
 export interface Operator {
-    userId: String;
-    role: String;
+    userId: string;
+    role: string;
 }
 
 const addadmin = () => {

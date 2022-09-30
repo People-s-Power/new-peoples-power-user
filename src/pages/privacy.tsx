@@ -2,10 +2,10 @@ import FrontLayout from "layout/FrontLayout";
 import React, { Fragment } from "react";
 import Head from "next/head";
 import styled from "styled-components";
-import { GetStaticProps, NextPage } from "next";
-import { apolloStrapi } from "apollo";
-import { gql } from "@apollo/client";
-import ReactMarkdown from "react-markdown";
+// import { GetStaticProps, NextPage } from "next";
+// import { apolloStrapi } from "apollo";
+// import { gql } from "@apollo/client";
+// import ReactMarkdown from "react-markdown";
 
 const PrivacyPage = () => {
 	return (

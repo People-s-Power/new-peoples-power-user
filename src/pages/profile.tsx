@@ -4,7 +4,7 @@ import FrontLayout from "layout/FrontLayout";
 const profile = () => {
     return (
         <FrontLayout>
-            <div>
+            <div className='mx-20'>
                 hello profile
             </div>
         </FrontLayout>

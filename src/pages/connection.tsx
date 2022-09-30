@@ -7,9 +7,9 @@ const connection = () => {
         <FrontLayout>
             <div className="mx-32 shadow-sm p-6">
                 <div>
-                    <input type="text" className='p-2 w-2/3 rounded-full pl-8 text-sm' placeholder="Search" />
+                    <input type="text" className='p-3 w-2/3 rounded-full pl-10 text-sm' placeholder="Search" />
                 </div>
-                <div className="flex justify-between flex-wrap">
+                <div className="flex flex-wrap">
                     <ConnectionCard />
                     <ConnectionCard />
                     <ConnectionCard />

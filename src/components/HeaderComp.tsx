@@ -4,29 +4,31 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import UserMenu from "./user-profile/UserMenu";
-import { TOKEN_NAME, WS_URI } from "../utils/constants";
-import cookie from "js-cookie";
+// import { TOKEN_NAME, WS_URI } from "../utils/constants";
+// import cookie from "js-cookie";
+import { Dropdown } from 'rsuite';
+
 
 
 const Header = (): JSX.Element => {
 	const [menu, setMenu] = useState(false);
-	const [showNotification, setShowNotification] = useState(false);
+	// const [showNotification, setShowNotification] = useState(false);
 
 	const user = useRecoilValue(UserAtom);
 	const { pathname } = useRouter();
 	const text = `PEOPLE'S POWER`
-	const token = cookie.get(TOKEN_NAME);
-	const [notification, setNotification] = useState([])
+	// const token = cookie.get(TOKEN_NAME);
+	const [notification] = useState([])
 
-	if (typeof window !== 'undefined') {
-	}
+	// eslint-disable-next-line no-empty
+	if (typeof window !== 'undefined') { }
 
 	const navItems = (loggedIn: boolean) => [
 		{ title: "Home", link: "" },
 		{ title: "My Profile", link: loggedIn ? `profile` : "auth" },
 		{ title: "Messages", link: "messages" },
-		{ title: "My Connection", link: "connection"},
-		{ title: "Explore", link: "campaigns" },
+		{ title: "My Connection", link: "connection" },
+		// { title: "Explore", link: "campaigns" },
 	];
 
 	return (
@@ -67,7 +69,20 @@ const Header = (): JSX.Element => {
 								</Link>
 							</li>
 						))}
-
+						<li className="my-auto nav-iyem">
+							<Dropdown title="Explore">
+								<Dropdown.Item>
+									<Link href="/campaigns">
+										Petitions
+									</Link>
+								</Dropdown.Item>
+								<Dropdown.Item>
+									<Link href="/events">
+										Events
+									</Link>
+								</Dropdown.Item>
+							</Dropdown>
+						</li>
 						<li className="nav-item">
 							{!user ? (
 								<Link href="/auth">

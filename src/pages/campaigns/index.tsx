@@ -1,6 +1,5 @@
 import FrontLayout from "layout/FrontLayout";
 import React, { useState, useEffect } from "react";
-import EventsCard from "components/EventsCard";
 
 const CampaignPage = () => {
 
@@ -15,7 +14,7 @@ const CampaignPage = () => {
 					</div>
 				</div>
 				<div>
-					<EventsCard />
+					
 				</div>
 			</div>
 		</FrontLayout>

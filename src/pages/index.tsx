@@ -1,24 +1,28 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import FrontLayout from "layout/FrontLayout";
-import React, { useEffect } from "react";
+import React, { } from "react";
 import CampComp from "../components/CampComp"
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
+import StartPetition from "../components/modals/StartPetition"
 
 import { useState } from 'react'
 
 const HomePage = () => {
-    const [openPost, setOpenPost] = useState(false);
+	const [openPost, setOpenPost] = useState(false);
 	const [openAd, setOpenAd] = useState(false);
-    const [openEvent, setOpenEvent] = useState(false);
+	const [openEvent, setOpenEvent] = useState(false);
+	const [openPetition, setOpenPetition] = useState(false);
 
-    const handelClick = () => setOpenPost(!openPost);
+	const handelClick = () => setOpenPost(!openPost);
+	const handelPetition = () => setOpenPetition(!openPetition);
 	const handelAdClick = () => setOpenAd(!openAd);
 	const handelEventClick = () => setOpenEvent(!openEvent);
 
 	return (
 		<FrontLayout >
-			<main className="flex">
+			<main className="flex mx-20">
 				<aside className="w-[35%] text-center">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
@@ -68,11 +72,11 @@ const HomePage = () => {
 								<img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
 								<div className="my-auto text-sm ml-3">Video</div>
 							</div>
-							<div className="flex  cursor-pointer">
+							<div className="flex  cursor-pointer" onClick={() => handelEventClick()} >
 								<img className="w-6 h-6 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
 								<div className="my-auto text-sm ml-3">Events</div>
 							</div>
-							<div className="flex  cursor-pointer">
+							<div className="flex  cursor-pointer" onClick={() => handelPetition()}>
 								<img className="w-6 h-6 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
 								<div className="my-auto text-sm ml-3">Start Petition</div>
 							</div>
@@ -121,18 +125,18 @@ const HomePage = () => {
 							page allows you to see the
 							persons interest, campaign
 						</div>
-						<div className="my-3 text-sm">
+						{/* <div className="my-3 text-sm">
 							You can reach a larger
 							audience by allowing others
 							to follow your activity and
 							read what you are sharing
-						</div>
+						</div> */}
 					</div>
 				</aside>
 				<CreatePost open={openPost} handelClick={handelClick} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} />
-
+				<StartPetition open={openPetition} handelClick={handelPetition} />
 			</main>
 		</FrontLayout>
 	)

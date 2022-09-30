@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
 import { useState } from 'react'
 
@@ -17,15 +18,15 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                         <div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
                     </div>
                     <div>
-                        <div className='text-sm my-1 mt-3'>Event type</div>
-                        <div className="flex">
+                        <div className='text-sm my-2 mt-4'>Event type</div>
+                        <div className="flex my-3">
                             <div className="flex">
                                 <input type="radio" className="p-2" />
-                                <div className="ml-4 my-auto">Online</div>
+                                <div className="ml-4 text-sm my-auto">Online</div>
                             </div>
                             <div className="flex ml-8">
                                 <input type="radio" className="p-2" />
-                                <div className="ml-4 my-auto">Offline</div>
+                                <div className="ml-4 text-sm my-auto">Offline</div>
                             </div>
                         </div>
                     </div>
@@ -56,6 +57,8 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                             <div className='text-sm my-1'>Privacy</div>
                             <select name="" id="" className="w-full border border-gray-700 text-sm">
                                 <option value="everyone">Everyone</option>
+                                <option value="followers">Followers</option>
+                                <option value="location">Location</option>
                             </select>
                         </div>
                     </div>
