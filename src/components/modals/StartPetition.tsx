@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
-import { useState } from 'react'
+// import { useState } from 'react'
+import { Dropdown } from 'rsuite';
 
 const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void }): JSX.Element => {
     return (
@@ -29,6 +30,20 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                 </div>
                 <div className="mt-3 text-sm">
                     <textarea className="p-1 border border-gray-700 w-full h-32 rounded-sm" placeholder='Type the issue that you are complaining about' />
+                </div>
+                <div className='z-40'>
+                    <Dropdown placement="topStart" title={<div className='text-sm text-warning'>Add Category</div>}>
+                        <Dropdown.Item>Human right awareness</Dropdown.Item>
+                        <Dropdown.Item>Social Policy</Dropdown.Item>
+                        <Dropdown.Item>Criminal Justice</Dropdown.Item>
+                        <Dropdown.Item>Human Right Action</Dropdown.Item>
+                        <Dropdown.Item>Development</Dropdown.Item>
+                        <Dropdown.Item>Environment</Dropdown.Item>
+                        <Dropdown.Item>Health</Dropdown.Item>
+                        <Dropdown.Item>Politics</Dropdown.Item>
+                        <Dropdown.Item>Disability</Dropdown.Item>
+                        <Dropdown.Item>Equality</Dropdown.Item>
+                    </Dropdown>
                 </div>
                 {/* </Modal.Body> */}
                 <Modal.Footer>

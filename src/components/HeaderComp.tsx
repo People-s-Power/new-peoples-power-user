@@ -69,7 +69,7 @@ const Header = (): JSX.Element => {
 								</Link>
 							</li>
 						))}
-						<li className="my-auto nav-iyem">
+						<li className="my-auto nav-item">
 							<Dropdown title="Explore">
 								<Dropdown.Item>
 									<Link href="/campaigns">

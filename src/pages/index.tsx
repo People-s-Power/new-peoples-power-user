@@ -6,6 +6,7 @@ import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
 import StartPetition from "../components/modals/StartPetition"
+import EventsCard from "components/EventsCard";
 
 import { useState } from 'react'
 
@@ -23,7 +24,7 @@ const HomePage = () => {
 	return (
 		<FrontLayout >
 			<main className="flex mx-20">
-				<aside className="w-[35%] text-center">
+				<aside className="w-[20%] text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
 						<img src="/images/person.png" className="w-[80px] mx-auto left-0 right-0 rounded-full h-[80px] " alt="" />
@@ -55,7 +56,7 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<section className="w-full shadow-sm">
+				<section className="w-full shadow-sm w-[50%] mx-auto">
 					<div className="border-b border-gray-200">
 						<div className="flex justify-center">
 							<img src="/images/person.png" className="w-14 h-14 mx-4 rounded-full" alt="" />
@@ -87,9 +88,10 @@ const HomePage = () => {
 					</div>
 					<div>
 						<CampComp />
+						<EventsCard />
 					</div>
 				</section>
-				<aside className="w-[35%] p-2">
+				<aside className="w-[20%] p-2 fixed bg-white right-20">
 					<div className="flex justify-between my-3">
 						<img src="/images/person.png" className="w-12 m-2 h-12" alt="" />
 						<div>

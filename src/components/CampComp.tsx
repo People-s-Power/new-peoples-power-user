@@ -1,8 +1,9 @@
 import React from 'react';
+import { Dropdown } from 'rsuite';
 
 const CampComp = () => {
     return (
-        <div className="p-3 border-b border-gray-400">
+        <div className="p-3 border-b border-gray-400 my-3">
             <div className="flex justify-between">
                 <div className='flex'>
                     <img className="w-12 h-12 rounded-full" src="/images/person.png" alt="" />
@@ -23,10 +24,10 @@ const CampComp = () => {
                 <div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
             </div>
             <div className="pt-3 flex justify-between">
-                <div className="flex">
+                {/* <div className="flex">
                     <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
                     <div className="text-sm my-auto ml-2">10 Supports</div>
-                </div>
+                </div> */}
                 <div className="flex">
                     <img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
                     <div className="text-sm my-auto ml-2">10 likes</div>
@@ -39,6 +40,12 @@ const CampComp = () => {
                     <img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
                     <div className="text-sm my-auto ml-2">10 Shares</div>
                 </div>
+                <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
+                    <Dropdown.Item>Promote</Dropdown.Item>
+                    <Dropdown.Item>Report post</Dropdown.Item>
+                    <Dropdown.Item>Edit</Dropdown.Item>
+                    <Dropdown.Item>Save</Dropdown.Item>
+                </Dropdown>
             </div>
         </div>
     );

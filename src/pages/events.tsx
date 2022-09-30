@@ -20,7 +20,6 @@ const events = () => {
                     <EventCard />
                     <EventCard />
                     <EventCard />
-
                 </div>
             </div>
         </FrontLayout>

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
+import { Dropdown } from 'rsuite';
 
 const EventCard = () => {
     return (
@@ -32,8 +34,14 @@ const EventCard = () => {
                     </div>
                     <div className='flex justify-between'>
                         <button className='p-3 bg-warning text-white w-72 rounded-md'>Interested</button>
-                        <img className='mr-4' src="/images/edit.svg" alt="" />
+                        <Dropdown title={<img className='' src="/images/edit.svg" alt="" />} noCaret>
+                            <Dropdown.Item>Promote</Dropdown.Item>
+                            <Dropdown.Item>Report post</Dropdown.Item>
+                            <Dropdown.Item>Edit</Dropdown.Item>
+                            <Dropdown.Item>Save</Dropdown.Item>
+                        </Dropdown>
                     </div>
+
                 </div>
             </div>
         </div>
