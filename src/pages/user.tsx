@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-empty */
 import React, { useEffect, useRef } from 'react';
 import FrontLayout from "layout/FrontLayout";
 import Head from "next/head";
@@ -62,6 +66,7 @@ const user = () => {
                 })
                 .catch(function (error) {
                     console.log(error);
+                    router.push(`/org?page=${page}`)
                 })
 
         } catch (error) { }
@@ -169,9 +174,6 @@ const user = () => {
                                         <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
                                     </div>
                                 )
-
-
-
                             )}
                         </div>
                         {/* {author?.id === query.page ? (
