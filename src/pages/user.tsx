@@ -77,7 +77,7 @@ const user = () => {
             if (single === user.id) {
                 setFollow(true)
             } else {
-                setFollow(true)
+                setFollow(false)
             }
         })
     }, [])

@@ -28,6 +28,7 @@ const user = () => {
     const [organization, setOrganization] = useState(false)
     const [img, setImg] = useState("");
     const uploadRef = useRef<HTMLInputElement>(null);
+    const [following, setFollow] = useState(false)
 
     let page: any;
     if (typeof window !== 'undefined') {
@@ -45,8 +46,15 @@ const user = () => {
         variables: { ID: page },
         client: apollo,
         onCompleted: (data) => {
-            // console.log(data)
+            console.log(data.getOrganzation)
             setUser(data.getOrganzation)
+            user?.followers.map((single: any) => {
+                if (single === user.id) {
+                    setFollow(true)
+                } else {
+                    setFollow(false)
+                }
+            })
             localStorage.setItem("operator", JSON.stringify(data.getOrganzation.operators))
         },
         onError: (err) => console.log(err),
@@ -56,7 +64,7 @@ const user = () => {
         variables: { ID: author?.id },
         client: apollo,
         onCompleted: (data) => {
-            console.log(data)
+            // console.log(data)
             setOrgs(data.getUserOrganizations)
         },
         onError: (err) => console.log(err),
@@ -201,16 +209,10 @@ const user = () => {
                                                 </Link>
                                             </div>
                                         ) : (
-                                            user?.followers?.length! >= 1 ? (
-                                                user?.followers.map((single: any) => (
-                                                    single === author.id ? (
-                                                        <div>
-                                                            <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
-                                                        </div>
-                                                    ) : (
-                                                        null
-                                                    )
-                                                ))
+                                            following === true ? (
+                                                <div>
+                                                    <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
+                                                </div>
                                             ) : (
                                                 <div>
                                                     <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
