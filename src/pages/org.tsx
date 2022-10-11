@@ -84,6 +84,19 @@ const user = () => {
                 toast.warn("Oops an error occoured!")
             })
     }
+    const unFollow = () => {
+        axios.put('/user/follow', {
+            userId: page
+        })
+            .then(function (response) {
+                toast.success("Unfollowed!")
+            })
+            .catch(function (error) {
+                console.log(error);
+                toast.warn("Oops an error occoured!")
+            })
+    }
+
     const singleOrg = (id: string) => {
         // axios.get(`/orgs/${id}`)
         //     .then(function (response) {
@@ -181,16 +194,28 @@ const user = () => {
                                         <div className="text-lg font-black text-gray-900 ml-2">
                                             Following {user?.followingCount} </div> </div>
                                     {
-                                        orgs.length > 1 ? (
+                                        user?.author === author?.id ? (
                                             <div className="font-black text-lg">
                                                 <Link href={'/create'}>
                                                     <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                                 </Link>
                                             </div>
                                         ) : (
-                                            <div>
-                                                <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
-                                            </div>
+                                            user?.followers?.length! >= 1 ? (
+                                                user?.followers.map((single: any) => (
+                                                    single === author.id ? (
+                                                        <div>
+                                                            <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
+                                                        </div>
+                                                    ) : (
+                                                        null
+                                                    )
+                                                ))
+                                            ) : (
+                                                <div>
+                                                    <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
+                                                </div>
+                                            )
                                         )
                                     }
                                 </div>
@@ -217,7 +242,7 @@ const user = () => {
                     </div> */}
                     <div className="lg:flex mt-3">
                         <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
-                            <div className="text-center font-black text-base p-3">
+                            {user?.author === author?.id ? (<div className="text-center font-black text-base p-3">
                                 <Link href={`/addadmin?page=${query.page}`}>
                                     <button className="bg-transparent px-8 w-44 text-warning">Admin</button>
                                 </Link>
@@ -241,7 +266,9 @@ const user = () => {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            </div>) : (
+                                null
+                            )}
 
                             {author?.id === query.page ? (
                                 <div className="text-center font-black text-base p-3">

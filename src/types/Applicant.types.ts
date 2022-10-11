@@ -51,6 +51,7 @@ export interface IUser extends Document {
 	followingCount: string;
 	description: string;
 	followers: string[]
+	author: string;
 }
 
 export interface IOrg extends Document {

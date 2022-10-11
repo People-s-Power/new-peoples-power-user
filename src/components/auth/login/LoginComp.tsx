@@ -26,13 +26,13 @@ const LoginComp = ({
 		setLoading(true);
 		try {
 			const { data } = await axios.post("/auth/login", info);
-			cookie.set("user_id", data.id);
+			// cookie.set("user_id", data.id);
 			// if (!data.isActive) {
 			// 	router.push("/auth?mode=verify token");
 			// } else {
 			// }
 			cookie.set(TOKEN_NAME, data?.token);
-			// cookie.set("user_id", data?.id);
+			cookie.set("user_id", data.id);
 			onSuccess(data);
 			console.log(data)
 		} catch (error) {

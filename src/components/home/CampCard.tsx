@@ -35,7 +35,7 @@ const CampaignCard = ({ camp }: { camp: ICampaign }): JSX.Element => {
 								? `${camp?.title?.slice(0, 30)}...`
 								: camp?.title}
 						</p>
-						<p className="card-text break-all">{truncateWord(camp?.excerpt)}</p>
+						<p className="card-text break-all">{camp?.body.substring(0, 230)}</p>
 						<p className=" fst-italic">
 							<i className="fa fa-users mr-3"></i>
 							{(camp?.endorsements?.length) + 1} Supporters
