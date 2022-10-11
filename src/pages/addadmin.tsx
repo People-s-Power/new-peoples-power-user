@@ -41,7 +41,7 @@ const addadmin = () => {
         variables: { ID: query.page },
         client: apollo,
         onCompleted: (data) => {
-            // console.log(data.getOrganzation.operators)
+            console.log(data.getOrganzation.operators)
             setOperator(data.getOrganzation.operators)
         },
         onError: (err) => console.log(err),

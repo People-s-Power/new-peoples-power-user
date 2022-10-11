@@ -30,6 +30,8 @@ const user = () => {
     const { query } = useRouter();
     const author = useRecoilValue(UserAtom);
     const [product, setProduct] = useState(false)
+    const [following, setFollow] = useState(true)
+
     let page: any;
 
     if (typeof window !== 'undefined') {
@@ -70,6 +72,14 @@ const user = () => {
                 })
 
         } catch (error) { }
+
+        user?.followers.map((single: any) => {
+            if (single === user.id) {
+                setFollow(true)
+            } else {
+                setFollow(true)
+            }
+        })
     }, [])
 
     const singleOrg = (id: string) => {
@@ -157,19 +167,10 @@ const user = () => {
                                     </Link>
                                 </div>
                             ) : (
-                                user?.followers?.length! >= 1 ? (
-                                    user?.followers.map((single: any) => (
-                                        single === author.id ? (
-                                            <div>
-                                                <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
-                                            </div>
-                                        ) : (
-                                            null
-                                            // <div>
-                                            //     <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
-                                            // </div>
-                                        )
-                                    ))
+                                following === true ? (
+                                    <div>
+                                        <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
+                                    </div>
                                 ) : (
                                     <div>
                                         <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
@@ -177,6 +178,7 @@ const user = () => {
                                 )
                             )}
                         </div>
+
                         {/* {author?.id === query.page ? (
                             <div className="text-center font-black text-lg">
                                 <Link href="/mycamp">
@@ -190,14 +192,16 @@ const user = () => {
                         ) : (<div></div>)} */}
                     </div>
                     <Slider />
-                    {query.page === author?.id ? (
+                    {
+                        query.page === author?.id ? (
 
-                        <div className="text-center text-lg p-3">
-                            <Link href={`/startcamp`}>
-                                <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
-                            </Link>
-                        </div>
-                    ) : null}
+                            <div className="text-center text-lg p-3">
+                                <Link href={`/startcamp`}>
+                                    <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
+                                </Link>
+                            </div>
+                        ) : null
+                    }
                     <div className="lg:flex mt-3">
                         <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
                             {author?.id === query.page ? (
