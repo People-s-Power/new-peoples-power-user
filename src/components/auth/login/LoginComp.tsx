@@ -9,6 +9,7 @@ import Facebook from "../Facebook";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 const LoginComp = ({
 	onSuccess,
 }: {
@@ -26,7 +27,7 @@ const LoginComp = ({
 		setLoading(true);
 		try {
 			const { data } = await axios.post("/auth/login", info);
-			// cookie.set("user_id", data.id);
+			cookie.set("user_id", data.id);
 			// if (!data.isActive) {
 			// 	router.push("/auth?mode=verify token");
 			// } else {
@@ -37,7 +38,7 @@ const LoginComp = ({
 			console.log(data)
 		} catch (error) {
 			const e = error as any;
-			toast.warn(error && e?.response?.data?.message);
+			toast(error && e?.response?.data?.message);
 			console.log({ error });
 		} finally {
 			setLoading(false);
