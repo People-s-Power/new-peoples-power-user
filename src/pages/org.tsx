@@ -210,11 +210,11 @@ const user = () => {
                         ) : (<div></div>)} */}
                     </div>
                     <Slider />
-                    <div className="text-center text-lg p-3">
+                    {/* <div className="text-center text-lg p-3">
                         <Link href={`/startcamp`}>
                             <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
                         </Link>
-                    </div>
+                    </div> */}
                     <div className="lg:flex mt-3">
                         <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
                             <div className="text-center font-black text-base p-3">

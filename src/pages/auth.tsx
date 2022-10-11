@@ -21,9 +21,9 @@ const AuthPage = (): JSX.Element => {
 	const { query } = useRouter();
 
 	const mode = query?.mode || "login";
-	// if (typeof window !== 'undefined') {
-	// 	localStorage.clear()
-	// }
+	if (typeof window !== 'undefined') {
+		localStorage.clear()
+	}
 	return (
 		<AuthLayout>
 			<>

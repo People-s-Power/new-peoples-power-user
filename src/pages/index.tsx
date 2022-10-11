@@ -22,7 +22,7 @@ const HomePage = () => {
 	const handelEventClick = () => setOpenEvent(!openEvent);
 
 	return (
-		<FrontLayout >
+		<FrontLayout showFooter={false}>
 			<main className="flex mx-20">
 				<aside className="w-[20%] text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>

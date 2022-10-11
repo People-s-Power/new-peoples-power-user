@@ -164,9 +164,10 @@ const user = () => {
                                                 <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
                                             </div>
                                         ) : (
-                                            <div>
-                                                <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
-                                            </div>
+                                            null
+                                            // <div>
+                                            //     <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
+                                            // </div>
                                         )
                                     ))
                                 ) : (
@@ -189,11 +190,14 @@ const user = () => {
                         ) : (<div></div>)} */}
                     </div>
                     <Slider />
-                    <div className="text-center text-lg p-3">
-                        <Link href={`/startcamp`}>
-                            <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
-                        </Link>
-                    </div>
+                    {query.page === author?.id ? (
+
+                        <div className="text-center text-lg p-3">
+                            <Link href={`/startcamp`}>
+                                <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
+                            </Link>
+                        </div>
+                    ) : null}
                     <div className="lg:flex mt-3">
                         <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
                             {author?.id === query.page ? (

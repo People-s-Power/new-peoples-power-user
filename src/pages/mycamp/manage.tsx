@@ -58,9 +58,9 @@ export interface Notification {
 }
 
 export interface Reports {
-	reportMessage: string;
+	reportCampMessage: string;
 	createdAt: string
-	reportType: string
+	reportCampType: string
 	campaignSlug: string
 	_id: string
 }
@@ -92,23 +92,20 @@ const ManageCampaignPage = (): JSX.Element => {
 				console.log(error);
 			})
 
-		axios.get('/report')
+		axios.get('/reports')
 			.then(function (response) {
-				console.log(response.data);
-				// setReport(response.data)
+				console.log(response);
+				setReport(response.data)
 			})
 			.catch(function (error) {
 				console.log(error);
 			})
 	}, [])
 	const resolve = (id: any) => {
-		axios({
-			method: 'put',
-			url: `https://pow-report.herokuapp.com/report/${id}`,
-		})
+		axios.put(`/campaign/report/${id}`)
 			.then(function (response) {
-				// console.log(response.data);
-				// setReport(response.data)
+				console.log(response.data);
+				setReport(response.data)
 				router.push(`/mycamp/manage`)
 			})
 			.catch(function (error) {
@@ -118,7 +115,7 @@ const ManageCampaignPage = (): JSX.Element => {
 	const { loading } = useQuery(GET_CAMPAIGNS, {
 		client: apollo,
 		onCompleted: (data) => {
-			console.log(data.getCampaigns)
+			// console.log(data.getCampaigns)
 			setCampaigns(
 				data.getCampaigns.map((item: any) => ({ ...item, checked: false }))
 			);
@@ -320,19 +317,18 @@ const ManageCampaignPage = (): JSX.Element => {
 									</div>
 									<div>
 										<div className="accordion" id="accordionExample">
-											{reports.map((report, i) => (
-
+											{reports?.map((report, i) => (
 												<div key={i} className="accordion-item">
 													<h2 className="accordion-header" id="headingOne">
-														<button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#" + report?.reportMessage.substring(0, 3)} aria-expanded="true" aria-controls={report?.reportMessage.substring(0, 3)}>
+														<button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#" + report?.reportCampMessage.substring(0, 3)+i} aria-expanded="true" aria-controls={report?.reportCampMessage.substring(0, 3)+i}>
 															<div>
-																<div>{report?.reportType} </div>
+																<div>{report?.reportCampType} </div>
 															</div>
 														</button>
 													</h2>
-													<div id={report?.reportMessage.substring(0, 3)} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+													<div id={report?.reportCampMessage.substring(0, 3)+i} className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 														<div className="accordion-body">
-															{report?.reportMessage}
+															{report?.reportCampMessage}
 															<div>Created At: {report?.createdAt.slice(0, 10)}</div>
 															<div className="flex mt-2 justify-between tect-xs">
 																<button onClick={() => router.push(`/campaigns/${report?.campaignSlug}`)} className="p-1 text-white bg-warning">View Campaign</button>

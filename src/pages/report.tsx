@@ -34,7 +34,7 @@ const report = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const { data } = await axios.post('/campaign/report', {
+            const { data } = await axios.post('/reports', {
                 campaignSlug: query.page,
                 reportType: report,
                 reportCampMessage: message,

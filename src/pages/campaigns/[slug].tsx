@@ -45,7 +45,6 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 	camp: ICampaign;
 }): JSX.Element => {
 	// console.log(camp)
-
 	const [endorsements, setEndorsements] = useState<IEndorsement[]>([]);
 	const [isLiked, setIsLiked] = useState(false);
 	const [showEndorsement, setShowEndorsement] = useState(false);
@@ -214,19 +213,20 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 											Endorsements
 										</p>
 									) : (
-										<div className="px-3">
-											<p className="py-2 fs-5 text-center rounded text-muted w-100 px-2">
-												Be the first to endorse this campaign
-											</p>
-										</div>
+										camp?.authorId === user?.id ? null : (
+											<div className="px-3">
+												<p className="py-2 fs-5 text-center rounded text-muted w-100 px-2">
+													Be the first to endorse this campaign
+												</p>
+											</div>
+										)
 									)}
 									<div className="mb-3 w-100">
 										{endorsements?.map((endorsement, i) => (
 											<Endorsements endorsement={endorsement} key={i} />
 										))}
 									</div>
-
-									{endorsements.length >= 1 ? (
+									{camp?.authorId === user?.id ? null : (endorsements.length >= 1 ? (
 										endorsements.map((endorse, i) => (
 											user.id === endorse.author.id ? (
 												<div key={i}>
@@ -236,19 +236,19 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 															Promote Campaign
 														</a>
 													</Link>
-												</div>) : (
+												</div>) : (null
 												// endorsements.map((endorse) => {
-												endorse.id === user?.id ? (
-													<div>
-														<Link href={`/promote?slug=${camp.slug}`}>
-															<a className="btn btn-warning btn-sm  rounded-pill px-3 fw-bold">
-																Promote
-															</a>
-														</Link>
-													</div>) : (
-													<div>
-														<EndorseCampaignComp camp={camp} />
-													</div>)
+												// endorse.id === user?.id ? (
+												// 	<div>
+												// 		<Link href={`/promote?slug=${camp.slug}`}>
+												// 			<a className="btn btn-warning btn-sm  rounded-pill px-3 fw-bold">
+												// 				Promote
+												// 			</a>
+												// 		</Link>
+												// 	</div>) : (
+												// 	<div>
+												// 		<EndorseCampaignComp camp={camp} />
+												// 	</div>)
 												// })
 												// <EndorseCampaignComp camp={camp} />
 											)
@@ -256,13 +256,12 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 										<div>
 											<EndorseCampaignComp camp={camp} />
 										</div>
-									)}
-
-									{endorsements && endorsements?.length > 5 && (
+									))}
+									{/* {endorsements && endorsements?.length > 5 && (
 										<button className="btn btn-warning text-white fw-bold w-100 py-2">
 											More reasons for endorsing
 										</button>
-									)}
+									)} */}
 								</aside>
 							</main>
 						</div>
