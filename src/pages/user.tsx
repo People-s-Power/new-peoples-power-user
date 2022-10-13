@@ -31,9 +31,9 @@ const user = () => {
     const author = useRecoilValue(UserAtom);
     const [product, setProduct] = useState(false)
     const [following, setFollow] = useState(true)
+    const [orgId, setOrgId] = useState("")
 
     let page: any;
-
     if (typeof window !== 'undefined') {
         page = localStorage.getItem('page');
     }
@@ -41,7 +41,7 @@ const user = () => {
         variables: { ID: author?.id },
         client: apollo,
         onCompleted: (data) => {
-            // console.log(data)
+            console.log(data.getUserOrganizations)
             setOrgs(data.getUserOrganizations)
         },
         onError: (err) => {
@@ -62,12 +62,16 @@ const user = () => {
             axios.get(`/user/single/${query?.page || author.id || page}`)
                 .then(function (response) {
                     setUser(response.data.user)
-                    console.log(response.data.user.orgOperating)
+                    // console.log(response.data.user.orgOperating)
+                    response.data.user.orgOperating.map((operating: any) => {
+                        setOrgId(operating)
+                        refetch()
+                    })
                     setCampaigns(response.data.campaigns)
                 })
                 .catch(function (error) {
                     console.log(error);
-                    router.push(`/org?page=${page}`)
+                    // router.push(`/org?page=${page}`)
                 })
         } catch (error) {
             console.log(error);
@@ -81,6 +85,19 @@ const user = () => {
             }
         })
     }, [])
+
+    const {refetch } = useQuery(GET_ORGANIZATION, {
+        variables: { ID: orgId },
+        client: apollo,
+        onCompleted: (data) => {
+            setOrgs([...orgs, data.Organization])
+            console.log(orgs)
+        },
+        onError: (err) => {
+            // console.log(err)
+        },
+    });
+
 
     const singleOrg = (id: string) => {
         // axios.get(`/orgs/${id}`)
