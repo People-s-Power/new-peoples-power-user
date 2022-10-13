@@ -37,7 +37,6 @@ const user = () => {
     if (typeof window !== 'undefined') {
         page = localStorage.getItem('page');
     }
-
     useQuery(GET_ORGANIZATIONS, {
         variables: { ID: author?.id },
         client: apollo,
@@ -60,18 +59,19 @@ const user = () => {
     }
     useEffect(() => {
         try {
-            axios.get(`/user/single/${page || query.page}`)
+            axios.get(`/user/single/${query?.page || author.id || page}`)
                 .then(function (response) {
                     setUser(response.data.user)
-                    // console.log(response.data.user)
+                    console.log(response.data.user.orgOperating)
                     setCampaigns(response.data.campaigns)
                 })
                 .catch(function (error) {
                     console.log(error);
                     router.push(`/org?page=${page}`)
                 })
-
-        } catch (error) { }
+        } catch (error) {
+            console.log(error);
+        }
 
         user?.followers.map((single: any) => {
             if (single === user.id) {

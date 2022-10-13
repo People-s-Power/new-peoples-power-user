@@ -9,8 +9,13 @@ import { useRecoilValue } from "recoil";
 
 const LoginPage = (): JSX.Element => {
 	const user = useRecoilValue(UserAtom);
-
 	const router = useRouter()
+
+	if (typeof window !== 'undefined') {
+		localStorage.clear()
+		localStorage.setItem('page', user?.id);
+	}
+
 	return (
 		<>
 			<div className="signup-main">
@@ -28,7 +33,7 @@ const LoginPage = (): JSX.Element => {
 						Sign in with your social media accounts for easy syncing and more
 						secure privacy.
 					</p>
-					<LoginComp onSuccess={() => (window.location.href = `/user?page=${user.id}`)} />
+					<LoginComp onSuccess={() => (router.push(`/user?page=${user?.id}`))} />
 					<Link href="/auth?mode=forgot password">
 						<a className="text-decoration-none text-center d-block">
 							Forgot Password

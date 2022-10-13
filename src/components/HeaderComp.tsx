@@ -25,7 +25,7 @@ const Header = (): JSX.Element => {
 
 	const navItems = (loggedIn: boolean) => [
 		// { title: "Home", link: "/" },
-		{ title: "My Profile", link: loggedIn ? `user?page=${user.id}` : "auth" },
+		{ title: "My Profile", link: loggedIn ? `/user?page=${user.id}` : "auth" },
 		{ title: "Messages", link: "messages" },
 		{ title: "My Connection", link: "connection" },
 		// { title: "Explore", link: "campaigns" },
