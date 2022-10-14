@@ -71,7 +71,7 @@ const user = () => {
                 })
                 .catch(function (error) {
                     console.log(error);
-                    // router.push(`/org?page=${page}`)
+                    router.push(`/org?page=${page}`)
                 })
         } catch (error) {
             console.log(error);
@@ -90,8 +90,9 @@ const user = () => {
         variables: { ID: orgId },
         client: apollo,
         onCompleted: (data) => {
-            setOrgs([...orgs, data.Organization])
+            setOrgs([...orgs, data.getOrganzation])
             console.log(orgs)
+            console.log(data.getOrganzation)
         },
         onError: (err) => {
             // console.log(err)
