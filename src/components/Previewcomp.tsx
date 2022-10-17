@@ -37,7 +37,8 @@ const previewcamp = ({
   const [org, setOrg] = useState<IOrg[]>([])
   const user = useRecoilValue(UserAtom);
   const setOrgData = useSetRecoilState(orgDataState);
-
+  const author = useRecoilValue(UserAtom);
+  const [orgId, setOrgId] = useState("")
 
   useQuery(GET_ORGANIZATIONS, {
     variables: { ID: user?.id },
@@ -53,6 +54,34 @@ const previewcamp = ({
     },
     onError: (err) => console.log(err),
   });
+
+  useEffect(() => {
+    try {
+      axios.get(`/user/single/${author.id}`)
+        .then(function (response) {
+          response.data.user.orgOperating.map((operating: any) => {
+            setOrgId(operating)
+            refetch()
+          })
+        })
+        .catch(function (error) {
+        })
+    } catch (error) {
+      console.log(error);
+    }
+  }, [])
+  const { refetch } = useQuery(GET_ORGANIZATION, {
+    variables: { ID: orgId },
+    client: apollo,
+    onCompleted: (data) => {
+      setOrgs([...orgs, data.getOrganzation])
+      setAccount('org')
+    },
+    onError: (err) => {
+      // console.log(err)
+    },
+  });
+
 
   const singleOrg = async (id: string) => {
     const { data } = await axios.post(SERVER_URL + '/graphql', {

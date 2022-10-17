@@ -7,7 +7,7 @@ import Head from "next/head";
 import axios from 'axios';
 import { IOrg } from "types/Applicant.types";
 import { UserAtom } from "atoms/UserAtom";
-import { GET_ORGANIZATIONS } from "apollo/queries/orgQuery";
+import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery";
 import { apollo } from "apollo";
 import { useRecoilValue } from "recoil";
 import { useQuery } from "@apollo/client";
@@ -17,31 +17,19 @@ const StartCampPage = (): JSX.Element => {
 	const [account, setAccount] = useState("")
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [org, setOrg] = useState<IOrg[]>([])
-	const user = useRecoilValue(UserAtom);
-    const author = useRecoilValue(UserAtom);
+	const author = useRecoilValue(UserAtom);
+    const [orgId, setOrgId] = useState("")
 
+	useQuery(GET_ORGANIZATIONS, {
+		variables: { ID: author?.id },
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data)
+			setOrgs(data.getUserOrganizations)
+		},
+		onError: (err) => console.log(err),
+	});
 
-	// useQuery(GET_ORGANIZATIONS, {
-    //     variables: { ID: author?.id },
-    //     client: apollo,
-    //     onCompleted: (data) => {
-    //         // console.log(data)
-    //         setOrgs(data.getUserOrganizations)
-    //     },
-    //     onError: (err) => console.log(err),
-    // });
-
-	useEffect(() => {
-		// console.log(user)
-		// axios.post('/orgs/user/orgs')
-		// 	.then(function (response) {
-		// 		console.log(response);
-		// 		setOrgs(response.data)
-		// 	})
-		// 	.catch(function (error) {
-		// 		console.log(error);
-		// 	})
-	}, [])
 
 	const singleOrg = (id: string) => {
 		axios.get(`/orgs/${id}`)

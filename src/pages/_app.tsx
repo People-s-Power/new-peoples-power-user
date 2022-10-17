@@ -58,7 +58,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 		cache: new InMemoryCache(),
 	});
 	// const client = useApollo(pageProps.apollo);
-
 	return (
 		<Fragment>
 			<Head>
