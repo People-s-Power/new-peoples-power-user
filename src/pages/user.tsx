@@ -30,7 +30,7 @@ const user = () => {
     const { query } = useRouter();
     const author = useRecoilValue(UserAtom);
     const [product, setProduct] = useState(false)
-    const [following, setFollow] = useState(true)
+    const [following, setFollow] = useState(false)
     const [orgId, setOrgId] = useState("")
 
     let page: any;
@@ -62,6 +62,13 @@ const user = () => {
             axios.get(`/user/single/${query?.page || author.id || page}`)
                 .then(function (response) {
                     setUser(response.data.user)
+                    response.data.user.followers.map((single: any) => {
+                        if (single === author.id) {
+                            setFollow(true)
+                        } else {
+                            setFollow(false)
+                        }
+                    })
                     // console.log(response.data.user.orgOperating)
                     response.data.user.orgOperating.map((operating: any) => {
                         setOrgId(operating)
@@ -76,23 +83,25 @@ const user = () => {
         } catch (error) {
             console.log(error);
         }
-
-        user?.followers.map((single: any) => {
-            if (single === user.id) {
-                setFollow(true)
-            } else {
-                setFollow(false)
-            }
-        })
+        // console.log(user?.followers)
+        // user?.followers.map((single: any) => {
+        //     if (single === author.id) {
+        //         setFollow(true)
+        //     } else {
+        //         setFollow(false)
+        //     }
+        // })
     }, [])
 
-    const {refetch } = useQuery(GET_ORGANIZATION, {
+    const { refetch } = useQuery(GET_ORGANIZATION, {
         variables: { ID: orgId },
         client: apollo,
         onCompleted: (data) => {
             setOrgs([...orgs, data.getOrganzation])
-            console.log(orgs)
-            console.log(data.getOrganzation)
+
+            // console.log(orgs)
+            // console.log(data.getOrganzation)
+
         },
         onError: (err) => {
             // console.log(err)
@@ -106,6 +115,7 @@ const user = () => {
         //         // console.log(response)
         localStorage.setItem("page", `${id}`)
         router.push(`/org?page=${id}`)
+
         //     setCampaigns([])
         //     setUser(response.data)
         // })
@@ -119,6 +129,7 @@ const user = () => {
         })
             .then(function (response) {
                 toast.success("Followed!")
+                setFollow(true)
             })
             .catch(function (error) {
                 console.log(error);
@@ -131,6 +142,7 @@ const user = () => {
         })
             .then(function (response) {
                 toast.success("Unfollowed!")
+                setFollow(false)
             })
             .catch(function (error) {
                 console.log(error);
@@ -228,7 +240,7 @@ const user = () => {
                                         <button className=" bg-transparent p-2 w-44 text-black">Dashboard</button>
                                     </Link>
                                     <button className=" bg-transparent p-2 w-44 text-black" onClick={() => setProduct(!product)}> Products</button>
-                                    <Link href={'/create'}>
+                                    <Link href={'/org/create'}>
                                         <div className="bg-transparent flex justify-between text-black">
                                             <div className="my-auto">Organization</div>
                                             <div>
@@ -267,24 +279,25 @@ const user = () => {
                                         <div className="dropdown">
                                             <a className="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             </a>
-
-                                            <ul className="dropdown-menu">
-                                                <li>
-                                                    <Link href={`/promote?slug=${camp?.slug}`}>
-                                                        <a className="btn pl-2">{camp?.promoted ? "Upgrade" : "Promote"}</a>
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link href={`/editcamp?page=${camp?.slug}`}>
-                                                        <a className="btn pl-2">Edit</a>
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link href={`/updates?page=${camp?.id}/${camp?.slug}`}>
-                                                        <a className="btn pl-2">Add Updates</a>
-                                                    </Link>
-                                                </li>
-                                            </ul>
+                                            {query.page === author?.id ? (
+                                                <ul className="dropdown-menu">
+                                                    <li>
+                                                        <Link href={`/promote?slug=${camp?.slug}`}>
+                                                            <a className="btn pl-2">{camp?.promoted ? "Upgrade" : "Promote"}</a>
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link href={`/editcamp?page=${camp?.slug}`}>
+                                                            <a className="btn pl-2">Edit</a>
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link href={`/updates?page=${camp?.id}/${camp?.slug}`}>
+                                                            <a className="btn pl-2">Add Updates</a>
+                                                        </Link>
+                                                    </li>
+                                                </ul>
+                                            ) : null}
                                         </div>
                                     </div>
 

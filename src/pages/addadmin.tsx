@@ -108,7 +108,7 @@ const addadmin = () => {
     }
 
     const removeAdmin = async (sing: any) => {
-        console.log(sing)
+        // console.log(sing)
         try {
             setLoading(true)
             const { data } = await axios.post(SERVER_URL + '/graphql', {
@@ -126,7 +126,6 @@ const addadmin = () => {
         } catch (error) {
             toast.warn("Oops an error occoured")
         }
-
     }
 
     const search = (e: any) => {
@@ -239,7 +238,7 @@ const addadmin = () => {
                                                 <p>Event coverage, Writing and posting of campaigns, Editing of profile and campaigns,
                                                     <br /> Promote campaigns, create an organization, Make update.	</p>
                                             </div>
-                                            <button className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
+                                            <button  className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
                                         </div>
                                         <div className="flex my-3 justify-between">
                                             <div className="my-auto mx-3">
@@ -254,7 +253,7 @@ const addadmin = () => {
                                         </div>
                                     </div>
                                     <div className="text-center my-4">
-                                        <button className="p-2 bg-warning w-40 text-white">Start</button>
+                                        <button disabled className="p-2 bg-warning w-40 text-white">Start</button>
                                     </div>
                                 </div>
                             ) : (<></>)

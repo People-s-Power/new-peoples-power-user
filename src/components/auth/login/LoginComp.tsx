@@ -25,7 +25,7 @@ const LoginComp = ({
 		e.preventDefault();
 		if (!info.email || !info.password) return;
 		setLoading(true);
-		// try {
+		try {
 			const { data } = await axios.post("/auth/login", info);
 			cookie.set("user_id", data?.id);
 			// if (!data.isActive) {
@@ -35,14 +35,15 @@ const LoginComp = ({
 			cookie.set(TOKEN_NAME, data?.token);
 			// cookie.set("user_id", data.id);
 			onSuccess(data);
-			console.log(data)
-		// } catch (error) {
-		// 	const e = error as any;
-		// 	toast(error && e?.response?.data?.message);
-		// 	console.log({ error });
-		// } finally {
+			// console.log(data.response)
+		} catch (error) {
+				const e = error as any;
+			// toast(error && e?.response?.data?.message);
+			// console.log({ error });
+			toast(e?.response?.data?.message);
+			// } finally {
 			setLoading(false);
-		// }
+		}
 	};
 
 	return (

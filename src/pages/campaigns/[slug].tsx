@@ -96,6 +96,15 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 		viewCamp()
 	}, [camp, user]);
 
+	function isValidUrl(string: any) {
+		try {
+			new URL(string);
+			return true;
+		} catch (err) {
+			return false;
+		}
+	}
+
 	let target = 2000;
 
 	// useEffect(() => {
@@ -140,7 +149,6 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 											>
 												<i className="fas fa-thumbs-up small"></i>
 											</a>
-
 											<CampaignShareMenuList camp={camp}>
 												<button className="btn p-0 px-0">
 													<i className="fas fa-share small text-muted"></i>
@@ -150,10 +158,10 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 									</div>
 									<h3 className="mb-0 p-0 fw-bold m-0 capitalize">{camp?.title}</h3>
 									<div className="m-0 mt-2 fw-bold flex">
-										{camp?.authorImg === null ? (
-											<img src="/images/logo.svg" className="w-8 h-8 opacity-20 rounded-full" alt="" />
-										) : (
+										{isValidUrl(camp?.authorImg) ? (
 											<img className="w-8 h-8 rounded-full" src={camp?.authorImg} alt="" />
+										) : (
+											<img className="w-8 h-8 opacity-50" src="/images/user.png" alt="" />
 										)}
 										<p className="ml-3">
 											{`${camp?.authorName}`} launched this campaign to {camp?.target}
@@ -228,7 +236,7 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 									</div>
 									{camp?.authorId === user?.id ? null : (endorsements.length >= 1 ? (
 										endorsements.map((endorse, i) => (
-											user.id === endorse.author.id ? (
+											user?.id === endorse.author.id ? (
 												<div key={i}>
 													<div>Thank you {user.firstName} for endorsing this campaign. Let's now make this campaign get to other supporters on Peoples Power by promoting it.</div>
 													<Link href={`/promote?slug=${camp.slug}`}>

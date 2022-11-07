@@ -12,7 +12,7 @@ import axios from 'axios';
 import { sassNull } from 'sass';
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
-import Slider from "../components/camp-slider/Slider"
+import Slider from "../../components/camp-slider/Slider"
 import router, { useRouter } from "next/router";
 import { GET_ORGANIZATION, GET_ORGANIZATIONS } from "apollo/queries/orgQuery";
 import { ToastContainer, toast } from 'react-toastify';
@@ -86,6 +86,7 @@ const user = () => {
         })
             .then(function (response) {
                 toast.success("Followed!")
+                setFollow(true)
             })
             .catch(function (error) {
                 console.log(error);
@@ -98,6 +99,7 @@ const user = () => {
         })
             .then(function (response) {
                 toast.success("Unfollowed!")
+                setFollow(true)
             })
             .catch(function (error) {
                 console.log(error);
@@ -187,7 +189,6 @@ const user = () => {
                                                     <img className="w-full rounded-full" src="/images/user.png" alt="" />
                                                 </div>
                                             )}
-
                                         </div>
                                     </div>
                                 </div>
@@ -204,7 +205,7 @@ const user = () => {
                                     {
                                         user?.author === author?.id ? (
                                             <div className="font-black text-lg">
-                                                <Link href={'/create'}>
+                                                <Link href={'/org/update'}>
                                                     <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                                 </Link>
                                             </div>

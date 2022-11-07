@@ -98,7 +98,7 @@ const HomePage: NextPage<{ campaigns: ICampaign[] }> = ({
 								className="btn-holder d-flex flex-wrap"
 								style={{ gap: "1rem" }}
 							>
-								<Link href="/auth">
+								<Link href="/auth?mode=signup">
 									<a className="btn btn-warning btn-lg rounded-pill px-4 py-2 text-light font-weight-bolder fs-20 ">
 										Join Now
 									</a>
@@ -297,12 +297,14 @@ const Wrapper = styled.div`
 	.campaign-list {
 		display: grid;
 		gap: 1.5rem;
+
 		@media screen and (min-width: 920px) {
 			grid-template-columns: repeat(3, 1fr);
 		}
 		@media screen and(min-width:768px) {
 			grid-template-columns: repeat(2, 1fr);
 		}
+
 		.card {
 			.card-image {
 				width: 100%;

@@ -18,14 +18,14 @@ const CampaignCard = ({ camp }: { camp: ICampaign }): JSX.Element => {
 			<div className="shadow-md overflow-hidden rounded-md w-full">
 				{/* <Link href={`/campaigns/${camp?.slug}`}> */}
 				<a className="text-decoration-none link-dark">
-					<img src={camp?.image} className="card-image h-44 w-full" alt={camp?.title} />
+					<img src={camp?.image} className="card-image h-52 w-full" alt={camp?.title} />
 					<div className="card-body p-3">
 						<Link href={`/user?page=${camp?.authorId}`}>
 							<div className="flex cursor-pointer" onClick={() => localStorage.setItem("page", `${camp?.authorId}`)}>
 								{isValidUrl(camp?.authorImg) ? (
 									<img className="w-8 h-8 rounded-full" src={camp?.authorImg} alt="" />
 								) : (
-									<img className="w-8 h-8 opacity-20" src="/images/user.png" alt="" />
+									<img className="w-8 h-8 opacity-50" src="/images/user.png" alt="" />
 								)}
 								<p className="pl-2 mt-2">{camp?.authorName}</p>
 							</div>
