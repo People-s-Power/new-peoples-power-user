@@ -82,6 +82,7 @@ const AddCampaign = ({ category }: { category: string }): JSX.Element => {
 			};
 		}
 	};
+	
 	const handleNext = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!filePreview) {

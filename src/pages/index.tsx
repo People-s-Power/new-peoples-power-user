@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import FrontLayout from "layout/FrontLayout";
-import React, { } from "react";
+import React, { useEffect } from "react";
 import CampComp from "../components/CampComp"
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
 import StartPetition from "../components/modals/StartPetition"
 import EventsCard from "components/EventsCard";
-
+import { GET_PETITION } from "apollo/queries/petitionQuery";
+import { apollo } from "apollo/new";
+import { useQuery } from "@apollo/client";
 import { useState } from 'react'
 
 const HomePage = () => {
@@ -20,6 +22,20 @@ const HomePage = () => {
 	const handelPetition = () => setOpenPetition(!openPetition);
 	const handelAdClick = () => setOpenAd(!openAd);
 	const handelEventClick = () => setOpenEvent(!openEvent);
+
+	useQuery(GET_PETITION, {
+		client: apollo,
+		onCompleted: (data) => {
+			console.log(data)
+		},
+		onError: (err) => console.log(err),
+	});
+
+	useEffect(() => {
+		return () => {
+
+		};
+	}, [])
 
 	return (
 		<FrontLayout showFooter={false}>

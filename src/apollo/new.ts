@@ -17,19 +17,10 @@ import { getTokenCookie } from "utils/cookieUtils";
 let apolloClient: ApolloClient<any>;
 // https://apiv5-xacq2.ondigitalocean.app/
 
-const uri = `${SERVER_URL}/graphql`;
-const newuri = 'https://apiv5-xacq2.ondigitalocean.app/graphql'
+const uri = 'https://apiv5-xacq2.ondigitalocean.app/graphql'
 
 export const apollo: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	uri,
-	cache: new InMemoryCache(),
-
-	headers: {
-		Authorization: "Bearer " + jscookie.get(TOKEN_NAME) || " ",
-	},
-});
-
-export const newApollo: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache: new InMemoryCache(),
 
 	headers: {
