@@ -50,8 +50,8 @@ const HomePage = () => {
 					</div>
 					<div className="border-b border-gray-200 px-3">
 						<div className="flex justify-between my-2">
-							<div className="text-sm my-auto">Adverts</div>
-							<div onClick={() => handelAdClick()} className="text-center cursor-pointer">
+							<div className="text-sm my-auto">Petitions</div>
+							<div onClick={() => handelPetition()} className="text-center cursor-pointer">
 								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
 								<span className="text-xs text-center">create</span>
 							</div>
@@ -81,11 +81,11 @@ const HomePage = () => {
 							</div>
 						</div>
 						<div className="flex justify-evenly my-4">
-							<div className="flex cursor-pointer">
+							<div onClick={() => handelClick()} className="flex cursor-pointer">
 								<img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
 								<div className="my-auto text-sm ml-3">Photo</div>
 							</div>
-							<div className="flex  cursor-pointer">
+							<div onClick={() => handelClick()} className="flex  cursor-pointer">
 								<img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
 								<div className="my-auto text-sm ml-3">Video</div>
 							</div>
@@ -108,6 +108,9 @@ const HomePage = () => {
 					</div>
 				</section>
 				<aside className="w-[20%] p-2 fixed bg-white right-20">
+					<div className="text-sm">
+						Grow your feed by following persons and organizations that interest you
+					</div>
 					<div className="flex justify-between my-3">
 						<img src="/images/person.png" className="w-12 m-2 h-12" alt="" />
 						<div>
@@ -132,23 +135,36 @@ const HomePage = () => {
 							</div>
 						</div>
 					</div>
+					<div className="flex justify-between my-3">
+						<img src="/images/person.png" className="w-12 m-2 h-12" alt="" />
+						<div>
+							<div className="text-base font-light">John</div>
+							<div className="text-xs">Joshua who you followed
+								started following King Erics</div>
+							<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[60%] mt-2 rounded-md">
+								<div className="text-lg">+</div>
+								<div className="my-auto text-sm">Follow</div>
+							</div>
+						</div>
+					</div>
+					<div className="text-sm text-warning">view who you followed is following</div>
 					<div className="p-2">
-						<div className="my-3 text-sm">
+						{/* <div className="my-3 text-sm">
 							Grow your feed by following
 							persons and pages that
 							interest you
-						</div>
+						</div> */}
 						<div className="my-3 text-sm">
 							Following someone or a
 							page allows you to see the
 							persons interest, campaign
 						</div>
-						{/* <div className="my-3 text-sm">
+						<div className="my-3 text-sm">
 							You can reach a larger
 							audience by allowing others
 							to follow your activity and
 							read what you are sharing
-						</div> */}
+						</div>
 					</div>
 				</aside>
 				<CreatePost open={openPost} handelClick={handelClick} />

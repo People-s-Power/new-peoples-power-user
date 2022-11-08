@@ -40,7 +40,7 @@ const ConnectionCard = ({ user }: { user: IUser }): JSX.Element => {
     return (
         <div className="w-[25%] p-6">
             <img src="/images/person.png" className='w-20 h-20 rounded-full' alt="" />
-            <div className='text-xl py-2'>{user.firstName} + {user.lastName}</div>
+            <div className='text-xl py-2'>{user.firstName} {user.lastName}</div>
             <div className='w-16 h-[1px] bg-gray-200'></div>
             <div className="text-xs text-gray-700 my-3">500 Followers</div>
             {following ? (

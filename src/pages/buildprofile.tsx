@@ -5,6 +5,11 @@ import ConnectionCard from '../components/ConnectionCard'
 import axios from 'axios';
 import { IUser } from "types/Applicant.types";
 import { useRouter } from "next/router";
+import { UserAtom } from "atoms/UserAtom";
+import { useRecoilValue } from "recoil";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function buildprofile() {
     const [step, setStep] = React.useState(0);
@@ -18,6 +23,7 @@ function buildprofile() {
     const [city, setCity] = useState("")
     const [description, setDescription] = useState("")
     const [myInterest, setMyInterest] = useState<String[]>([])
+	const user = useRecoilValue(UserAtom);
 
     const [img, setImg] = useState("");
     const interest = [
@@ -48,6 +54,38 @@ function buildprofile() {
             };
         }
     };
+    const uploadFileToServer = async () => {
+        if (!img) {
+            uploadRef.current?.click();
+        } else {
+            try {
+                const { data } = await axios.post("/user/upload", { image: img });
+                toast("Image uploaded successfully");
+                setImg("");
+                onNext()
+            } catch (error) {
+                console.log(error);
+            } finally {
+            }
+        }
+    };
+    const handleSubmit = async () => {
+		try {
+			const { data } = await axios.put("/user/update", {
+                name: user.name,
+                phone: user.phone,
+                country,
+                city,
+                description
+            });
+			console.log(data);
+			toast.success("Profile Updates Successfully!")
+			router.push(`/`)
+		} catch (error) {
+			console.log(error);
+			toast.warn("Oops an error occured!")
+		}
+	};
     useEffect(() => {
         axios.get(`/user`)
             .then(function (response) {
@@ -92,7 +130,7 @@ function buildprofile() {
                                         <img onClick={() => uploadRef.current?.click()} className='rounded-full hover:opacity-50 w-44 h-44 mx-auto' src={img || "/images/person.png"} alt="" />
                                     </div>
                                     <div className='text-center mx-auto my-8'>
-                                        <button className="p-2 bg-warning text-white rounded-sm" onClick={onNext}>
+                                        <button className="p-2 bg-warning text-white rounded-sm" onClick={uploadFileToServer}>
                                             Upload Photo
                                         </button>
                                         <div className='my-1'>
@@ -185,7 +223,7 @@ function buildprofile() {
                                         ))}
                                     </div>
                                     <div className='text-center mx-auto my-8'>
-                                        <button className="p-2 bg-warning text-white rounded-sm" onClick={onNext}>
+                                        <button className="p-2 bg-warning text-white rounded-sm" onClick={handleSubmit}>
                                             Finish
                                         </button>
                                         <Button onClick={onPrevious}>
@@ -199,6 +237,7 @@ function buildprofile() {
                     })()}
                 </main>
             </FrontLayout>
+            <ToastContainer />
         </div>
     );
 }

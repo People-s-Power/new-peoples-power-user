@@ -11,7 +11,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                         <Modal.Title>Create event</Modal.Title>
                     </div>
                 </Modal.Header>
-                {/* <Modal.Body> */}
+                <Modal.Body>
                     <div className="bg-gray-200 w-full p-4 text-center">
                         <img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
                         <div className="text-base my-3">Upload Cover  Image</div>
@@ -54,15 +54,16 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                             <input type="date" className="w-full border border-gray-700 text-sm" />
                         </div>
                         <div className="w-[45%] text-sm">
-                            <div className='text-sm my-1'>Privacy</div>
+                            <div className='text-sm my-1'>Target audience</div>
                             <select name="" id="" className="w-full border border-gray-700 text-sm">
                                 <option value="everyone">Everyone</option>
-                                <option value="followers">Followers</option>
+                                <option value="followers">My Connections</option>
+                                <option value="followers">Interest</option>
                                 <option value="location">Location</option>
                             </select>
                         </div>
                     </div>
-                {/* </Modal.Body> */}
+                </Modal.Body>
                 <Modal.Footer>
                     <button onClick={handelClick} className="p-1 bg-warning text-white rounded-md w-44 my-4">
                         Create Event

@@ -17,7 +17,7 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
                         <img src="/images/person.png" className="w-10 h-10 rounded-full mr-4" alt="" />
                         <div className="text-sm">Evans Doe</div>
                     </div>
-                    <textarea name="" className="w-full h-32 border border-white text-sm" placeholder="What are your social concern ?"></textarea>
+                    <textarea name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint, let people know about it and win your supporters"></textarea>
 
                 </Modal.Body>
                 <div className='z-40'>
@@ -50,8 +50,8 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
                                 <img className="w-4 h-4 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
                             </div>
                         </div>
-                        <div className="text-sm my-auto">Make petition</div>
                         <div className="text-sm my-auto">Celebrate victory</div>
+                        <div className="text-sm my-auto">Make petition</div>
                         <button onClick={handelClick} className="p-1 bg-warning text-white rounded-sm w-20">
                             Post
                         </button>

@@ -21,7 +21,7 @@ const UpdateProfileComp = (): JSX.Element => {
 		setInfo({
 			...info,
 			[name]: value,
-		});
+		}); 
 	};
 	useEffect(() => {
 		if (!info) setInfo(user);
@@ -30,10 +30,9 @@ const UpdateProfileComp = (): JSX.Element => {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setLoading(true);
-
 		try {
 			const { data } = await axios.put("/user/update", info);
-			// console.log(data);
+			console.log(data);
 			setLoading(false);
 			toast.success("Profile Updates Successfully!")
 			router.push(`/user?page=${user.id}`)
