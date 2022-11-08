@@ -33,7 +33,7 @@ const LoginPage = (): JSX.Element => {
 						Sign in with your social media accounts for easy syncing and more
 						secure privacy.
 					</p>
-					<LoginComp onSuccess={() => (window.location.href = `/user?page=${user.id}`, localStorage.setItem('page', user.id))} />
+					<LoginComp onSuccess={(data) => (router.push(`/user?page=${data?.id}`), localStorage.setItem('page', user?.id))} />
 					<Link href="/auth?mode=forgot password">
 						<a className="text-decoration-none text-center d-block">
 							Forgot Password

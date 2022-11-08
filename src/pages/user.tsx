@@ -59,7 +59,7 @@ const user = () => {
     }
     useEffect(() => {
         try {
-            axios.get(`/user/single/${query?.page || author.id || page}`)
+            axios.get(`/user/single/${query?.page}`)
                 .then(function (response) {
                     setUser(response.data.user)
                     response.data.user.followers.map((single: any) => {
@@ -78,7 +78,7 @@ const user = () => {
                 })
                 .catch(function (error) {
                     console.log(error);
-                    router.push(`/org?page=${page}`)
+                    // router.push(`/org?page=${query?.page}`)
                 })
         } catch (error) {
             console.log(error);

@@ -78,7 +78,7 @@ export const SignupCom = ({
 
 			cookie.set(TOKEN_NAME, data?.token);
 			// router.push("/mycamp/profile");
-			window.location.href = 'mycamp/profile'
+			window.location.href = '/buildprofile'
 			onSucess(data);
 			setLoading(false);
 		} catch (error) {
