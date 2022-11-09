@@ -8,7 +8,7 @@ import CreateEvent from "../components/modals/CreateEvent"
 import StartPetition from "../components/modals/StartPetition"
 import EventsCard from "components/EventsCard";
 import { GET_PETITION } from "apollo/queries/petitionQuery";
-import { apollo } from "apollo/new";
+import { apollo } from "apollo";
 import { useQuery } from "@apollo/client";
 import { useState } from 'react'
 

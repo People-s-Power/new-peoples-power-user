@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import cookie from "js-cookie";
 import { TOKEN_NAME } from "utils/constants";
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { Loader } from "rsuite";
 import GoogleAuthComp from "../GoogleAuth";
 import Facebook from "../Facebook";
@@ -46,7 +46,7 @@ export const SignupCom = ({
 }: {
 	onSucess(data?: any): void;
 }): JSX.Element => {
-	// const router = useRouter()
+	const router = useRouter()
 	const [loading, setLoading] = useState(false);
 	const [info, setInfo] = useState({
 		email: "",
@@ -58,7 +58,7 @@ export const SignupCom = ({
 	const togglePassword = () => {
 		setPasswordShown(!passwordShown);
 	};
-	
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setInfo({
@@ -78,7 +78,7 @@ export const SignupCom = ({
 
 			cookie.set(TOKEN_NAME, data?.token);
 			// router.push("/mycamp/profile");
-			window.location.href = '/buildprofile'
+			router.push('/buildprofile')
 			onSucess(data);
 			setLoading(false);
 		} catch (error) {

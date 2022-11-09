@@ -1,6 +1,6 @@
 export const TOKEN_NAME = "__ed_KEY";
 // https://apiv5-xacq2.ondigitalocean.app/
-export const SERVER_URL = 'https://people-api-vkkzo.ondigitalocean.app'
+export const SERVER_URL = 'https://apiv5-xacq2.ondigitalocean.app'
 	// process.env.NODE_ENV === "production"
 	// 	? "https://edfhr.org"
 	// 	: "http://localhost:8000";

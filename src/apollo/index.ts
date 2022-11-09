@@ -18,7 +18,6 @@ let apolloClient: ApolloClient<any>;
 // https://apiv5-xacq2.ondigitalocean.app/
 
 const uri = `${SERVER_URL}/graphql`;
-const newuri = 'https://apiv5-xacq2.ondigitalocean.app/graphql'
 
 export const apollo: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	uri,

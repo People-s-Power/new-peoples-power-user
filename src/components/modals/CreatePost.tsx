@@ -1,9 +1,28 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
 // import { useState } from 'react'
+import { CREATE_POST } from "apollo/queries/postQuery";
 import { Dropdown } from 'rsuite';
+import axios from "axios";
+import { SERVER_URL } from "utils/constants";
 
 const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void }): JSX.Element => {
+
+    const handleSubmit = async () => {
+        try {
+            const { data } = await axios.post('/graphql', {
+                query: CREATE_POST,
+                variables: {
+                    body: "hsjkhs",
+                    imageFile: "https://static.vecteezy.com/system/resources/previews/002/002/427/large_2x/man-avatar-character-isolated-icon-free-vector.jpg"
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
             <Modal open={open} onClose={handelClick}>
@@ -52,7 +71,7 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
                         </div>
                         <div className="text-sm my-auto">Celebrate victory</div>
                         <div className="text-sm my-auto">Make petition</div>
-                        <button onClick={handelClick} className="p-1 bg-warning text-white rounded-sm w-20">
+                        <button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
                             Post
                         </button>
                     </div>
