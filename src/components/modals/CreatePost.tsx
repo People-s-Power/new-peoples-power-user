@@ -1,23 +1,57 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
-// import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { CREATE_POST } from "apollo/queries/postQuery";
 import { Dropdown } from 'rsuite';
 import axios from "axios";
 import { SERVER_URL } from "utils/constants";
+import { print } from 'graphql';
 
 const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void }): JSX.Element => {
+    const [image, setFilePreview] = useState({
+        type: "",
+        file: "",
+        name: "",
+    })
+    const [body, setBody] = useState("")
+    const uploadRef = useRef<HTMLInputElement>(null);
 
+    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        const reader = new FileReader();
+
+        if (files && files.length > 0) {
+            reader.readAsDataURL(files[0]);
+            reader.onloadend = () => {
+                if (reader.result) {
+                    let type = files[0].name.substr(files[0].name.length - 3)
+                    // console.log(type)
+                    setFilePreview({
+                        type: type === "mp4" ? "video" : "image",
+                        file: reader.result as string,
+                        name: files[0].name,
+                    });
+                }
+            };
+        }
+    };
     const handleSubmit = async () => {
         try {
-            const { data } = await axios.post('/graphql', {
-                query: CREATE_POST,
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(CREATE_POST),
                 variables: {
-                    body: "hsjkhs",
-                    imageFile: "https://static.vecteezy.com/system/resources/previews/002/002/427/large_2x/man-avatar-character-isolated-icon-free-vector.jpg"
+                    body: body,
+                    imageFile: image.file
                 }
             })
             console.log(data)
+            handelClick()
+            setBody("")
+            setFilePreview({
+                type: "",
+                file: "",
+                name: "",
+            });
         } catch (error) {
             console.log(error);
         }
@@ -36,7 +70,7 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
                         <img src="/images/person.png" className="w-10 h-10 rounded-full mr-4" alt="" />
                         <div className="text-sm">Evans Doe</div>
                     </div>
-                    <textarea name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint, let people know about it and win your supporters"></textarea>
+                    <textarea onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint, let people know about it and win your supporters"></textarea>
 
                 </Modal.Body>
                 <div className='z-40'>
@@ -54,9 +88,22 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
                     </Dropdown>
                 </div>
                 <Modal.Footer>
+                    <input
+                        type="file"
+                        ref={uploadRef}
+                        className="d-none"
+                        onChange={handleImage}
+                    />
+                    {
+                        image.file === "" ? null : (
+                            <div className='flex '>
+                                <img src={image.file} className="w-20 h-20" alt="" />
+                            </div>
+                        )
+                    }
                     <div className="flex justify-between text-gray-500">
                         <div className="w-24 flex justify-between my-auto">
-                            <div className="cursor-pointer">
+                            <div onClick={() => uploadRef.current?.click()} className="cursor-pointer">
                                 <img className="w-4 h-4 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
                             </div>
                             <div className="cursor-pointer">

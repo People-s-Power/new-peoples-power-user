@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterComp = (): JSX.Element => {
-	// const router = useRouter()
+	const router = useRouter()
 
 	return (
 		<div className="signup-main">
@@ -46,7 +46,7 @@ export const SignupCom = ({
 }: {
 	onSucess(data?: any): void;
 }): JSX.Element => {
-	const router = useRouter()
+	// const router = useRouter()
 	const [loading, setLoading] = useState(false);
 	const [info, setInfo] = useState({
 		email: "",
@@ -78,7 +78,7 @@ export const SignupCom = ({
 
 			cookie.set(TOKEN_NAME, data?.token);
 			// router.push("/mycamp/profile");
-			router.push('/buildprofile')
+			window.location.href = '/buildprofile'
 			onSucess(data);
 			setLoading(false);
 		} catch (error) {

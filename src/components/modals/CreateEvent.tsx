@@ -1,8 +1,58 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { CREATE_EVENT } from "apollo/queries/eventQuery";
+import axios from "axios";
+import { SERVER_URL } from "utils/constants";
+import { print } from 'graphql';
 
 const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void }): JSX.Element => {
+    const [image, setFilePreview] = useState({
+        type: "",
+        file: "",
+        name: "",
+    })
+    const uploadRef = useRef<HTMLInputElement>(null);
+    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        const reader = new FileReader();
+
+        if (files && files.length > 0) {
+            reader.readAsDataURL(files[0]);
+            reader.onloadend = () => {
+                if (reader.result) {
+                    let type = files[0].name.substr(files[0].name.length - 3)
+                    // console.log(type)
+                    setFilePreview({
+                        type: type === "mp4" ? "video" : "image",
+                        file: reader.result as string,
+                        name: files[0].name,
+                    });
+                }
+            };
+        }
+    };
+    const handleSubmit = async () => {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(CREATE_EVENT),
+                variables: {
+                    name: "Borderless", description: "Test this out", endDate: "11/2/2023", startDate: "11/2/2023", time: "18:30", type: "offline",
+                    imageFile: image.file
+                }
+            })
+            console.log(data)
+            handelClick()
+            // setBody("")
+            setFilePreview({
+                type: "",
+                file: "",
+                name: "",
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <>
             <Modal open={open} onClose={handelClick}>
@@ -12,9 +62,18 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="bg-gray-200 w-full p-4 text-center">
-                        <img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
-                        <div className="text-base my-3">Upload Cover  Image</div>
+                    <div className="bg-gray-200 w-full p-4 text-center relative">
+                        {image?.type === "image" && (
+                            <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />
+                        )}
+                        <input
+                            type="file"
+                            ref={uploadRef}
+                            className="d-none"
+                            onChange={handleImage}
+                        />
+                        <img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
+                        <div className="text-base my-3">Upload Petition Cover  Image</div>
                         <div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
                     </div>
                     <div>
@@ -65,7 +124,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button onClick={handelClick} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+                    <button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
                         Create Event
                     </button>
                 </Modal.Footer>
