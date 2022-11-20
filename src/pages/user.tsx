@@ -25,10 +25,11 @@ import { print } from 'graphql';
 
 const user = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
+    const author = useRecoilValue(UserAtom);
+
     const [user, setUser] = useState<IUser>()
     const [orgs, setOrgs] = useState<IOrg[]>([])
     const { query } = useRouter();
-    const author = useRecoilValue(UserAtom);
     const [product, setProduct] = useState(false)
     const [following, setFollow] = useState(false)
     const [orgId, setOrgId] = useState("")
@@ -63,6 +64,7 @@ const user = () => {
                 .then(function (response) {
                     setUser(response.data.user)
                     response.data.user.followers.map((single: any) => {
+                        console.log(response.data)
                         if (single === author.id) {
                             setFollow(true)
                         } else {
@@ -162,51 +164,56 @@ const user = () => {
                     <title>{`PEOPLE'S POWER`} || {user?.name} </title>
                 </Head>
                 <div className="lg:mx-32">
-                    <div className="rounded-md bg-gray-100">
+                    <div className="rounded-md ">
                         <div className="relative ">
                             <div>
                                 <img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
                             </div>
-                            {
-                                isValidUrl(user?.image) ? (
-                                    <div className="absolute top-40 left-[45%] rounded-circle pro-img mx-auto bg-white p-1">
-                                        <img className="rounded-circle w-32 h-32" src={user?.image} alt="" />
-                                    </div>
-                                ) : (
-                                    <div className="absolute top-40 mx-auto left-[45%] rounded-full w-24 bg-white p-1 h-24">
-                                        <img className="w-full rounded-full" src="/images/user.png" alt="" />
-                                    </div>
-
-                                )
-                            }
-                        </div>
-                        <div className='mt-24 px-10 text-center'>
-                            <div className="flex flex-column justify-center">
-                                <div className="text-lg font-bold ">{user?.name}</div>
-                                <div className="pt-1 ml-2"> {user?.city}, {user?.country}</div> </div>
-                            <div className="text-sm font-thin w-96 mx-auto">
-                                {user?.description.substring(0, 100) + '...'}
+                            <div className="absolute top-40 left-10 rounded-circle pro-img mx-auto bg-white p-1">
+                                <img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
                             </div>
-                            <div className="text-lg font-black text-gray-900 justify-center flex ">{user?.followersCount} Followers
-                                <div className="text-lg font-black text-gray-900 ml-2">
-                                    Following {user?.followingCount} </div> </div>
-                            {author?.id === query.page ? (
+
+                        </div>
+                        <div className='mt-32 py-8 px-10'>
+                            <div className='flex justify-between'>
+                                <div className="flex flex-column justify-center">
+                                    <div className='flex'>
+                                        <div className="text-xl font-bold ">{user?.name}</div>
+                                        <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followersCount} Followers
+                                            <div className="text-xs text-gray-900 ml-2">
+                                                Following {user?.followingCount}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="text-sm font-thin w-96">
+                                        {user?.description.substring(0, 100) + '...'}
+                                    </div>
+                                    <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
+                                </div>
                                 <div className="font-black text-lg">
                                     <Link href={`mycamp/profile`}>
                                         <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                     </Link>
                                 </div>
-                            ) : (
-                                following === true ? (
-                                    <div>
-                                        <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
+                            </div>
+
+                            {/* {author?.id === query.page ? (
+                                    <div className="font-black text-lg">
+                                        <Link href={`mycamp/profile`}>
+                                            <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
+                                        </Link>
                                     </div>
                                 ) : (
-                                    <div>
-                                        <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
-                                    </div>
-                                )
-                            )}
+                                    following === true ? (
+                                        <div>
+                                            <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
+                                        </div>
+                                    )
+                                )} */}
                         </div>
 
                         {/* {author?.id === query.page ? (
@@ -233,20 +240,28 @@ const user = () => {
                         ) : null
                     }
                     <div className="lg:flex mt-3">
-                        <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
+                        <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md">
                             {author?.id === query.page ? (
-                                <div className="text-center font-black text-base p-3">
+                                <div className="text-base p-3">
                                     <Link href="/mycamp">
-                                        <button className=" bg-transparent p-2 w-44 text-black">Dashboard</button>
+                                        <button className="bg-transparent p-2">Dashboard</button>
                                     </Link>
-                                    <button className=" bg-transparent p-2 w-44 text-black" onClick={() => setProduct(!product)}> Products</button>
+                                    <button className=" bg-transparent p-2" onClick={() => setProduct(!product)}> Products</button>
                                     <Link href={'/org/create'}>
-                                        <div className="bg-transparent flex justify-between text-black">
+                                        <div className="bg-transparent my-2 flex justify-between">
+                                            <div className="my-auto">Human Right Action</div>
+                                            <div className='text-center cursor-pointer'>
+                                                <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+                                                <div className="text-xs">  add </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                    <Link href={'/org/create'}>
+                                        <div className="bg-transparent my-2 flex justify-between">
                                             <div className="my-auto">Organization</div>
-                                            <div>
-                                                <span className="bg-gray-100 rounded-full">&#43;</span>
-                                                <div className="text-xs">  create
-                                                </div>
+                                            <div className='text-center cursor-pointer'>
+                                                <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+                                                <div className="text-xs">  create </div>
                                             </div>
                                         </div>
                                     </Link>

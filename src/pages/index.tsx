@@ -10,7 +10,11 @@ import EventsCard from "components/EventsCard";
 import { GET_PETITION } from "apollo/queries/petitionQuery";
 import { GET_POSTS } from "apollo/queries/postQuery";
 import { GET_EVENTS } from "apollo/queries/eventQuery";
+import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
 
+
+import { SERVER_URL } from "utils/constants";
+import { print } from 'graphql';
 
 import axios from 'axios';
 
@@ -23,6 +27,8 @@ import { UserAtom } from "atoms/UserAtom";
 import { apollo } from "apollo";
 import { useQuery } from "@apollo/client";
 import { IUser } from "types/Applicant.types";
+import PetitionComp from "components/PetitionCard";
+import AdvertsComp from "components/AdvertsCard";
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom);
@@ -36,54 +42,80 @@ const HomePage = () => {
 	const handelAdClick = () => setOpenAd(!openAd);
 	const handelEventClick = () => setOpenEvent(!openEvent);
 	const [following, setFollow] = useState(false)
+	const [all, setAll] = useState<any>([])
+	const [type, setType] = useState("")
 
-	useQuery(GET_PETITION, {
-		client: apollo,
-		onCompleted: (data) => {
-			console.log(data)
-		},
-		onError: (err) => console.log(err),
-	});
-	useQuery(GET_POSTS, {
-		client: apollo,
-		onCompleted: (data) => {
-			console.log(data)
-		},
-		onError: (err) => console.log(err),
-	});
-	useQuery(GET_EVENTS, {
-		client: apollo,
-		onCompleted: (data) => {
-			console.log(data)
-		},
-		onError: (err) => console.log(err),
-	});
 
-	const follow = (user: any) => {
-		axios.post('/user/follow', {
-			userId: user.id
-		})
-			.then(function (response) {
-				toast.success("Followed!")
-				setFollow(true)
+	useQuery(GET_ALL, {
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data)
+			let general = [...data.general.adverts, ...data.general.events, ...data.general.petitions, ...data.general.posts, ...data.general.victories,]
+			const randomize = (values: any) => {
+				let index = values.length, randomIndex;
+				while (index != 0) {
+					randomIndex = Math.floor(Math.random() * index);
+					index--;
+					[values[index], values[randomIndex]] = [
+						values[randomIndex], values[index]];
+				}
+				return values;
+			}
+			randomize(general)
+			setAll(general)
+			console.log(general)
+		},
+		onError: (err) => console.log(err),
+	});
+	// useQuery(GET_PETITION, {
+	// 	client: apollo,
+	// 	onCompleted: (data) => {
+	// 		console.log(data)
+	// 	},
+	// 	onError: (err) => console.log(err),
+	// });
+	// useQuery(GET_POSTS, {
+	// 	client: apollo,
+	// 	onCompleted: (data) => {
+	// 		console.log(data)
+	// 	},
+	// 	onError: (err) => console.log(err),
+	// });
+	// useQuery(GET_EVENTS, {
+	// 	client: apollo,
+	// 	onCompleted: (data) => {
+	// 		console.log(data)
+	// 	},
+	// 	onError: (err) => console.log(err),
+	// });
+
+	const follow = async (user: any) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + '/graphql', {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id, followId: user.id,
+				}
 			})
-			.catch(function (error) {
-				console.log(error);
-				toast.warn("Oops an error occoured!")
-			})
+			console.log(data)
+			toast.success("Followed!")
+			setFollow(true)
+		} catch (error) {
+			console.log(error);
+			toast.warn("Oops an error occoured!")
+		}
+
 	}
 
-	useEffect(() => {
-		axios.get(`/user`)
-			.then(function (response) {
-				setUsers(response.data)
-			})
-			.catch(function (error) {
-				console.log(error);
-			})
 
-	}, [])
-
+	useQuery(GET_ALL_USERS, {
+		client: apollo,
+		onCompleted: (data) => {
+			console.log(data)
+			setUsers(data.getUsers)
+		},
+		onError: (err) => console.log(err),
+	});
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex mx-20">
@@ -149,8 +181,40 @@ const HomePage = () => {
 						</div>
 					</div>
 					<div>
-						<CampComp />
-						<EventsCard />
+						{
+							all.map((single: any, index: number) => {
+								// setType(single.__typename)
+								switch (single.__typename) {
+									case 'Advert':
+										return (<div>
+											<AdvertsComp advert={single} key={index} />
+										</div>
+										)
+									case 'Event':
+										return (<div>
+											<EventsCard key={index} event={single} />
+										</div>
+										)
+									case 'Petition':
+										return (<div>
+											<PetitionComp petition={single} key={index} />
+										</div>
+										)
+									case 'Victory':
+										return (<div>
+											victories
+										</div>
+										)
+									case 'Post':
+										return (<div>
+											<CampComp key={index} post={single} />
+
+										</div>
+										)
+								}
+							})
+						}
+						{/* <CampComp /> */}
 					</div>
 				</section>
 				<aside className="w-[20%] p-2 fixed bg-white right-20">
@@ -159,11 +223,11 @@ const HomePage = () => {
 					</div>
 					{users.slice(0, 3).map((user, index) => (
 						<div key={index} className="flex justify-between my-3">
-							<img src="/images/person.png" className="w-12 m-2 h-12" alt="" />
-							<div>
-								<div className="text-base font-light">{user.firstName} {user.lastName}</div>
-								<div className="text-xs">Joshua who you followed
-									started following King Erics</div>
+							<img src={user.image} className="w-12 m-2 h-12" alt="" />
+							<div className="w-[80%]">
+								<div className="text-base font-light">{user.name} </div>
+								{/* <div className="text-xs">Joshua who you followed
+									started following King Erics</div> */}
 								<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[60%] mt-2 rounded-md">
 									<div className="text-lg">+</div>
 									<div className="my-auto text-sm" onClick={(user) => follow(user)}>Follow</div>

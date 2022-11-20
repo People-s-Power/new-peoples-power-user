@@ -12,6 +12,13 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
         file: "",
         name: "",
     })
+    const [name, setName] = useState("")
+    const [des, setDes] = useState("")
+    const [endDate, setEndDate] = useState("")
+    const [startDate, setStartDate] = useState("")
+    const [time, setTime] = useState("")
+    const [type, setType] = useState("")
+
     const uploadRef = useRef<HTMLInputElement>(null);
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -37,7 +44,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
             const { data } = await axios.post(SERVER_URL + '/graphql', {
                 query: print(CREATE_EVENT),
                 variables: {
-                    name: "Borderless", description: "Test this out", endDate: "11/2/2023", startDate: "11/2/2023", time: "18:30", type: "offline",
+                    name: name, description: des, endDate: endDate, startDate: startDate, time: time, type: type,
                     imageFile: image.file
                 }
             })
@@ -80,37 +87,37 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                         <div className='text-sm my-2 mt-4'>Event type</div>
                         <div className="flex my-3">
                             <div className="flex">
-                                <input type="radio" className="p-2" />
+                                <input onClick={() => setType('online')} type="radio" className="p-2" />
                                 <div className="ml-4 text-sm my-auto">Online</div>
                             </div>
                             <div className="flex ml-8">
-                                <input type="radio" className="p-2" />
+                                <input onClick={() => setType('offline')} type="radio" className="p-2" />
                                 <div className="ml-4 text-sm my-auto">Offline</div>
                             </div>
                         </div>
                     </div>
                     <div className="mt-2">
                         <div className='text-sm my-1'>Event name</div>
-                        <input type="text" className="p-1 border border-gray-700 w-full rounded-sm" />
+                        <input onChange={(e) => setName(e.target.value)} type="text" className="p-1 border border-gray-700 w-full rounded-sm" />
                     </div>
                     <div className="mt-2">
                         <div className='text-sm my-1'>About event</div>
-                        <textarea className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
+                        <textarea onChange={(e) => setDes(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
                     </div>
                     <div className='flex justify-between mt-2'>
                         <div className="w-[45%]">
                             <div className='text-sm my-1'>Date</div>
-                            <input type="date" className="w-full border border-gray-700 text-sm" />
+                            <input onChange={(e) => setStartDate(e.target.value)} type="date" className="w-full border border-gray-700 text-sm" />
                         </div>
                         <div className="w-[45%] text-sm">
                             <div className='text-sm my-1'>Time</div>
-                            <input type="time" className="w-full border border-gray-700 text-sm" />
+                            <input type="time" onChange={(e) => setTime(e.target.value)} className="w-full border border-gray-700 text-sm" />
                         </div>
                     </div>
                     <div className='flex justify-between mt-2'>
                         <div className="w-[45%] text-sm">
                             <div className='text-sm my-1'>End date</div>
-                            <input type="date" className="w-full border border-gray-700 text-sm" />
+                            <input type="date" onChange={(e) => setEndDate(e.target.value)} className="w-full border border-gray-700 text-sm" />
                         </div>
                         <div className="w-[45%] text-sm">
                             <div className='text-sm my-1'>Target audience</div>

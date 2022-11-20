@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FrontLayout from "layout/FrontLayout";
 import EventCard from 'components/EventCard';
+import { GET_EVENTS } from "apollo/queries/eventQuery";
 
+import { apollo } from "apollo";
+import { useQuery } from "@apollo/client";
 const events = () => {
+    const [events, setEvents] = useState([])
+    useQuery(GET_EVENTS, {
+        client: apollo,
+        onCompleted: (data) => {
+            console.log(data)
+            setEvents(data.events)
+        },
+        onError: (err) => console.log(err),
+    });
+
     return (
         <FrontLayout>
             <div className="mx-20">
@@ -17,9 +30,11 @@ const events = () => {
                     </div>
                 </div>
                 <div className='my-8 flex flex-wrap justify-between p-4'>
-                    <EventCard />
-                    <EventCard />
-                    <EventCard />
+                    {events.map((event, index) => (
+                        <EventCard event={event} key={index} />
+                    ))}
+                    {/* <EventCard />
+                    <EventCard /> */}
                 </div>
             </div>
         </FrontLayout>

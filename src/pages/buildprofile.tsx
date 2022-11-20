@@ -7,6 +7,10 @@ import { IUser } from "types/Applicant.types";
 import { useRouter } from "next/router";
 import { UserAtom } from "atoms/UserAtom";
 import { useRecoilValue } from "recoil";
+import { GET_ALL_USERS } from "apollo/queries/generalQuery";
+
+import { apollo } from "apollo";
+import { useQuery } from "@apollo/client";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -86,17 +90,15 @@ function buildprofile() {
 			toast.warn("Oops an error occured!")
 		}
 	};
-    useEffect(() => {
-        axios.get(`/user`)
-            .then(function (response) {
-                // console.log(response.data);
-                setUsers(response.data)
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-
-    }, [])
+    
+    useQuery(GET_ALL_USERS, {
+        client: apollo,
+        onCompleted: (data) => {
+            console.log(data)
+            setUsers(data.getUsers)
+        },
+        onError: (err) => console.log(err),
+    });
 
     const locationNext = () => {
         city && country !== "" ? onNext() : null

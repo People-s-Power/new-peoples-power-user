@@ -2,27 +2,26 @@
 import React from 'react';
 import { Dropdown } from 'rsuite';
 
-const EventCard = () => {
+const EventCard = ({event} : {event: any} ) : JSX.Element => {
     return (
         <div className='w-[48%] my-4'>
             <div className="flex justify-between my-3">
                 <div className='flex'>
-                    <img className="w-12 h-12 rounded-full" src="/images/person.png" alt="" />
+                    <img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
                     <div className="ml-2">
-                        <div className="text-base">Evans Doe <span className="text-xs"> created this event</span></div>
+                        <div className="text-base">{event.author.name} <span className="text-xs"> created this event</span></div>
                         <div className="text-xs">Following</div>
                     </div>
                 </div>
             </div>
             <div className=' rounded-md shadow-sm'>
-                <img src="/images/begging-bridge-with-person-who-handed-bread_1150-22948.png" alt="" className='rounded-md w-full h-40' />
+                <img src={event.image} alt="" className='rounded-md w-full h-40' />
                 <div className='my-auto w-full p-4' >
-                    <div className='text-xl my-3'>Get a job with the NGOS, the UN and
-                        the International</div>
+                    <div className='text-xl my-3'>{event.name}</div>
                     <div className='text-sm'>
-                        Thursday: Sep 1 2022 AT 5:30 PM WAT
+                       {event.startDate} {event.time}
                     </div>
-                    <div className='text-sm'>Online</div>
+                    <div className='text-sm'>{event.type}</div>
                     <div className='flex my-6'>
                         <div className='flex'>
                             <img src="/images/person.png" className='rounded-full w-10 h-10' alt="" />

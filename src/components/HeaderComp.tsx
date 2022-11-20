@@ -8,8 +8,6 @@ import UserMenu from "./user-profile/UserMenu";
 // import cookie from "js-cookie";
 import { Dropdown } from 'rsuite';
 
-
-
 const Header = (): JSX.Element => {
 	const [menu, setMenu] = useState(false);
 	// const [showNotification, setShowNotification] = useState(false);
@@ -24,7 +22,7 @@ const Header = (): JSX.Element => {
 	if (typeof window !== 'undefined') { }
 
 	const navItems = (loggedIn: boolean) => [
-		// { title: "Home", link: "/" },
+		{ title: "Home", link: loggedIn ? `/` : "auth" },
 		{ title: "My Profile", link: loggedIn ? `/user?page=${user.id}` : "auth" },
 		{ title: "Messages", link: "messages" },
 		{ title: "My Connection", link: "connection" },
@@ -69,7 +67,7 @@ const Header = (): JSX.Element => {
 								</Link>
 							</li>
 						))} */}
-						<li className="nav-item pt-2">
+						{/* <li className="nav-item pt-2">
 							<Link href={`/`}>
 								<a
 									className={
@@ -81,7 +79,7 @@ const Header = (): JSX.Element => {
 									Home
 								</a>
 							</Link>
-						</li>
+						</li> */}
 						{user ? (
 							navItems(Boolean(user)).map((nav, i) => (
 								<li onClick={() => localStorage.setItem("page", `${user?.id}`)} className="nav-item pt-2" key={i}>

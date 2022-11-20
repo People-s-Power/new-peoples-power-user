@@ -1,18 +1,27 @@
 import EventModal from './modals/EventModal';
 import React, { useState } from 'react'
 
-const EventsCard = () => {
+const EventsCard = ({ event }: { event: any }) => {
     const [open, setOpen] = useState(false);
     const handelClick = () => setOpen(!open);
 
     return (
         <div className='rounded-md shadow-sm my-3'>
-            <img src="/images/begging-bridge-with-person-who-handed-bread_1150-22948.png" alt="" className='rounded-md w-full' />
+            <div className="flex justify-between my-3">
+                <div className='flex'>
+                    <img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
+                    <div className="ml-2">
+                        <div className="text-base">{event.author.name} <span className="text-xs"></span></div>
+                        <div className="text-xs">{event.author.name} created this as an event</div>
+                    </div>
+                </div>
+            </div>
+            <img src={event.image} alt="" className='rounded-md w-full' />
             <div className='p-3 text-sm my-auto' >
                 <div>Dylan Emmanuel created event for
-                    Oct 12 AT 2:30 PM</div>
-                <div className='text-xl my-3'>Planning 2022/2023 goal and setting it</div>
-                <div className='text-sm'>Online</div>
+                   {event.startDate} AT {event.time}</div>
+                <div className='text-xl my-3'>{event.description}</div>
+                <div className='text-sm'>{event.type}</div>
                 <div className='flex my-6'>
                     <div className='flex'>
                         <img src="/images/person.png" className='rounded-full w-10 h-10' alt="" />
