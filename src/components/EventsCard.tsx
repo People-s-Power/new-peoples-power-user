@@ -18,7 +18,7 @@ const EventsCard = ({ event }: { event: any }) => {
             </div>
             <img src={event.image} alt="" className='rounded-md w-full' />
             <div className='p-3 text-sm my-auto' >
-                <div>Dylan Emmanuel created event for
+                <div>{event.author.name} created event for 
                    {event.startDate} AT {event.time}</div>
                 <div className='text-xl my-3'>{event.description}</div>
                 <div className='text-sm'>{event.type}</div>

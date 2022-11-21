@@ -42,7 +42,7 @@ const user = () => {
         variables: { ID: author?.id },
         client: apollo,
         onCompleted: (data) => {
-            console.log(data.getUserOrganizations)
+            // console.log(data.getUserOrganizations)
             setOrgs(data.getUserOrganizations)
         },
         onError: (err) => {
@@ -60,7 +60,7 @@ const user = () => {
     }
     useEffect(() => {
         try {
-            axios.get(`/user/single/${query?.page}`)
+            axios.get(`/user/single/${query.page}`)
                 .then(function (response) {
                     setUser(response.data.user)
                     response.data.user.followers.map((single: any) => {
@@ -93,7 +93,7 @@ const user = () => {
         //         setFollow(false)
         //     }
         // })
-    }, [])
+    },)
 
     const { refetch } = useQuery(GET_ORGANIZATION, {
         variables: { ID: orgId },
@@ -273,7 +273,7 @@ const user = () => {
                                                 ) : (
                                                     <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
                                                 )}
-                                                <p className="pl-2 mt-2 capitalize">{org?.name}</p>
+                                                <p className="pl-2 mt-2 text-sm">{org?.name}</p>
                                             </div>
                                         ))}
                                     </div>

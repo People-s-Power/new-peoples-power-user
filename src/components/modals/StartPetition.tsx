@@ -3,9 +3,13 @@ import { Modal } from 'rsuite';
 import { useState, useRef } from 'react'
 import { Dropdown } from 'rsuite';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void }): JSX.Element => {
     const [title, setTitle] = useState("")
+    const [loading, setLoading] = useState(false)
     const uploadRef = useRef<HTMLInputElement>(null);
     const [category, setCategory] = useState("Add Category")
     const [image, setFilePreview] = useState({
@@ -40,6 +44,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
     const createPetition = async () => {
         // handelClick()
         try {
+            setLoading(true)
             const { data } = await axios.post('https://apiv5-xacq2.ondigitalocean.app/api/v3/petition', {
                 title: title,
                 category: category,
@@ -50,8 +55,11 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
             });
             console.log(data)
             handelClick()
+            setLoading(true)
+            toast('Petition Created Successfully')
         } catch (error) {
             console.log(error);
+            toast.warn('Oops! Something went wrong')
         }
     };
 
@@ -93,16 +101,16 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                     </div>
                     <div className='z-40'>
                         <Dropdown placement="topStart" title={<div className='text-sm text-warning'>{category}</div>}>
-                            <Dropdown.Item>Human right awareness</Dropdown.Item>
-                            <Dropdown.Item>Social Policy</Dropdown.Item>
-                            <Dropdown.Item>Criminal Justice</Dropdown.Item>
-                            <Dropdown.Item>Human Right Action</Dropdown.Item>
-                            <Dropdown.Item>Development</Dropdown.Item>
-                            <Dropdown.Item>Environment</Dropdown.Item>
-                            <Dropdown.Item>Health</Dropdown.Item>
-                            <Dropdown.Item>Politics</Dropdown.Item>
-                            <Dropdown.Item>Disability</Dropdown.Item>
-                            <Dropdown.Item>Equality</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Human right awareness')}>Human right awareness</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Social Policy')}>Social Policy</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Criminal Justice')}>Criminal Justice</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Human Right Action')}>Human Right Action</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Development')}>Development</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Environment')}>Environment</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Health')}>Health</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Politics')}>Politics</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Disability')}>Disability</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setCategory('Equality')}>Equality</Dropdown.Item>
                         </Dropdown>
                     </div>
                 </Modal.Body>
@@ -112,11 +120,12 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                             Save
                         </button>
                         <button onClick={createPetition} className="p-1 bg-warning text-white rounded-md w-44 my-4">
-                            Preview and launch
+                            {loading ? 'Loading...' : 'Preview and launch'}
                         </button>
                     </div>
                 </Modal.Footer>
             </Modal>
+            <ToastContainer />
         </>
     );
 };

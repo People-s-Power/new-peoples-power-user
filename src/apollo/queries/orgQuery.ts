@@ -12,6 +12,18 @@ export const CREATE_ORG = gql
   }
 `;
 
+export const UPDATE_ORG = gql
+  ` mutation updateOrganization ($UpdateInput: UpdateInput!){
+    updateOrganization (input: $UpdateInput) {
+        name
+        email
+        phone
+        website
+        description
+    }
+  }
+`;
+
 export const GET_ORGANIZATIONS = gql
   `query getUserOrganizations($ID: ID!){
     getUserOrganizations(id: $ID){
@@ -24,8 +36,8 @@ export const GET_ORGANIZATIONS = gql
       phone
       followers
       following
-      followersCount
-      followingCount
+      followers
+      following
       operators {
           role
       }
@@ -51,8 +63,8 @@ export const GET_ORGANIZATION = gql
     phone
     followers
     following
-    followersCount
-    followingCount
+    followers
+    following
     operators {
         role
         userId

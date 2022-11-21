@@ -51,6 +51,7 @@ export interface IUser extends Document {
 	followingCount: string;
 	description: string;
 	followers: string[]
+	following: string[]
 	author: string;
 }
 

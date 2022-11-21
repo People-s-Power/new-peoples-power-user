@@ -63,7 +63,7 @@ const HomePage = () => {
 			}
 			randomize(general)
 			setAll(general)
-			console.log(general)
+			// console.log(general)
 		},
 		onError: (err) => console.log(err),
 	});
@@ -260,7 +260,6 @@ const HomePage = () => {
 				<CreateAdvert open={openAd} handelClick={handelAdClick} />
 				<StartPetition open={openPetition} handelClick={handelPetition} />
 				<ToastContainer />
-
 			</main>
 		</FrontLayout>
 	)

@@ -18,7 +18,7 @@ import { GET_ORGANIZATION, GET_ORGANIZATIONS } from "apollo/queries/orgQuery";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const user = () => {
+const org = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
     const [user, setUser] = useState<IUser>()
     const [orgs, setOrgs] = useState<IOrg[]>([])
@@ -43,7 +43,7 @@ const user = () => {
         }
     }
     useQuery(GET_ORGANIZATION, {
-        variables: { ID: page },
+        variables: { ID: query.page },
         client: apollo,
         onCompleted: (data) => {
             console.log(data.getOrganzation)
@@ -164,8 +164,8 @@ const user = () => {
                             <div>
                                 <img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
                             </div>
-                            <div className="edit-sec relative -top-20">
-                                <div className="py-3 mb-4 d-flex justify-center">
+                            <div className="edit-sec relative left-10 -top-20">
+                                <div className="py-3 mb-4 d-flex">
                                     <div className="pro-img-wrap rounded-circle position-relative">
                                         <input type="file" ref={uploadRef} onChange={handleImg} />
                                         <button
@@ -177,32 +177,40 @@ const user = () => {
                                                     }`}
                                             ></i>
                                         </button>
+
                                         <div className="pro-img position-relative rounded-circle">
-                                            {isValidUrl(user?.image) ? (
-                                                <img
-                                                    src={img || user?.image}
-                                                    alt=""
-                                                    className="position-absolute"
-                                                />
-                                            ) : (
-                                                <div className="absolute top-40 mx-auto  left-[45%] rounded-full w-24 bg-white p-1 h-24">
-                                                    <img className="w-full rounded-full" src="/images/user.png" alt="" />
-                                                </div>
-                                            )}
+                                            <img
+                                                src={img || user?.image || "/images/user.png"}
+                                                alt=""
+                                                className="position-absolute"
+                                            />
+
                                         </div>
                                     </div>
                                 </div>
-                                <div className='px-10 text-center'>
-                                    <div className="flex flex-column justify-center">
-                                        <div className="text-lg font-bold ">{user?.name}</div>
-                                        <div className="pt-1 ml-2"> {user?.city}, {user?.country}</div> </div>
-                                    <div className="text-sm font-thin w-96 mx-auto">
-                                        {user?.description}
+                                <div className=''>
+                                    <div className='flex justify-between'>
+                                        <div className="flex flex-column justify-center">
+                                            <div className='flex'>
+                                                <div className="text-xl font-bold ">{user?.name}</div>
+                                                <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers} Followers
+                                                    <div className="text-xs text-gray-900 ml-2">
+                                                        Following {user?.following}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="text-sm font-thin w-96">
+                                                {user?.description.substring(0, 100) + '...'}
+                                            </div>
+                                            <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
+                                        </div>
+                                        <div className="font-black text-lg mr-32">
+                                            <Link href={`org/update?page=${user?._id}`}>
+                                                <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
+                                            </Link>
+                                        </div>
                                     </div>
-                                    <div className="text-lg font-black text-gray-900 justify-center flex ">{user?.followersCount} Followers
-                                        <div className="text-lg font-black text-gray-900 ml-2">
-                                            Following {user?.followingCount} </div> </div>
-                                    {
+                                    {/* {
                                         user?.author === author?.id ? (
                                             <div className="font-black text-lg">
                                                 <Link href={'/org/update'}>
@@ -220,7 +228,7 @@ const user = () => {
                                                 </div>
                                             )
                                         )
-                                    }
+                                    } */}
                                 </div>
                             </div>
                         </div>
@@ -265,7 +273,7 @@ const user = () => {
                                             ) : (
                                                 <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
                                             )}
-                                            <p className="pl-2 mt-2 capitalize">{org?.name}</p>
+                                            <p className="pl-2 mt-2 text-sm">{org?.name}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -378,4 +386,4 @@ const user = () => {
     );
 }
 
-export default user;
+export default org;
