@@ -11,7 +11,7 @@ import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 
 
-const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
+const PetitionComp = ({ petition, open, handelClick }: { petition: any, open: boolean, handelClick: any }): JSX.Element => {
     const author = useRecoilValue(UserAtom);
 
     const deletePetition = (() => {
@@ -71,7 +71,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
                             <div>
                                 <Dropdown.Item>Update</Dropdown.Item>
                                 <Dropdown.Item>Celebrate Victory</Dropdown.Item>
-                                <Dropdown.Item>Edit</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handelClick()}>Edit</Dropdown.Item>
                                 <Dropdown.Item onClick={() => deletePetition()}>Delete</Dropdown.Item>
                             </div>
                         ) : null

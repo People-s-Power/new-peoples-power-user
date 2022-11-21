@@ -11,6 +11,7 @@ import { GET_PETITION } from "apollo/queries/petitionQuery";
 import { GET_POSTS } from "apollo/queries/postQuery";
 import { GET_EVENTS } from "apollo/queries/eventQuery";
 import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
+import Link from "next/link";
 
 
 import { SERVER_URL } from "utils/constants";
@@ -88,7 +89,6 @@ const HomePage = () => {
 	// 	},
 	// 	onError: (err) => console.log(err),
 	// });
-
 	const follow = async (user: any) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + '/graphql', {
@@ -104,7 +104,6 @@ const HomePage = () => {
 			console.log(error);
 			toast.warn("Oops an error occoured!")
 		}
-
 	}
 
 
@@ -143,10 +142,12 @@ const HomePage = () => {
 						</div>
 						<div className="flex justify-between my-2">
 							<div className="text-sm my-auto">Organization</div>
-							<div className="text-center cursor-pointer">
-								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-								<span className="text-xs text-center">create</span>
-							</div>
+							<Link href={'/org/create'}>
+								<div className="text-center cursor-pointer">
+									<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+									<span className="text-xs text-center">create</span>
+								</div>
+							</Link>
 						</div>
 					</div>
 				</aside>
@@ -197,7 +198,7 @@ const HomePage = () => {
 										)
 									case 'Petition':
 										return (<div>
-											<PetitionComp petition={single} key={index} />
+											<PetitionComp open={openPetition} handelClick={handelPetition} petition={single} key={index} />
 										</div>
 										)
 									case 'Victory':
@@ -230,7 +231,7 @@ const HomePage = () => {
 									started following King Erics</div> */}
 								<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[60%] mt-2 rounded-md">
 									<div className="text-lg">+</div>
-									<div className="my-auto text-sm" onClick={(user) => follow(user)}>Follow</div>
+									<div className="my-auto text-sm" onClick={() => follow(user)}>Follow</div>
 								</div>
 							</div>
 						</div>

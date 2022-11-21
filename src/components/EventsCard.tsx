@@ -1,5 +1,6 @@
 import EventModal from './modals/EventModal';
 import React, { useState } from 'react'
+import { Dropdown } from 'rsuite';
 
 const EventsCard = ({ event }: { event: any }) => {
     const [open, setOpen] = useState(false);
@@ -18,8 +19,8 @@ const EventsCard = ({ event }: { event: any }) => {
             </div>
             <img src={event.image} alt="" className='rounded-md w-full' />
             <div className='p-3 text-sm my-auto' >
-                <div>{event.author.name} created event for 
-                   {event.startDate} AT {event.time}</div>
+                <div>{event.author.name} created event for
+                    {event.startDate} AT {event.time}</div>
                 <div className='text-xl my-3'>{event.description}</div>
                 <div className='text-sm'>{event.type}</div>
                 <div className='flex my-6'>
@@ -31,9 +32,12 @@ const EventsCard = ({ event }: { event: any }) => {
                         Lucas Scott and 13 others are attending
                     </div>
                 </div>
-                <div className='flex'>
-                    <button onClick={() => handelClick()} className='p-3 bg-warning text-white w-72 rounded-md'>Interested</button>
-                    <img className='ml-20' src="/images/edit.svg" alt="" />
+                <div className='flex '>
+                    <button onClick={() => handelClick()} className='p-3 bg-warning text-white w-72 rounded-md mr-8'>Interested</button>
+                    <Dropdown title={<img className='' src="/images/edit.svg" alt="" />} noCaret>
+                        <Dropdown.Item>Share Event</Dropdown.Item>
+                        <Dropdown.Item>Edit Event</Dropdown.Item>
+                    </Dropdown>
                 </div>
             </div>
             <EventModal open={open} handelClick={handelClick} />
