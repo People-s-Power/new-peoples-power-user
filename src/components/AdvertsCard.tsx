@@ -41,7 +41,9 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
                     </button>
                 </div>
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                    <Dropdown.Item>Edit</Dropdown.Item>
+                    {
+                        advert.author._id === author.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
+                    }
                     <Dropdown.Item>Share Ad</Dropdown.Item>
                 </Dropdown>
             </div>

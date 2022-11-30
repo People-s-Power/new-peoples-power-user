@@ -23,9 +23,24 @@ import 'react-toastify/dist/ReactToastify.css';
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
 
+import CreatePost from "../components/modals/CreatePost"
+import CreateAdvert from "../components/modals/CreateAdvert"
+import CreateEvent from "../components/modals/CreateEvent"
+import StartPetition from "../components/modals/StartPetition"
+
 const user = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
     const author = useRecoilValue(UserAtom);
+
+    const [openPost, setOpenPost] = useState(false);
+    const [openAd, setOpenAd] = useState(false);
+    const [openEvent, setOpenEvent] = useState(false);
+    const [openPetition, setOpenPetition] = useState(false);
+
+    const handelClick = () => setOpenPost(!openPost);
+    const handelPetition = () => setOpenPetition(!openPetition);
+    const handelAdClick = () => setOpenAd(!openAd);
+    const handelEventClick = () => setOpenEvent(!openEvent);
 
     const [user, setUser] = useState<IUser>()
     const [orgs, setOrgs] = useState<IOrg[]>([])
@@ -229,24 +244,19 @@ const user = () => {
                         ) : (<div></div>)} */}
                     </div>
                     <Slider />
-                    {
-                        query.page === author?.id ? (
 
-                            <div className="text-center text-lg p-3">
-                                <Link href={`/startcamp`}>
-                                    <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
-                                </Link>
-                            </div>
-                        ) : null
-                    }
                     <div className="lg:flex mt-3">
                         <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md">
                             {author?.id === query.page ? (
                                 <div className="text-base p-3">
-                                    <Link href="/mycamp">
-                                        <button className="bg-transparent p-2">Dashboard</button>
-                                    </Link>
-                                    <button className=" bg-transparent p-2" onClick={() => setProduct(!product)}> Products</button>
+                                    <div className='my-2'>
+                                        <Link href="/mycamp">
+                                            <button className="bg-transparent">Dashboard</button>
+                                        </Link>
+                                    </div>
+                                    <div className='my-2'>
+                                        <button className=" bg-transparent" onClick={() => setProduct(!product)}> Products</button>
+                                    </div>
                                     <Link href={'/org/create'}>
                                         <div className="bg-transparent my-2 flex justify-between">
                                             <div className="my-auto">Human Right Action</div>
@@ -265,6 +275,13 @@ const user = () => {
                                             </div>
                                         </div>
                                     </Link>
+                                    <div className="bg-transparent my-2 flex justify-between">
+                                        <div className="my-auto">Adverts</div>
+                                        <div className='text-center cursor-pointer' onClick={() => handelAdClick()}>
+                                            <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+                                            <div className="text-xs">  create </div>
+                                        </div>
+                                    </div>
                                     <div>
                                         {orgs.map((org, i) => (
                                             <div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
@@ -288,6 +305,39 @@ const user = () => {
                                 <button className="btn bg-warning p-2 px-8 my-3 mx-auto text-white w-44">Suscribe</button>
                             </div>
                         </div>) : (<div className='w-full'>
+                            {
+                                query.page === author?.id ? (
+                                    <div className="border-b border-gray-200">
+                                        <div className="flex justify-center">
+                                            <img src={author?.image} className="w-14 h-14 mx-4 rounded-full" alt="" />
+                                            <div onClick={() => handelClick()} className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm cursor-pointer">
+                                                What are your social concerns?
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-evenly my-4">
+                                            <div onClick={() => handelClick()} className="flex cursor-pointer">
+                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
+                                                <div className="my-auto text-sm ml-3">Photo</div>
+                                            </div>
+                                            <div onClick={() => handelClick()} className="flex  cursor-pointer">
+                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
+                                                <div className="my-auto text-sm ml-3">Video</div>
+                                            </div>
+                                            <div className="flex  cursor-pointer" onClick={() => handelEventClick()} >
+                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
+                                                <div className="my-auto text-sm ml-3">Events</div>
+                                            </div>
+                                            <div className="flex  cursor-pointer" onClick={() => handelPetition()}>
+                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
+                                                <div className="my-auto text-sm ml-3">Start Petition</div>
+                                            </div>
+                                        </div>
+                                        <div className="text-gray-500 text-center text-xs p-3">
+                                            14 New Post
+                                        </div>
+                                    </div>
+                                ) : null
+                            }
                             {campaigns?.map((camp, i) => (
                                 <div key={i} className="mt-3 bg-gray-50 w-full rounded-md flex relative">
                                     <div className='absolute right-2 top-2'>
@@ -350,6 +400,10 @@ const user = () => {
                         </div>)}
                     </div>
                 </div >
+                <CreatePost open={openPost} handelClick={handelClick} />
+                <CreateEvent open={openEvent} handelClick={handelEventClick} />
+                <CreateAdvert open={openAd} handelClick={handelAdClick} />
+                <StartPetition open={openPetition} handelClick={handelPetition} />
                 <ToastContainer />
             </>
         </FrontLayout >

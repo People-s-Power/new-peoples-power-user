@@ -32,12 +32,12 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                         recomend thatyou make this post a petition/campaign for the issues
                         raised to be addresed.Making this post a petition will send your
                         campaign to the right person/authority who will address it.</div>
-                        <button className='border border-black p-2'>Start Petition</button>
+                    <button className='border border-black p-2'>Start Petition</button>
                 </div>
                 ) : null}
-                { post.isPetition === true ? (<div>
+                {post.isPetition === true ? (<div>
                     <div className="text-gray-400 p-1">N:B: There is a petition for this post</div>
-                        <button className='border border-black p-2'>View Petition</button>
+                    <button className='border border-black p-2'>View Petition</button>
                 </div>
                 ) : null}
             </div>
@@ -61,7 +61,9 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
                     <Dropdown.Item>Promote</Dropdown.Item>
                     <Dropdown.Item>Report post</Dropdown.Item>
-                    <Dropdown.Item>Edit</Dropdown.Item>
+                    {
+                        post.author.id === author.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
+                    }
                     <Dropdown.Item>Save</Dropdown.Item>
                 </Dropdown>
             </div>
