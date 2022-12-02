@@ -79,7 +79,7 @@ const user = () => {
                 .then(function (response) {
                     setUser(response.data.user)
                     response.data.user.followers.map((single: any) => {
-                        console.log(response.data)
+                        // console.log(response.data)
                         if (single === author.id) {
                             setFollow(true)
                         } else {

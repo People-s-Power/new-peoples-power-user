@@ -62,7 +62,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                     <Dropdown.Item>Promote</Dropdown.Item>
                     <Dropdown.Item>Report post</Dropdown.Item>
                     {
-                        post.author.id === author.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
+                        post.author._id === author.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
                     }
                     <Dropdown.Item>Save</Dropdown.Item>
                 </Dropdown>
