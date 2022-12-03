@@ -28,6 +28,7 @@ import styled from "styled-components";
 import { ICampaign, IEndorsement } from "types/Applicant.types";
 import Link from "next/link";
 import router, { useRouter } from "next/router";
+import { SINGLE_PETITION } from "apollo/queries/petitionQuery";
 
 // const io = socket(SERVER_URL, {
 // 	extraHeaders: {
@@ -39,11 +40,7 @@ export interface Update {
 	body: string;
 }
 
-const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
-	camp,
-}: {
-	camp: ICampaign;
-}): JSX.Element => {
+const SingleCampaignPage = (): JSX.Element => {
 	// console.log(camp)
 	const [endorsements, setEndorsements] = useState<IEndorsement[]>([]);
 	const [isLiked, setIsLiked] = useState(false);
@@ -53,12 +50,24 @@ const SingleCampaignPage: NextPage<{ camp: ICampaign }> = ({
 	const user = useRecoilValue(UserAtom);
 	const [update, setUpdate] = useState<Update[]>([])
 
+	const [camp, setCamp] = useState<any>([]);
+
 	useQuery(GET_ENDORSEMENTS_BY_CAMPAIGN, {
 		client: apollo,
 		variables: { campaign_id: camp?.id },
 		onCompleted: (data) => {
 			setEndorsements(data.getEndorsementsByCampaign);
 			// console.log(data.getEndorsementsByCampaign)
+		},
+		onError: (err) => console.log(err),
+	});
+
+	useQuery(SINGLE_PETITION, {
+		client: apollo,
+		variables: { slug: 'velit-duis-eos-cum' },
+		onCompleted: (data) => {
+			console.log(data)
+			setCamp(data.getPetition)
 		},
 		onError: (err) => console.log(err),
 	});
@@ -303,42 +312,3 @@ const Wrapper = styled.div`
 		display: none;
 	}
 `;
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-	try {
-		const slug = ctx?.params?.slug;
-		const { data } = await apollo.query({
-			query: GET_CAMPAIGN,
-			variables: { slug },
-		});
-		const camp = data?.getCampaign;
-		return {
-			props: {
-				camp,
-			},
-			revalidate: 60,
-		};
-	} catch (error) {
-		console.log(error);
-		return {
-			props: {
-				camp: null,
-			},
-		};
-	}
-};
-
-export const getStaticPaths: GetStaticPaths = async (): Promise<
-	GetStaticPathsResult<ParsedUrlQuery>
-> => {
-	const { data } = await apollo.query({
-		query: GET_CAMPAIGNS,
-	});
-	const campaigns: ICampaign[] = data?.getCampaigns;
-	console.log(campaigns)
-	const paths = campaigns?.map((campaign) => ({
-		params: { slug: `${campaign?.slug}` },
-	}));
-	return { paths, fallback: "blocking" };
-};
-

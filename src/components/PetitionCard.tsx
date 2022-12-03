@@ -52,18 +52,22 @@ const PetitionComp = ({ petition, open, handelClick }: { petition: any, open: bo
                     <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
                     <div className="text-sm my-auto ml-2">10 Supports</div>
                 </div> */}
-                <div className="flex">
-                    <img className="w-8 h-8 my-auto" src="/images/home/icons/ion_finger-print-sharp.png" alt="" />
-                    <div className="text-sm my-auto ml-2 bg-warning p-2 rounded-sm">Endorse petition</div>
-                </div>
+                <Link href={`/campaigns/${petition?.slug}`}>
+                    <div className="flex">
+                        <img className="w-8 h-8 my-auto" src="/images/home/icons/ion_finger-print-sharp.png" alt="" />
+                        <div className="text-sm my-auto ml-2 bg-warning p-2 rounded-sm">Endorse petition</div>
+                    </div>
+                </Link>
                 <div className="flex">
                     <img className="w-8 h-8 my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
                     <div className="text-sm my-auto ml-2">{ } Shares</div>
                 </div>
-                <div className="flex">
-                    <img className="w-8 h-8 my-auto" src="/images/home/icons/akar-icons_people-group.png" alt="" />
-                    <div className="text-sm my-auto ml-2">{petition.shares} endorsements</div>
-                </div>
+                <Link href={`/campaigns/${petition?.slug}`}>
+                    <div className="flex">
+                        <img className="w-8 h-8 my-auto" src="/images/home/icons/akar-icons_people-group.png" alt="" />
+                        <div className="text-sm my-auto ml-2">{petition.shares} endorsements</div>
+                    </div>
+                </Link>
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
                     <Dropdown.Item>Promote</Dropdown.Item>
                     {

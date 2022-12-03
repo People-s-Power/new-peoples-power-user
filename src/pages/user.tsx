@@ -23,10 +23,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
 
+import { MY_PETITION } from "apollo/queries/petitionQuery";
+import { MY_EVENT } from "apollo/queries/eventQuery";
+import { GET_USER_POSTS } from 'apollo/queries/postQuery'
+import { MY_ADVERTS } from "apollo/queries/advertsQuery";
+
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
 import StartPetition from "../components/modals/StartPetition"
+import AdvertsComp from 'components/AdvertsCard';
+import PetitionComp from 'components/PetitionCard';
+import EventsCard from 'components/EventsCard';
+import CampComp from 'components/CampComp';
 
 const user = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
@@ -48,6 +57,10 @@ const user = () => {
     const [product, setProduct] = useState(false)
     const [following, setFollow] = useState(false)
     const [orgId, setOrgId] = useState("")
+    const [all, setAll] = useState([]);
+
+    const [petition, setPetition] = useState([])
+    const [post, setPost] = useState([])
 
     let page: any;
     if (typeof window !== 'undefined') {
@@ -64,6 +77,63 @@ const user = () => {
             // console.log(err)
         },
     });
+    useQuery(MY_PETITION, {
+        client: apollo,
+        onCompleted: (data) => {
+            console.log(data)
+            setPetition(data.myPetition)
+        },
+        onError: (err) => {
+        },
+    });
+    useQuery(MY_ADVERTS, {
+        client: apollo,
+        variables: { ID: author?.id },
+        onCompleted: (data) => {
+            console.log(data)
+            // setPetition(data.myPetition)
+        },
+        onError: (err) => {
+        },
+    });
+    useQuery(GET_USER_POSTS, {
+        client: apollo,
+        onCompleted: (data) => {
+            console.log(data)
+            setPost(data.myPosts)
+            let general = [...petition, ...post]
+            const randomize = (values: any) => {
+                let index = values.length, randomIndex;
+                while (index != 0) {
+                    randomIndex = Math.floor(Math.random() * index);
+                    index--;
+                    [values[index], values[randomIndex]] = [
+                        values[randomIndex], values[index]];
+                }
+                return values;
+            }
+            randomize(general)
+            setAll(general)
+
+        },
+        onError: (err) => {
+        },
+    });
+
+    // const getEvent = async () => {
+    //     try {
+    //         const { data } = await axios.post(SERVER_URL + '/graphql', {
+    //             query: print(MY_EVENT),
+    //             variables: {
+    //                 authorId: query?.page,
+    //                 page: 1
+    //             }
+    //         })
+    //         console.log(data)
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     function isValidUrl(string: any) {
         try {
@@ -338,7 +408,40 @@ const user = () => {
                                     </div>
                                 ) : null
                             }
-                            {campaigns?.map((camp, i) => (
+                            {
+                                all.map((single: any, index: number) => {
+                                    // setType(single.__typename)
+                                    switch (single.__typename) {
+                                        case 'Advert':
+                                            return (<div>
+                                                <AdvertsComp advert={single} key={index} />
+                                            </div>
+                                            )
+                                        case 'Event':
+                                            return (<div>
+                                                <EventsCard key={index} event={single} />
+                                            </div>
+                                            )
+                                        case 'Petition':
+                                            return (<div>
+                                                <PetitionComp open={openPetition} handelClick={handelPetition} petition={single} key={index} />
+                                            </div>
+                                            )
+                                        case 'Victory':
+                                            return (<div>
+                                                victories
+                                            </div>
+                                            )
+                                        case 'Post':
+                                            return (<div>
+                                                <CampComp key={index} post={single} />
+                                            </div>
+                                            )
+                                    }
+                                })
+                            }
+
+                            {/* {campaigns?.map((camp, i) => (
                                 <div key={i} className="mt-3 bg-gray-50 w-full rounded-md flex relative">
                                     <div className='absolute right-2 top-2'>
                                         <div className="dropdown">
@@ -376,7 +479,7 @@ const user = () => {
                                         <div className="flex justify-between mr-10">
                                             <div>
                                                 <div className="text-gray-900 text-xs"> Created At {camp.createdAt.slice(0, 10)}</div>
-                                                {/* <div className="text-gray-900 text-xs">Created By { } Alabo Excel</div> */}
+                                                {/* <div className="text-gray-900 text-xs">Created By { } Alabo Excel</div> 
                                             </div>
                                             {/* <div className="flex cursor-pointer">
                                                 {camp?.author.image === null ? (
@@ -385,7 +488,7 @@ const user = () => {
                                                     <img className="w-8 h-8 " src={camp?.author.image} alt="" />
                                                 )}
                                                 <p className="pl-2 mt-2">{user?.name} </p>
-                                            </div> */}
+                                            </div> 
                                             <p className="fst-italic">
                                                 <i className="fa fa-users lg:mr-8"></i>
                                                 {(camp?.endorsements?.length) + 1} Supporters
@@ -395,8 +498,10 @@ const user = () => {
                                             <button className="btn btn-warning mt-2">Read More</button>
                                         </Link>
                                     </div>
-                                </div>
+                                </div> 
                             ))}
+                            */}
+
                         </div>)}
                     </div>
                 </div >

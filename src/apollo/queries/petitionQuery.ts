@@ -97,8 +97,8 @@ query myPetition{
 `
 export const SINGLE_PETITION = gql
 `
-query getPetition ($SLUG: SLUG!){
-    getPetition(slug: $SLUG){
+query getPetition ($slug: String!){
+    getPetition(slug: $slug){
         aim 
         addedFrom
         authorId

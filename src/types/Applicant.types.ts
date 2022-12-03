@@ -195,6 +195,7 @@ export interface ICampaign extends Document {
 	authorName: string;
 	authorId: string;
 	authorImg: string;
+	id: string;
 }
 
 export interface IViews {

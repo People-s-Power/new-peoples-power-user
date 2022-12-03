@@ -4,6 +4,7 @@ import ReactTimeAgo from 'react-time-ago'
 
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
+import Link from 'next/link';
 
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
@@ -13,10 +14,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
         <div className="p-3 border-b border-gray-400 my-3">
             <div className="flex justify-between border-b border-gray-200 pb-3">
                 <div className='flex'>
-                    <img className="w-12 h-12 rounded-full" src={post.author.image} alt="" />
+                    <img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
                     <div className="ml-2">
-                        <div className="text-base capitalize">{post.author.name} <span className="text-xs">{author?.id === post.author._id ? '. You' : ''}</span></div>
-                        <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div>
+                        <div className="text-base capitalize">{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? '. You' : ''}</span></div>
+                        {/* <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div> */}
                     </div>
                 </div>
             </div>
@@ -25,9 +26,9 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
             </div>
             <div className='p-2'>
                 <img className="w-full h-50 rounded-md" src={post.image} alt="" />
-                {author?.id === post.author._id ? (<div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
+                {author?.id === post.author?._id ? (<div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
                 ) : null}
-                {author?.id === post.author._id && post.likes >= 10 ? (<div>
+                {author?.id === post.author?._id && post.likes >= 10 ? (<div>
                     <div className="text-gray-400 p-1">N:B : With more than 10 persons supporting this camplaint concern we
                         recomend thatyou make this post a petition/campaign for the issues
                         raised to be addresed.Making this post a petition will send your
@@ -52,17 +53,19 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                 </div>
                 <div className="flex">
                     <img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">{post.comments.length} Comments</div>
+                    <div className="text-sm my-auto ml-2">{post.comments?.length} Comments</div>
                 </div>
                 <div className="flex">
                     <img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
                     <div className="text-sm my-auto ml-2">{post.shares} Shares</div>
                 </div>
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                    <Dropdown.Item>Promote</Dropdown.Item>
+                    {/* <Link href={`/promote?slug=${post?.slug}`}>
+                        <Dropdown.Item>Promote</Dropdown.Item>
+                    </Link> */}
                     <Dropdown.Item>Report post</Dropdown.Item>
                     {
-                        post.author._id === author.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
+                        post.author?._id === author?.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
                     }
                     <Dropdown.Item>Save</Dropdown.Item>
                 </Dropdown>

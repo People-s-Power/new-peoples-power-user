@@ -75,13 +75,13 @@ query getPosts{
 //     }
 // }`
 
-// export const GET_USER_POSTS = gql 
-// `
-// query myPosts{
-//     myPosts{
-//         body
-//         image
+export const GET_USER_POSTS = gql 
+`
+query myPosts{
+    myPosts{
+        body
+        image
         
-//     }
-// }
-// `
+    }
+}
+`

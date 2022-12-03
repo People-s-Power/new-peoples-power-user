@@ -58,3 +58,32 @@ export const CREATE_EVENT = gql
         type
     }
 }`
+
+export const MY_EVENT = gql
+  `mutation authorEvents($authorId: String!, $page: Int!, $limit: Int!){
+    authorEvents (name: $authorId, page: $page, limit: $limit){
+        _id
+        audience
+        authorId
+        author{
+            _id
+            name
+            email
+            image
+        }
+        description
+        startDate
+        endDate
+        time
+        image
+        interested {
+            authorId
+            authorImg
+            name
+        }
+        likes
+        name
+        shares
+        type
+    }
+}`

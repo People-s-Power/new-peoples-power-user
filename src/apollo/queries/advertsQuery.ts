@@ -26,3 +26,18 @@ mutation createdAd($caption: String!, $message: String!, $action: String!, $audi
     }
 }
 `
+export const MY_ADVERTS = gql`
+    query myAdverts ($ID: ID!,){
+        myAdverts (ID: $ID){
+            _id
+            caption
+            message
+            email
+            duration
+            link
+            action
+            audience
+            image
+        }
+    }
+`
