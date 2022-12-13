@@ -27,8 +27,8 @@ mutation createdAd($caption: String!, $message: String!, $action: String!, $audi
 }
 `
 export const MY_ADVERTS = gql`
-    query myAdverts ($ID: ID!,){
-        myAdverts (ID: $ID){
+    query myAdverts ($authorId: ID!,){
+        myAdverts (authorId: $authorId){
             _id
             caption
             message

@@ -198,7 +198,7 @@ const HomePage = () => {
 										)
 									case 'Petition':
 										return (<div>
-											<PetitionComp open={openPetition} handelClick={handelPetition} petition={single} key={index} />
+											<PetitionComp petition={single} key={index} />
 										</div>
 										)
 									case 'Victory':
@@ -209,7 +209,6 @@ const HomePage = () => {
 									case 'Post':
 										return (<div>
 											<CampComp key={index} post={single} />
-
 										</div>
 										)
 								}
@@ -256,10 +255,10 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<CreatePost open={openPost} handelClick={handelClick} />
+				<CreatePost open={openPost} handelClick={handelClick} data={null} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} />
-				<StartPetition open={openPetition} handelClick={handelPetition} />
+				<StartPetition open={openPetition} handelClick={handelPetition} data={null} />
 				<ToastContainer />
 			</main>
 		</FrontLayout>

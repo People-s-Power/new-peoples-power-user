@@ -87,3 +87,33 @@ export const MY_EVENT = gql
         type
     }
 }`
+
+export const INTERESTED = gql `
+    mutation interested($eventId: String!, $authorId: ID!, $authorImg: String!, $name: String!){
+        interested(eventId: $eventId, authorId: $authorId, authorImg: $authorImg, name: $name){
+            _id
+            audience
+            authorId
+            author{
+                _id
+                name
+                email
+                image
+            }
+            description
+            startDate
+            endDate
+            time
+            image
+            interested {
+                authorId
+                authorImg
+                name
+            }
+            likes
+            name
+            shares
+            type
+        }
+    }
+`

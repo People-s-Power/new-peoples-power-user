@@ -82,39 +82,26 @@ const user = () => {
         onCompleted: (data) => {
             console.log(data)
             setPetition(data.myPetition)
+            getGeneral()
         },
         onError: (err) => {
         },
     });
-    useQuery(MY_ADVERTS, {
-        client: apollo,
-        variables: { ID: author?.id },
-        onCompleted: (data) => {
-            console.log(data)
-            // setPetition(data.myPetition)
-        },
-        onError: (err) => {
-        },
-    });
+    // useQuery(MY_ADVERTS, {
+    //     client: apollo,
+    //     variables: { authorId: author?.id },
+    //     onCompleted: (data) => {
+    //         console.log(data)
+    //     },
+    //     onError: (err) => {
+    //     },
+    // });
     useQuery(GET_USER_POSTS, {
         client: apollo,
         onCompleted: (data) => {
             console.log(data)
             setPost(data.myPosts)
-            let general = [...petition, ...post]
-            const randomize = (values: any) => {
-                let index = values.length, randomIndex;
-                while (index != 0) {
-                    randomIndex = Math.floor(Math.random() * index);
-                    index--;
-                    [values[index], values[randomIndex]] = [
-                        values[randomIndex], values[index]];
-                }
-                return values;
-            }
-            randomize(general)
-            setAll(general)
-
+            getGeneral()
         },
         onError: (err) => {
         },
@@ -165,7 +152,7 @@ const user = () => {
                 })
                 .catch(function (error) {
                     console.log(error);
-                    // router.push(`/org?page=${query?.page}`)
+                    // router.push(`/org?page=${query?.page}`   )
                 })
         } catch (error) {
             console.log(error);
@@ -241,6 +228,25 @@ const user = () => {
     //     onCompleted: (data) => setCampaigns(data.myCampaign),
     //     onError: (e) => console.log(e),
     // });
+
+    const getGeneral = () => {
+        if (petition.length === 0 && post.length === 0) { } else {
+            let general = [...petition, ...post]
+            const randomize = (values: any) => {
+                let index = values.length, randomIndex;
+                while (index != 0) {
+                    randomIndex = Math.floor(Math.random() * index);
+                    index--;
+                    [values[index], values[randomIndex]] = [
+                        values[randomIndex], values[index]];
+                }
+                return values;
+            }
+            randomize(general)
+            setAll(general)
+            console.log(all)
+        }
+    }
 
     return (
         <FrontLayout showFooter={true}>
@@ -409,7 +415,7 @@ const user = () => {
                                 ) : null
                             }
                             {
-                                all.map((single: any, index: number) => {
+                                all[0] !== undefined ? all.map((single: any, index: number) => {
                                     // setType(single.__typename)
                                     switch (single.__typename) {
                                         case 'Advert':
@@ -439,6 +445,7 @@ const user = () => {
                                             )
                                     }
                                 })
+                                    : null
                             }
 
                             {/* {campaigns?.map((camp, i) => (
@@ -505,10 +512,10 @@ const user = () => {
                         </div>)}
                     </div>
                 </div >
-                <CreatePost open={openPost} handelClick={handelClick} />
+                <CreatePost open={openPost} handelClick={handelClick} data={null} />
                 <CreateEvent open={openEvent} handelClick={handelEventClick} />
                 <CreateAdvert open={openAd} handelClick={handelAdClick} />
-                <StartPetition open={openPetition} handelClick={handelPetition} />
+                <StartPetition open={openPetition} handelClick={handelPetition} data={null} />
                 <ToastContainer />
             </>
         </FrontLayout >

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'rsuite';
 import ReactTimeAgo from 'react-time-ago'
 import axios from 'axios';
 import Link from "next/link";
+import StartPetition from "./modals/StartPetition"
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,9 +12,11 @@ import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 
 
-const PetitionComp = ({ petition, open, handelClick }: { petition: any, open: boolean, handelClick: any }): JSX.Element => {
+const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
     const author = useRecoilValue(UserAtom);
 
+    const handelPetition = () => setOpenPetition(!openPetition);
+    const [openPetition, setOpenPetition] = useState(false);
     const deletePetition = (() => {
         axios.delete(`petition/single/${petition.id}`)
             .then((response) => {
@@ -75,13 +78,14 @@ const PetitionComp = ({ petition, open, handelClick }: { petition: any, open: bo
                             <div>
                                 <Dropdown.Item>Update</Dropdown.Item>
                                 <Dropdown.Item>Celebrate Victory</Dropdown.Item>
-                                <Dropdown.Item onClick={() => handelClick()}>Edit</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handelPetition()}>Edit</Dropdown.Item>
                                 <Dropdown.Item onClick={() => deletePetition()}>Delete</Dropdown.Item>
                             </div>
                         ) : null
                     }
                 </Dropdown>
             </div>
+            <StartPetition open={openPetition} handelClick={handelPetition} data={petition} />
             <ToastContainer />
         </div>
     );

@@ -1,19 +1,19 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
 import { useState, useRef } from 'react'
-import { CREATE_POST } from "apollo/queries/postQuery";
+import { CREATE_POST, UPDATE_POST } from "apollo/queries/postQuery";
 import { Dropdown } from 'rsuite';
 import axios from "axios";
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
 
-const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void }): JSX.Element => {
+const CreatePost = ({ open, handelClick, data }: { open: boolean, handelClick(): void, data: any }): JSX.Element => {
     const [image, setFilePreview] = useState({
-        type: "",
-        file: "",
+        type: data === null ? "" : "image",
+        file: data?.image || "",
         name: "",
     })
-    const [body, setBody] = useState("")
+    const [body, setBody] = useState(data?.body || "")
     const uploadRef = useRef<HTMLInputElement>(null);
 
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,25 +36,48 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
         }
     };
     const handleSubmit = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(CREATE_POST),
-                variables: {
-                    body: body,
-                    imageFile: image.file
-                }
-            })
-            console.log(data)
-            handelClick()
-            setBody("")
-            setFilePreview({
-                type: "",
-                file: "",
-                name: "",
-            });
-        } catch (error) {
-            console.log(error);
+        if (data === null) {
+            try {
+                const { data } = await axios.post(SERVER_URL + '/graphql', {
+                    query: print(CREATE_POST),
+                    variables: {
+                        body: body,
+                        imageFile: image.file
+                    }
+                })
+                console.log(data)
+                handelClick()
+                setBody("")
+                setFilePreview({
+                    type: "",
+                    file: "",
+                    name: "",
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            // try {
+            //     const { data } = await axios.post(SERVER_URL + '/graphql', {
+            //         query: print(UPDATE_POST),
+            //         variables: {
+            //             body: body,
+            //             postId: data.id
+            //         }
+            //     })
+            //     console.log(data)
+            //     handelClick()
+            //     setBody("")
+            //     setFilePreview({
+            //         type: "",
+            //         file: "",
+            //         name: "",
+            //     });
+            // } catch (error) {
+            //     console.log(error);
+            // }
         }
+
     }
 
     return (
@@ -70,7 +93,7 @@ const CreatePost = ({ open, handelClick }: { open: boolean, handelClick(): void 
                         <img src="/images/person.png" className="w-10 h-10 rounded-full mr-4" alt="" />
                         <div className="text-sm">Evans Doe</div>
                     </div>
-                    <textarea onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint, let people know about it and win your supporters"></textarea>
+                    <textarea value={body} onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint, let people know about it and win your supporters"></textarea>
 
                 </Modal.Body>
                 <div className='z-40'>

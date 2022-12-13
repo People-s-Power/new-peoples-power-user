@@ -159,3 +159,25 @@ export const FOLLOW = gql
 `mutation follow($followerId: ID!, $followId: ID!){
     follow(followerId: $followerId, followId: $followId)
 }`
+
+export const UNFOLLOW = gql
+`mutation follow($followerId: ID!, $unfollowId: ID!){
+    follow(followerId: $followerId, unfollowId: $unfollowId)
+}`
+
+
+export const LIKE = gql
+`mutation like($authorId: ID!, $itemId: ID!){
+  like(authorId: $followerId, itemId: $itemId)
+}`
+
+export const SHARE = gql
+`mutation like($authorId: ID!, $itemId: ID!){
+  like(authorId: $followerId, itemId: $itemId)
+}`
+
+export const UNLIKE = gql
+`mutation like($authorId: ID!, $itemId: ID!){
+  like(authorId: $followerId, itemId: $itemId)
+}`
+

@@ -16,6 +16,24 @@ mutation createPost($body: String!, $imageFile: String!) {
     }
 }
 `
+
+export const UPDATE_POST = gql `
+mutation updatePost($body: String!, $postId: id!) {
+    updatePost(body: $body, postId: $postId) {
+        body
+        comments {
+            author
+            body
+        }
+        image
+        author {
+            name
+            email
+        }
+    }
+}
+`
+
 export const GET_POSTS = gql 
 `
 query getPosts{

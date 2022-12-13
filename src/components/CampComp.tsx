@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'rsuite';
 import ReactTimeAgo from 'react-time-ago'
-
+import CreatePost from "./modals/CreatePost"
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 import Link from 'next/link';
@@ -9,6 +9,8 @@ import Link from 'next/link';
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
     const author = useRecoilValue(UserAtom);
+	const handelClick = () => setOpenPost(!openPost);
+	const [openPost, setOpenPost] = useState(false);
 
     return (
         <div className="p-3 border-b border-gray-400 my-3">
@@ -65,11 +67,12 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                     </Link> */}
                     <Dropdown.Item>Report post</Dropdown.Item>
                     {
-                        post.author?._id === author?.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
+                        post.author?._id === author?.id ? (<Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item>) : null
                     }
                     <Dropdown.Item>Save</Dropdown.Item>
                 </Dropdown>
             </div>
+            <CreatePost open={openPost} handelClick={handelClick} data={post} />
         </div>
     );
 };
