@@ -17,6 +17,7 @@ html {
 	font-family: "Poppins", sans-serif;
 	scroll-behavior: smooth;
 	font-size: 14px;
+	overscroll-behavior-y: contain;
 	@media screen and (min-width: 768px) {
 		font-size: 16px;
 	}

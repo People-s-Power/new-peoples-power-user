@@ -18,7 +18,7 @@ mutation createPost($body: String!, $imageFile: String!) {
 `
 
 export const UPDATE_POST = gql `
-mutation updatePost($body: String!, $postId: id!) {
+mutation updatePost($body: String!, $postId: ID!) {
     updatePost(body: $body, postId: $postId) {
         body
         comments {

@@ -172,10 +172,6 @@ const user = () => {
         client: apollo,
         onCompleted: (data) => {
             setOrgs([...orgs, data.getOrganzation])
-
-            // console.log(orgs)
-            // console.log(data.getOrganzation)
-
         },
         onError: (err) => {
             // console.log(err)
@@ -430,7 +426,7 @@ const user = () => {
                                             )
                                         case 'Petition':
                                             return (<div>
-                                                <PetitionComp open={openPetition} handelClick={handelPetition} petition={single} key={index} />
+                                                <PetitionComp  petition={single} key={index} />
                                             </div>
                                             )
                                         case 'Victory':
@@ -512,7 +508,7 @@ const user = () => {
                         </div>)}
                     </div>
                 </div >
-                <CreatePost open={openPost} handelClick={handelClick} data={null} />
+                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />
                 <CreateEvent open={openEvent} handelClick={handelEventClick} />
                 <CreateAdvert open={openAd} handelClick={handelAdClick} />
                 <StartPetition open={openPetition} handelClick={handelPetition} data={null} />

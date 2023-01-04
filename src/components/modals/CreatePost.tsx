@@ -7,14 +7,15 @@ import axios from "axios";
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
 
-const CreatePost = ({ open, handelClick, data }: { open: boolean, handelClick(): void, data: any }): JSX.Element => {
+const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean, handelClick(): void, post: any, handelPetition(): void, }): JSX.Element => {
     const [image, setFilePreview] = useState({
-        type: data === null ? "" : "image",
-        file: data?.image || "",
+        type: post === null ? "" : "image",
+        file: post?.image || "",
         name: "",
     })
-    const [body, setBody] = useState(data?.body || "")
+    const [body, setBody] = useState(post?.body || "")
     const uploadRef = useRef<HTMLInputElement>(null);
+    const [category, setCategory] = useState("Add Category")
 
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -36,7 +37,7 @@ const CreatePost = ({ open, handelClick, data }: { open: boolean, handelClick():
         }
     };
     const handleSubmit = async () => {
-        if (data === null) {
+        if (post === null) {
             try {
                 const { data } = await axios.post(SERVER_URL + '/graphql', {
                     query: print(CREATE_POST),
@@ -57,25 +58,25 @@ const CreatePost = ({ open, handelClick, data }: { open: boolean, handelClick():
                 console.log(error);
             }
         } else {
-            // try {
-            //     const { data } = await axios.post(SERVER_URL + '/graphql', {
-            //         query: print(UPDATE_POST),
-            //         variables: {
-            //             body: body,
-            //             postId: data.id
-            //         }
-            //     })
-            //     console.log(data)
-            //     handelClick()
-            //     setBody("")
-            //     setFilePreview({
-            //         type: "",
-            //         file: "",
-            //         name: "",
-            //     });
-            // } catch (error) {
-            //     console.log(error);
-            // }
+            try {
+                const { data } = await axios.post(SERVER_URL + '/graphql', {
+                    query: print(UPDATE_POST),
+                    variables: {
+                        body: body,
+                        postId: post._id
+                    }
+                })
+                console.log(data)
+                handelClick()
+                setBody("")
+                setFilePreview({
+                    type: "",
+                    file: "",
+                    name: "",
+                });
+            } catch (error) {
+                console.log(error);
+            }
         }
 
     }
@@ -97,17 +98,17 @@ const CreatePost = ({ open, handelClick, data }: { open: boolean, handelClick():
 
                 </Modal.Body>
                 <div className='z-40'>
-                    <Dropdown placement="topStart" title={<div className='text-sm text-warning'>Add Category</div>}>
-                        <Dropdown.Item>Human right awareness</Dropdown.Item>
-                        <Dropdown.Item>Social Policy</Dropdown.Item>
-                        <Dropdown.Item>Criminal Justice</Dropdown.Item>
-                        <Dropdown.Item>Human Right Action</Dropdown.Item>
-                        <Dropdown.Item>Development</Dropdown.Item>
-                        <Dropdown.Item>Environment</Dropdown.Item>
-                        <Dropdown.Item>Health</Dropdown.Item>
-                        <Dropdown.Item>Politics</Dropdown.Item>
-                        <Dropdown.Item>Disability</Dropdown.Item>
-                        <Dropdown.Item>Equality</Dropdown.Item>
+                    <Dropdown placement="topStart" title={<div className='text-sm text-warning'>{category}</div>}>
+                        <Dropdown.Item onClick={() => setCategory('Human right awareness')}>Human right awareness</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Social Policy')}>Social Policy</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Criminal Justice')}>Criminal Justice</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Human Right Action')}>Human Right Action</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Development')}>Development</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Environment')}>Environment</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Health')}>Health</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Politics')}>Politics</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Disability')}>Disability</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Equality')}>Equality</Dropdown.Item>
                     </Dropdown>
                 </div>
                 <Modal.Footer>
@@ -139,8 +140,8 @@ const CreatePost = ({ open, handelClick, data }: { open: boolean, handelClick():
                                 <img className="w-4 h-4 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
                             </div>
                         </div>
-                        <div className="text-sm my-auto">Celebrate victory</div>
-                        <div className="text-sm my-auto">Make petition</div>
+                        <div className="text-sm my-auto">Find Expert</div>
+                        <div className="text-sm my-auto cursor-pointer" onClick={() => { handelClick(), handelPetition() }}>Make petition</div>
                         <button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
                             Post
                         </button>

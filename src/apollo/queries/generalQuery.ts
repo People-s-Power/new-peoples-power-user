@@ -1,140 +1,143 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL = gql
-` query{
-    general {
+` mutation timeline($authorId: ID!){
+      timeline(authorId: $authorId){
         adverts{
-        _id
-        caption
-        message
-        email
-        duration
-        link
-        action
-        audience
-        image
-        shares
-        likes
-        authorId
-        author {
           _id
+          caption
+          message
           email
+          duration
+          link
+          action
+          audience
           image
+          likes
+          authorId
+          __typename
+          author {
+            _id
+            email
+            image
+            name
+        }
+          createdAt
+          updatedAt
+          }
+  
+          victories{
+              body
+          authorId
+          image
+          likes
+          __typename
+          shares
+          updatedAt
+          createdAt
+          author{
+              _id
+              email
+              image
+              name
+          }
+          }
+        
+        petitions{
+          aim
+          addedFrom
+          authorId
+          authorImg
+          authorName
+          body
+          category
+          createdAt
+          __typename
+          endorsements{
+              body
+          }
+          excerpt
+          id
+          image
+          likes
+          numberOfPaidEndorsementCount
+          numberOfPaidViewsCount
+          promoted
+          slug
+          status
+          target
+          title
+          updatedAt
+          views
+          
+        }
+        
+        posts{
+          _id
+          body
+          createdAt
+          comments {
+              author
+              body
+          }
+          image
+          likes
+          shares
+          __typename
+          author {
+              name
+              email
+              image
+              _id
+          }
+          isPetition
+        }
+        
+        events {
+          _id
+          audience
+          authorId
+          author{
+              _id
+              name
+              email
+              image
+          }
+          description
+          startDate
+          endDate
+          __typename
+          time
+          image
+          interested {
+              authorId
+              authorImg
+              name
+          }
+          likes
           name
-      }
-        createdAt
-        updatedAt
+          type
         }
-
-        victories{
-            body
-        authorId
-        image
-        likes
-        shares
-        updatedAt
-        createdAt
-        author{
-            _id
-            email
-            image
-            name
-        }
-        }
-      
-      petitions{
-        aim
-        addedFrom
-        authorId
-        authorImg
-        authorName
-        body
-        category
-        createdAt
-        endorsements{
-            body
-        }
-        excerpt
-        id
-        image
-        likes
-        numberOfPaidEndorsementCount
-        numberOfPaidViewsCount
-        promoted
-        slug
-        status
-        target
-        title
-        updatedAt
-        views
         
-      }
-      
-      posts{
-        _id
-        body
-        createdAt
-        comments {
-            author
-            body
+        victories {
+          _id
+          body
+          authorId
+          image
+          likes
+          shares
+          __typename
+          updatedAt
+          createdAt
+          author{
+              _id
+              email
+              image
+              name
+          }
         }
-        image
-        likes
-        shares
-        
-        author {
-            name
-            email
-            image
-            _id
-        }
-        isPetition
-      }
-      
-      events {
-        _id
-        audience
-        authorId
-        author{
-            _id
-            name
-            email
-            image
-        }
-        description
-        startDate
-        endDate
-        time
-        image
-        interested {
-            authorId
-            authorImg
-            name
-        }
-        likes
-        name
-        shares
-        type
-      }
-      
-      victories {
-        _id
-        body
-        authorId
-        image
-        likes
-        shares
-        updatedAt
-        createdAt
-        author{
-            _id
-            email
-            image
-            name
-        }
-      }
     }
-}
+  }
 `
 
 
@@ -168,16 +171,38 @@ export const UNFOLLOW = gql
 
 export const LIKE = gql
 `mutation like($authorId: ID!, $itemId: ID!){
-  like(authorId: $followerId, itemId: $itemId)
+  like(authorId: $authorId, itemId: $itemId)
 }`
 
 export const SHARE = gql
-`mutation like($authorId: ID!, $itemId: ID!){
-  like(authorId: $followerId, itemId: $itemId)
+`mutation share($authorId: ID!, $itemId: ID!){
+  share(authorId: $authorId, itemId: $itemId)
+  {
+    posts{
+      _id
+      body
+    }
+    adverts{
+      _id
+      message
+    }
+    petitions{
+      id
+      title
+    }
+    events{
+      _id
+      name
+    }
+    victories{
+      _id
+      body
+    }
+  }
 }`
 
-export const UNLIKE = gql
-`mutation like($authorId: ID!, $itemId: ID!){
-  like(authorId: $followerId, itemId: $itemId)
-}`
+// export const UNLIKE = gql
+// `mutation like($authorId: ID!, $itemId: ID!){
+//   like(authorId: $authorId, itemId: $itemId)
+// }`
 

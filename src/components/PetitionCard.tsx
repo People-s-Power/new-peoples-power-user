@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'rsuite';
 import ReactTimeAgo from 'react-time-ago'
 import axios from 'axios';
 import Link from "next/link";
 import StartPetition from "./modals/StartPetition"
+import CreateVictories from "./modals/CreateVictories"
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
+import AddUpdates from './modals/AddUpdates';
 
 
 const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
@@ -17,6 +19,11 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
 
     const handelPetition = () => setOpenPetition(!openPetition);
     const [openPetition, setOpenPetition] = useState(false);
+    const handelVictory = () => setOpenVictory(!openVictory);
+    const [openVictory, setOpenVictory] = useState(false);
+    const handelUpdates = () => setOpenUpdates(!openUpdates);
+    const [openUpdates, setOpenUpdates] = useState(false);
+
     const deletePetition = (() => {
         axios.delete(`petition/single/${petition.id}`)
             .then((response) => {
@@ -63,21 +70,23 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
                 </Link>
                 <div className="flex">
                     <img className="w-8 h-8 my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">{ } Shares</div>
+                    <div className="text-sm my-auto ml-2">{petition.shares} Shares</div>
                 </div>
                 <Link href={`/campaigns/${petition?.slug}`}>
                     <div className="flex">
                         <img className="w-8 h-8 my-auto" src="/images/home/icons/akar-icons_people-group.png" alt="" />
-                        <div className="text-sm my-auto ml-2">{petition.shares} endorsements</div>
+                        <div className="text-sm my-auto ml-2">{petition.endorsements.length} endorsements</div>
                     </div>
                 </Link>
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                    <Dropdown.Item>Promote</Dropdown.Item>
+                    <Link href={`/promote?slug=${petition?.slug}`}>
+                        <Dropdown.Item>Promote</Dropdown.Item>
+                    </Link>
                     {
                         author?.id === petition.authorId ? (
                             <div>
-                                <Dropdown.Item>Update</Dropdown.Item>
-                                <Dropdown.Item>Celebrate Victory</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handelVictory()}>Celebrate Victory</Dropdown.Item>
+                                <Dropdown.Item onClick={() => handelUpdates()}>Update</Dropdown.Item>
                                 <Dropdown.Item onClick={() => handelPetition()}>Edit</Dropdown.Item>
                                 <Dropdown.Item onClick={() => deletePetition()}>Delete</Dropdown.Item>
                             </div>
@@ -85,7 +94,9 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
                     }
                 </Dropdown>
             </div>
+            <AddUpdates open={openUpdates} handelClick={handelUpdates} petition={petition} />
             <StartPetition open={openPetition} handelClick={handelPetition} data={petition} />
+            <CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />
             <ToastContainer />
         </div>
     );
