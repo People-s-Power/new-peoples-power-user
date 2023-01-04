@@ -14,7 +14,7 @@ const Header = (): JSX.Element => {
 
 	const user = useRecoilValue(UserAtom);
 	const { pathname } = useRouter();
-	const text = `PEOPLE'S POWER`
+	const text = `CITIZEN PLAINT`
 	// const token = cookie.get(TOKEN_NAME);
 	const [notification] = useState([])
 

@@ -51,7 +51,8 @@ const AddUpdates = ({ open, handelClick, petition }: { open: boolean, handelClic
             await axios.post('petition/update', {
                 petitionId: petition.id,
                 body: body,
-                image: image.file
+                image: image.file,
+                authorId: author.id
             })
             toast.success("Updates added successfulluy");
             setLoading(false);

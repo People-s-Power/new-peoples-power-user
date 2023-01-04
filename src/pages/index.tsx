@@ -32,6 +32,7 @@ import { useQuery } from "@apollo/client";
 import { IUser, IOrg } from "types/Applicant.types";
 import PetitionComp from "components/PetitionCard";
 import AdvertsComp from "components/AdvertsCard";
+import Updates from "components/updates";
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom);
@@ -86,31 +87,35 @@ const HomePage = () => {
 	}
 
 	useEffect(() => {
-		const getData = async () => {
-			const { data } = await axios.post(SERVER_URL + '/graphql', {
-				query: print(GET_ALL),
-				variables: {
-					authorId: author?.id
+		async function getData() {
+			try {
+				const { data } = await axios.post(SERVER_URL + '/graphql', {
+					query: print(GET_ALL),
+					variables: {
+						authorId: author?.id
+					}
+				})
+				// console.log(data.data.timeline)
+				let general = [...data.data.timeline.adverts, ...data.data.timeline.updates, ...data.data.timeline.events, ...data.data.timeline.petitions, ...data.data.timeline.posts, ...data.data.timeline.victories,]
+				const randomize = (values: any) => {
+					let index = values.length, randomIndex;
+					while (index != 0) {
+						randomIndex = Math.floor(Math.random() * index);
+						index--;
+						[values[index], values[randomIndex]] = [
+							values[randomIndex], values[index]];
+					}
+					return values;
 				}
-			})
-			// console.log(data.data.timeline)
-			let general = [...data.data.timeline.adverts, ...data.data.timeline.events, ...data.data.timeline.petitions, ...data.data.timeline.posts, ...data.data.timeline.victories,]
-			const randomize = (values: any) => {
-				let index = values.length, randomIndex;
-				while (index != 0) {
-					randomIndex = Math.floor(Math.random() * index);
-					index--;
-					[values[index], values[randomIndex]] = [
-						values[randomIndex], values[index]];
-				}
-				return values;
+				randomize(general)
+				setAll(general)
+			} catch (err) {
+				console.log(err)
 			}
-			randomize(general)
-			setAll(general)
-			// console.log(all);
 		}
-		getData()
-			.catch(console.error);
+		if(all[0] === undefined){
+			getData()
+		}
 	})
 
 	// useQuery(GET_ALL, {
@@ -272,29 +277,34 @@ const HomePage = () => {
 							all.map((single: any, index: number) => {
 								// setType(single.__typename)
 								switch (single.__typename) {
-									case 'Advert':
+									// case 'Advert':
+									// 	return (<div>
+									// 		<AdvertsComp advert={single} key={index} />
+									// 	</div>
+									// 	)
+									// case 'Event':
+									// 	return (<div>
+									// 		<EventsCard key={index} event={single} />
+									// 	</div>
+									// 	)
+									// case 'Petition':
+									// 	return (<div>
+									// 		<PetitionComp petition={single} key={index} />
+									// 	</div>
+									// 	)
+									// case 'Victory':
+									// 	return (<div>
+									// 		victories
+									// 	</div>
+									// 	)
+									// case 'Post':
+									// 	return (<div>
+									// 		<CampComp key={index} post={single} />
+									// 	</div>
+									// 	)
+									case 'Update':
 										return (<div>
-											<AdvertsComp advert={single} key={index} />
-										</div>
-										)
-									case 'Event':
-										return (<div>
-											<EventsCard key={index} event={single} />
-										</div>
-										)
-									case 'Petition':
-										return (<div>
-											<PetitionComp petition={single} key={index} />
-										</div>
-										)
-									case 'Victory':
-										return (<div>
-											victories
-										</div>
-										)
-									case 'Post':
-										return (<div>
-											<CampComp key={index} post={single} />
+											<Updates key={index} updates={single} />
 										</div>
 										)
 								}

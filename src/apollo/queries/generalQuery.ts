@@ -136,6 +136,20 @@ export const GET_ALL = gql
               name
           }
         }
+        updates{
+          petition{
+            id
+            title
+            image
+            slug
+          }
+          body
+          image
+          authorId
+          likes
+          shares
+          __typename
+        }
     }
   }
 `
