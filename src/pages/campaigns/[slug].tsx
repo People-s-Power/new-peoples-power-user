@@ -54,9 +54,9 @@ const SingleCampaignPage = (): JSX.Element => {
 
 	useQuery(GET_ENDORSEMENTS_BY_CAMPAIGN, {
 		client: apollo,
-		variables: { campaign_id: camp?.id },
+		variables: { petition_id: camp?.id },
 		onCompleted: (data) => {
-			setEndorsements(data.getEndorsementsByCampaign);
+			setEndorsements(data.getEndorsementsByPetition);
 			// console.log(data.getEndorsementsByCampaign)
 		},
 		onError: (err) => console.log(err),

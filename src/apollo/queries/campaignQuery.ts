@@ -66,8 +66,8 @@ export const GET_ACTIVE_CAMPAIGNS = gql`
 	}
 `;
 export const GET_ENDORSEMENTS_BY_CAMPAIGN = gql`
-	query ($campaign_id: ID) {
-		getEndorsementsByCampaign(campaign_id: $campaign_id) {
+	query ($petition_id: ID) {
+		getEndorsementsByPetition(petition_id: $petition_id) {
 			id
 			createdAt
 			body
