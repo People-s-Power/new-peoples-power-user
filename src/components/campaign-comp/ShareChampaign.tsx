@@ -125,8 +125,8 @@ const ShareChampaign = (): JSX.Element => {
 						</Clipboard>
 					</div>
 					<div className="mt-3 text-center">
-						<a href="/mycamp" className="text-decoration-none text-inherit">
-							Go to your dashboard
+						<a href="/" className="text-decoration-none text-inherit">
+							Go home
 						</a>
 					</div>
 				</div>

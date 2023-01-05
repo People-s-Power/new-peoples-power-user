@@ -18,6 +18,7 @@ import Link from "next/link";
 import axios from "axios";
 import { apollo } from "apollo";
 import ReactTimeAgo from 'react-time-ago'
+import { SINGLE_PETITION } from "apollo/queries/petitionQuery";
 
 export const GET_CAMPAIGN = gql`
 	query ($slug: String) {
@@ -50,14 +51,15 @@ const PromoteComp = (): JSX.Element => {
 	const [showModalClose, setShowModalClose] = useState(false);
 	const [transactions, setTransactions] = useState<ITransactions[]>([]);
 
-	useQuery(GET_CAMPAIGN, {
+	const { error, data } = useQuery(SINGLE_PETITION, {
 		client: apollo,
 		variables: { slug: query.slug },
-		onCompleted: (data) => {
-			setCampaign(data.getCampaign)
-		},
-		onError: (err) => console.log(err),
+		// onCompleted: (data) => {
+		// 	setCampaign(data.getCampaign)
+		// },
+		// onError: (err) => console.log(err),
 	});
+
 
 	const view = useMemo(() => {
 		const initialView = Boolean(query?.view);
@@ -71,6 +73,10 @@ const PromoteComp = (): JSX.Element => {
 	}, [query]);
 
 	useEffect(() => {
+		if (!error && query.slug !== undefined) {
+			setCampaign(data.getPetition)
+			console.log(data)
+		}
 		axios.get('/transaction')
 			.then(function (response) {
 				// console.log(response.data);
@@ -79,7 +85,7 @@ const PromoteComp = (): JSX.Element => {
 			.catch(function (error) {
 				console.log(error);
 			});
-	}, [])
+	}, [data, error])
 
 	// if (loading) return (
 	// 	<div className="my-10 w-full text-center">
@@ -301,6 +307,9 @@ const PromoteForm = ({ campaign }: { campaign: ICampaign }) => {
 		<FrontLayout>
 			<Wrapper className="container">
 				<div className="md:w-[506px] m-auto">
+					<div className="cursor-pointer text-sm text-blue-700" onClick={() => window.history.back()}>
+						Go back
+					</div>
 					<div className="text-center mt-3">
 						Wow <span className="fw-bold">{user?.firstName}</span>…you are just one
 						step away from reaching our Community of Supporters who will help you
@@ -467,6 +476,9 @@ const PromoteFormEndorsement = ({ campaign }: { campaign: ICampaign }) => {
 		<FrontLayout>
 			<Wrapper className="container">
 				<div className="md:w-[506px] m-auto">
+					<div className="cursor-pointer text-sm text-blue-700" onClick={() => window.history.back()}>
+						Go back
+					</div>
 					<div className="text-center mt-3">
 						Wow <span className="fw-bold">{user?.firstName}</span>…you are just one
 						step away from reaching our Community of Supporters who will help you

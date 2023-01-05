@@ -13,6 +13,7 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
         file: post?.image || "",
         name: "",
     })
+    const [loading, setLoading] = useState(false)
     const [body, setBody] = useState(post?.body || "")
     const uploadRef = useRef<HTMLInputElement>(null);
     const [category, setCategory] = useState("Add Category")
@@ -36,7 +37,15 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
             };
         }
     };
+    const clearFile = () => {
+        setFilePreview({
+            type: "",
+            file: "",
+            name: "",
+        })
+    }
     const handleSubmit = async () => {
+        setLoading(true)
         if (post === null) {
             try {
                 const { data } = await axios.post(SERVER_URL + '/graphql', {
@@ -54,6 +63,7 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                     file: "",
                     name: "",
                 });
+                setLoading(false)
             } catch (error) {
                 console.log(error);
             }
@@ -74,6 +84,7 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                     file: "",
                     name: "",
                 });
+                setLoading(false)
             } catch (error) {
                 console.log(error);
             }
@@ -94,7 +105,7 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                         <img src="/images/person.png" className="w-10 h-10 rounded-full mr-4" alt="" />
                         <div className="text-sm">Evans Doe</div>
                     </div>
-                    <textarea value={body} onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint, let people know about it and win your supporters"></textarea>
+                    <textarea value={body} onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint..."></textarea>
 
                 </Modal.Body>
                 <div className='z-40'>
@@ -120,8 +131,11 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                     />
                     {
                         image.file === "" ? null : (
-                            <div className='flex '>
+                            <div className='relative w-20 h-20'>
                                 <img src={image.file} className="w-20 h-20" alt="" />
+                                <div className='absolute top-1 cursor-pointer right-1 w-6 h-6 rounded-full bg-danger text-sm text-center text-white'>
+                                    <div className="mx-auto my-auto text-white" onClick={() => clearFile()}>x</div>
+                                </div>
                             </div>
                         )
                     }
@@ -143,7 +157,7 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                         <div className="text-sm my-auto">Find Expert</div>
                         <div className="text-sm my-auto cursor-pointer" onClick={() => { handelClick(), handelPetition() }}>Make petition</div>
                         <button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
-                            Post
+                            {loading ? "Loading..." : "Post"}
                         </button>
                     </div>
                 </Modal.Footer>

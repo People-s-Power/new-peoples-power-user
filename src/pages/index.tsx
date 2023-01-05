@@ -277,31 +277,31 @@ const HomePage = () => {
 							all.map((single: any, index: number) => {
 								// setType(single.__typename)
 								switch (single.__typename) {
-									// case 'Advert':
-									// 	return (<div>
-									// 		<AdvertsComp advert={single} key={index} />
-									// 	</div>
-									// 	)
-									// case 'Event':
-									// 	return (<div>
-									// 		<EventsCard key={index} event={single} />
-									// 	</div>
-									// 	)
-									// case 'Petition':
-									// 	return (<div>
-									// 		<PetitionComp petition={single} key={index} />
-									// 	</div>
-									// 	)
-									// case 'Victory':
-									// 	return (<div>
-									// 		victories
-									// 	</div>
-									// 	)
-									// case 'Post':
-									// 	return (<div>
-									// 		<CampComp key={index} post={single} />
-									// 	</div>
-									// 	)
+									case 'Advert':
+										return (<div>
+											<AdvertsComp advert={single} key={index} />
+										</div>
+										)
+									case 'Event':
+										return (<div>
+											<EventsCard key={index} event={single} />
+										</div>
+										)
+									case 'Petition':
+										return (<div>
+											<PetitionComp petition={single} key={index} />
+										</div>
+										)
+									case 'Victory':
+										return (<div>
+											victories
+										</div>
+										)
+									case 'Post':
+										return (<div>
+											<CampComp key={index} post={single} />
+										</div>
+										)
 									case 'Update':
 										return (<div>
 											<Updates key={index} updates={single} />

@@ -32,7 +32,7 @@ const EndorseCampaignComp = ({ camp }: { camp: ICampaign }): JSX.Element => {
 		setLoading(true)
 		axios.post('/endorsement', {
 			body: body,
-			campaign: id,
+			petition: id,
 		})
 			.then(function (response) {
 				console.log(response);

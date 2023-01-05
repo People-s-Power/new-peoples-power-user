@@ -63,12 +63,12 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
                     <div className="text-sm my-auto ml-2">10 Supports</div>
                 </div> */}
                 <Link href={`/campaigns/${petition?.slug}`}>
-                    <div className="flex">
+                    <div className="flex cursor-pointer">
                         <img className="w-8 h-8 my-auto" src="/images/home/icons/ion_finger-print-sharp.png" alt="" />
                         <div className="text-sm my-auto ml-2 bg-warning p-2 rounded-sm">Endorse petition</div>
                     </div>
                 </Link>
-                <div className="flex">
+                <div className="flex cursor-pointer">
                     <img className="w-8 h-8 my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
                     <div className="text-sm my-auto ml-2">{petition.shares} Shares</div>
                 </div>

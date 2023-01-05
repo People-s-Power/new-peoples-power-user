@@ -64,7 +64,7 @@ const SingleCampaignPage = (): JSX.Element => {
 
 	useQuery(SINGLE_PETITION, {
 		client: apollo,
-		variables: { slug: 'velit-duis-eos-cum' },
+		variables: { slug: query.slug },
 		onCompleted: (data) => {
 			console.log(data)
 			setCamp(data.getPetition)
@@ -86,8 +86,8 @@ const SingleCampaignPage = (): JSX.Element => {
 		// console.log(res)
 	}
 
-
 	useEffect(() => {
+		// console.log(query.slug)
 		axios.get(`/campaign/update/${camp?.id}`)
 			.then(function (response) {
 				// console.log(response);

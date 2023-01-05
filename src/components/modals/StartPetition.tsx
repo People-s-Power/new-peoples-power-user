@@ -5,6 +5,8 @@ import { Dropdown } from 'rsuite';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { bodyStreamToNodeStream } from 'next/dist/server/body-streams';
+import { useRouter } from 'next/router'
 
 
 const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick(): void, data: any }): JSX.Element => {
@@ -17,12 +19,17 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
         file: data?.image || "",
         name: "",
     })
+    const router = useRouter()
     const [aim, setAim] = useState(data?.aim || "")
     const [target, setTarget] = useState(data?.target || "")
     const [body, setBody] = useState(data?.body || "")
     useEffect(() => {
     }, [])
-
+    const [preview, setPreview] = useState(false)
+    const handelPreview = () => {
+        handelClick();
+        setPreview(!preview);
+    }
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         const reader = new FileReader();
@@ -44,7 +51,6 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
     };
 
     const createPetition = async () => {
-        // handelClick()
         if (data === null) {
             try {
                 setLoading(true)
@@ -57,9 +63,20 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                     body: body
                 });
                 console.log(data)
-                handelClick()
-                setLoading(true)
+                setLoading(false)
+                setPreview(false)
                 toast('Petition Created Successfully')
+                router.push(`/promote?slug=${data.slug}`)
+                setTitle("");
+                setCategory("")
+                setAim("");
+                setTarget("");
+                setBody("");
+                setFilePreview({
+                    type: "",
+                    file: "",
+                    name: "",
+                });
             } catch (error) {
                 console.log(error);
                 toast.warn('Oops! Something went wrong')
@@ -76,15 +93,24 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                     body: body
                 });
                 console.log(data)
-                handelClick()
-                setLoading(true)
+                setLoading(false)
+                setPreview(false)
                 toast('Petition Updated Successfully')
+                setTitle("");
+                setCategory("")
+                setAim("");
+                setTarget("");
+                setBody("");
+                setFilePreview({
+                    type: "",
+                    file: "",
+                    name: "",
+                });
             } catch (error) {
                 console.log(error);
                 toast.warn('Oops! Something went wrong')
             }
         }
-
     };
 
     return (
@@ -106,7 +132,7 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                             className="d-none"
                             onChange={handleImage}
                         />
-                        <img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
+                        <img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 cursor-pointer h-20 mx-auto" alt="" />
                         <div className="text-base my-3">Upload Petition Cover  Image</div>
                         <div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
                     </div>
@@ -143,8 +169,38 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                         <button onClick={handelClick} className="p-1 text-warning border border-warning rounded-md w-20 my-4">
                             Save
                         </button>
-                        <button onClick={createPetition} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+                        <button onClick={handelPreview} className="p-1 bg-warning text-white rounded-md w-44 my-4">
                             {loading ? 'Loading...' : 'Preview and launch'}
+                        </button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal open={preview} onClose={handelPreview}>
+                <Modal.Header>
+                    <div className="border-b border-gray-200 p-3 w-full">
+                        <Modal.Title>Preview petition</Modal.Title>
+                    </div>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <div className='my-2 text-lg'>{title}</div>
+                        <div className='my-2 w-full'>
+                            <img src={image.file} alt="" />
+                        </div>
+                        <div className="text-sm my-2">{body}</div>
+                        <div className="text-sm my-2">Category: {category}</div>
+                        <div className="text-sm my-2">Aim: {aim}</div>
+                        <div className="text-sm my-2">Target: {target}</div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className='flex justify-evenly w-1/2 mx-auto'>
+                        <button onClick={() => { handelPreview(); handelClick() }} className="p-1 text-warning border border-warning rounded-md w-20 my-4">
+                            Edit
+                        </button>
+                        <button onClick={() => { createPetition(); }} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+                            {loading ? 'Loading...' : 'Launch'}
                         </button>
                     </div>
                 </Modal.Footer>

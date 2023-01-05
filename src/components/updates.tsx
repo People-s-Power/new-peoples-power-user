@@ -9,10 +9,12 @@ import { SHARE, LIKE } from "apollo/queries/generalQuery";
 import axios from "axios";
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
+import { useRouter } from 'next/router'
 
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
     const author = useRecoilValue(UserAtom);
+    const router = useRouter()
     const share = async () => {
         try {
             const { data } = await axios.post(SERVER_URL + '/graphql', {
@@ -70,7 +72,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
                 {updates.body}
             </div>
             <div className="w-full relative">
-                <button className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
+                <button onClick={() => router.push(`/campaigns/${updates.petition.slug}`)} className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
                     View More
                 </button>
             </div>

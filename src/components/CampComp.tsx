@@ -89,7 +89,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                 </div> */}
                 <div className="flex" onClick={() => like()}>
                     <img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">{post.likes.length} likes</div>
+                    <div className="text-sm my-auto ml-2">{post.likes?.length} likes</div>
                 </div>
                 <div className="flex">
                     <img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
