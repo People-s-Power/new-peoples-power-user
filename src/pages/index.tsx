@@ -14,7 +14,7 @@ import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
 import Link from "next/link";
 import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery";
 import router, { useRouter } from "next/router";
-
+import FollowSlides from "components/camp-slider/FollowSlides";
 
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
@@ -95,8 +95,20 @@ const HomePage = () => {
 						authorId: author?.id
 					}
 				})
-				// console.log(data.data.timeline)
-				let general = [...data.data.timeline.adverts, ...data.data.timeline.updates, ...data.data.timeline.events, ...data.data.timeline.petitions, ...data.data.timeline.posts, ...data.data.timeline.victories,]
+				console.log(data.data.timeline)
+				let general = [...data.data.timeline.adverts, {
+					"__typename": 'Follow'
+				}, ...data.data.timeline.updates, {
+					"__typename": 'Follow'
+				}, ...data.data.timeline.events, {
+					"__typename": 'Follow'
+				}, ...data.data.timeline.petitions, {
+					"__typename": 'Follow'
+				}, ...data.data.timeline.posts, {
+					"__typename": 'Follow'
+				}, ...data.data.timeline.victories, {
+					"__typename": 'Follow'
+				}]
 				const randomize = (values: any) => {
 					let index = values.length, randomIndex;
 					while (index != 0) {
@@ -113,7 +125,7 @@ const HomePage = () => {
 				console.log(err)
 			}
 		}
-		if(all[0] === undefined){
+		if (all[0] === undefined) {
 			getData()
 		}
 	})
@@ -305,6 +317,11 @@ const HomePage = () => {
 									case 'Update':
 										return (<div>
 											<Updates key={index} updates={single} />
+										</div>
+										)
+									case 'Follow':
+										return (<div>
+											<FollowSlides />
 										</div>
 										)
 								}

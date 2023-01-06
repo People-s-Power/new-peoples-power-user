@@ -49,6 +49,7 @@ const EventsCard = ({ event }: { event: any }) => {
                     </div>
                 </div>
             </div>
+            <div className='text-xl my-3'>{event.name}</div>
             <img src={event.image} alt="" className='rounded-md w-full' />
             <div className='p-3 text-sm my-auto' >
                 <div>{event.author.name} created event for

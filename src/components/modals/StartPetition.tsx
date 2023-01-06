@@ -122,7 +122,7 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="bg-gray-200 w-full p-4 text-center relative">
+                    <div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
                         {image?.type === "image" && (
                             <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />
                         )}
@@ -132,7 +132,7 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                             className="d-none"
                             onChange={handleImage}
                         />
-                        <img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 cursor-pointer h-20 mx-auto" alt="" />
+                        <img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 cursor-pointer h-20 mx-auto" alt="" />
                         <div className="text-base my-3">Upload Petition Cover  Image</div>
                         <div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
                     </div>

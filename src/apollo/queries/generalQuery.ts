@@ -109,6 +109,7 @@ export const GET_ALL = gql
           __typename
           time
           image
+          name
           interested {
               authorId
               authorImg
@@ -142,6 +143,9 @@ export const GET_ALL = gql
             title
             image
             slug
+            authorId
+            authorName
+            authorImg
           }
           body
           image

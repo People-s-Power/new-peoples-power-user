@@ -74,7 +74,7 @@ const PromoteComp = (): JSX.Element => {
 
 	useEffect(() => {
 		if (!error && query.slug !== undefined) {
-			setCampaign(data.getPetition)
+			setCampaign(data?.getPetition)
 			console.log(data)
 		}
 		axios.get('/transaction')

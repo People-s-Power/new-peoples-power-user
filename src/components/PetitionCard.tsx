@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'rsuite';
 import ReactTimeAgo from 'react-time-ago'
-import axios from 'axios';
 import Link from "next/link";
 import StartPetition from "./modals/StartPetition"
 import CreateVictories from "./modals/CreateVictories"
@@ -12,7 +11,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 import AddUpdates from './modals/AddUpdates';
-
+import { SHARE, LIKE } from "apollo/queries/generalQuery";
+import axios from "axios";
+import { SERVER_URL } from "utils/constants";
+import { print } from 'graphql';
 
 const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
     const author = useRecoilValue(UserAtom);
@@ -35,6 +37,23 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
         //     toast.warn("Oops an error occoured!")
         // })
     })
+
+    const share = async () => {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(SHARE),
+                variables: {
+                    authorId: author.id,
+                    itemId: petition.id
+                }
+            })
+            toast.success('Petition has been shared');
+            console.log(data)
+        } catch (error) {
+            console.log(error);
+            toast.warn('Oops! Something went wrong');
+        }
+    }
 
 
     return (
@@ -68,7 +87,7 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
                         <div className="text-sm my-auto ml-2 bg-warning p-2 rounded-sm">Endorse petition</div>
                     </div>
                 </Link>
-                <div className="flex cursor-pointer">
+                <div className="flex cursor-pointer" onClick={() => share()}>
                     <img className="w-8 h-8 my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
                     <div className="text-sm my-auto ml-2">{petition.shares} Shares</div>
                 </div>

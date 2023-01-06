@@ -52,15 +52,15 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
         <div className="p-3 border-b border-gray-400 my-3">
             <div className="flex justify-between border-b border-gray-200 pb-3">
                 <div className='flex'>
-                    <img className="w-12 h-12 rounded-full" src={updates.author?.image} alt="" />
+                    <img className="w-12 h-12 rounded-full" src={updates.petition?.authorImg} alt="" />
                     <div className="ml-2">
-                        <div className="text-base capitalize">{updates.author?.name} <span className="text-xs">{author?.id === updates.author?._id ? '. You' : ''}</span></div>
+                        <div className="text-base capitalize">{updates.petition?.authorName} <span className="text-xs">{author?.id === updates.authorId ? '. You' : ''}</span></div>
                         {/* <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div> */}
                     </div>
                 </div>
             </div>
             <div className="text-sm p-2 leading-loose">
-                {updates.petition.title}
+                {updates.petition?.title}
             </div>
             <div className='p-2'>
                 <img className="w-full h-50 rounded-md" src={updates.image} alt="" />

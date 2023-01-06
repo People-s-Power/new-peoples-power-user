@@ -69,7 +69,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="bg-gray-200 w-full p-4 text-center relative">
+                    <div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
                         {image?.type === "image" && (
                             <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />
                         )}
@@ -79,25 +79,25 @@ const CreateEvent = ({ open, handelClick }: { open: boolean, handelClick(): void
                             className="d-none"
                             onChange={handleImage}
                         />
-                        <img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
-                        <div className="text-base my-3">Upload Petition Cover  Image</div>
+                        <img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
+                        <div className="text-base my-3">Upload Event Cover  Image</div>
                         <div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
                     </div>
                     <div>
                         <div className='text-sm my-2 mt-4'>Event type</div>
                         <div className="flex my-3">
                             <div className="flex">
-                                <input onClick={() => setType('online')} type="radio" className="p-2" />
+                                <input onClick={() => setType('online')} type="radio" checked={type === "online"} className="p-2" />
                                 <div className="ml-4 text-sm my-auto">Online</div>
                             </div>
                             <div className="flex ml-8">
-                                <input onClick={() => setType('offline')} type="radio" className="p-2" />
+                                <input onClick={() => setType('offline')} type="radio" checked={type === "offline"} className="p-2" />
                                 <div className="ml-4 text-sm my-auto">Offline</div>
                             </div>
                         </div>
                     </div>
                     <div className="mt-2">
-                        <div className='text-sm my-1'>Event name</div>
+                        <div className='text-sm my-1'>Title of Event</div>
                         <input onChange={(e) => setName(e.target.value)} type="text" className="p-1 border border-gray-700 w-full rounded-sm" />
                     </div>
                     <div className="mt-2">
