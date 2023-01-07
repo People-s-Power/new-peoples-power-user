@@ -87,7 +87,7 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean, handelClick(): voi
             <Modal open={open} onClose={handelClick}>
                 <Modal.Header>
                     <div className="border-b border-gray-200 p-3 w-full">
-                        <Modal.Title>Create Advert</Modal.Title>
+                        <Modal.Title>Create Product</Modal.Title>
                     </div>
                 </Modal.Header>
                 {/* <Modal.Body> */}
@@ -102,7 +102,7 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean, handelClick(): voi
                         onChange={handleImage}
                     />
                     <img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
-                    <div className="text-base my-3">Upload Advert Cover  Image</div>
+                    <div className="text-base my-3">Upload Product Cover Image</div>
                     <div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
                 </div>
                 <div className="mt-2">

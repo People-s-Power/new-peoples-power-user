@@ -66,6 +66,24 @@ const user = () => {
     if (typeof window !== 'undefined') {
         page = localStorage.getItem('page');
     }
+    const getGeneral = () => {
+        if (petition.length === 0 && post.length === 0) { } else {
+            let general = [...petition, ...post]
+            const randomize = (values: any) => {
+                let index = values.length, randomIndex;
+                while (index != 0) {
+                    randomIndex = Math.floor(Math.random() * index);
+                    index--;
+                    [values[index], values[randomIndex]] = [
+                        values[randomIndex], values[index]];
+                }
+                return values;
+            }
+            randomize(general)
+            setAll(general)
+            console.log(all)
+        }
+    }
     useQuery(GET_ORGANIZATIONS, {
         variables: { ID: author?.id },
         client: apollo,
@@ -80,26 +98,26 @@ const user = () => {
     useQuery(MY_PETITION, {
         client: apollo,
         onCompleted: (data) => {
-            console.log(data)
+            // console.log(data)
             setPetition(data.myPetition)
             getGeneral()
         },
         onError: (err) => {
         },
     });
-    // useQuery(MY_ADVERTS, {
-    //     client: apollo,
-    //     variables: { authorId: author?.id },
-    //     onCompleted: (data) => {
-    //         console.log(data)
-    //     },
-    //     onError: (err) => {
-    //     },
-    // });
+    useQuery(MY_ADVERTS, {
+        client: apollo,
+        variables: { authorId: author?.id },
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        onError: (err) => {
+        },
+    });
     useQuery(GET_USER_POSTS, {
         client: apollo,
         onCompleted: (data) => {
-            console.log(data)
+            // console.log(data)
             setPost(data.myPosts)
             getGeneral()
         },
@@ -107,20 +125,20 @@ const user = () => {
         },
     });
 
-    // const getEvent = async () => {
-    //     try {
-    //         const { data } = await axios.post(SERVER_URL + '/graphql', {
-    //             query: print(MY_EVENT),
-    //             variables: {
-    //                 authorId: query?.page,
-    //                 page: 1
-    //             }
-    //         })
-    //         console.log(data)
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+    const getEvent = async () => {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(MY_EVENT),
+                variables: {
+                    authorId: query?.page,
+                    page: 1
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     function isValidUrl(string: any) {
         try {
@@ -131,6 +149,7 @@ const user = () => {
         }
     }
     useEffect(() => {
+        getEvent()
         try {
             axios.get(`/user/single/${query.page}`)
                 .then(function (response) {
@@ -165,7 +184,7 @@ const user = () => {
         //         setFollow(false)
         //     }
         // })
-    },)
+    }, [])
 
     const { refetch } = useQuery(GET_ORGANIZATION, {
         variables: { ID: orgId },
@@ -225,24 +244,6 @@ const user = () => {
     //     onError: (e) => console.log(e),
     // });
 
-    const getGeneral = () => {
-        if (petition.length === 0 && post.length === 0) { } else {
-            let general = [...petition, ...post]
-            const randomize = (values: any) => {
-                let index = values.length, randomIndex;
-                while (index != 0) {
-                    randomIndex = Math.floor(Math.random() * index);
-                    index--;
-                    [values[index], values[randomIndex]] = [
-                        values[randomIndex], values[index]];
-                }
-                return values;
-            }
-            randomize(general)
-            setAll(general)
-            console.log(all)
-        }
-    }
 
     return (
         <FrontLayout showFooter={true}>
@@ -256,12 +257,12 @@ const user = () => {
                             <div>
                                 <img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
                             </div>
-                            <div className="absolute top-40 left-10 rounded-circle pro-img mx-auto bg-white p-1">
+                            <div className="absolute top-32 left-10 rounded-circle pro-img mx-auto bg-white p-1">
                                 <img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
                             </div>
 
                         </div>
-                        <div className='mt-32 py-8 px-10'>
+                        <div className='mt-20 py-8 px-10'>
                             <div className='flex justify-between'>
                                 <div className="flex flex-column justify-center">
                                     <div className='flex'>
@@ -275,7 +276,10 @@ const user = () => {
                                     <div className="text-sm font-thin w-96">
                                         {user?.description.substring(0, 100) + '...'}
                                     </div>
-                                    <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
+                                    <div className='flex'>
+                                        <img className='w-4 h-4 mr-3 my-auto' src="/images/home/icons/akar-icons_location.png" alt="" />
+                                        <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
+                                    </div>
                                 </div>
                                 <div className="font-black text-lg">
                                     <Link href={`mycamp/profile`}>
@@ -318,7 +322,7 @@ const user = () => {
                     <Slider />
 
                     <div className="lg:flex mt-3">
-                        <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md">
+                        <div className="lg:w-1/2 mt-3 h-80 lg:mr-4 rounded-md">
                             {author?.id === query.page ? (
                                 <div className="text-base p-3">
                                     <div className='my-2'>
@@ -331,7 +335,7 @@ const user = () => {
                                     </div>
                                     <Link href={'/org/create'}>
                                         <div className="bg-transparent my-2 flex justify-between">
-                                            <div className="my-auto">Human Right Action</div>
+                                            <div className="my-auto  w-1/2">Human Right Action</div>
                                             <div className='text-center cursor-pointer'>
                                                 <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
                                                 <div className="text-xs">  add </div>
@@ -340,20 +344,20 @@ const user = () => {
                                     </Link>
                                     <Link href={'/org/create'}>
                                         <div className="bg-transparent my-2 flex justify-between">
-                                            <div className="my-auto">Organization</div>
+                                            <div className="my-auto w-1/2">Organization</div>
                                             <div className='text-center cursor-pointer'>
                                                 <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
                                                 <div className="text-xs">  create </div>
                                             </div>
                                         </div>
                                     </Link>
-                                    <div className="bg-transparent my-2 flex justify-between">
-                                        <div className="my-auto">Adverts</div>
+                                    {/* <div className="bg-transparent my-2 flex justify-between">
+                                        <div className="my-auto  w-1/2">Adverts</div>
                                         <div className='text-center cursor-pointer' onClick={() => handelAdClick()}>
                                             <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
                                             <div className="text-xs">  create </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div>
                                         {orgs.map((org, i) => (
                                             <div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
@@ -369,12 +373,17 @@ const user = () => {
                                 </div>
                             ) : (<div></div>)}
                         </div>
-                        {product ? (<div className="bg-gray-50 flex w-full rounded-md mt-3">
-                            <img src="/images/file.png" className="w-80 mx-auto" alt="" />
-                            <div className="my-auto">
-                                <div className="text-3xl fotn-bold">Do you think your rights have been breached and wish to seek courts redress?</div>
-                                <div className="text-base">Let's help you file this application through your subscription.</div>
-                                <button className="btn bg-warning p-2 px-8 my-3 mx-auto text-white w-44">Suscribe</button>
+                        {product ? (<div className="w-full rounded-md mt-3">
+                            <div className="bg-transparent cursor-pointer w-36 my-2 mx-auto flex justify-between" onClick={() => handelAdClick()}>
+                                <div className='text-center my-auto' >
+                                    <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+                                    {/* <div className="text-xs">  create </div> */}
+                                </div>
+                                <div className="my-auto text-sm">Create Product</div>
+                            </div>
+
+                            <div>
+
                             </div>
                         </div>) : (<div className='w-full'>
                             {
@@ -387,13 +396,19 @@ const user = () => {
                                             </div>
                                         </div>
                                         <div className="flex justify-evenly my-4">
-                                            <div onClick={() => handelClick()} className="flex cursor-pointer">
-                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
-                                                <div className="my-auto text-sm ml-3">Photo</div>
+                                            <div className="flex w-16 justify-between">
+                                                <div onClick={() => handelClick()} className="w-6 cursor-pointer">
+                                                    <img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
+                                                </div>
+                                                <div onClick={() => handelClick()} className="w-6 cursor-pointer">
+                                                    <img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
+                                                </div>
                                             </div>
-                                            <div onClick={() => handelClick()} className="flex  cursor-pointer">
-                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
-                                                <div className="my-auto text-sm ml-3">Video</div>
+                                            <div className="flex  cursor-pointer" >
+                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/experts.svg" alt="" />
+                                                <div className="my-auto text-sm ml-3">
+                                                    Find Expert
+                                                </div>
                                             </div>
                                             <div className="flex  cursor-pointer" onClick={() => handelEventClick()} >
                                                 <img className="w-6 h-6 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
@@ -426,7 +441,7 @@ const user = () => {
                                             )
                                         case 'Petition':
                                             return (<div>
-                                                <PetitionComp  petition={single} key={index} />
+                                                <PetitionComp petition={single} key={index} />
                                             </div>
                                             )
                                         case 'Victory':
@@ -506,6 +521,9 @@ const user = () => {
                             */}
 
                         </div>)}
+                        <div className='w-72 bg-grey'>
+
+                        </div>
                     </div>
                 </div >
                 <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />

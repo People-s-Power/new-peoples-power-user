@@ -7,12 +7,16 @@ import axios from "axios";
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
 
+import { useRecoilValue } from "recoil";
+import { UserAtom } from "atoms/UserAtom";
 const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean, handelClick(): void, post: any, handelPetition(): void, }): JSX.Element => {
     const [image, setFilePreview] = useState({
         type: post === null ? "" : "image",
         file: post?.image || "",
         name: "",
     })
+    const author = useRecoilValue(UserAtom);
+
     const [loading, setLoading] = useState(false)
     const [body, setBody] = useState(post?.body || "")
     const uploadRef = useRef<HTMLInputElement>(null);
@@ -102,8 +106,8 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                 </Modal.Header>
                 <Modal.Body>
                     <div className="flex">
-                        <img src="/images/person.png" className="w-10 h-10 rounded-full mr-4" alt="" />
-                        <div className="text-sm">Evans Doe</div>
+                        <img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+                        <div className="text-sm">{author?.name}</div>
                     </div>
                     <textarea value={body} onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint..."></textarea>
 

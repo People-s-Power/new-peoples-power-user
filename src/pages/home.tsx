@@ -65,9 +65,11 @@ const HomePage: NextPage<{ campaigns: ICampaign[] }> = ({
 
 	console.log(campaigns)
 	const user = useRecoilValue(UserAtom);
-	// useEffect(() => {
-
-	// }, [])
+	useEffect(() => {
+		if (user !== null) {
+			window.location.href = `/`
+		}
+	}, [])
 
 	// useQuery(GET_CAMPAIGNS, {
 	// 	client: apollo,

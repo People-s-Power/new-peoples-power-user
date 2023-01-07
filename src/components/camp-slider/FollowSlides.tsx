@@ -25,7 +25,7 @@ const FollowSlides = () => {
     useQuery(GET_ALL_USERS, {
         client: apollo,
         onCompleted: (data) => {
-            console.log(data)
+            // console.log(data)
             setUsers(data.getUsers)
         },
         onError: (err) => console.log(err),

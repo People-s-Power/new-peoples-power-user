@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { MY_CAMPAIGN } from "apollo/queries/campaignQuery";
+import { MY_PETITION } from "apollo/queries/petitionQuery";
 import { UserAtom } from "atoms/UserAtom";
 import Slider from "components/camp-slider/Slider";
 import CampaignTable from "components/campaign-comp/CampaignTable";
@@ -21,15 +21,15 @@ dayjs.extend(relativeTime);
 const MyCamp: NextPage = (): JSX.Element => {
 	const user = useRecoilValue(UserAtom);
 
-	const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
+	const [campaigns, setCampaigns] = useState([]);
 	// const loading = true;
 
-	const { loading } = useQuery(MY_CAMPAIGN, {
+	const { loading } = useQuery(MY_PETITION, {
 		client: apollo,
-		onCompleted: (data) => setCampaigns(data.myCampaign),
+		onCompleted: (data) => setCampaigns(data.myPetition),
 		onError: (e) => console.log(e),
 	});
-	
+
 	return (
 		<FrontLayout showFooter={false}>
 			<>
