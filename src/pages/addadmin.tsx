@@ -10,6 +10,7 @@ import { apollo } from "apollo";
 import { useQuery } from "@apollo/client";
 import { print } from 'graphql';
 import { SERVER_URL } from "utils/constants";
+import { Tooltip, Whisper, Button, ButtonToolbar } from 'rsuite';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -50,16 +51,13 @@ const addadmin = () => {
     useEffect(() => {
         axios.get(`/user`)
             .then(function (response) {
-                // console.log(response.data);
                 setUsers(response.data)
-                const data = JSON.parse(localStorage.getItem("operator")!)
                 const list: any = []
-                data.map((single: any) => {
+                operator.map((single: any) => {
                     response.data.map((user: any) => {
                         if (user.id === single.userId) {
-                            list.push(user)
+                            list.push({ ...user, ...{ "role": single.role } })
                             setOperators(list)
-                            // console.log(user)
                         }
                     })
                 })
@@ -68,17 +66,16 @@ const addadmin = () => {
                 console.log(error);
             })
 
-    }, [])
+    })
 
     const allAdmins = () => {
         setOperators([])
         const list: any = []
-        operator.map((single) => {
-            users.map((user) => {
+        operator.map((single: any) => {
+            users.map((user: any) => {
                 if (user.id === single.userId) {
-                    list.push(user)
+                    list.push({ ...user, ...{ "role": single.role } })
                     setOperators(list)
-                    // console.log(user)
                 }
             })
         })
@@ -102,6 +99,7 @@ const addadmin = () => {
             setLoading(false)
             console.log(data)
             toast.success("Admin added successfully!")
+            location.reload()
         } catch (error) {
             toast.warn("Oops an error occoured")
         }
@@ -123,6 +121,7 @@ const addadmin = () => {
             console.log(data)
             setLoading(false)
             toast.success("Admin Deleted Successfully!")
+            location.reload()
         } catch (error) {
             toast.warn("Oops an error occoured")
         }
@@ -141,6 +140,17 @@ const addadmin = () => {
             }
         })
     }
+    const adminTooltip = (
+        <Tooltip>
+            This person makes, edits, create and promote, posts, petitons, events, update, organization and profile.
+        </Tooltip>
+    );
+    const editorTooltip = (
+        <Tooltip>
+            This person edits posts, petitons, events, update and products.
+        </Tooltip>
+    );
+
     return (
         <FrontLayout >
             <>
@@ -167,10 +177,23 @@ const addadmin = () => {
                         admin === true && admins === true ? (
                             operators.length > 0 ? (
                                 operators.map((org, i) => (
-                                    <div key={i} className="w-full flex px-2 py-1 w-2/3 mx-auto bg-gray-200 my-2 relative">
+                                    <div key={i} className="w-full flex px-2 py-1 w-[80%] mx-auto bg-gray-200 my-2 relative">
                                         <img src={org.image} className="w-12 rounded-full h-12 " alt="" />
-                                        <div className="text-base capitalize ml-4 my-auto">{org?.firstName} {org.lastName}</div>
-                                        <div onClick={() => removeAdmin(org.id)} className="absolute cursor-pointer top-4 right-4">&#10006;</div>
+                                        <div className="text-base capitalize ml-4 w-44 my-auto">{org?.firstName} {org.lastName}</div>
+                                        <div className='mx-auto my-auto text-xm capitalize w-32'>
+                                            {
+                                                org?.role === "admin" ? (<Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={adminTooltip}>
+                                                    <button>{org?.role} &#x1F6C8;</button>
+                                                </Whisper>) : (
+                                                    <Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={editorTooltip}>
+                                                        <button>{org?.role} &#x1F6C8;</button>
+                                                    </Whisper>
+                                                )
+                                            }
+                                        </div>
+                                        <div onClick={() => {
+                                            removeAdmin(org.id);
+                                        }} className="absolute cursor-pointer top-4 right-4">&#10006;</div>
                                     </div>
                                 ))
                             ) : (<div className='text-center text-3xl my-4'>No Admins yet</div>)
@@ -193,7 +216,7 @@ const addadmin = () => {
 
                                         <div className="flex my-1">
                                             <div className="my-auto mx-3">
-                                                <input disabled={editor} type="checkbox" className="p-4" value="admin" onChange={() => { setRole("admin"), setAdminTag(!adminTag) }} />
+                                                <input disabled={editor} type="checkbox" className="p-4" value="admin" checked={role === "admin"} onChange={() => { setRole("admin") }} />
                                             </div>
                                             <div className="my-auto">
                                                 <div className="text-lg font-bold">Admin</div>
@@ -202,7 +225,7 @@ const addadmin = () => {
                                         </div>
                                         <div className="flex my-1">
                                             <div className="my-auto mx-3">
-                                                <input disabled={adminTag} type="checkbox" className="p-4" value="editor" onChange={() => { setRole("editor"), setEditor(!editor) }} />
+                                                <input disabled={adminTag} type="checkbox" className="p-4" value="editor" checked={role === "editor"} onChange={() => { setRole("editor") }} />
                                             </div>
                                             <div className="my-auto">
                                                 <div className="text-lg font-bold">Editor</div>
@@ -231,18 +254,18 @@ const addadmin = () => {
                                         </div>
                                         <div className="flex my-1 justify-between">
                                             <div className="my-auto mx-3">
-                                                <input onChange={() => { setRole("admin"), setAdminTag(!adminTag) }} type="checkbox" className="p-4" />
+                                                <input onChange={() => { setRole("admin") }} type="checkbox" checked={role === "admin"} className="p-4" />
                                             </div>
                                             <div className="my-auto w-2/3">
                                                 <div className="text-lg font-bold">Admin</div>
                                                 <p>Event coverage, Writing and posting of campaigns, Editing of profile and campaigns,
                                                     <br /> Promote campaigns, create an organization, Make update.	</p>
                                             </div>
-                                            <button  className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
+                                            <button className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
                                         </div>
                                         <div className="flex my-3 justify-between">
                                             <div className="my-auto mx-3">
-                                                <input onChange={() => { setRole("editor"), setEditor(!editor) }} type="checkbox" className="p-4" />
+                                                <input onChange={() => { setRole("editor") }} checked={role === "editor"} type="checkbox" className="p-4" />
                                             </div>
                                             <div className="my-auto w-2/3">
                                                 <div className="text-lg font-bold">Editor</div>

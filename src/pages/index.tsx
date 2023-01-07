@@ -336,7 +336,7 @@ const HomePage = () => {
 					</div>
 					{users.slice(0, 3).map((user, index) => (
 						<div key={index} className="flex justify-between my-4">
-							<img src={user.image} className="w-12 m-2 h-12" alt="" />
+							<img src={user.image} className="w-12 m-2 h-12 rounded-full" alt="" />
 							<div className="w-[80%]">
 								<div className="text-base font-light">{user.name} </div>
 								{/* <div className="text-xs">Joshua who you followed

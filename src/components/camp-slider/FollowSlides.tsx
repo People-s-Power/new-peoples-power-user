@@ -96,7 +96,7 @@ const FollowSlides = () => {
                 <SliderTwo {...settings}>
                     {users.map((user, i) => (
                         <div key={i} className="my-4 w-1/2 text-center border p-1">
-                            <img src={user.image} className="w-12 mx-auto h-12" alt="" />
+                            <img src={user.image} className="w-12 mx-auto h-12 rounded-full" alt="" />
                             <div className="">
                                 <div className="text-base font-light">{user.name} </div>
                                 <div className="text-xs"></div>
