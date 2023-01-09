@@ -167,7 +167,7 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean, handelClick(): voi
                 {/* </Modal.Body> */}
                 <Modal.Footer>
                     <button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
-                        {loading ? 'Loading...' : 'Create Event'}
+                        {loading ? 'Loading...' : 'Create Product'}
                     </button>
                 </Modal.Footer>
             </Modal>

@@ -20,7 +20,6 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
                             <div className="text-xs"> <ReactTimeAgo date={advert.createdAt} locale="en-US" /></div>
                         </div>
                     </div>
-
                 </div>
                 <div>
                     sponsored
@@ -29,7 +28,6 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
             <div className='p-2'>
                 <img className="w-full h-50 rounded-md" src={advert.image} alt="" />
             </div>
-
             <div className="text-sm p-2 leading-loose">
                 {advert.message}
             </div>
