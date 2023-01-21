@@ -43,8 +43,8 @@ const token = cookie.get(TOKEN_NAME);
 // });
 
 axios.defaults.baseURL = HTTP_URI;
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common["authorization"] = "Bearer " + token;
+// axios.defaults.withCredentials = true;
+axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 
 Router.events.on("routeChangeStart", () => {
 	Nprogress.start();
@@ -117,7 +117,7 @@ const Layout = ({ children }: { children: React.ReactChild }) => {
 		getEnvironments();
 		async function getUser() {
 			try {
-				const { data } = await axios.get("/auth/me", { withCredentials: true });
+				const { data } = await axios.get("/auth/me");
 				cookie.set("user_id", data?.id);
 
 				setUser(data);

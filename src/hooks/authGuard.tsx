@@ -57,7 +57,7 @@ const authGuard = (
 						cookie: token || "",
 						authorization: "Bearer " + token,
 					},
-					withCredentials: true,
+					// withCredentials: true,
 				});
 				user = data;
 			} catch (error: any) {
