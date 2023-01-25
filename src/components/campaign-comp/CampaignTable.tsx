@@ -13,8 +13,8 @@ import styled from "styled-components";
 import { ICampaign } from "types/Applicant.types";
 import { BASEURL } from "utils/constants";
 
-const CampaignTable = (): JSX.Element => {
-	const campaigns = useRecoilValue<ICampaign[]>(UserCampaignAtom);
+const CampaignTable = ({ campaigns }: { campaigns: any }): JSX.Element => {
+	// const campaigns = useRecoilValue<ICampaign[]>(UserCampaignAtom);
 	// console.log(campaigns);
 	return (
 		<div>
@@ -35,7 +35,7 @@ const CampaignTable = (): JSX.Element => {
 						</tr>
 					</thead>
 					<tbody className="tbody">
-						{campaigns?.map((camp, i) => (
+						{campaigns?.map((camp: any, i: any) => (
 							<SingleRow key={i} camp={camp} />
 						))}
 					</tbody>
@@ -68,7 +68,7 @@ const SingleRow = ({ camp }: { camp: ICampaign }) => {
 				<Link href={`/campaigns/${camp?.slug}`}>
 					<a className="text-decoration-none link-dark">
 						<img src={camp?.image} alt="" />
-						{camp?.title}
+						{camp?.title || camp?.caption}
 					</a>
 				</Link>
 			</td>

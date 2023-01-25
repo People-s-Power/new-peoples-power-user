@@ -88,9 +88,9 @@ const HomePage = () => {
 
 	useEffect(() => {
 		// console.log(author)
-		if (author === null) {
-			window.location.href = `/home`
-		}
+		// if (author === null) {
+		// 	window.location.href = `/home`
+		// }
 		async function getData() {
 			try {
 				const { data } = await axios.post(SERVER_URL + '/graphql', {

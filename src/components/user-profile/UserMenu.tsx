@@ -34,6 +34,11 @@ const UserMenu = (): JSX.Element => {
 							<a className="text-decoration-none text-light c-hand">Settings</a>
 						</Link>
 					</li>
+					{/* <li className="dropdown-item">
+						<Link href="/mycamp">
+							<a className="text-decoration-none text-light c-hand">Manage</a>
+						</Link>
+					</li> */}
 					{user?.accountType === AccountTypeEnum.Staff && (
 						<Fragment>
 							<li className="dropdown-item">
