@@ -87,11 +87,16 @@ const HomePage = () => {
 	}
 
 	useEffect(() => {
-		// console.log(author)
-		// if (author === null) {
-		// 	window.location.href = `/home`
-		// }
+		
 		async function getData() {
+			axios.get(`/user/single/${author?.id}`)
+				.then(function (response) {
+					console.log(response.data.user.orgOperating)
+					response.data.user.orgOperating.map((operating: any) => {
+						setOrgId(operating)
+						refetch()
+					})
+				})
 			try {
 				const { data } = await axios.post(SERVER_URL + '/graphql', {
 					query: print(GET_ALL),
@@ -128,6 +133,10 @@ const HomePage = () => {
 			} catch (err) {
 				console.log(err)
 			}
+		}
+		console.log(author)
+		if (author === null) {
+			window.location.href = `/home`
 		}
 		if (all[0] === undefined) {
 			getData()

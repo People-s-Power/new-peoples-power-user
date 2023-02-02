@@ -135,7 +135,7 @@ const user = () => {
                             setFollow(false)
                         }
                     })
-                    // console.log(response.data.user.orgOperating)
+                    console.log(response.data.user.orgOperating)
                     response.data.user.orgOperating.map((operating: any) => {
                         setOrgId(operating)
                         refetch()
