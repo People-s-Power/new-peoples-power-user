@@ -87,11 +87,10 @@ const HomePage = () => {
 	}
 
 	useEffect(() => {
-		
 		async function getData() {
 			axios.get(`/user/single/${author?.id}`)
 				.then(function (response) {
-					console.log(response.data.user.orgOperating)
+					// console.log(response.data.user.orgOperating)
 					response.data.user.orgOperating.map((operating: any) => {
 						setOrgId(operating)
 						refetch()
@@ -104,7 +103,7 @@ const HomePage = () => {
 						authorId: author?.id
 					}
 				})
-				console.log(data.data.timeline)
+				// console.log(data.data.timeline)
 				let general = [...data.data.timeline.adverts, {
 					"__typename": 'Follow'
 				}, ...data.data.timeline.updates, {
@@ -134,10 +133,10 @@ const HomePage = () => {
 				console.log(err)
 			}
 		}
-		console.log(author)
-		if (author === null) {
-			window.location.href = `/home`
-		}
+		
+		// if (author === null) {
+		// 	window.location.href = `/home`
+		// }
 		if (all[0] === undefined) {
 			getData()
 		}
@@ -383,7 +382,7 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} />
+				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} />
 				<StartPetition open={openPetition} handelClick={handelPetition} data={null} />

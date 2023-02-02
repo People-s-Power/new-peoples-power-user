@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Modal } from 'rsuite';
-import { useState, useRef } from 'react'
+import { Modal, Popover, Whisper } from 'rsuite';
+import { useState, useRef, useEffect } from 'react'
 import { CREATE_POST, UPDATE_POST } from "apollo/queries/postQuery";
 import { Dropdown } from 'rsuite';
 import axios from "axios";
@@ -9,13 +9,14 @@ import { print } from 'graphql';
 
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
-const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean, handelClick(): void, post: any, handelPetition(): void, }): JSX.Element => {
+const CreatePost = ({ open, handelClick, post, handelPetition, orgs }: { open: boolean, handelClick(): void, post: any, handelPetition(): void, orgs: any }): JSX.Element => {
     const [image, setFilePreview] = useState({
         type: post === null ? "" : "image",
         file: post?.image || "",
         name: "",
     })
     const author = useRecoilValue(UserAtom);
+    const [active, setActive] = useState<any>(author)
 
     const [loading, setLoading] = useState(false)
     const [body, setBody] = useState(post?.body || "")
@@ -95,6 +96,26 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
         }
 
     }
+    useEffect(() => {
+        setActive(author)
+        console.log(author)
+    }, [author !== null])
+    const speaker = (
+        <Popover>
+            <div onClick={() => setActive(author)} className="flex m-1">
+                <img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+                <div className="text-sm my-auto">{author?.name}</div>
+            </div>
+            {
+                orgs.map((org: any) => (
+                    <div onClick={() => setActive(org)} className="flex m-1">
+                        <img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+                        <div className="text-sm my-auto">{org?.name}</div>
+                    </div>
+                ))
+            }
+        </Popover>
+    );
 
     return (
         <>
@@ -105,10 +126,12 @@ const CreatePost = ({ open, handelClick, post, handelPetition }: { open: boolean
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="flex">
-                        <img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
-                        <div className="text-sm">{author?.name}</div>
-                    </div>
+                    <Whisper placement="bottom" trigger="click" speaker={speaker}>
+                        <div className="flex">
+                            <img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+                            <div className="text-sm">{active?.name}</div>
+                        </div>
+                    </Whisper>
                     <textarea value={body} onChange={(e) => setBody(e.target.value)} name="" className="w-full h-32 border border-white text-sm" placeholder="Start your complaint..."></textarea>
 
                 </Modal.Body>
