@@ -95,46 +95,47 @@ const org = () => {
         },
         onError: (err) => console.log(err),
     });
-
-    useEffect(() => {
-        async function getData() {
-            try {
-                const { data } = await axios.post(SERVER_URL + '/graphql', {
-                    query: print(GET_ALL),
-                    variables: {
-                        authorId: query?.page
-                    }
-                })
-                console.log(data.data.timeline)
-                let general = [...data.data.timeline.adverts, {
-                    "__typename": 'Follow'
-                }, ...data.data.timeline.updates, {
-                    "__typename": 'Follow'
-                }, ...data.data.timeline.events, {
-                    "__typename": 'Follow'
-                }, ...data.data.timeline.petitions, {
-                    "__typename": 'Follow'
-                }, ...data.data.timeline.posts, {
-                    "__typename": 'Follow'
-                }, ...data.data.timeline.victories, {
-                    "__typename": 'Follow'
-                }]
-                const randomize = (values: any) => {
-                    let index = values.length, randomIndex;
-                    while (index != 0) {
-                        randomIndex = Math.floor(Math.random() * index);
-                        index--;
-                        [values[index], values[randomIndex]] = [
-                            values[randomIndex], values[index]];
-                    }
-                    return values;
+    async function getData() {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(GET_ALL),
+                variables: {
+                    authorId: query.page
                 }
-                randomize(general)
-                setAll(general)
-            } catch (err) {
-                console.log(err)
+            })
+            console.log(data.data.timeline)
+            let general = [...data.data.timeline.adverts, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.updates, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.events, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.petitions, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.posts, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.victories, {
+                "__typename": 'Follow'
+            }]
+            const randomize = (values: any) => {
+                let index = values.length, randomIndex;
+                while (index != 0) {
+                    randomIndex = Math.floor(Math.random() * index);
+                    index--;
+                    [values[index], values[randomIndex]] = [
+                        values[randomIndex], values[index]];
+                }
+                return values;
             }
+            randomize(general)
+            setAll(general)
+        } catch (err) {
+            console.log(err)
         }
+    }
+    
+    useEffect(() => {
+        getData()
         axios.get(`/campaign/orgcampaign/${page}`)
             .then(function (response) {
                 // console.log(response)
@@ -143,8 +144,12 @@ const org = () => {
             .catch(function (error) {
                 console.log(error);
             })
-        console.log(all)
+
+        if (all[0] === undefined) {
+            getData()
+        }
     }, [])
+
     const follow = () => {
         axios.post('/user/follow', {
             userId: page
@@ -310,7 +315,7 @@ const org = () => {
                             </div>
                         ) : (<div></div>)} */}
                     </div>
-                    <Slider />
+                    {/* <Slider /> */}
                     {/* <div className="text-center text-lg p-3">
                         <Link href={`/startcamp`}>
                             <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
@@ -456,10 +461,10 @@ const org = () => {
                         )}
                     </div>
                 </div>
-                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />
+                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
                 <CreateEvent open={openEvent} handelClick={handelEventClick} />
                 <CreateAdvert open={openAd} handelClick={handelAdClick} />
-                <StartPetition open={openPetition} handelClick={handelPetition} data={null} />
+                <StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
                 <ToastContainer />
             </>
         </FrontLayout >

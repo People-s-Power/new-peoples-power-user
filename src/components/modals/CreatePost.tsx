@@ -9,6 +9,7 @@ import { print } from 'graphql';
 
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
+
 const CreatePost = ({ open, handelClick, post, handelPetition, orgs }: { open: boolean, handelClick(): void, post: any, handelPetition(): void, orgs: any }): JSX.Element => {
     const [image, setFilePreview] = useState({
         type: post === null ? "" : "image",
@@ -98,7 +99,6 @@ const CreatePost = ({ open, handelClick, post, handelPetition, orgs }: { open: b
     }
     useEffect(() => {
         setActive(author)
-        console.log(author)
     }, [author !== null])
     const speaker = (
         <Popover>
@@ -107,8 +107,8 @@ const CreatePost = ({ open, handelClick, post, handelPetition, orgs }: { open: b
                 <div className="text-sm my-auto">{author?.name}</div>
             </div>
             {
-                orgs.map((org: any) => (
-                    <div onClick={() => setActive(org)} className="flex m-1">
+                orgs.map((org: any, index: number) => (
+                    <div onClick={() => setActive(org)} key={index} className="flex m-1">
                         <img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
                         <div className="text-sm my-auto">{org?.name}</div>
                     </div>

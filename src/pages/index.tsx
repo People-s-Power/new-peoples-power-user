@@ -133,7 +133,7 @@ const HomePage = () => {
 				console.log(err)
 			}
 		}
-		
+
 		// if (author === null) {
 		// 	window.location.href = `/home`
 		// }
@@ -302,37 +302,37 @@ const HomePage = () => {
 								// setType(single.__typename)
 								switch (single.__typename) {
 									case 'Advert':
-										return (<div>
-											<AdvertsComp advert={single} key={index} />
+										return (<div key={index} >
+											<AdvertsComp advert={single} />
 										</div>
 										)
 									case 'Event':
-										return (<div>
-											<EventsCard key={index} event={single} />
+										return (<div key={index} >
+											<EventsCard event={single} />
 										</div>
 										)
 									case 'Petition':
-										return (<div>
-											<PetitionComp petition={single} key={index} />
+										return (<div key={index} >
+											<PetitionComp petition={single} />
 										</div>
 										)
 									case 'Victory':
-										return (<div>
+										return (<div key={index} >
 											victories
 										</div>
 										)
 									case 'Post':
-										return (<div>
-											<CampComp key={index} post={single} />
+										return (<div key={index} >
+											<CampComp post={single} />
 										</div>
 										)
 									case 'Update':
-										return (<div>
-											<Updates key={index} updates={single} />
+										return (<div key={index} >
+											<Updates updates={single} />
 										</div>
 										)
 									case 'Follow':
-										return (<div>
+										return (<div key={index} >
 											<FollowSlides />
 										</div>
 										)
@@ -382,10 +382,10 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
+				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs}  data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
-				<CreateEvent open={openEvent} handelClick={handelEventClick} />
-				<CreateAdvert open={openAd} handelClick={handelAdClick} />
-				<StartPetition open={openPetition} handelClick={handelPetition} data={null} />
+				{/* <CreateEvent open={openEvent} handelClick={handelEventClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} /> */}
 				<ToastContainer />
 			</main>
 		</FrontLayout>

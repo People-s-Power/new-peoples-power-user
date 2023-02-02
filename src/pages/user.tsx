@@ -480,10 +480,10 @@ const user = () => {
                         </div>
                     </div>
                 </div >
-                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />
+                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
                 <CreateEvent open={openEvent} handelClick={handelEventClick} />
                 <CreateAdvert open={openAd} handelClick={handelAdClick} />
-                <StartPetition open={openPetition} handelClick={handelPetition} data={null} />
+                <StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
                 <ToastContainer />
             </>
         </FrontLayout >
