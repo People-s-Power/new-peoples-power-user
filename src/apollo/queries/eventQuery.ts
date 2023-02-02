@@ -60,8 +60,8 @@ export const CREATE_EVENT = gql
 }`
 
 export const MY_EVENT = gql
-  `mutation authorEvents($authorId: String!, $page: Int!, $limit: Int!){
-    authorEvents (name: $authorId, page: $page, limit: $limit){
+  `query authorEvents($authorId: ID!, $page: Int!, $limit: Int!){
+    authorEvents (authorId: $authorId, page: $page, limit: $limit){
         _id
         audience
         authorId

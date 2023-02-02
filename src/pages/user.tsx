@@ -58,17 +58,18 @@ const user = () => {
     const [following, setFollow] = useState(false)
     const [orgId, setOrgId] = useState("")
     const [all, setAll] = useState([]);
-
+    const [ad, setAd] = useState([]);
     const [petition, setPetition] = useState([])
     const [post, setPost] = useState([])
+    const [events, setEvents] = useState([]);
 
     let page: any;
     if (typeof window !== 'undefined') {
         page = localStorage.getItem('page');
     }
     const getGeneral = () => {
-        if (petition.length === 0 && post.length === 0) { } else {
-            let general = [...petition, ...post]
+        if (petition.length === 0 && post.length === 0 && ad.length === 0 && events.length === 0) { } else {
+            let general = [...petition, ...post, ...ad, ...events]
             const randomize = (values: any) => {
                 let index = values.length, randomIndex;
                 while (index != 0) {
@@ -81,7 +82,7 @@ const user = () => {
             }
             randomize(general)
             setAll(general)
-            console.log(all)
+            // console.log(all)
         }
     }
     useQuery(GET_ORGANIZATIONS, {
@@ -109,7 +110,9 @@ const user = () => {
         client: apollo,
         variables: { authorId: author?.id },
         onCompleted: (data) => {
-            console.log(data)
+            // console.log(data)
+            setAd(data.myAdverts)
+            getGeneral()
         },
         onError: (err) => {
         },
@@ -117,7 +120,7 @@ const user = () => {
     useQuery(GET_USER_POSTS, {
         client: apollo,
         onCompleted: (data) => {
-            // console.log(data)
+            console.log(data)
             setPost(data.myPosts)
             getGeneral()
         },
@@ -130,11 +133,13 @@ const user = () => {
             const { data } = await axios.post(SERVER_URL + '/graphql', {
                 query: print(MY_EVENT),
                 variables: {
-                    authorId: query?.page,
-                    page: 1
+                    authorId: query.page,
+                    page: 1,
+                    limit: 10
                 }
             })
-            console.log(data)
+            // console.log()
+            setEvents(data.data.authorEvents)
         } catch (error) {
             console.log(error);
         }
@@ -430,18 +435,18 @@ const user = () => {
                                     // setType(single.__typename)
                                     switch (single.__typename) {
                                         case 'Advert':
-                                            return (<div>
-                                                <AdvertsComp advert={single} key={index} />
+                                            return (<div key={index}>
+                                                <AdvertsComp advert={single} />
                                             </div>
                                             )
                                         case 'Event':
-                                            return (<div>
-                                                <EventsCard key={index} event={single} />
+                                            return (<div key={index}>
+                                                <EventsCard event={single} />
                                             </div>
                                             )
                                         case 'Petition':
-                                            return (<div>
-                                                <PetitionComp petition={single} key={index} />
+                                            return (<div key={index}>
+                                                <PetitionComp petition={single} />
                                             </div>
                                             )
                                         case 'Victory':
@@ -450,8 +455,8 @@ const user = () => {
                                             </div>
                                             )
                                         case 'Post':
-                                            return (<div>
-                                                <CampComp key={index} post={single} />
+                                            return (<div key={index}>
+                                                <CampComp post={single} />
                                             </div>
                                             )
                                     }

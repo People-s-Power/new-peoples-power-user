@@ -17,6 +17,23 @@ import router, { useRouter } from "next/router";
 import { GET_ORGANIZATION, GET_ORGANIZATIONS } from "apollo/queries/orgQuery";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { SERVER_URL } from "utils/constants";
+
+import CreatePost from "../../components/modals/CreatePost"
+import CreateAdvert from "../../components/modals/CreateAdvert"
+import CreateEvent from "../../components/modals/CreateEvent"
+import StartPetition from "../../components/modals/StartPetition"
+
+import { MY_PETITION } from "apollo/queries/petitionQuery";
+import { MY_EVENT } from "apollo/queries/eventQuery";
+import { GET_USER_POSTS } from 'apollo/queries/postQuery'
+import { MY_ADVERTS } from "apollo/queries/advertsQuery";
+
+import AdvertsComp from 'components/AdvertsCard';
+import PetitionComp from 'components/PetitionCard';
+import EventsCard from 'components/EventsCard';
+import CampComp from 'components/CampComp';
+import { print } from 'graphql';
 
 const org = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
@@ -30,6 +47,20 @@ const org = () => {
     const uploadRef = useRef<HTMLInputElement>(null);
     const [following, setFollow] = useState(false)
 
+    const [openPost, setOpenPost] = useState(false);
+    const [openAd, setOpenAd] = useState(false);
+    const [openEvent, setOpenEvent] = useState(false);
+    const [openPetition, setOpenPetition] = useState(false);
+    const [all, setAll] = useState([]);
+
+    const handelClick = () => setOpenPost(!openPost);
+    const handelPetition = () => setOpenPetition(!openPetition);
+    const handelAdClick = () => setOpenAd(!openAd);
+    const handelEventClick = () => setOpenEvent(!openEvent);
+
+    const [petition, setPetition] = useState([])
+    const [post, setPost] = useState([])
+
     let page: any;
     if (typeof window !== 'undefined') {
         page = localStorage.getItem('page');
@@ -42,6 +73,70 @@ const org = () => {
             return false;
         }
     }
+    const getGeneral = () => {
+        if (petition.length === 0 && post.length === 0) { } else {
+            let general = [...petition, ...post]
+            const randomize = (values: any) => {
+                let index = values.length, randomIndex;
+                while (index != 0) {
+                    randomIndex = Math.floor(Math.random() * index);
+                    index--;
+                    [values[index], values[randomIndex]] = [
+                        values[randomIndex], values[index]];
+                }
+                return values;
+            }
+            randomize(general)
+            setAll(general)
+            console.log(all)
+        }
+    }
+
+    useQuery(MY_PETITION, {
+        client: apollo,
+        onCompleted: (data) => {
+            // console.log(data)
+            setPetition(data.myPetition)
+            getGeneral()
+        },
+        onError: (err) => {
+        },
+    });
+    useQuery(MY_ADVERTS, {
+        client: apollo,
+        variables: { authorId: author?.id },
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        onError: (err) => {
+        },
+    });
+    useQuery(GET_USER_POSTS, {
+        client: apollo,
+        onCompleted: (data) => {
+            // console.log(data)
+            setPost(data.myPosts)
+            getGeneral()
+        },
+        onError: (err) => {
+        },
+    });
+
+    const getEvent = async () => {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(MY_EVENT),
+                variables: {
+                    authorId: query?.page,
+                    page: 1
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useQuery(GET_ORGANIZATION, {
         variables: { ID: query.page },
         client: apollo,
@@ -71,6 +166,7 @@ const org = () => {
     });
 
     useEffect(() => {
+        getEvent()
         axios.get(`/campaign/orgcampaign/${page}`)
             .then(function (response) {
                 // console.log(response)
@@ -318,68 +414,83 @@ const org = () => {
                                 <button className="btn bg-warning p-2 px-8 my-3 mx-auto text-white w-44">Suscribe</button>
                             </div>
                         </div>) : (<div className='w-full'>
-                            {campaigns.length === 0 ? (<div className="text-center">You dont have any campaign at the moment</div>) : (<></>)}
-                            {campaigns.map((camp, i) => (
-                                <div key={i} className="mt-3 bg-gray-50 w-full rounded-md flex relative">
-                                    <div className='absolute right-2 top-2'>
-                                        <div className="dropdown">
-                                            <a className="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            </a>
-
-                                            <ul className="dropdown-menu">
-                                                <li>
-                                                    <Link href={`/promote?slug=${camp?.slug}`}>
-                                                        <a className="btn pl-2">{camp?.promoted ? "Upgrade" : "Promote"}</a>
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link href={`/editcamp?page=${camp?.slug}`}>
-                                                        <a className="btn pl-2">Edit</a>
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link href={`/updates?page=${camp?.id}/${camp?.slug}`}>
-                                                        <a className="btn pl-2">Add Updates</a>
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div className="w-96 mr-4">
-                                        <img className="w-96 h-full" src={camp.image} alt="" />
-                                    </div>
-
-                                    <div className="w-full my-auto">
-                                        <div className="uppercase text-lg font-bold">{camp.title}</div>
-                                        <div className="text-sm">{camp.excerpt}</div>
-                                        <div className="flex justify-between mr-10">
-                                            <div>
-                                                <div className="text-gray-900 text-xs"> Created At {camp.createdAt.slice(0, 10)}</div>
-                                                {/* <div className="text-gray-900 text-xs">Created By { } Alabo Excel</div> */}
-                                            </div>
-                                            {/* <div className="flex cursor-pointer">
-                                                {camp?.author.image === null ? (
-                                                    <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-                                                ) : (
-                                                    <img className="w-8 h-8 " src={camp?.author.image} alt="" />
-                                                )}
-                                                <p className="pl-2 mt-2">{user?.name} </p>
-                                            </div> */}
-                                            <p className="fst-italic">
-                                                <i className="fa fa-users lg:mr-8"></i>
-                                                {(camp?.endorsements?.length) + 1} Supporters
-                                            </p>
-                                        </div>
-                                        <Link href={`/campaigns/${camp?.slug}`}>
-                                            <button className="btn btn-warning mt-2">Read More</button>
-                                        </Link>
+                            <div className="border-b border-gray-200">
+                                <div className="flex justify-center">
+                                    <img src={author?.image} className="w-14 h-14 mx-4 rounded-full" alt="" />
+                                    <div onClick={() => handelClick()} className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm cursor-pointer">
+                                        What are your social concerns?
                                     </div>
                                 </div>
-                            ))}
-                        </div>)}
+                                <div className="flex justify-evenly my-4">
+                                    <div className="flex w-16 justify-between">
+                                        <div onClick={() => handelClick()} className="w-6 cursor-pointer">
+                                            <img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
+                                        </div>
+                                        <div onClick={() => handelClick()} className="w-6 cursor-pointer">
+                                            <img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
+                                        </div>
+                                    </div>
+                                    <div className="flex  cursor-pointer" >
+                                        <img className="w-6 h-6 my-auto" src="/images/home/icons/experts.svg" alt="" />
+                                        <div className="my-auto text-sm ml-3">
+                                            Find Expert
+                                        </div>
+                                    </div>
+                                    <div className="flex  cursor-pointer" onClick={() => handelEventClick()} >
+                                        <img className="w-6 h-6 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
+                                        <div className="my-auto text-sm ml-3">Events</div>
+                                    </div>
+                                    <div className="flex  cursor-pointer" onClick={() => handelPetition()}>
+                                        <img className="w-6 h-6 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
+                                        <div className="my-auto text-sm ml-3">Start Petition</div>
+                                    </div>
+                                </div>
+                                <div className="text-gray-500 text-center text-xs p-3">
+                                    14 New Post
+                                </div>
+                            </div>
+                            {all.length === 0 ? (<div className="text-center">You dont have any campaign at the moment</div>) : (<></>)}
+                            {
+                                all[0] !== undefined ? all.map((single: any, index: number) => {
+                                    // setType(single.__typename)
+                                    switch (single.__typename) {
+                                        case 'Advert':
+                                            return (<div>
+                                                <AdvertsComp advert={single} key={index} />
+                                            </div>
+                                            )
+                                        case 'Event':
+                                            return (<div>
+                                                <EventsCard key={index} event={single} />
+                                            </div>
+                                            )
+                                        case 'Petition':
+                                            return (<div>
+                                                <PetitionComp petition={single} key={index} />
+                                            </div>
+                                            )
+                                        case 'Victory':
+                                            return (<div>
+                                                victories
+                                            </div>
+                                            )
+                                        case 'Post':
+                                            return (<div>
+                                                <CampComp key={index} post={single} />
+                                            </div>
+                                            )
+                                    }
+                                })
+                                    : null
+                            }
+                        </div>
+                        )}
                     </div>
                 </div>
+                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />
+                <CreateEvent open={openEvent} handelClick={handelEventClick} />
+                <CreateAdvert open={openAd} handelClick={handelAdClick} />
+                <StartPetition open={openPetition} handelClick={handelPetition} data={null} />
                 <ToastContainer />
             </>
         </FrontLayout >
