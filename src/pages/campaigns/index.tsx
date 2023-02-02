@@ -23,6 +23,7 @@ const CampaignPage: () => JSX.Element = () => {
 		onCompleted: (data) => {
 			console.log(data)
 			setCamp(data.getPetitions)
+			setQueryCampaigns(data.getPetitions)
 		},
 		onError: (err) => console.log(err),
 	});
@@ -87,7 +88,6 @@ const CampaignPage: () => JSX.Element = () => {
 		router.push('/startcamp')
 	}
 	const changeCategory = (event: React.MouseEvent<HTMLDivElement>): void => {
-
 		const item: any = event.currentTarget
 		const text = item?.lastChild?.innerText
 		if (text === 'All') {
@@ -146,14 +146,13 @@ const CampaignPage: () => JSX.Element = () => {
 								))}
 						</div>
 
-						{/* <div
+						<div
 							className='px-20 w-1/2 text-center py-3 rounded-xl mt-5 text-black m-auto bg-gray-200 cursor-pointer'
-							onClick={handleClick}
 						>
 							Do you think you have a social concern? <br />
 							Start writing your own Campaign...  <span>&#x270E;</span>
 
-						</div> */}
+						</div>
 					</div>
 				</div>
 			</Wrapper>
