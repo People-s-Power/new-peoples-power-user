@@ -36,6 +36,7 @@ import AdvertsComp from 'components/AdvertsCard';
 import PetitionComp from 'components/PetitionCard';
 import EventsCard from 'components/EventsCard';
 import CampComp from 'components/CampComp';
+import PostActionCard from 'components/PostActionCard';
 
 const user = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
@@ -62,6 +63,11 @@ const user = () => {
     const [petition, setPetition] = useState([])
     const [post, setPost] = useState([])
     const [events, setEvents] = useState([]);
+
+    const [openFindExpart, setOpenFindExpart] = useState(false);
+
+    const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart);
+
 
     let page: any;
     if (typeof window !== 'undefined') {
@@ -393,41 +399,7 @@ const user = () => {
                         </div>) : (<div className='w-full'>
                             {
                                 query.page === author?.id ? (
-                                    <div className="border-b border-gray-200">
-                                        <div className="flex justify-center">
-                                            <img src={author?.image} className="w-14 h-14 mx-4 rounded-full" alt="" />
-                                            <div onClick={() => handelClick()} className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm cursor-pointer">
-                                                What are your social concerns?
-                                            </div>
-                                        </div>
-                                        <div className="flex justify-evenly my-4">
-                                            <div className="flex w-16 justify-between">
-                                                <div onClick={() => handelClick()} className="w-6 cursor-pointer">
-                                                    <img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
-                                                </div>
-                                                <div onClick={() => handelClick()} className="w-6 cursor-pointer">
-                                                    <img className="w-6 h-6 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
-                                                </div>
-                                            </div>
-                                            <div className="flex  cursor-pointer" >
-                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/experts.svg" alt="" />
-                                                <div className="my-auto text-sm ml-3">
-                                                    Find Expert
-                                                </div>
-                                            </div>
-                                            <div className="flex  cursor-pointer" onClick={() => handelEventClick()} >
-                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
-                                                <div className="my-auto text-sm ml-3">Events</div>
-                                            </div>
-                                            <div className="flex  cursor-pointer" onClick={() => handelPetition()}>
-                                                <img className="w-6 h-6 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
-                                                <div className="my-auto text-sm ml-3">Start Petition</div>
-                                            </div>
-                                        </div>
-                                        <div className="text-gray-500 text-center text-xs p-3">
-                                            14 New Post
-                                        </div>
-                                    </div>
+                                    <PostActionCard authorImage={author?.image} handelOpenFindExpart={handelOpenFindExpart} handelClick={handelClick} handelEventClick={handelEventClick} handelPetition={handelPetition} />
                                 ) : null
                             }
                             {
