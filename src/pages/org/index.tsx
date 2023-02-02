@@ -24,10 +24,7 @@ import CreateAdvert from "../../components/modals/CreateAdvert"
 import CreateEvent from "../../components/modals/CreateEvent"
 import StartPetition from "../../components/modals/StartPetition"
 
-import { MY_PETITION } from "apollo/queries/petitionQuery";
-import { MY_EVENT } from "apollo/queries/eventQuery";
-import { GET_USER_POSTS } from 'apollo/queries/postQuery'
-import { MY_ADVERTS } from "apollo/queries/advertsQuery";
+import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
 
 import AdvertsComp from 'components/AdvertsCard';
 import PetitionComp from 'components/PetitionCard';
@@ -51,15 +48,12 @@ const org = () => {
     const [openAd, setOpenAd] = useState(false);
     const [openEvent, setOpenEvent] = useState(false);
     const [openPetition, setOpenPetition] = useState(false);
-    const [all, setAll] = useState([]);
+    const [all, setAll] = useState<any>([])
 
     const handelClick = () => setOpenPost(!openPost);
     const handelPetition = () => setOpenPetition(!openPetition);
     const handelAdClick = () => setOpenAd(!openAd);
     const handelEventClick = () => setOpenEvent(!openEvent);
-
-    const [petition, setPetition] = useState([])
-    const [post, setPost] = useState([])
 
     let page: any;
     if (typeof window !== 'undefined') {
@@ -73,75 +67,12 @@ const org = () => {
             return false;
         }
     }
-    const getGeneral = () => {
-        if (petition.length === 0 && post.length === 0) { } else {
-            let general = [...petition, ...post]
-            const randomize = (values: any) => {
-                let index = values.length, randomIndex;
-                while (index != 0) {
-                    randomIndex = Math.floor(Math.random() * index);
-                    index--;
-                    [values[index], values[randomIndex]] = [
-                        values[randomIndex], values[index]];
-                }
-                return values;
-            }
-            randomize(general)
-            setAll(general)
-            console.log(all)
-        }
-    }
-
-    useQuery(MY_PETITION, {
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data)
-            setPetition(data.myPetition)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-    useQuery(MY_ADVERTS, {
-        client: apollo,
-        variables: { authorId: author?.id },
-        onCompleted: (data) => {
-            console.log(data)
-        },
-        onError: (err) => {
-        },
-    });
-    useQuery(GET_USER_POSTS, {
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data)
-            setPost(data.myPosts)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-
-    const getEvent = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(MY_EVENT),
-                variables: {
-                    authorId: query?.page,
-                    page: 1
-                }
-            })
-            console.log(data)
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     useQuery(GET_ORGANIZATION, {
         variables: { ID: query.page },
         client: apollo,
         onCompleted: (data) => {
-            console.log(data.getOrganzation)
+            // console.log(data.getOrganzation)
             setUser(data.getOrganzation)
             user?.followers.map((single: any) => {
                 if (single === user.id) {
@@ -166,7 +97,44 @@ const org = () => {
     });
 
     useEffect(() => {
-        getEvent()
+        async function getData() {
+            try {
+                const { data } = await axios.post(SERVER_URL + '/graphql', {
+                    query: print(GET_ALL),
+                    variables: {
+                        authorId: query?.page
+                    }
+                })
+                console.log(data.data.timeline)
+                let general = [...data.data.timeline.adverts, {
+                    "__typename": 'Follow'
+                }, ...data.data.timeline.updates, {
+                    "__typename": 'Follow'
+                }, ...data.data.timeline.events, {
+                    "__typename": 'Follow'
+                }, ...data.data.timeline.petitions, {
+                    "__typename": 'Follow'
+                }, ...data.data.timeline.posts, {
+                    "__typename": 'Follow'
+                }, ...data.data.timeline.victories, {
+                    "__typename": 'Follow'
+                }]
+                const randomize = (values: any) => {
+                    let index = values.length, randomIndex;
+                    while (index != 0) {
+                        randomIndex = Math.floor(Math.random() * index);
+                        index--;
+                        [values[index], values[randomIndex]] = [
+                            values[randomIndex], values[index]];
+                    }
+                    return values;
+                }
+                randomize(general)
+                setAll(general)
+            } catch (err) {
+                console.log(err)
+            }
+        }
         axios.get(`/campaign/orgcampaign/${page}`)
             .then(function (response) {
                 // console.log(response)
@@ -175,6 +143,7 @@ const org = () => {
             .catch(function (error) {
                 console.log(error);
             })
+        console.log(all)
     }, [])
     const follow = () => {
         axios.post('/user/follow', {
