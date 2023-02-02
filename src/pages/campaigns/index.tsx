@@ -1,5 +1,5 @@
 import { apollo } from "apollo";
-import { GET_CAMPAIGNS } from "apollo/queries/campaignQuery";
+import { GET_ACTIVE_PETITION, GET_PETITION } from "apollo/queries/petitionQuery";
 import CampaignCard from "components/home/CampCard";
 import FrontLayout from "layout/FrontLayout";
 import { NextPage } from "next";
@@ -10,16 +10,22 @@ import Link from "next/link";
 import { useRouter } from 'next/router'
 import CampaignSlider from "../../components/camp-slider/Slider"
 // import { ApolloProvider } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 
-const CampaignPage: NextPage<{ campaigns: ICampaign[] }> = ({
-	campaigns,
-}: { campaigns: ICampaign[] }): JSX.Element => {
-
-	console.log(campaigns)
-
+const CampaignPage: () => JSX.Element = () => {
+	const [campaigns, setCamp] = useState([])
 	const [searchTerm, setSearchTerm] = useState("");
 	const [queryCampaigns, setQueryCampaigns] = useState<ICampaign[]>([]);
+
+	useQuery(GET_PETITION, {
+		client: apollo,
+		onCompleted: (data) => {
+			console.log(data)
+			setCamp(data.getPetitions)
+		},
+		onError: (err) => console.log(err),
+	});
 
 	useEffect(() => {
 		setQueryCampaigns(campaigns)
@@ -88,8 +94,8 @@ const CampaignPage: NextPage<{ campaigns: ICampaign[] }> = ({
 			setQueryCampaigns(campaigns)
 			return
 		}
-		const results = campaigns.filter(itemCamp => itemCamp.category === text)
-		setQueryCampaigns(results)
+		// const results = campaigns.filter(itemCamp => itemCamp.category === text)
+		// setQueryCampaigns(results)
 	}
 	return (
 		<FrontLayout>
@@ -127,7 +133,7 @@ const CampaignPage: NextPage<{ campaigns: ICampaign[] }> = ({
 								</select>
 							</div>
 						</div>
-						<CampaignSlider />
+						{/* <CampaignSlider /> */}
 						<div className="campaign-list mt-8">
 							{queryCampaigns
 								.filter((camp) =>
@@ -140,14 +146,14 @@ const CampaignPage: NextPage<{ campaigns: ICampaign[] }> = ({
 								))}
 						</div>
 
-						<div
+						{/* <div
 							className='px-20 w-1/2 text-center py-3 rounded-xl mt-5 text-black m-auto bg-gray-200 cursor-pointer'
 							onClick={handleClick}
 						>
 							Do you think you have a social concern? <br />
 							Start writing your own Campaign...  <span>&#x270E;</span>
-							
-						</div>
+
+						</div> */}
 					</div>
 				</div>
 			</Wrapper>
@@ -161,21 +167,3 @@ const Wrapper = styled.div`
 	.campaign-list {
 	}
 `;
-
-CampaignPage.getInitialProps = async (): Promise<{
-	campaigns: ICampaign[];
-}> => {
-	try {
-		const { data } = await apollo.query({
-			query: GET_CAMPAIGNS,
-		});
-		const campaigns: ICampaign[] = data?.getCampaigns;
-		return {
-			campaigns,
-		};
-	} catch (error) {
-		return {
-			campaigns: [],
-		};
-	}
-};
