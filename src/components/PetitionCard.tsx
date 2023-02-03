@@ -113,8 +113,8 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
                     }
                 </Dropdown>
             </div>
-            <AddUpdates open={openUpdates} handelClick={handelUpdates} petition={petition} />
-            <StartPetition open={openPetition} handelClick={handelPetition} data={petition} />
+            <AddUpdates open={openUpdates} handelClick={handelUpdates} petition={petition}  />
+            <StartPetition open={openPetition} handelClick={handelPetition} data={petition} orgs={null} />
             <CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />
             <ToastContainer />
         </div>

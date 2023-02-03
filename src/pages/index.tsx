@@ -382,7 +382,7 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs}  data={null} />
+				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				{/* <CreateEvent open={openEvent} handelClick={handelEventClick} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} /> */}

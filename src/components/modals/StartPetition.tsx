@@ -68,7 +68,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean, hande
                     aim: aim,
                     target: target,
                     body: body,
-                    author: active.id || active._id
+                    author: active._id || active.id
                 });
                 console.log(data)
                 setLoading(false)
@@ -127,9 +127,11 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean, hande
                 <div className="text-sm my-auto">{author?.name}</div>
             </div>
             {
-                orgs !== undefined ? (
+                orgs !== null ? (
                     orgs.map((org: any, index: number) => (
-                        <div onClick={() => setActive(org)} key={index} className="flex m-1 cursor-pointer">
+                        <div onClick={() => {
+                            setActive(org)
+                        }} key={index} className="flex m-1 cursor-pointer">
                             <img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
                             <div className="text-sm my-auto">{org?.name}</div>
                         </div>
@@ -148,14 +150,18 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean, hande
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className='my-2'>
-                        <Whisper placement="bottom" trigger="click" speaker={speaker}>
-                            <div className="flex cursor-pointer">
-                                <img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
-                                <div className="text-sm my-auto">{active?.name}</div>
+                    {
+                        orgs !== null ? (
+                            <div className='my-2'>
+                                <Whisper placement="bottom" trigger="click" speaker={speaker}>
+                                    <div className="flex cursor-pointer">
+                                        <img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+                                        <div className="text-sm my-auto">{active?.name}</div>
+                                    </div>
+                                </Whisper>
                             </div>
-                        </Whisper>
-                    </div>
+                        ) : null
+                    }
                     <div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
                         {image?.type === "image" && (
                             <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />
