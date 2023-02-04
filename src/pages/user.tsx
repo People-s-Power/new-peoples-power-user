@@ -352,7 +352,7 @@ const user = () => {
                                     <div className="p-3 border-b border-gray-400 my-3">
                                         <div>{advert.caption}</div>
                                         <div className='py-2'>
-                                            <img className="w-full h-50 rounded-md" src={advert.image} alt="" />
+                                            <img className="w-full h-80 object-cover rounded-md" src={advert.image} alt="" />
                                         </div>
                                         <div className="text-sm py-2 leading-loose">
                                             {advert.message}
