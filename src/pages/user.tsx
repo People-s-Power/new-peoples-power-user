@@ -22,7 +22,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
-
+import { MY_ADVERTS } from "apollo/queries/advertsQuery";
 import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
 
 import CreatePost from "../components/modals/CreatePost"
@@ -33,6 +33,7 @@ import AdvertsComp from 'components/AdvertsCard';
 import PetitionComp from 'components/PetitionCard';
 import EventsCard from 'components/EventsCard';
 import CampComp from 'components/CampComp';
+import { Dropdown } from 'rsuite';
 
 const user = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
@@ -55,7 +56,7 @@ const user = () => {
     const [following, setFollow] = useState(false)
     const [orgId, setOrgId] = useState("")
     const [all, setAll] = useState<any>([])
-
+    const [adverts, setAdverts] = useState<any>([])
 
     let page: any;
     if (typeof window !== 'undefined') {
@@ -71,6 +72,17 @@ const user = () => {
         },
         onError: (err) => {
             // console.log(err)
+        },
+    });
+
+    useQuery(MY_ADVERTS, {
+        client: apollo,
+        variables: { authorId: author?.id },
+        onCompleted: (data) => {
+            console.log(data)
+            setAdverts(data.myAdverts)
+        },
+        onError: (err) => {
         },
     });
 
@@ -127,15 +139,15 @@ const user = () => {
             axios.get(`/user/single/${query.page}`)
                 .then(function (response) {
                     setUser(response.data.user)
+                    console.log(response.data)
                     response.data.user.followers.map((single: any) => {
-                        // console.log(response.data)
                         if (single === author.id) {
                             setFollow(true)
                         } else {
                             setFollow(false)
                         }
                     })
-                    console.log(response.data.user.orgOperating)
+                    console.log(response.data.user)
                     response.data.user.orgOperating.map((operating: any) => {
                         setOrgId(operating)
                         refetch()
@@ -152,7 +164,7 @@ const user = () => {
         if (all[0] === undefined) {
             getData()
         }
-    }, [])
+    }, [user !== null])
 
     const { refetch } = useQuery(GET_ORGANIZATION, {
         variables: { ID: orgId },
@@ -221,9 +233,9 @@ const user = () => {
                                 <div className="flex flex-column justify-center">
                                     <div className='flex'>
                                         <div className="text-xl font-bold ">{user?.name}</div>
-                                        <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followersCount} Followers
+                                        <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers.length} Followers
                                             <div className="text-xs text-gray-900 ml-2">
-                                                Following {user?.followingCount}
+                                                Following {user?.following.length}
                                             </div>
                                         </div>
                                     </div>
@@ -236,7 +248,7 @@ const user = () => {
                                     </div>
                                 </div>
                                 <div className="font-black text-lg">
-                                    <Link href={`mycamp/profile`}>
+                                    <Link href={`/mycamp/profile`}>
                                         <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                     </Link>
                                 </div>
@@ -335,9 +347,30 @@ const user = () => {
                                 </div>
                                 <div className="my-auto text-sm">Create Product</div>
                             </div>
-
                             <div>
-
+                                {adverts.map((advert: any) => (
+                                    <div className="p-3 border-b border-gray-400 my-3">
+                                        <div>{advert.caption}</div>
+                                        <div className='py-2'>
+                                            <img className="w-full h-50 rounded-md" src={advert.image} alt="" />
+                                        </div>
+                                        <div className="text-sm py-2 leading-loose">
+                                            {advert.message}
+                                        </div>
+                                        <div className="pt-3 flex justify-between">
+                                            <div className='w-2/3'>{advert.email}</div>
+                                            <div>
+                                                <button className="p-2 bg-warning ">
+                                                    Sign up
+                                                </button>
+                                            </div>
+                                            <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
+                                                <Dropdown.Item>Advertise</Dropdown.Item>
+                                                <Dropdown.Item>Edit</Dropdown.Item>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>) : (<div className='w-full'>
                             {

@@ -360,7 +360,7 @@ const HomePage = () => {
 							</div>
 						</div>
 					))}
-					<Link href="connection">
+					<Link href="/connection">
 						<div className="text-sm text-warning cursor-pointer">view who you followed is following</div>
 					</Link>
 					<div className="p-2">

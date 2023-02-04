@@ -263,9 +263,9 @@ const org = () => {
                                         <div className="flex flex-column justify-center">
                                             <div className='flex'>
                                                 <div className="text-xl font-bold ">{user?.name}</div>
-                                                <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers} Followers
+                                                <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers.length} Followers
                                                     <div className="text-xs text-gray-900 ml-2">
-                                                        Following {user?.following}
+                                                        Following {user?.following.length}
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,7 +275,7 @@ const org = () => {
                                             <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
                                         </div>
                                         <div className="font-black text-lg mr-32">
-                                            <Link href={`org/update?page=${user?._id}`}>
+                                            <Link href={`/org/update?page=${user?._id}`}>
                                                 <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                             </Link>
                                         </div>
