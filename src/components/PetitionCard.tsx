@@ -71,10 +71,10 @@ const PetitionComp = ({ petition, }: { petition: any }): JSX.Element => {
 
             </div>
             <div className="text-sm p-2 leading-loose">
-                {petition.body}
+                {petition.excerpt}
             </div>
             <div className='p-2'>
-                <img className="w-full h-50 rounded-md" src={petition.image} alt="" />
+                <img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
             </div>
             <div className="pt-3 flex justify-between">
                 {/* <div className="flex">
