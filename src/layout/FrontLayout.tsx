@@ -12,7 +12,7 @@ const FrontLayout: React.FC<IProps> = ({
 	showFooter,
 	children,
 }: IProps): JSX.Element => {
-	const text = `PEOPLE'S POWER`
+	const text = `CITIZEN PLAINT`
 	return (
 		<Fragment>
 			<title>{ text }</title>

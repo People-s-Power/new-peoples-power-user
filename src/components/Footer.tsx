@@ -40,7 +40,7 @@ const Footer = (): JSX.Element => {
 						<ul className="lg:w-2/3 ">
 							<li className="mb-4 fs-4 fw-bold">About us</li>
 							<li className="">
-								<strong>{`PEOPLE'S POWER`}</strong> is a web-based technology for those
+								<strong>{`CITIZEN PLAINT`}</strong> is a web-based technology for those
 								facing Social injustice and Human Right abuse. It is created
 								to inspire people to cause a change in their local
 								communities. The forum enables one or group to launch a
@@ -126,7 +126,7 @@ const Footer = (): JSX.Element => {
 					|
 					<Link href="/">
 						<a>
-							&nbsp; &copy;{new Date().getFullYear()} {`PEOPLE'S POWER`}, All rights
+							&nbsp; &copy;{new Date().getFullYear()} {`CITIZEN PLAINT`}, All rights
 							reserved.
 						</a>
 					</Link>

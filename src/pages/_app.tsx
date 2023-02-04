@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 				<title>{`CITIZEN PLAINT`}</title>
 				<meta
 					name="description"
-					content="Evans Dule’s Foundation (PEOPLE'S POWER), is a non-governmental organization formed in 2015 with the sole aim of addressing the causes of criminality and advancing the cause of human rights, the Foundation has between June 2017 till date defended over 500 Fundamental Right Matters of people whose fundamental right has been."
+					content="CITIZEN PLAINT, is a non-governmental organization formed in 2015 with the sole aim of addressing the causes of criminality and advancing the cause of human rights, the Foundation has between June 2017 till date defended over 500 Fundamental Right Matters of people whose fundamental right has been."
 				/>
 				<link rel="stylesheet" href="/nprogress.css" />
 				<Script src="../scripts/wisernotify.js"></Script>

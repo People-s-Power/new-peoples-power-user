@@ -215,7 +215,7 @@ const user = () => {
         <FrontLayout showFooter={true}>
             <>
                 <Head>
-                    <title>{`PEOPLE'S POWER`} || {user?.name} </title>
+                    <title>{`CITIZEN PLAINT`} || {user?.name} </title>
                 </Head>
                 <div className="lg:mx-32">
                     <div className="rounded-md ">

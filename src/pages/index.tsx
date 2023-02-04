@@ -87,6 +87,9 @@ const HomePage = () => {
 	}
 
 	useEffect(() => {
+		if (!author) {
+			window.location.href = `/home`
+		}
 		async function getData() {
 			axios.get(`/user/single/${author?.id}`)
 				.then(function (response) {
@@ -134,9 +137,7 @@ const HomePage = () => {
 			}
 		}
 
-		// if (author === null) {
-		// 	window.location.href = `/home`
-		// }
+
 		if (all[0] === undefined) {
 			getData()
 		}
@@ -186,6 +187,7 @@ const HomePage = () => {
 	// 	},
 	// 	onError: (err) => console.log(err),
 	// });
+
 	const follow = async (user: any) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + '/graphql', {
