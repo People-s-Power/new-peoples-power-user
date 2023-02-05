@@ -360,9 +360,8 @@ const HomePage = () => {
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />
-
-				{/* <CreateEvent open={openEvent} handelClick={handelEventClick} />
-				<CreateAdvert open={openAd} handelClick={handelAdClick} /> */}
+				<CreateEvent open={openEvent} handelClick={handelEventClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} />
 				<ToastContainer />
 			</main >
 		</FrontLayout >

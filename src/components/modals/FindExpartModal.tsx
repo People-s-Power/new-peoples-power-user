@@ -7,7 +7,6 @@ import { Dropdown } from 'rsuite';
 import axios from "axios";
 import { SERVER_URL, states } from "utils/constants";
 import { print } from 'graphql';
-
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 import PropTypes, { InferProps } from 'prop-types';
@@ -82,7 +81,7 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
                                     className="mb-4"
                                     classNamePrefix="select"
                                     placeholder="Select Category of Service Provider"
-                                    onChange={(val) => setCategoryValue(val.value)}
+                                    onChange={(val: any) => setCategoryValue(val.value)}
                                     isClearable={true}
                                     isSearchable={true}
                                     name="color"
@@ -91,7 +90,7 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
                                 <Select
                                     className="mb-4"
                                     classNamePrefix="select"
-                                    onChange={(val) => setSubCategoryValue(val.value)}
+                                    onChange={(val: any) => setSubCategoryValue(val.value)}
 
                                     placeholder="Select Sub-Category of Service Provider"
                                     isClearable={true}
