@@ -110,7 +110,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                     <Dropdown.Item>Save</Dropdown.Item>
                 </Dropdown>
             </div>
-            <CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} />
+            <CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
             <ToastContainer />
         </div>
     );

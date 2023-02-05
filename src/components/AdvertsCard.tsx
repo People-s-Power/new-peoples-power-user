@@ -26,7 +26,7 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
                 </div>
             </div>
             <div className='p-2'>
-                <img className="w-full h-50 rounded-md" src={advert.image} alt="" />
+                <img className="w-full h-80  object-cover rounded-md" src={advert.image} alt="" />
             </div>
             <div className="text-sm p-2 leading-loose">
                 {advert.message}

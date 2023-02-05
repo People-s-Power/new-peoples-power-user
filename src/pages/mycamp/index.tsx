@@ -29,35 +29,35 @@ const MyCamp: NextPage = (): JSX.Element => {
 	const author = useRecoilValue(UserAtom);
 	const [petition, setPetition] = useState([])
 	const [post, setPost] = useState([])
+	const [events, setEvents] = useState([])
 	const [adverts, setAdverts] = useState([]);
 	const { query } = useRouter();
-
 	const [campaigns, setCampaigns] = useState([]);
+
 	// const loading = true;
 	const getGeneral = () => {
-		if (petition.length === 0 && post.length === 0 && adverts.length === 0) { } else {
-			let general = [...petition, ...post]
-			const randomize = (values: any) => {
-				let index = values.length, randomIndex;
-				while (index != 0) {
-					randomIndex = Math.floor(Math.random() * index);
-					index--;
-					[values[index], values[randomIndex]] = [
-						values[randomIndex], values[index]];
-				}
-				return values;
+		let general = [...petition, ...post, ...adverts, ...events]
+		const randomize = (values: any) => {
+			let index = values.length, randomIndex;
+			while (index != 0) {
+				randomIndex = Math.floor(Math.random() * index);
+				index--;
+				[values[index], values[randomIndex]] = [
+					values[randomIndex], values[index]];
 			}
-			randomize(general)
-			setCampaigns(general)
-			// console.log(all)
+			return values;
 		}
+		randomize(general)
+		setCampaigns(general)
+		// console.log(all)
 	}
 
-	const { loading } = useQuery(MY_PETITION, {
+	useQuery(MY_PETITION, {
 		client: apollo,
 		onCompleted: (data) => {
 			setPetition(data.myPetition)
 			console.log(data)
+			getGeneral()
 		},
 		onError: (e) => console.log(e),
 	});
@@ -67,6 +67,7 @@ const MyCamp: NextPage = (): JSX.Element => {
 		onCompleted: (data) => {
 			console.log(data)
 			setAdverts(data.myAdverts)
+			getGeneral()
 		},
 		onError: (err) => {
 		},
@@ -87,23 +88,25 @@ const MyCamp: NextPage = (): JSX.Element => {
 			const { data } = await axios.post(SERVER_URL + '/graphql', {
 				query: print(MY_EVENT),
 				variables: {
-					authorId: author.id,
+					authorId: author?.id,
 					page: 1
 				}
 			})
 			console.log(data)
+			setEvents(data.myEvents)
 		} catch (error) {
 			console.log(error);
 		}
 	}
 	useEffect(() => {
 		getEvent()
+		getGeneral()
 	}, [])
 	return (
 		<FrontLayout showFooter={false}>
 			<>
 				<Head>
-					<title>{`PEOPLE'S POWER`} || My campaign</title>
+					<title>{`CITIZEN PLAINT`} || My campaign</title>
 				</Head>
 				<Wrapper className="my-camp bg-white ">
 					<div className="container">
@@ -117,18 +120,8 @@ const MyCamp: NextPage = (): JSX.Element => {
 							</a>
 						</Link> */}
 						<div className="mt-4 ">
-							{loading ? (
-								<p>Loading...</p>
-							) : campaigns?.length ? (
-								<div>
-									{/* <div className="slide-sec mb-3">
-										<Slider />
-									</div> */}
-								</div>
-							) : (
-								<p className="text-center">Start by creating a new campaign</p>
-							)}
-							{campaigns?.length > 0 && (
+
+							{campaigns.length > 0 ? (
 								<div>
 									<h3 className="fs-4 fw-bold text-center">Check Campaign Progress</h3>
 									<div className="d-flex py-3 flex-column flex-md-row">
@@ -137,6 +130,8 @@ const MyCamp: NextPage = (): JSX.Element => {
 										</div>
 									</div>
 								</div>
+							) : (
+								<p>Loading...</p>
 							)}
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Modal } from 'rsuite';
+import { Modal, Popover, Whisper } from 'rsuite';
 import { useState, useRef, useEffect } from 'react'
 import { Dropdown } from 'rsuite';
 import axios from "axios";
@@ -7,13 +7,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { bodyStreamToNodeStream } from 'next/dist/server/body-streams';
 import { useRouter } from 'next/router'
+import { useRecoilValue } from "recoil";
+import { UserAtom } from "atoms/UserAtom";
 
-
-const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick(): void, data: any }): JSX.Element => {
+const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean, handelClick(): void, data: any, orgs: any }): JSX.Element => {
     const [title, setTitle] = useState(data?.title || "")
     const [loading, setLoading] = useState(false)
     const uploadRef = useRef<HTMLInputElement>(null);
     const [category, setCategory] = useState("Add Category")
+    const author = useRecoilValue(UserAtom);
+    const [active, setActive] = useState<any>(null)
+
     const [image, setFilePreview] = useState({
         type: data === null ? "" : "image",
         file: data?.image || "",
@@ -23,8 +27,11 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
     const [aim, setAim] = useState(data?.aim || "")
     const [target, setTarget] = useState(data?.target || "")
     const [body, setBody] = useState(data?.body || "")
+
     useEffect(() => {
-    }, [])
+        setActive(author)
+    }, [author !== null])
+
     const [preview, setPreview] = useState(false)
     const handelPreview = () => {
         handelClick();
@@ -60,7 +67,8 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                     image: image.type === "image" ? image.file : "",
                     aim: aim,
                     target: target,
-                    body: body
+                    body: body,
+                    author: active._id || active.id
                 });
                 console.log(data)
                 setLoading(false)
@@ -112,6 +120,26 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
             }
         }
     };
+    const speaker = (
+        <Popover>
+            <div onClick={() => setActive(author)} className="flex m-1 cursor-pointer">
+                <img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+                <div className="text-sm my-auto">{author?.name}</div>
+            </div>
+            {
+                orgs !== null ? (
+                    orgs.map((org: any, index: number) => (
+                        <div onClick={() => {
+                            setActive(org)
+                        }} key={index} className="flex m-1 cursor-pointer">
+                            <img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+                            <div className="text-sm my-auto">{org?.name}</div>
+                        </div>
+                    ))
+                ) : null
+            }
+        </Popover>
+    );
 
     return (
         <>
@@ -122,6 +150,18 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
                     </div>
                 </Modal.Header>
                 <Modal.Body>
+                    {
+                        orgs !== null ? (
+                            <div className='my-2'>
+                                <Whisper placement="bottom" trigger="click" speaker={speaker}>
+                                    <div className="flex cursor-pointer">
+                                        <img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+                                        <div className="text-sm my-auto">{active?.name}</div>
+                                    </div>
+                                </Whisper>
+                            </div>
+                        ) : null
+                    }
                     <div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
                         {image?.type === "image" && (
                             <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />
@@ -209,4 +249,4 @@ const CreateEvent = ({ open, handelClick, data }: { open: boolean, handelClick()
         </>
     );
 };
-export default CreateEvent;
+export default StartPetition;

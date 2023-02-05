@@ -114,7 +114,7 @@ const PromoteComp = (): JSX.Element => {
 								<div>
 									<div className="card">
 										<div className="card-Image">
-											<img src={campaign?.image} alt="" />
+											<img src={campaign?.image} className="w-full h-1/2 object-cover" alt="" />
 										</div>
 										<div className="card-body">
 											<h4 className="fw-bold">{campaign?.title}</h4>

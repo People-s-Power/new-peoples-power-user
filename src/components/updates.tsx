@@ -63,7 +63,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
                 {updates.petition?.title}
             </div>
             <div className='p-2'>
-                <img className="w-full h-50 rounded-md" src={updates.image} alt="" />
+                <img className="w-full h-80 rounded-md  object-cover" src={updates.image} alt="" />
             </div>
             <div className="font-bold text-lg">
                 Petition Update

@@ -22,11 +22,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
-
-import { MY_PETITION } from "apollo/queries/petitionQuery";
-import { MY_EVENT } from "apollo/queries/eventQuery";
-import { GET_USER_POSTS } from 'apollo/queries/postQuery'
 import { MY_ADVERTS } from "apollo/queries/advertsQuery";
+import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
 
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
@@ -37,6 +34,7 @@ import PetitionComp from 'components/PetitionCard';
 import EventsCard from 'components/EventsCard';
 import CampComp from 'components/CampComp';
 import PostActionCard from 'components/PostActionCard';
+import { Dropdown } from 'rsuite';
 
 const user = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
@@ -58,11 +56,8 @@ const user = () => {
     const [product, setProduct] = useState(false)
     const [following, setFollow] = useState(false)
     const [orgId, setOrgId] = useState("")
-    const [all, setAll] = useState([]);
-    const [ad, setAd] = useState([]);
-    const [petition, setPetition] = useState([])
-    const [post, setPost] = useState([])
-    const [events, setEvents] = useState([]);
+    const [all, setAll] = useState<any>([])
+    const [adverts, setAdverts] = useState<any>([])
 
     const [openFindExpart, setOpenFindExpart] = useState(false);
 
@@ -73,9 +68,60 @@ const user = () => {
     if (typeof window !== 'undefined') {
         page = localStorage.getItem('page');
     }
-    const getGeneral = () => {
-        if (petition.length === 0 && post.length === 0 && ad.length === 0 && events.length === 0) { } else {
-            let general = [...petition, ...post, ...ad, ...events]
+
+    useQuery(GET_ORGANIZATIONS, {
+        variables: { ID: author?.id },
+        client: apollo,
+        onCompleted: (data) => {
+            // console.log(data.getUserOrganizations)
+            setOrgs(data.getUserOrganizations)
+        },
+        onError: (err) => {
+            // console.log(err)
+        },
+    });
+
+    useQuery(MY_ADVERTS, {
+        client: apollo,
+        variables: { authorId: author?.id },
+        onCompleted: (data) => {
+            console.log(data)
+            setAdverts(data.myAdverts)
+        },
+        onError: (err) => {
+        },
+    });
+
+    function isValidUrl(string: any) {
+        try {
+            new URL(string);
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+    async function getData() {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(GET_ALL),
+                variables: {
+                    authorId: query?.page
+                }
+            })
+            console.log(data.data.timeline)
+            let general = [...data.data.timeline.adverts, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.updates, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.events, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.petitions, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.posts, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.victories, {
+                "__typename": 'Follow'
+            }]
             const randomize = (values: any) => {
                 let index = values.length, randomIndex;
                 while (index != 0) {
@@ -88,92 +134,26 @@ const user = () => {
             }
             randomize(general)
             setAll(general)
-            // console.log(all)
-        }
-    }
-    useQuery(GET_ORGANIZATIONS, {
-        variables: { ID: author?.id },
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data.getUserOrganizations)
-            setOrgs(data.getUserOrganizations)
-        },
-        onError: (err) => {
-            // console.log(err)
-        },
-    });
-    useQuery(MY_PETITION, {
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data)
-            setPetition(data.myPetition)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-    useQuery(MY_ADVERTS, {
-        client: apollo,
-        variables: { authorId: author?.id },
-        onCompleted: (data) => {
-            // console.log(data)
-            setAd(data.myAdverts)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-    useQuery(GET_USER_POSTS, {
-        client: apollo,
-        onCompleted: (data) => {
-            console.log(data)
-            setPost(data.myPosts)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-
-    const getEvent = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(MY_EVENT),
-                variables: {
-                    authorId: query.page,
-                    page: 1,
-                    limit: 10
-                }
-            })
-            // console.log()
-            setEvents(data.data.authorEvents)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    function isValidUrl(string: any) {
-        try {
-            new URL(string);
-            return true;
         } catch (err) {
-            return false;
+            console.log(err)
         }
     }
+
     useEffect(() => {
-        getEvent()
+        getData()
         try {
             axios.get(`/user/single/${query.page}`)
                 .then(function (response) {
                     setUser(response.data.user)
+                    console.log(response.data)
                     response.data.user.followers.map((single: any) => {
-                        // console.log(response.data)
                         if (single === author.id) {
                             setFollow(true)
                         } else {
                             setFollow(false)
                         }
                     })
-                    // console.log(response.data.user.orgOperating)
+                    console.log(response.data.user)
                     response.data.user.orgOperating.map((operating: any) => {
                         setOrgId(operating)
                         refetch()
@@ -187,15 +167,10 @@ const user = () => {
         } catch (error) {
             console.log(error);
         }
-        // console.log(user?.followers)
-        // user?.followers.map((single: any) => {
-        //     if (single === author.id) {
-        //         setFollow(true)
-        //     } else {
-        //         setFollow(false)
-        //     }
-        // })
-    }, [])
+        if (all[0] === undefined) {
+            getData()
+        }
+    }, [user !== null])
 
     const { refetch } = useQuery(GET_ORGANIZATION, {
         variables: { ID: orgId },
@@ -210,19 +185,10 @@ const user = () => {
 
 
     const singleOrg = (id: string) => {
-        // axios.get(`/orgs/${id}`)
-        //     .then(function (response) {
-        //         // console.log(response)
         localStorage.setItem("page", `${id}`)
         router.push(`/org?page=${id}`)
-
-        //     setCampaigns([])
-        //     setUser(response.data)
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // })
     }
+
     const follow = () => {
         axios.post('/user/follow', {
             userId: page
@@ -236,6 +202,7 @@ const user = () => {
                 toast.warn("Oops an error occoured!")
             })
     }
+
     const unFollow = () => {
         axios.put('/user/follow', {
             userId: page
@@ -249,18 +216,12 @@ const user = () => {
                 toast.warn("Oops an error occoured!")
             })
     }
-    // const { loading } = useQuery(MY_CAMPAIGN, {
-    //     client: apollo,
-    //     onCompleted: (data) => setCampaigns(data.myCampaign),
-    //     onError: (e) => console.log(e),
-    // });
-
 
     return (
         <FrontLayout showFooter={true}>
             <>
                 <Head>
-                    <title>{`PEOPLE'S POWER`} || {user?.name} </title>
+                    <title>{`CITIZEN PLAINT`} || {user?.name} </title>
                 </Head>
                 <div className="lg:mx-32">
                     <div className="rounded-md ">
@@ -278,9 +239,9 @@ const user = () => {
                                 <div className="flex flex-column justify-center">
                                     <div className='flex'>
                                         <div className="text-xl font-bold ">{user?.name}</div>
-                                        <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followersCount} Followers
+                                        <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers.length} Followers
                                             <div className="text-xs text-gray-900 ml-2">
-                                                Following {user?.followingCount}
+                                                Following {user?.following.length}
                                             </div>
                                         </div>
                                     </div>
@@ -293,7 +254,7 @@ const user = () => {
                                     </div>
                                 </div>
                                 <div className="font-black text-lg">
-                                    <Link href={`mycamp/profile`}>
+                                    <Link href={`/mycamp/profile`}>
                                         <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                     </Link>
                                 </div>
@@ -392,9 +353,30 @@ const user = () => {
                                 </div>
                                 <div className="my-auto text-sm">Create Product</div>
                             </div>
-
                             <div>
-
+                                {adverts.map((advert: any) => (
+                                    <div key={advert.caption} className="p-3 border-b border-gray-400 my-3">
+                                        <div>{advert.caption}</div>
+                                        <div className='py-2'>
+                                            <img className="w-full h-80 object-cover rounded-md" src={advert.image} alt="" />
+                                        </div>
+                                        <div className="text-sm py-2 leading-loose">
+                                            {advert.message}
+                                        </div>
+                                        <div className="pt-3 flex justify-between">
+                                            <div className='w-2/3'>{advert.email}</div>
+                                            <div>
+                                                <button className="p-2 bg-warning ">
+                                                    Sign up
+                                                </button>
+                                            </div>
+                                            <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
+                                                <Dropdown.Item>Advertise</Dropdown.Item>
+                                                <Dropdown.Item>Edit</Dropdown.Item>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>) : (<div className='w-full'>
                             {
@@ -503,10 +485,10 @@ const user = () => {
                         </div>
                     </div>
                 </div >
-                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />
+                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
                 <CreateEvent open={openEvent} handelClick={handelEventClick} />
                 <CreateAdvert open={openAd} handelClick={handelAdClick} />
-                <StartPetition open={openPetition} handelClick={handelPetition} data={null} />
+                <StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
                 <ToastContainer />
             </>
         </FrontLayout >

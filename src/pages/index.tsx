@@ -94,11 +94,18 @@ const HomePage = () => {
 	}
 
 	useEffect(() => {
-		// console.log(author)
-		// if (author === null) {
-		// 	window.location.href = `/home`
-		// }
+		if (!author) {
+			window.location.href = `/home`
+		}
 		async function getData() {
+			axios.get(`/user/single/${author?.id}`)
+				.then(function (response) {
+					// console.log(response.data.user.orgOperating)
+					response.data.user.orgOperating.map((operating: any) => {
+						setOrgId(operating)
+						refetch()
+					})
+				})
 			try {
 				const { data } = await axios.post(SERVER_URL + '/graphql', {
 					query: print(GET_ALL),
@@ -106,8 +113,8 @@ const HomePage = () => {
 						authorId: author?.id
 					}
 				})
-				console.log(data.data.timeline)
-				const general = [...data.data.timeline.adverts, {
+				// console.log(data.data.timeline)
+				let general = [...data.data.timeline.adverts, {
 					"__typename": 'Follow'
 				}, ...data.data.timeline.updates, {
 					"__typename": 'Follow'
@@ -136,6 +143,8 @@ const HomePage = () => {
 				console.log(err)
 			}
 		}
+
+
 		if (all[0] === undefined) {
 			getData()
 		}
@@ -185,6 +194,7 @@ const HomePage = () => {
 	// 	},
 	// 	onError: (err) => console.log(err),
 	// });
+
 	const follow = async (user: any) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + '/graphql', {
@@ -267,37 +277,37 @@ const HomePage = () => {
 								// setType(single.__typename)
 								switch (single.__typename) {
 									case 'Advert':
-										return (<div>
-											<AdvertsComp advert={single} key={index} />
+										return (<div key={index} >
+											<AdvertsComp advert={single} />
 										</div>
 										)
 									case 'Event':
-										return (<div>
-											<EventsCard key={index} event={single} />
+										return (<div key={index} >
+											<EventsCard event={single} />
 										</div>
 										)
 									case 'Petition':
-										return (<div>
-											<PetitionComp petition={single} key={index} />
+										return (<div key={index} >
+											<PetitionComp petition={single} />
 										</div>
 										)
 									case 'Victory':
-										return (<div>
+										return (<div key={index} >
 											victories
 										</div>
 										)
 									case 'Post':
-										return (<div>
-											<CampComp key={index} post={single} />
+										return (<div key={index} >
+											<CampComp post={single} />
 										</div>
 										)
 									case 'Update':
-										return (<div>
-											<Updates key={index} updates={single} />
+										return (<div key={index} >
+											<Updates updates={single} />
 										</div>
 										)
 									case 'Follow':
-										return (<div>
+										return (<div key={index} >
 											<FollowSlides />
 										</div>
 										)
@@ -325,7 +335,7 @@ const HomePage = () => {
 							</div>
 						</div>
 					))}
-					<Link href="connection">
+					<Link href="/connection">
 						<div className="text-sm text-warning cursor-pointer">view who you followed is following</div>
 					</Link>
 					<div className="p-2">
@@ -347,14 +357,15 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} />
-				<CreateEvent open={openEvent} handelClick={handelEventClick} />
-				<CreateAdvert open={openAd} handelClick={handelAdClick} />
-				<StartPetition open={openPetition} handelClick={handelPetition} data={null} />
+				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
+				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />
+
+				{/* <CreateEvent open={openEvent} handelClick={handelEventClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} /> */}
 				<ToastContainer />
-			</main>
-		</FrontLayout>
+			</main >
+		</FrontLayout >
 	)
 }
 

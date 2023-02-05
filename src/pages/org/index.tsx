@@ -24,10 +24,7 @@ import CreateAdvert from "../../components/modals/CreateAdvert"
 import CreateEvent from "../../components/modals/CreateEvent"
 import StartPetition from "../../components/modals/StartPetition"
 
-import { MY_PETITION } from "apollo/queries/petitionQuery";
-import { MY_EVENT } from "apollo/queries/eventQuery";
-import { GET_USER_POSTS } from 'apollo/queries/postQuery'
-import { MY_ADVERTS } from "apollo/queries/advertsQuery";
+import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
 
 import AdvertsComp from 'components/AdvertsCard';
 import PetitionComp from 'components/PetitionCard';
@@ -52,20 +49,16 @@ const org = () => {
     const [openAd, setOpenAd] = useState(false);
     const [openEvent, setOpenEvent] = useState(false);
     const [openPetition, setOpenPetition] = useState(false);
-    const [all, setAll] = useState([]);
+    const [all, setAll] = useState<any>([])
 
     const handelClick = () => setOpenPost(!openPost);
     const handelPetition = () => setOpenPetition(!openPetition);
     const handelAdClick = () => setOpenAd(!openAd);
     const handelEventClick = () => setOpenEvent(!openEvent);
 
-    const [petition, setPetition] = useState([])
-    const [post, setPost] = useState([])
-
     const [openFindExpart, setOpenFindExpart] = useState(false);
 
     const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart);
-
 
     let page: any;
     if (typeof window !== 'undefined') {
@@ -79,75 +72,12 @@ const org = () => {
             return false;
         }
     }
-    const getGeneral = () => {
-        if (petition.length === 0 && post.length === 0) { } else {
-            let general = [...petition, ...post]
-            const randomize = (values: any) => {
-                let index = values.length, randomIndex;
-                while (index != 0) {
-                    randomIndex = Math.floor(Math.random() * index);
-                    index--;
-                    [values[index], values[randomIndex]] = [
-                        values[randomIndex], values[index]];
-                }
-                return values;
-            }
-            randomize(general)
-            setAll(general)
-            console.log(all)
-        }
-    }
-
-    useQuery(MY_PETITION, {
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data)
-            setPetition(data.myPetition)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-    useQuery(MY_ADVERTS, {
-        client: apollo,
-        variables: { authorId: author?.id },
-        onCompleted: (data) => {
-            console.log(data)
-        },
-        onError: (err) => {
-        },
-    });
-    useQuery(GET_USER_POSTS, {
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data)
-            setPost(data.myPosts)
-            getGeneral()
-        },
-        onError: (err) => {
-        },
-    });
-
-    const getEvent = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(MY_EVENT),
-                variables: {
-                    authorId: query?.page,
-                    page: 1
-                }
-            })
-            console.log(data)
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     useQuery(GET_ORGANIZATION, {
         variables: { ID: query.page },
         client: apollo,
         onCompleted: (data) => {
-            console.log(data.getOrganzation)
+            // console.log(data.getOrganzation)
             setUser(data.getOrganzation)
             user?.followers.map((single: any) => {
                 if (single === user.id) {
@@ -170,9 +100,47 @@ const org = () => {
         },
         onError: (err) => console.log(err),
     });
+    async function getData() {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(GET_ALL),
+                variables: {
+                    authorId: query.page
+                }
+            })
+            console.log(data.data.timeline)
+            let general = [...data.data.timeline.adverts, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.updates, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.events, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.petitions, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.posts, {
+                "__typename": 'Follow'
+            }, ...data.data.timeline.victories, {
+                "__typename": 'Follow'
+            }]
+            const randomize = (values: any) => {
+                let index = values.length, randomIndex;
+                while (index != 0) {
+                    randomIndex = Math.floor(Math.random() * index);
+                    index--;
+                    [values[index], values[randomIndex]] = [
+                        values[randomIndex], values[index]];
+                }
+                return values;
+            }
+            randomize(general)
+            setAll(general)
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     useEffect(() => {
-        getEvent()
+        getData()
         axios.get(`/campaign/orgcampaign/${page}`)
             .then(function (response) {
                 // console.log(response)
@@ -181,7 +149,12 @@ const org = () => {
             .catch(function (error) {
                 console.log(error);
             })
+
+        if (all[0] === undefined) {
+            getData()
+        }
     }, [])
+
     const follow = () => {
         axios.post('/user/follow', {
             userId: page
@@ -258,7 +231,7 @@ const org = () => {
         <FrontLayout showFooter={true}>
             <>
                 <Head>
-                    <title>{`PEOPLE'S POWER`} || {user?.name} </title>
+                    <title>{`CITIZEN PLAINT`} || {user?.name} </title>
                 </Head>
                 <div className="lg:mx-32">
                     <div className="rounded-md bg-gray-100">
@@ -295,9 +268,9 @@ const org = () => {
                                         <div className="flex flex-column justify-center">
                                             <div className='flex'>
                                                 <div className="text-xl font-bold ">{user?.name}</div>
-                                                <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers} Followers
+                                                <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers.length} Followers
                                                     <div className="text-xs text-gray-900 ml-2">
-                                                        Following {user?.following}
+                                                        Following {user?.following.length}
                                                     </div>
                                                 </div>
                                             </div>
@@ -307,7 +280,7 @@ const org = () => {
                                             <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
                                         </div>
                                         <div className="font-black text-lg mr-32">
-                                            <Link href={`org/update?page=${user?._id}`}>
+                                            <Link href={`/org/update?page=${user?._id}`}>
                                                 <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
                                             </Link>
                                         </div>
@@ -347,7 +320,7 @@ const org = () => {
                             </div>
                         ) : (<div></div>)} */}
                     </div>
-                    <Slider />
+                    {/* <Slider /> */}
                     {/* <div className="text-center text-lg p-3">
                         <Link href={`/startcamp`}>
                             <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
@@ -460,10 +433,10 @@ const org = () => {
                         )}
                     </div>
                 </div>
-                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} />
+                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
                 <CreateEvent open={openEvent} handelClick={handelEventClick} />
                 <CreateAdvert open={openAd} handelClick={handelAdClick} />
-                <StartPetition open={openPetition} handelClick={handelPetition} data={null} />
+                <StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
                 <ToastContainer />
             </>
         </FrontLayout >

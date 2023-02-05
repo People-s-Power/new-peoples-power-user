@@ -155,7 +155,7 @@ const addadmin = () => {
         <FrontLayout >
             <>
                 <Head>
-                    <title>{`PEOPLE'S POWER`} || Add Admin </title>
+                    <title>{`CITIZEN PLAINT`} || Add Admin </title>
                 </Head>
                 <div>
                     <div onClick={() => router.back()} className="cursor-pointer lg:ml-20">Back</div>

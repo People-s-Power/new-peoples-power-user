@@ -57,6 +57,7 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
             setScreen(1)
             setCategoryValue('')
             setSubCategoryValue('')
+            handelClose()
         }
     }
     return (

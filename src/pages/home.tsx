@@ -16,7 +16,7 @@ import gql from "graphql-tag";
 import FrontLayout from "layout/FrontLayout";
 import { NextPage } from "next";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import { Zoom } from "react-reveal";
 import styled from "styled-components";
@@ -25,6 +25,7 @@ import CampaignSlider from "../components/camp-slider/Slider"
 import { useQuery } from "@apollo/client";
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
+import { GET_ACTIVE_PETITION, GET_PETITION } from "apollo/queries/petitionQuery";
 
 import {
 	ICampaign,
@@ -59,16 +60,23 @@ const testimonies: Strapi_Testimony[] | null = [
 	}
 ]
 
-const HomePage: NextPage<{ campaigns: ICampaign[] }> = ({
-	campaigns,
-}: { campaigns: ICampaign[] }): JSX.Element => {
+const HomePage = () => {
+	const [campaigns, setCamp] = useState([])
 
-	console.log(campaigns)
+	useQuery(GET_PETITION, {
+		client: apollo,
+		onCompleted: (data) => {
+			console.log(data)
+			setCamp(data.getPetitions)
+		},
+		onError: (err) => console.log(err),
+	});
+
 	const user = useRecoilValue(UserAtom);
 	useEffect(() => {
-		if (user !== null) {
-			window.location.href = `/`
-		}
+		// if (user !== null) {
+		// 	window.location.href = `/`
+		// }
 	}, [])
 
 	// useQuery(GET_CAMPAIGNS, {
@@ -223,25 +231,6 @@ const HomePage: NextPage<{ campaigns: ICampaign[] }> = ({
 };
 
 export default HomePage;
-
-HomePage.getInitialProps = async (): Promise<{
-	campaigns: ICampaign[];
-}> => {
-	try {
-		const { data } = await apollo.query({
-			query: GET_CAMPAIGNS,
-		});
-		const campaigns: ICampaign[] = data?.getCampaigns;
-		return {
-			campaigns,
-		};
-	} catch (error) {
-		return {
-			campaigns: [],
-		};
-	}
-};
-
 
 const SecondRowComp = ({
 	img,
