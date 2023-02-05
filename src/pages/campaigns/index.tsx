@@ -14,7 +14,7 @@ import { useQuery } from "@apollo/client";
 
 
 const CampaignPage: () => JSX.Element = () => {
-	const [campaigns, setCamp] = useState([])
+	const [campaigns, setCamp] = useState<ICampaign[]>([])
 	const [searchTerm, setSearchTerm] = useState("");
 	const [queryCampaigns, setQueryCampaigns] = useState<ICampaign[]>([]);
 
@@ -94,8 +94,8 @@ const CampaignPage: () => JSX.Element = () => {
 			setQueryCampaigns(campaigns)
 			return
 		}
-		// const results = campaigns.filter(itemCamp => itemCamp.category === text)
-		// setQueryCampaigns(results)
+		const results = campaigns.filter(itemCamp => itemCamp.category === text)
+		setQueryCampaigns(results)
 	}
 	return (
 		<FrontLayout>

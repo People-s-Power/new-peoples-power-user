@@ -23,16 +23,23 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 							<h1 className="text-secondary  fs-1 fw-bold">Who we are</h1>
 
 							{/* <iframe  width="100%" height="900" src="https://docs.google.com/document/d/e/2PACX-1vRx89kPjOl5zLjSUopJKxZocFUoVbBS1DwOhUSC_Hu1lPTZkU1lYUt3MFp8AVyX-PqzIvlsYEk4l-pY/pub?embedded=true"></iframe> */}
-							
-							PEOPLE’S POWER is a web-based technology for those facing social injustice and Human Right Abuse. It is created to inspire people to cause a change in their local communities. The Platform enables one, group and organizations to start a campaign for the change that they want, vis-a-vis Social Policies, Health, Politics, Environment, Development, Government policies, Employment, Criminal Justice and of course Human Right.
-							<br /> <br />
-							People’s Power also converts citizens’ complaint into a petition and campaigns which wins. When citizens are not happy with government policies, and other social challenges, they make their complaints to the attention of other citizens and organizations with similar interest or challenges for comments, opinions and endorsements. With the Citizens’ support, the complaint is petitioned to the appropriate persons and authorities who will resolve it.
-							<br /> <br />
-							Where the relevant authorities neglect the citizens’ complaint, with Human Right Applications and thousands of Human Right Lawyers and Social Skilled Workers across the globe, we compel the authorities to respect citizens’ rights, social policies and Rule of Law. In other words, we pressurize those in power to implement citizens’ complaint and petitions through our Human Right Applications and Proceedings in the event the relevant authority neglect the complaint and petitions of the Public. PEOPLE’S POWER technology is the last hope of a common man.
-							<br /> <br />
-							With our team of professionals, journalists, content writers, designers and social skilled workers, you can leave with us the complexity of writing, designing, editing and organizing your campaigns and other administration. We handle your campaigns, contents, designs, updates and other administrations while you focus on building a strong and physical campaigns with momentum.
-							<br /> <br />
-							At People’s Power, we also help you grow your followers and supporters through active campaigns and email marketing. Our technology enables us to be more effective in this area.
+
+							CITIZEN PLAINT is a web-based technology that converts citizens’ complaints into a petition and campaign which wins. When citizens are not happy with government policies, and other social challenges which amongst others include Health, Politics, Environment, Development, Government policies, Employment, Criminal Justice and Human Right, they voice out their challenges either through a post or petition and make their complaints to the attention of other citizens and organizations with similar interests to TAKE ACTION and cause a change. With the Citizens’ support, the complaint is petitioned to the appropriate persons, organizations and authorities who will resolve it.
+							<br />
+							<br />
+							The platform inspires one, group or organizations to cause a change in their local communities by airing their voices and start a campaign for the change that they want.
+
+							<br />
+							<br />
+							With thousands of professionals, virtual assistants, journalists, content writers, designers and social skilled workers using this technology, you can now leave the hassle of writing, designing, editing and organizing your campaigns and other administration with a Virtual Assistant. Citizen Plaint handles your campaigns, contents, designs, updates and other administrations while you focus on building strong and physical campaigns with momentum.
+
+							<br />
+							<br />
+							Citizen Plaint also helps you grow your followers and supporters through active campaigns and digital marketing.
+
+							<br />
+							<br />
+							…the Citizen’ Voice
 						</div>
 					</div>
 					{/* ---------------------------------------------- */}
