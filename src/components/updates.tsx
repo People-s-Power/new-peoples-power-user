@@ -38,7 +38,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
                 query: print(LIKE),
                 variables: {
                     authorId: author.id,
-                    itemId: updates._id
+                    itemId: updates.id
                 }
             })
             toast.success('Post liked successfully');

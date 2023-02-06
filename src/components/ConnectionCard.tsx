@@ -20,7 +20,7 @@ const ConnectionCard = ({ user }: { user: IUser }): JSX.Element => {
             const { data } = await axios.post(SERVER_URL + '/graphql', {
                 query: print(FOLLOW),
                 variables: {
-                    followerId: author.id, followId: user.id,
+                    followerId: author.id, followId: user._id,
                 }
             })
             console.log(data)

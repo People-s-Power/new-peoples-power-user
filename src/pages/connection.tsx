@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FrontLayout from "layout/FrontLayout";
 import ConnectionCard from '../components/ConnectionCard'
-import { GET_ALL_USERS } from "apollo/queries/generalQuery";
+import { CONNECTIONS } from "apollo/queries/generalQuery";
 import { IUser } from "types/Applicant.types";
-
+import axios from "axios";
+import { SERVER_URL } from "utils/constants";
+import { print } from 'graphql';
 import { apollo } from "apollo";
 import { useQuery } from "@apollo/client";
 
 const connection = () => {
     const [users, setUsers] = useState<IUser[]>([])
 
-    useQuery(GET_ALL_USERS, {
-        client: apollo,
-        onCompleted: (data) => {
+    const getUsers = async () => {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(CONNECTIONS),
+            })
             console.log(data)
-            setUsers(data.getUsers)
-        },
-        onError: (err) => console.log(err),
-    });
+            setUsers(data.data.connections)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        getUsers()
+    }, [])
+
 
     return (
         <FrontLayout>

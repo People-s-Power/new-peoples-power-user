@@ -10,7 +10,7 @@ import EventsCard from "components/EventsCard";
 import { GET_PETITION } from "apollo/queries/petitionQuery";
 import { GET_POSTS } from "apollo/queries/postQuery";
 import { GET_EVENTS } from "apollo/queries/eventQuery";
-import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
+import { GET_ALL, CONNECTIONS, FOLLOW } from "apollo/queries/generalQuery";
 import Link from "next/link";
 import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery";
 import router, { useRouter } from "next/router";
@@ -113,7 +113,7 @@ const HomePage = () => {
 						authorId: author?.id
 					}
 				})
-				// console.log(data.data.timeline)
+				console.log(data.data.timeline)
 				let general = [...data.data.timeline.adverts, {
 					"__typename": 'Follow'
 				}, ...data.data.timeline.updates, {
@@ -143,7 +143,7 @@ const HomePage = () => {
 				console.log(err)
 			}
 		}
-
+		getUsers()
 
 		if (all[0] === undefined) {
 			getData()
@@ -200,7 +200,7 @@ const HomePage = () => {
 			const { data } = await axios.post(SERVER_URL + '/graphql', {
 				query: print(FOLLOW),
 				variables: {
-					followerId: author.id, followId: user.id,
+					followerId: author.id, followId: user._id,
 				}
 			})
 			console.log(data)
@@ -211,16 +211,26 @@ const HomePage = () => {
 			toast.warn("Oops an error occoured!")
 		}
 	}
-
-
-	useQuery(GET_ALL_USERS, {
-		client: apollo,
-		onCompleted: (data) => {
+	const getUsers = async () => {
+		try {
+			const { data } = await axios.post(SERVER_URL + '/graphql', {
+				query: print(CONNECTIONS),
+			})
 			console.log(data)
-			setUsers(data.getUsers)
-		},
-		onError: (err) => console.log(err),
-	});
+			setUsers(data.data.connections)
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
+	// useQuery(GET_ALL_USERS, {
+	// 	client: apollo,
+	// 	onCompleted: (data) => {
+	// 		console.log(data)
+	// 		setUsers(data.getUsers)
+	// 	},
+	// 	onError: (err) => console.log(err),
+	// });
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex mx-20">

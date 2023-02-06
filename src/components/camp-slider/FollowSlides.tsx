@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { GET_CAMPAIGNS } from "apollo/queries/campaignQuery";
 // import { UserCampaignAtom } from "atoms/UserAtom";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import SliderTwo from "react-slick";
 // import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ import Link from "next/link";
 import { apollo } from "apollo";
 import { UserAtom } from "atoms/UserAtom";
 import { useRecoilValue } from "recoil";
-import { GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
+import { CONNECTIONS, FOLLOW } from "apollo/queries/generalQuery";
 import { IUser } from "types/Applicant.types";
 import axios from 'axios';
 
@@ -22,21 +22,27 @@ const FollowSlides = () => {
     const user = useRecoilValue(UserAtom);
     const [following, setFollow] = useState(false)
 
-    useQuery(GET_ALL_USERS, {
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data)
-            setUsers(data.getUsers)
-        },
-        onError: (err) => console.log(err),
-    });
+    const getUsers = async () => {
+        try {
+            const { data } = await axios.post(SERVER_URL + '/graphql', {
+                query: print(CONNECTIONS),
+            })
+            setUsers(data.data.connections)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        getUsers()
+    }, [])
 
     const follow = async (user: any) => {
         try {
             const { data } = await axios.post(SERVER_URL + '/graphql', {
                 query: print(FOLLOW),
                 variables: {
-                    followerId: user.id, followId: user.id,
+                    followerId: user.id, followId: user._id,
                 }
             })
             console.log(data)

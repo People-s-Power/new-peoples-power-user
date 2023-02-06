@@ -175,6 +175,15 @@ export const GET_ALL_USERS = gql
     }
 }`
 
+export const CONNECTIONS = gql
+`mutation connections{
+  connections{
+    name
+    image
+    _id
+  }
+}`
+
 
 export const FOLLOW = gql
 `mutation follow($followerId: ID!, $followId: ID!){
