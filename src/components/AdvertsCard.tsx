@@ -34,15 +34,18 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
             <div className="pt-3 flex justify-between">
                 <div className='w-2/3'>{advert.email}</div>
                 <div>
-                    <button className="p-2 bg-warning ">
-                        Sign up
-                    </button>
+                    <a href={advert.link}>
+                        <button className="p-2 bg-warning ">
+                            Sign up
+                        </button>
+                    </a>
                 </div>
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                    {
-                        advert.author._id === author?.id ? (<Dropdown.Item>Edit</Dropdown.Item>) : null
-                    }
-                    <Dropdown.Item>Share Ad</Dropdown.Item>
+                    <Dropdown.Item> <a href={advert.link}>Book Now</a> </Dropdown.Item>
+                    <Dropdown.Item> <a href={advert.link}>Visit Our Website</a></Dropdown.Item>
+                    <Dropdown.Item><a href={advert.link}>Apply Now</a></Dropdown.Item>
+                    <Dropdown.Item>Call Us</Dropdown.Item>
+                    <Dropdown.Item><a href={'mailto:' + advert.email}>Email Us</a></Dropdown.Item>
                 </Dropdown>
             </div>
         </div>

@@ -18,6 +18,7 @@ import { GET_ORGANIZATION, GET_ORGANIZATIONS } from "apollo/queries/orgQuery";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SERVER_URL } from "utils/constants";
+import { MY_ADVERTS } from "apollo/queries/advertsQuery";
 
 import CreatePost from "../../components/modals/CreatePost"
 import CreateAdvert from "../../components/modals/CreateAdvert"
@@ -32,6 +33,7 @@ import EventsCard from 'components/EventsCard';
 import CampComp from 'components/CampComp';
 import { print } from 'graphql';
 import PostActionCard from 'components/PostActionCard';
+import { Dropdown } from 'rsuite';
 
 const org = () => {
     const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
@@ -44,6 +46,7 @@ const org = () => {
     const [img, setImg] = useState("");
     const uploadRef = useRef<HTMLInputElement>(null);
     const [following, setFollow] = useState(false)
+    const [adverts, setAdverts] = useState<any>([])
 
     const [openPost, setOpenPost] = useState(false);
     const [openAd, setOpenAd] = useState(false);
@@ -100,6 +103,18 @@ const org = () => {
         },
         onError: (err) => console.log(err),
     });
+
+    useQuery(MY_ADVERTS, {
+        client: apollo,
+        variables: { authorId: query?.page },
+        onCompleted: (data) => {
+            console.log(data)
+            setAdverts(data.myAdverts)
+        },
+        onError: (err) => {
+        },
+    });
+
     async function getData() {
         try {
             const { data } = await axios.post(SERVER_URL + '/graphql', {
@@ -327,10 +342,10 @@ const org = () => {
                         </Link>
                     </div> */}
                     <div className="lg:flex mt-3">
-                        <div className="lg:w-72 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
-                            {user?.author === author?.id ? (<div className="text-center font-black text-base p-3">
+                        <div className="lg:w-96 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
+                            {user?.author === author?.id ? (<div className=" text-base p-3">
                                 <Link href={`/addadmin?page=${query.page}`}>
-                                    <button className="bg-transparent px-8 w-44 text-warning">Admin</button>
+                                    <button className="bg-transparent text-warning">Admin</button>
                                 </Link>
                                 {/* <div className="flex cursor-pointer my-2" onClick={() => { router.push(`/user?page=${author?.id}`), setOrganization(false) }}>
                                         {user?.image === "Upload org Image" ? (
@@ -340,6 +355,14 @@ const org = () => {
                                         )}
                                         <p className="pl-2 mt-2 capitalize">{author?.name}</p>
                                     </div> */}
+                                <div className='my-2'>
+                                    <Link href="/mycamp">
+                                        <button className="bg-transparent">Dashboard</button>
+                                    </Link>
+                                </div>
+                                <div className='my-2'>
+                                    <button className=" bg-transparent" onClick={() => setProduct(!product)}> Products</button>
+                                </div>
                                 <div>
                                     {orgs.map((org, i) => (
                                         <div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
@@ -355,44 +378,42 @@ const org = () => {
                             </div>) : (
                                 null
                             )}
-
-                            {author?.id === query.page ? (
-                                <div className="text-center font-black text-base p-3">
-                                    <Link href="/mycamp">
-                                        <button className=" bg-transparent p-2 w-44 text-black">Dashboard</button>
-                                    </Link>
-                                    <button className=" bg-transparent p-2 w-44 text-black" onClick={() => setProduct(!product)}> Products</button>
-                                    <Link href={'/create'}>
-                                        <button className="bg-transparent flex justify-between px-8 w-44 text-black">
-                                            <div>Organization</div>
-                                            <div><span>&#43;</span>
-                                                create
-                                            </div>
-                                        </button>
-                                    </Link>
-                                    <div>
-                                        {orgs.map((org, i) => (
-                                            <div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
-                                                {org?.image === "Upload org Image" ? (
-                                                    <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-                                                ) : (
-                                                    <img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
-                                                )}
-                                                <p className="pl-2 mt-2 capitalize">{org?.name}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ) : (<div></div>)}
                         </div>
-                        {product ? (<div className="bg-gray-50 flex w-full rounded-md mt-3">
-                            <img src="/images/file.png" className="w-80 mx-auto" alt="" />
-                            <div className="my-auto">
-                                <div className="text-3xl fotn-bold">Do you think your rights have been breached and wish to seek courts redress?</div>
-                                <div className="text-base">Let's help you file this application through your subscription.</div>
-                                <button className="btn bg-warning p-2 px-8 my-3 mx-auto text-white w-44">Suscribe</button>
+                        {product ? (<div className="w-full rounded-md mt-3">
+                            <div className="bg-transparent cursor-pointer w-36 my-2 mx-auto flex justify-between" onClick={() => handelAdClick()}>
+                                <div className='text-center my-auto' >
+                                    <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+                                    {/* <div className="text-xs">  create </div> */}
+                                </div>
+                                <div className="my-auto text-sm">Create Product</div>
+                            </div>
+                            <div>
+                                {adverts.map((advert: any) => (
+                                    <div key={advert.caption} className="p-3 border-b border-gray-400 my-3">
+                                        <div>{advert.caption}</div>
+                                        <div className='py-2'>
+                                            <img className="w-full h-80 object-cover rounded-md" src={advert.image} alt="" />
+                                        </div>
+                                        <div className="text-sm py-2 leading-loose">
+                                            {advert.message}
+                                        </div>
+                                        <div className="pt-3 flex justify-between">
+                                            <div className='w-2/3'>{advert.email}</div>
+                                            <div>
+                                                <button className="p-2 bg-warning ">
+                                                    Sign up
+                                                </button>
+                                            </div>
+                                            <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
+                                                <Dropdown.Item>Advertise</Dropdown.Item>
+                                                <Dropdown.Item>Edit</Dropdown.Item>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>) : (<div className='w-full'>
+
                             <PostActionCard authorImage={author?.image} handelOpenFindExpart={handelOpenFindExpart} handelClick={handelClick} handelEventClick={handelEventClick} handelPetition={handelPetition} />
 
                             {all.length === 0 ? (<div className="text-center">You dont have any campaign at the moment</div>) : (<></>)}

@@ -379,6 +379,7 @@ const user = () => {
                                 ))}
                             </div>
                         </div>) : (<div className='w-full'>
+                            
                             {
                                 query.page === author?.id ? (
                                     <PostActionCard authorImage={author?.image} handelOpenFindExpart={handelOpenFindExpart} handelClick={handelClick} handelEventClick={handelEventClick} handelPetition={handelPetition} />
