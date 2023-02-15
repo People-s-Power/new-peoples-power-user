@@ -327,10 +327,10 @@ const user = () => {
 											Products
 										</button>
 									</div>
-									<Link
-										href={"/org/create"}
-										onClick={(e) => {
-											e.preventDefault()
+									<div
+										// href={"/org/create"}
+										className="cursor-pointer"
+										onClick={() => {
 											const url = new URL("https://teamapp-6jfl6.ondigitalocean.app/home")
 											url.searchParams.set("u_refer", Cookies.get("__ed_KEY") as string)
 											window.open(url.toString(), "__blank")
@@ -343,7 +343,7 @@ const user = () => {
 												<div className="text-xs"> add </div>
 											</div>
 										</div>
-									</Link>
+									</div>
 									<Link href={"/org/create"}>
 										<div className="bg-transparent my-2 flex justify-between">
 											<div className="my-auto w-1/2">Organization</div>
