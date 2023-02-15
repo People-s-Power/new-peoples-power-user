@@ -1,266 +1,285 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-empty */
-import React, { useEffect, useRef } from 'react';
-import FrontLayout from "layout/FrontLayout";
-import Head from "next/head";
-import { useQuery } from "@apollo/client";
-import { MY_CAMPAIGN } from "apollo/queries/campaignQuery";
-import { apollo } from "apollo";
-import { useState } from "react";
-import { ICampaign, IUser, IOrg } from "types/Applicant.types";
-import Link from "next/link";
-import axios from 'axios';
-import { sassNull } from 'sass';
-import { useRecoilValue } from "recoil";
-import { UserAtom } from "atoms/UserAtom";
+import React, { useEffect, useRef } from "react"
+import FrontLayout from "layout/FrontLayout"
+import Head from "next/head"
+import { useQuery } from "@apollo/client"
+import { MY_CAMPAIGN } from "apollo/queries/campaignQuery"
+import { apollo } from "apollo"
+import { useState } from "react"
+import { ICampaign, IUser, IOrg } from "types/Applicant.types"
+import Link from "next/link"
+import axios from "axios"
+import { sassNull } from "sass"
+import { useRecoilValue } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
 import Slider from "../components/camp-slider/Slider"
-import router, { useRouter } from "next/router";
-import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { SERVER_URL } from "utils/constants";
-import { print } from 'graphql';
-import { MY_ADVERTS } from "apollo/queries/advertsQuery";
-import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery";
+import router, { useRouter } from "next/router"
+import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { SERVER_URL } from "utils/constants"
+import { print } from "graphql"
+import { MY_ADVERTS } from "apollo/queries/advertsQuery"
+import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery"
 
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
 import StartPetition from "../components/modals/StartPetition"
-import AdvertsComp from 'components/AdvertsCard';
-import PetitionComp from 'components/PetitionCard';
-import EventsCard from 'components/EventsCard';
-import CampComp from 'components/CampComp';
-import PostActionCard from 'components/PostActionCard';
-import { Dropdown } from 'rsuite';
+import AdvertsComp from "components/AdvertsCard"
+import PetitionComp from "components/PetitionCard"
+import EventsCard from "components/EventsCard"
+import CampComp from "components/CampComp"
+import PostActionCard from "components/PostActionCard"
+import { Dropdown } from "rsuite"
+import Cookies from "js-cookie"
 
 const user = () => {
-    const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
-    const author = useRecoilValue(UserAtom);
+	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
+	const author = useRecoilValue(UserAtom)
 
-    const [openPost, setOpenPost] = useState(false);
-    const [openAd, setOpenAd] = useState(false);
-    const [openEvent, setOpenEvent] = useState(false);
-    const [openPetition, setOpenPetition] = useState(false);
+	const [openPost, setOpenPost] = useState(false)
+	const [openAd, setOpenAd] = useState(false)
+	const [openEvent, setOpenEvent] = useState(false)
+	const [openPetition, setOpenPetition] = useState(false)
 
-    const handelClick = () => setOpenPost(!openPost);
-    const handelPetition = () => setOpenPetition(!openPetition);
-    const handelAdClick = () => setOpenAd(!openAd);
-    const handelEventClick = () => setOpenEvent(!openEvent);
+	const handelClick = () => setOpenPost(!openPost)
+	const handelPetition = () => setOpenPetition(!openPetition)
+	const handelAdClick = () => setOpenAd(!openAd)
+	const handelEventClick = () => setOpenEvent(!openEvent)
 
-    const [user, setUser] = useState<IUser>()
-    const [orgs, setOrgs] = useState<IOrg[]>([])
-    const { query } = useRouter();
-    const [product, setProduct] = useState(false)
-    const [following, setFollow] = useState(false)
-    const [orgId, setOrgId] = useState("")
-    const [all, setAll] = useState<any>([])
-    const [adverts, setAdverts] = useState<any>([])
+	const [user, setUser] = useState<IUser>()
+	const [orgs, setOrgs] = useState<IOrg[]>([])
+	const { query } = useRouter()
+	const [product, setProduct] = useState(false)
+	const [following, setFollow] = useState(false)
+	const [orgId, setOrgId] = useState("")
+	const [all, setAll] = useState<any>([])
+	const [adverts, setAdverts] = useState<any>([])
 
-    const [openFindExpart, setOpenFindExpart] = useState(false);
+	const [openFindExpart, setOpenFindExpart] = useState(false)
 
-    const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart);
+	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 
+	let page: any
+	if (typeof window !== "undefined") {
+		page = localStorage.getItem("page")
+	}
 
-    let page: any;
-    if (typeof window !== 'undefined') {
-        page = localStorage.getItem('page');
-    }
+	useQuery(GET_ORGANIZATIONS, {
+		variables: { ID: author?.id },
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data.getUserOrganizations)
+			setOrgs(data.getUserOrganizations)
+		},
+		onError: (err) => {
+			// console.log(err)
+		},
+	})
 
-    useQuery(GET_ORGANIZATIONS, {
-        variables: { ID: author?.id },
-        client: apollo,
-        onCompleted: (data) => {
-            // console.log(data.getUserOrganizations)
-            setOrgs(data.getUserOrganizations)
-        },
-        onError: (err) => {
-            // console.log(err)
-        },
-    });
+	useQuery(MY_ADVERTS, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			console.log(data)
+			setAdverts(data.myAdverts)
+		},
+		onError: (err) => console.log(err),
+	})
 
-    useQuery(MY_ADVERTS, {
-        client: apollo,
-        variables: { authorId: author?.id },
-        onCompleted: (data) => {
-            console.log(data)
-            setAdverts(data.myAdverts)
-        },
-        onError: (err) => {
-        },
-    });
+	function isValidUrl(string: any) {
+		try {
+			new URL(string)
+			return true
+		} catch (err) {
+			return false
+		}
+	}
+	async function getData() {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(GET_ALL),
+				variables: {
+					authorId: query?.page,
+				},
+			})
+			console.log(data.data.timeline)
+			const general = [
+				...data.data.timeline.adverts,
+				{
+					__typename: "Follow",
+				},
+				...data.data.timeline.updates,
+				{
+					__typename: "Follow",
+				},
+				...data.data.timeline.events,
+				{
+					__typename: "Follow",
+				},
+				...data.data.timeline.petitions,
+				{
+					__typename: "Follow",
+				},
+				...data.data.timeline.posts,
+				{
+					__typename: "Follow",
+				},
+				...data.data.timeline.victories,
+				{
+					__typename: "Follow",
+				},
+			]
+			const randomize = (values: any) => {
+				let index = values.length,
+					randomIndex
+				while (index != 0) {
+					randomIndex = Math.floor(Math.random() * index)
+					index--
+					;[values[index], values[randomIndex]] = [values[randomIndex], values[index]]
+				}
+				return values
+			}
+			randomize(general)
+			setAll(general)
+		} catch (err) {
+			console.log(err)
+		}
+	}
 
-    function isValidUrl(string: any) {
-        try {
-            new URL(string);
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
-    async function getData() {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(GET_ALL),
-                variables: {
-                    authorId: query?.page
-                }
-            })
-            console.log(data.data.timeline)
-            let general = [...data.data.timeline.adverts, {
-                "__typename": 'Follow'
-            }, ...data.data.timeline.updates, {
-                "__typename": 'Follow'
-            }, ...data.data.timeline.events, {
-                "__typename": 'Follow'
-            }, ...data.data.timeline.petitions, {
-                "__typename": 'Follow'
-            }, ...data.data.timeline.posts, {
-                "__typename": 'Follow'
-            }, ...data.data.timeline.victories, {
-                "__typename": 'Follow'
-            }]
-            const randomize = (values: any) => {
-                let index = values.length, randomIndex;
-                while (index != 0) {
-                    randomIndex = Math.floor(Math.random() * index);
-                    index--;
-                    [values[index], values[randomIndex]] = [
-                        values[randomIndex], values[index]];
-                }
-                return values;
-            }
-            randomize(general)
-            setAll(general)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+	useEffect(() => {
+		getData()
+		try {
+			axios
+				.get(`/user/single/${query.page}`)
+				.then(function (response) {
+					setUser(response.data.user)
+					console.log(response.data)
+					response.data.user.followers.map((single: any) => {
+						if (single === author.id) {
+							setFollow(true)
+						} else {
+							setFollow(false)
+						}
+					})
+					console.log(response.data.user)
+					response.data.user.orgOperating.map((operating: any) => {
+						setOrgId(operating)
+						refetch()
+					})
+					setCampaigns(response.data.campaigns)
+				})
+				.catch(function (error) {
+					console.log(error)
+					// router.push(`/org?page=${query?.page}`   )
+				})
+		} catch (error) {
+			console.log(error)
+		}
+		if (all[0] === undefined) {
+			getData()
+		}
+	}, [user !== null])
 
-    useEffect(() => {
-        getData()
-        try {
-            axios.get(`/user/single/${query.page}`)
-                .then(function (response) {
-                    setUser(response.data.user)
-                    console.log(response.data)
-                    response.data.user.followers.map((single: any) => {
-                        if (single === author.id) {
-                            setFollow(true)
-                        } else {
-                            setFollow(false)
-                        }
-                    })
-                    console.log(response.data.user)
-                    response.data.user.orgOperating.map((operating: any) => {
-                        setOrgId(operating)
-                        refetch()
-                    })
-                    setCampaigns(response.data.campaigns)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    // router.push(`/org?page=${query?.page}`   )
-                })
-        } catch (error) {
-            console.log(error);
-        }
-        if (all[0] === undefined) {
-            getData()
-        }
-    }, [user !== null])
+	const { refetch } = useQuery(GET_ORGANIZATION, {
+		variables: { ID: orgId },
+		client: apollo,
+		onCompleted: (data) => {
+			setOrgs([...orgs, data.getOrganzation])
+		},
+		onError: (err) => {
+			// console.log(err)
+		},
+	})
 
-    const { refetch } = useQuery(GET_ORGANIZATION, {
-        variables: { ID: orgId },
-        client: apollo,
-        onCompleted: (data) => {
-            setOrgs([...orgs, data.getOrganzation])
-        },
-        onError: (err) => {
-            // console.log(err)
-        },
-    });
+	const singleOrg = (id: string) => {
+		localStorage.setItem("page", `${id}`)
+		router.push(`/org?page=${id}`)
+	}
 
+	const follow = () => {
+		axios
+			.post("/user/follow", {
+				userId: page,
+			})
+			.then(function (response) {
+				toast.success("Followed!")
+				setFollow(true)
+			})
+			.catch(function (error) {
+				console.log(error)
+				toast.warn("Oops an error occoured!")
+			})
+	}
 
-    const singleOrg = (id: string) => {
-        localStorage.setItem("page", `${id}`)
-        router.push(`/org?page=${id}`)
-    }
+	const unFollow = () => {
+		axios
+			.put("/user/follow", {
+				userId: page,
+			})
+			.then(function (response) {
+				toast.success("Unfollowed!")
+				setFollow(false)
+			})
+			.catch(function (error) {
+				console.log(error)
+				toast.warn("Oops an error occoured!")
+			})
+	}
 
-    const follow = () => {
-        axios.post('/user/follow', {
-            userId: page
-        })
-            .then(function (response) {
-                toast.success("Followed!")
-                setFollow(true)
-            })
-            .catch(function (error) {
-                console.log(error);
-                toast.warn("Oops an error occoured!")
-            })
-    }
+	return (
+		<FrontLayout showFooter={true}>
+			<>
+				<Head>
+					<title>
+						{`CITIZEN PLAINT`} || {user?.name}{" "}
+					</title>
+				</Head>
+				<div className="lg:mx-32">
+					<div className="rounded-md ">
+						<div className="relative ">
+							<div>
+								<img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
+							</div>
+							<div className="absolute top-32 left-10 rounded-circle pro-img mx-auto bg-white p-1">
+								<img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
+							</div>
+						</div>
+						<div className="mt-20 py-8 px-10">
+							<div className="flex justify-between">
+								<div className="flex flex-column justify-center">
+									<div className="flex">
+										<div className="text-xl font-bold ">{user?.name}</div>
+										<div className="text-xs text-gray-900 flex my-auto ml-6">
+											{user?.followers.length} Followers
+											<div className="text-xs text-gray-900 ml-2">Following {user?.following.length}</div>
+										</div>
+									</div>
+									<div className="text-sm font-thin w-96">{user?.description.substring(0, 100) + "..."}</div>
+									<div className="flex">
+										<img className="w-4 h-4 mr-3 my-auto" src="/images/home/icons/akar-icons_location.png" alt="" />
+										<div className="pt-1 text-sm">
+											{" "}
+											{user?.city}, {user?.country}
+										</div>
+									</div>
+								</div>
+								<div className="font-black text-lg">
+									<Link href={`/mycamp/profile`}>
+										<button className="bg-transparent p-2 text-warning">
+											{" "}
+											<span>&#x270E;</span> Edit
+										</button>
+									</Link>
+								</div>
+							</div>
 
-    const unFollow = () => {
-        axios.put('/user/follow', {
-            userId: page
-        })
-            .then(function (response) {
-                toast.success("Unfollowed!")
-                setFollow(false)
-            })
-            .catch(function (error) {
-                console.log(error);
-                toast.warn("Oops an error occoured!")
-            })
-    }
-
-    return (
-        <FrontLayout showFooter={true}>
-            <>
-                <Head>
-                    <title>{`CITIZEN PLAINT`} || {user?.name} </title>
-                </Head>
-                <div className="lg:mx-32">
-                    <div className="rounded-md ">
-                        <div className="relative ">
-                            <div>
-                                <img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
-                            </div>
-                            <div className="absolute top-32 left-10 rounded-circle pro-img mx-auto bg-white p-1">
-                                <img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
-                            </div>
-
-                        </div>
-                        <div className='mt-20 py-8 px-10'>
-                            <div className='flex justify-between'>
-                                <div className="flex flex-column justify-center">
-                                    <div className='flex'>
-                                        <div className="text-xl font-bold ">{user?.name}</div>
-                                        <div className="text-xs text-gray-900 flex my-auto ml-6">{user?.followers.length} Followers
-                                            <div className="text-xs text-gray-900 ml-2">
-                                                Following {user?.following.length}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="text-sm font-thin w-96">
-                                        {user?.description.substring(0, 100) + '...'}
-                                    </div>
-                                    <div className='flex'>
-                                        <img className='w-4 h-4 mr-3 my-auto' src="/images/home/icons/akar-icons_location.png" alt="" />
-                                        <div className="pt-1 text-sm"> {user?.city}, {user?.country}</div>
-                                    </div>
-                                </div>
-                                <div className="font-black text-lg">
-                                    <Link href={`/mycamp/profile`}>
-                                        <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            {/* {author?.id === query.page ? (
+							{/* {author?.id === query.page ? (
                                     <div className="font-black text-lg">
                                         <Link href={`mycamp/profile`}>
                                             <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
@@ -277,9 +296,9 @@ const user = () => {
                                         </div>
                                     )
                                 )} */}
-                        </div>
+						</div>
 
-                        {/* {author?.id === query.page ? (
+						{/* {author?.id === query.page ? (
                             <div className="text-center font-black text-lg">
                                 <Link href="/mycamp">
                                     <button className=" bg-transparent p-2 w-44 text-warning">Dashboard</button>
@@ -290,136 +309,151 @@ const user = () => {
                                 </Link>
                             </div>
                         ) : (<div></div>)} */}
-                    </div>
-                    <Slider />
+					</div>
+					<Slider />
 
-                    <div className="lg:flex mt-3">
-                        <div className="lg:w-1/2 mt-3 h-80 lg:mr-4 rounded-md">
-                            {author?.id === query.page ? (
-                                <div className="text-base p-3">
-                                    <div className='my-2'>
-                                        <Link href="/mycamp">
-                                            <button className="bg-transparent">Dashboard</button>
-                                        </Link>
-                                    </div>
-                                    <div className='my-2'>
-                                        <button className=" bg-transparent" onClick={() => setProduct(!product)}> Products</button>
-                                    </div>
-                                    <Link href={'/org/create'}>
-                                        <div className="bg-transparent my-2 flex justify-between">
-                                            <div className="my-auto  w-1/2">Human Right Action</div>
-                                            <div className='text-center cursor-pointer'>
-                                                <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-                                                <div className="text-xs">  add </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                    <Link href={'/org/create'}>
-                                        <div className="bg-transparent my-2 flex justify-between">
-                                            <div className="my-auto w-1/2">Organization</div>
-                                            <div className='text-center cursor-pointer'>
-                                                <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-                                                <div className="text-xs">  create </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                    {/* <div className="bg-transparent my-2 flex justify-between">
+					<div className="lg:flex mt-3">
+						<div className="lg:w-1/2 mt-3 h-80 lg:mr-4 rounded-md">
+							{author?.id === query.page ? (
+								<div className="text-base p-3">
+									<div className="my-2">
+										<Link href="/mycamp">
+											<button className="bg-transparent">Dashboard</button>
+										</Link>
+									</div>
+									<div className="my-2">
+										<button className=" bg-transparent" onClick={() => setProduct(!product)}>
+											{" "}
+											Products
+										</button>
+									</div>
+									<Link
+										href={"/org/create"}
+										onClick={(e) => {
+											e.preventDefault()
+											const url = new URL("https://teamapp-6jfl6.ondigitalocean.app/home")
+											url.searchParams.set("u_refer", Cookies.get("__ed_KEY") as string)
+											window.open(url.toString(), "__blank")
+										}}
+									>
+										<div className="bg-transparent my-2 flex justify-between">
+											<div className="my-auto  w-1/2">Human Right Action</div>
+											<div className="text-center cursor-pointer">
+												<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+												<div className="text-xs"> add </div>
+											</div>
+										</div>
+									</Link>
+									<Link href={"/org/create"}>
+										<div className="bg-transparent my-2 flex justify-between">
+											<div className="my-auto w-1/2">Organization</div>
+											<div className="text-center cursor-pointer">
+												<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+												<div className="text-xs"> create </div>
+											</div>
+										</div>
+									</Link>
+									{/* <div className="bg-transparent my-2 flex justify-between">
                                         <div className="my-auto  w-1/2">Adverts</div>
                                         <div className='text-center cursor-pointer' onClick={() => handelAdClick()}>
                                             <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
                                             <div className="text-xs">  create </div>
                                         </div>
                                     </div> */}
-                                    <div>
-                                        {orgs.map((org, i) => (
-                                            <div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
-                                                {isValidUrl(org?.image) ? (
-                                                    <img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
-                                                ) : (
-                                                    <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-                                                )}
-                                                <p className="pl-2 mt-2 text-sm">{org?.name}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ) : (<div></div>)}
-                        </div>
-                        {product ? (<div className="w-full rounded-md mt-3">
-                            <div className="bg-transparent cursor-pointer w-36 my-2 mx-auto flex justify-between" onClick={() => handelAdClick()}>
-                                <div className='text-center my-auto' >
-                                    <div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-                                    {/* <div className="text-xs">  create </div> */}
-                                </div>
-                                <div className="my-auto text-sm">Create Product</div>
-                            </div>
-                            <div>
-                                {adverts.map((advert: any) => (
-                                    <div key={advert.caption} className="p-3 border-b border-gray-400 my-3">
-                                        <div>{advert.caption}</div>
-                                        <div className='py-2'>
-                                            <img className="w-full h-80 object-cover rounded-md" src={advert.image} alt="" />
-                                        </div>
-                                        <div className="text-sm py-2 leading-loose">
-                                            {advert.message}
-                                        </div>
-                                        <div className="pt-3 flex justify-between">
-                                            <div className='w-2/3'>{advert.email}</div>
-                                            <div>
-                                                <button className="p-2 bg-warning ">
-                                                    Sign up
-                                                </button>
-                                            </div>
-                                            <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                                                <Dropdown.Item>Advertise</Dropdown.Item>
-                                                <Dropdown.Item>Edit</Dropdown.Item>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>) : (<div className='w-full'>
-                            
-                            {
-                                query.page === author?.id ? (
-                                    <PostActionCard authorImage={author?.image} handelOpenFindExpart={handelOpenFindExpart} handelClick={handelClick} handelEventClick={handelEventClick} handelPetition={handelPetition} />
-                                ) : null
-                            }
-                            {
-                                all[0] !== undefined ? all.map((single: any, index: number) => {
-                                    // setType(single.__typename)
-                                    switch (single.__typename) {
-                                        case 'Advert':
-                                            return (<div key={index}>
-                                                <AdvertsComp advert={single} />
-                                            </div>
-                                            )
-                                        case 'Event':
-                                            return (<div key={index}>
-                                                <EventsCard event={single} />
-                                            </div>
-                                            )
-                                        case 'Petition':
-                                            return (<div key={index}>
-                                                <PetitionComp petition={single} />
-                                            </div>
-                                            )
-                                        case 'Victory':
-                                            return (<div>
-                                                victories
-                                            </div>
-                                            )
-                                        case 'Post':
-                                            return (<div key={index}>
-                                                <CampComp post={single} />
-                                            </div>
-                                            )
-                                    }
-                                })
-                                    : null
-                            }
+									<div>
+										{orgs.map((org, i) => (
+											<div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
+												{isValidUrl(org?.image) ? (
+													<img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
+												) : (
+													<img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
+												)}
+												<p className="pl-2 mt-2 text-sm">{org?.name}</p>
+											</div>
+										))}
+									</div>
+								</div>
+							) : (
+								<div></div>
+							)}
+						</div>
+						{product ? (
+							<div className="w-full rounded-md mt-3">
+								<div className="bg-transparent cursor-pointer w-36 my-2 mx-auto flex justify-between" onClick={() => handelAdClick()}>
+									<div className="text-center my-auto">
+										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+										{/* <div className="text-xs">  create </div> */}
+									</div>
+									<div className="my-auto text-sm">Create Product</div>
+								</div>
+								<div>
+									{adverts.map((advert: any) => (
+										<div key={advert.caption} className="p-3 border-b border-gray-400 my-3">
+											<div>{advert.caption}</div>
+											<div className="py-2">
+												<img className="w-full h-80 object-cover rounded-md" src={advert.image} alt="" />
+											</div>
+											<div className="text-sm py-2 leading-loose">{advert.message}</div>
+											<div className="pt-3 flex justify-between">
+												<div className="w-2/3">{advert.email}</div>
+												<div>
+													<button className="p-2 bg-warning ">Sign up</button>
+												</div>
+												<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+													<Dropdown.Item>Advertise</Dropdown.Item>
+													<Dropdown.Item>Edit</Dropdown.Item>
+												</Dropdown>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						) : (
+							<div className="w-full">
+								{query.page === author?.id ? (
+									<PostActionCard
+										authorImage={author?.image}
+										handelOpenFindExpart={handelOpenFindExpart}
+										handelClick={handelClick}
+										handelEventClick={handelEventClick}
+										handelPetition={handelPetition}
+									/>
+								) : null}
+								{all[0] !== undefined
+									? all.map((single: any, index: number) => {
+											// setType(single.__typename)
+											switch (single.__typename) {
+												case "Advert":
+													return (
+														<div key={index}>
+															<AdvertsComp advert={single} />
+														</div>
+													)
+												case "Event":
+													return (
+														<div key={index}>
+															<EventsCard event={single} />
+														</div>
+													)
+												case "Petition":
+													return (
+														<div key={index}>
+															<PetitionComp petition={single} />
+														</div>
+													)
+												case "Victory":
+													return <div>victories</div>
+												case "Post":
+													return (
+														<div key={index}>
+															<CampComp post={single} />
+														</div>
+													)
+											}
+									  })
+									: null}
 
-                            {/* {campaigns?.map((camp, i) => (
+								{/* {campaigns?.map((camp, i) => (
                                 <div key={i} className="mt-3 bg-gray-50 w-full rounded-md flex relative">
                                     <div className='absolute right-2 top-2'>
                                         <div className="dropdown">
@@ -479,21 +513,19 @@ const user = () => {
                                 </div> 
                             ))}
                             */}
-
-                        </div>)}
-                        <div className='w-72 bg-grey'>
-
-                        </div>
-                    </div>
-                </div >
-                <CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
-                <CreateEvent open={openEvent} handelClick={handelEventClick} />
-                <CreateAdvert open={openAd} handelClick={handelAdClick} />
-                <StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
-                <ToastContainer />
-            </>
-        </FrontLayout >
-    );
+							</div>
+						)}
+						<div className="w-72 bg-grey"></div>
+					</div>
+				</div>
+				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
+				<CreateEvent open={openEvent} handelClick={handelEventClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} />
+				<StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
+				<ToastContainer />
+			</>
+		</FrontLayout>
+	)
 }
 
-export default user;
+export default user
