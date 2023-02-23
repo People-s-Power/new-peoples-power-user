@@ -15,6 +15,7 @@ import { useQuery } from "@apollo/client"
 
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import Cookies from "js-cookie"
 
 function Buildprofile(): React.ReactElement {
 	const [countries, setCountries] = useState([])
@@ -107,15 +108,26 @@ function Buildprofile(): React.ReactElement {
 				country,
 				city,
 				description,
-				myInterest,
+				interests: myInterest,
 			})
-			console.log(data)
+			// console.log(data)
 			toast.success("Profile Updates Successfully!")
 			router.push(`/`)
 		} catch (error) {
 			console.log(error)
 			toast.warn("Oops an error occured!")
 		}
+	}
+
+	const setupFinal = async () => {
+		const result = await axios.post("/user/suggest-users", {
+			country,
+			city,
+			interests: myInterest,
+		})
+		// console.log(result)
+		result.status.toString().startsWith("2") && setUsers(result.data)
+		onNext()
 	}
 
 	useQuery(GET_ALL_USERS, {
@@ -249,7 +261,7 @@ function Buildprofile(): React.ReactElement {
 											))}
 										</div>
 										<div className="text-center mx-auto my-8">
-											<button className="p-2 bg-warning text-white rounded-sm" onClick={onNext}>
+											<button className="p-2 bg-warning text-white rounded-sm" onClick={setupFinal}>
 												Next
 											</button>
 											<Button onClick={onPrevious}>Previous</Button>
@@ -258,8 +270,6 @@ function Buildprofile(): React.ReactElement {
 								)
 							case 4:
 								// submit data and get people to follow
-								console.log(myInterest)
-								console.log(img, country, city, description)
 								return (
 									<div>
 										<div className="text-xl text-center py-14">
