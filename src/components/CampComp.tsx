@@ -57,7 +57,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                     <img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
                     <div className="ml-2">
                         <div className="text-base capitalize">{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? '. You' : ''}</span></div>
-                        {/* <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div> */}
+                        <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div>
                     </div>
                 </div>
             </div>

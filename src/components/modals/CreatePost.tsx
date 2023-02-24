@@ -107,7 +107,7 @@ const CreatePost = ({ open, handelClick, post, handelPetition, orgs }: { open: b
                 <div className="text-sm my-auto">{author?.name}</div>
             </div>
             {
-                orgs.map((org: any, index: number) => (
+                orgs?.map((org: any, index: number) => (
                     <div onClick={() => setActive(org)} key={index} className="flex m-1">
                         <img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
                         <div className="text-sm my-auto">{org?.name}</div>

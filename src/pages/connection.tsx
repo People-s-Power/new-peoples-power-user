@@ -6,16 +6,20 @@ import { IUser } from "types/Applicant.types";
 import axios from "axios";
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
-import { apollo } from "apollo";
-import { useQuery } from "@apollo/client";
+import { useRecoilValue } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
 
 const connection = () => {
     const [users, setUsers] = useState<IUser[]>([])
+	const author = useRecoilValue(UserAtom)
 
     const getUsers = async () => {
         try {
             const { data } = await axios.post(SERVER_URL + '/graphql', {
                 query: print(CONNECTIONS),
+                variables: {
+					authorId: author.id,
+				},
             })
             console.log(data)
             setUsers(data.data.connections)
