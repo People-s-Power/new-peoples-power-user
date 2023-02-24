@@ -74,9 +74,9 @@ const HomePage = () => {
 
 	const user = useRecoilValue(UserAtom);
 	useEffect(() => {
-		// if (user !== null) {
-		// 	window.location.href = `/`
-		// }
+		if (user !== null) {
+			window.location.href = `/`
+		}
 	}, [])
 
 	// useQuery(GET_CAMPAIGNS, {

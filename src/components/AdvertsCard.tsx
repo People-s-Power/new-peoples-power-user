@@ -36,16 +36,13 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
                 <div>
                     <a href={advert.link}>
                         <button className="p-2 bg-warning ">
-                            Sign up
+                            {advert.action}
                         </button>
                     </a>
                 </div>
                 <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                    <Dropdown.Item> <a href={advert.link}>Book Now</a> </Dropdown.Item>
-                    <Dropdown.Item> <a href={advert.link}>Visit Our Website</a></Dropdown.Item>
-                    <Dropdown.Item><a href={advert.link}>Apply Now</a></Dropdown.Item>
-                    <Dropdown.Item>Call Us</Dropdown.Item>
-                    <Dropdown.Item><a href={'mailto:' + advert.email}>Email Us</a></Dropdown.Item>
+                    {author?.id === advert.author._id && <Dropdown.Item>Edit</Dropdown.Item>}
+                    <Dropdown.Item>Share  ads</Dropdown.Item>
                 </Dropdown>
             </div>
         </div>

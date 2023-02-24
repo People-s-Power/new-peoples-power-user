@@ -147,20 +147,20 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean, handelClick(): voi
                     <div className="w-[45%] text-sm">
                         <div className='text-sm my-1'>Target audience</div>
                         <select onChange={(e) => setAudience(e.target.value)} name="" id="" className="w-full border border-gray-700 text-sm">
-                            <option value="">Everyone</option>
-                            <option value="">Followers</option>
-                            <option value="">Interest</option>
-                            <option value="">Location</option>
+                            <option value="Everyone">Everyone</option>
+                            <option value="Followers">Followers</option>
+                            <option value="Interest">Interest</option>
+                            <option value="Location">Location</option>
                         </select>
                     </div>
                     <div className="w-[45%] text-sm">
                         <div className='text-sm my-1'>Call to action</div>
                         <select onChange={(e) => setAction(e.target.value)} name="" id="" className="w-full border border-gray-700 text-sm">
-                            <option value="">Book now</option>
-                            <option value="">Call us</option>
-                            <option value="">Visit our website</option>
-                            <option value="">Email us</option>
-                            <option value="">Apply Now</option>
+                            <option value="Book now">Book now</option>
+                            <option value="Call us">Call us</option>
+                            <option value="Learn More">Learn More</option>
+                            <option value="Email us">Email us</option>
+                            <option value="Apply Now">Apply Now</option>
                         </select>
                     </div>
                 </div>
