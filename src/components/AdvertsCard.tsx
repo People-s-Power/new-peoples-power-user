@@ -1,13 +1,27 @@
 import React from "react"
 import { Dropdown } from "rsuite"
 import ReactTimeAgo from "react-time-ago"
-
+import axios from "axios"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 
 const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
-
+	const share = async () => {
+		try {
+			const { data } = await axios.post("share", {
+				body: "share",
+				author: author.id,
+				itemId: advert._id,
+			})
+			console.log(data)
+			toast.success("Advert has been shared")
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	return (
 		<div className="p-3 border-b border-gray-400 my-3">
 			<div className=" border-b border-gray-200 pb-3">
@@ -40,9 +54,12 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 				</div>
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 					{author?.id === advert.author._id && <Dropdown.Item>Edit</Dropdown.Item>}
-					<Dropdown.Item>Share ads</Dropdown.Item>
+					<Dropdown.Item>
+						<span onClick={() => share()}>Share ads</span>
+					</Dropdown.Item>
 				</Dropdown>
 			</div>
+			<ToastContainer />
 		</div>
 	)
 }

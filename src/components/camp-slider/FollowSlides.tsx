@@ -19,7 +19,7 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 const FollowSlides = () => {
 	const [users, setUsers] = useState<IUser[]>([])
-	const user = useRecoilValue(UserAtom)
+	const author = useRecoilValue(UserAtom)
 	const [following, setFollow] = useState(false)
 
 	const getUsers = async () => {
@@ -27,7 +27,7 @@ const FollowSlides = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CONNECTIONS),
 				variables: {
-					authorId: user.id,
+					authorId: author.id,
 				},
 			})
 			setUsers(data.data.connections)
@@ -45,14 +45,15 @@ const FollowSlides = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(FOLLOW),
 				variables: {
-					followerId: user.id,
+					followerId: author.id,
 					followId: user._id,
 				},
 			})
 			console.log(data)
 			setFollow(true)
+			getUsers()
 		} catch (error) {
-			console.log(error)
+			console.log(error.response)
 		}
 	}
 

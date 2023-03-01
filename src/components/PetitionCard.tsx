@@ -39,18 +39,15 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 
 	const share = async () => {
 		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(SHARE),
-				variables: {
-					authorId: author.id,
-					itemId: petition._id,
-				},
+			const { data } = await axios.post("share", {
+				body: "share",
+				author: author.id,
+				itemId: petition._id,
 			})
-			toast.success("Petition has been shared")
 			console.log(data)
-		} catch (error) {
-			console.log(error.response)
-			toast.warn("Oops! Something went wrong")
+			toast.success("Petition has been shared")
+		} catch (err) {
+			console.log(err)
 		}
 	}
 

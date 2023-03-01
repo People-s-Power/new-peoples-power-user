@@ -126,7 +126,7 @@ const HomePage = () => {
 					})
 				}
 			}
-			console.log(newArray)
+			// console.log(newArray)
 			setAll(newArray.reverse())
 		} catch (err) {
 			console.log(err.response)
@@ -134,10 +134,12 @@ const HomePage = () => {
 	}
 
 	// useEffect(() => {
-	// 	if (!author) {
-	// 		window.location.href = `/home`
-	// 	}
-	// })
+	// 	setTimeout(() => {
+	// 		if (!author) {
+	// 			window.location.href = `/home`
+	// 		}
+	// 	}, 5000)
+	// }, [])
 
 	useEffect(() => {
 		getSingle()
@@ -157,6 +159,7 @@ const HomePage = () => {
 			console.log(data)
 			toast.success("Followed!")
 			setFollow(true)
+			getUsers()
 		} catch (error) {
 			console.log(error)
 			toast.warn("Oops an error occoured!")

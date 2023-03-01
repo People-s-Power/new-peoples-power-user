@@ -2,7 +2,6 @@ import EventModal from "./modals/EventModal"
 import React, { useState } from "react"
 import { Dropdown } from "rsuite"
 import { INTERESTED } from "apollo/queries/eventQuery"
-
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import axios from "axios"
@@ -38,7 +37,19 @@ const EventsCard = ({ event }: { event: any }) => {
 			toast.warn("Oops an error occoured!")
 		}
 	}
-
+	const share = async () => {
+		try {
+			const { data } = await axios.post("share", {
+				body: "share",
+				author: author.id,
+				itemId: event._id,
+			})
+			console.log(data)
+			toast.success("Event has been shared")
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	return (
 		<div className="rounded-md shadow-sm p-3">
 			<div className="flex justify-between my-3">
@@ -76,7 +87,10 @@ const EventsCard = ({ event }: { event: any }) => {
 						Interested
 					</button>
 					<Dropdown title={<img className="" src="/images/edit.svg" alt="" />} noCaret>
-						<Dropdown.Item>Share Event</Dropdown.Item>
+						<Dropdown.Item>
+							{" "}
+							<span onClick={() => share()}> Share Event </span>
+						</Dropdown.Item>
 						{event.author.id === author?.id ? <Dropdown.Item>Edit Event</Dropdown.Item> : null}
 					</Dropdown>
 				</div>

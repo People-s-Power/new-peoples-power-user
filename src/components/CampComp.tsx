@@ -19,18 +19,15 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 	const share = async () => {
 		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(SHARE),
-				variables: {
-					authorId: author.id,
-					itemId: post._id,
-				},
+			const { data } = await axios.post("share", {
+				body: "share",
+				author: author.id,
+				itemId: post._id,
 			})
-			toast.success("Post has been shared")
 			console.log(data)
-		} catch (error) {
-			console.log(error.response)
-			toast.warn("Oops! Something went wrong")
+			toast.success("Post has been shared")
+		} catch (err) {
+			console.log(err)
 		}
 	}
 

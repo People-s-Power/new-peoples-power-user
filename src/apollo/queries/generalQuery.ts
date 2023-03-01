@@ -28,6 +28,7 @@ export const GET_ALL = gql`
 			}
 
 			victories {
+				_id
 				body
 				image
 				likes {
