@@ -85,7 +85,10 @@ export const GET_ALL = gql`
 				createdAt
 				image
 				likes {
+					_id
 					name
+					email
+					image
 				}
 				shares
 				__typename
@@ -109,6 +112,7 @@ export const GET_ALL = gql`
 				description
 				startDate
 				endDate
+				createdAt
 				__typename
 				time
 				image
@@ -185,7 +189,7 @@ export const SHARE = gql`
 				message
 			}
 			petitions {
-				id
+				_id
 				title
 			}
 			events {

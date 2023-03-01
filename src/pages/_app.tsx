@@ -75,7 +75,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 					name="description"
 					content="CITIZEN PLAINT, is a non-governmental organization formed in 2015 with the sole aim of addressing the causes of criminality and advancing the cause of human rights, the Foundation has between June 2017 till date defended over 500 Fundamental Right Matters of people whose fundamental right has been."
 				/>
-				<link rel="stylesheet" href="/nprogress.css" />
+				{/* <link rel="stylesheet" href="/nprogress.css" /> */}
 				<Script src="../scripts/wisernotify.js"></Script>
 			</Head>
 			<ApolloProvider client={client}>
@@ -110,7 +110,7 @@ const Layout = ({ children }: { children: React.ReactChild }) => {
 				Cookies.set(d.name, d.value),
 			);
 		},
-		onError: (er) => console.log(er),
+		onError: (er) => console.log(er.message),
 	});
 
 	useEffect(() => {
@@ -119,7 +119,6 @@ const Layout = ({ children }: { children: React.ReactChild }) => {
 			try {
 				const { data } = await axios.get("/auth/me");
 				cookie.set("user_id", data?.id);
-
 				setUser(data);
 			} catch (error) {
 				console.log(error);

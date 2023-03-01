@@ -27,6 +27,7 @@ import AdvertsComp from "components/AdvertsCard"
 import Updates from "components/updates"
 import PostActionCard from "components/PostActionCard"
 import FindExpartModal from "components/modals/FindExpartModal"
+import VictoryCard from "components/VictoryCard"
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom)
@@ -67,7 +68,7 @@ const HomePage = () => {
 			setOrgs([...orgs, data.getOrganzation])
 		},
 		onError: (err) => {
-			console.log(err)
+			console.log(err.message)
 		},
 	})
 
@@ -105,59 +106,44 @@ const HomePage = () => {
 					authorId: author.id,
 				},
 			})
-			// console.log(data.data.timeline)
+			console.log(data.data.timeline)
 			let general = [
 				...data.data.timeline.adverts,
-				{
-					__typename: "Follow",
-				},
 				// ...data.data.timeline.updates,
-				// {
-				// 	__typename: "Follow",
-				// },
 				...data.data.timeline.events,
-				{
-					__typename: "Follow",
-				},
 				...data.data.timeline.petitions,
-				{
-					__typename: "Follow",
-				},
 				...data.data.timeline.posts,
-				{
-					__typename: "Follow",
-				},
 				...data.data.timeline.victories,
-				{
-					__typename: "Follow",
-				},
 			]
-			const randomize = (values: any) => {
-				let index = values.length,
-					randomIndex
-				while (index != 0) {
-					randomIndex = Math.floor(Math.random() * index)
-					index--
-					;[values[index], values[randomIndex]] = [values[randomIndex], values[index]]
+			const randomizedItems = general.sort(() => Math.random() - 0.5)
+			const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			let newArray = []
+			for (let i = 0; i < sortedItems.length; i++) {
+				newArray.push(sortedItems[i])
+				if ((i + 1) % 3 === 0) {
+					newArray.push({
+						__typename: "Follow",
+					})
 				}
-				return values
 			}
-			randomize(general)
-			setAll(general)
-			console.log(all)
+			console.log(newArray)
+			setAll(newArray.reverse())
 		} catch (err) {
-			console.log(err)
+			console.log(err.response)
 		}
 	}
 
+	// useEffect(() => {
+	// 	if (!author) {
+	// 		window.location.href = `/home`
+	// 	}
+	// })
+
 	useEffect(() => {
-		// if (!author) {
-		// 	window.location.href = `/home`
-		// }
 		getSingle()
 		getUsers()
 		getData()
-	})
+	}, [author])
 
 	const follow = async (user: any) => {
 		try {
@@ -270,7 +256,11 @@ const HomePage = () => {
 										</div>
 									)
 								case "Victory":
-									return <div key={index}>victories</div>
+									return (
+										<div key={index}>
+											<VictoryCard post={single} />
+										</div>
+									)
 								case "Post":
 									return (
 										<div key={index}>

@@ -59,39 +59,18 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 						<div className="text-base font-bold capitalize">
 							{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
 						</div>
-						<div className="text-base">
-							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt.substring(0, 10))} />
-						</div>
+						<div className="text-base">Celebrated this victory/testimony</div>
 					</div>
 				</div>
 			</div>
 			<div className="text-sm p-2 leading-loose">{post.body}</div>
 			<div className="p-2">
-				<img className="w-full h-50 rounded-md" src={post.image} alt="" />
-				{author?.id === post.author?._id ? (
-					<div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
-				) : null}
-				{author?.id === post.author?._id && post.likes >= 10 ? (
-					<div>
-						<div className="text-gray-400 p-1">
-							N:B : With more than 10 persons supporting this camplaint concern we recomend thatyou make this post a petition/campaign for the issues raised to
-							be addresed.Making this post a petition will send your campaign to the right person/authority who will address it.
-						</div>
-						<button className="border border-black p-2">Start Petition</button>
-					</div>
-				) : null}
-				{post.isPetition === true ? (
-					<div>
-						<div className="text-gray-400 p-1">N:B: There is a petition for this post</div>
-						<button className="border border-black p-2">View Petition</button>
-					</div>
-				) : null}
+				<img src={post.image} className="w-full h-80 rounded-md object-cover" alt="" />
+			</div>
+			<div className="text-sm leading-loose p-2">
+				Congratulations to all who supported this campaign, on getting a massive victory. Our petition has just won. Lets keep making the change that we need.
 			</div>
 			<div className="pt-3 flex justify-between">
-				{/* <div className="flex">
-                    <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">10 Supports</div>
-                </div> */}
 				<div className="flex" onClick={() => like()}>
 					<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post.likes?.length} likes</div>
@@ -104,14 +83,11 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
 				</div>
-				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-					{/* <Link href={`/promote?slug=${post?.slug}`}>
-                        <Dropdown.Item>Promote</Dropdown.Item>
-                    </Link> */}
-					<Dropdown.Item>Report post</Dropdown.Item>
-					{post.author?._id === author?.id ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
-					<Dropdown.Item>Save</Dropdown.Item>
-				</Dropdown>
+				{post.author?._id === author?.id ? (
+					<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+						<Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item>
+					</Dropdown>
+				) : null}
 			</div>
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<ToastContainer />

@@ -43,13 +43,13 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 				query: print(SHARE),
 				variables: {
 					authorId: author.id,
-					itemId: petition.id,
+					itemId: petition._id,
 				},
 			})
 			toast.success("Petition has been shared")
 			console.log(data)
 		} catch (error) {
-			console.log(error)
+			console.log(error.response)
 			toast.warn("Oops! Something went wrong")
 		}
 	}
@@ -66,7 +66,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 							</div>
 							<div className="text-xs">
 								{" "}
-								<ReactTimeAgo date={petition.createdAt} locale="en-US" />
+								<ReactTimeAgo date={new Date(petition.createdAt.substring(0, 10))} />
 							</div>
 						</div>
 					</div>

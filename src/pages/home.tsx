@@ -1,37 +1,33 @@
-import { apollo } from "apollo";
+import { apollo } from "apollo"
 // import {
 // 	getStrapiLawyers,
 // 	getStrapiReps,
 // 	getStrapiSingleCampaign,
 // 	getStrapiTestimonies,
 // } from "apollo/actions/strapiAction";
-import { GET_CAMPAIGNS, } from "apollo/queries/campaignQuery";
+import { GET_CAMPAIGNS } from "apollo/queries/campaignQuery"
 // import CampaignBanner from "components/campaign-comp/CampaignBanner";
-import CampCard from "components/home/CampCard";
+import CampCard from "components/home/CampCard"
 // import LegalReprensentatives from "components/home/Representatives";
-import Indexsvg from "components/icon/Indexsvg";
-import Slider from "components/Slider";
+import Indexsvg from "components/icon/Indexsvg"
+import Slider from "components/Slider"
 import TeamSlide from "components/camp-slider/team-slider"
-import gql from "graphql-tag";
-import FrontLayout from "layout/FrontLayout";
-import { NextPage } from "next";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import Marquee from "react-fast-marquee";
-import { Zoom } from "react-reveal";
-import styled from "styled-components";
-import SliderTwo from "react-slick";
+import gql from "graphql-tag"
+import FrontLayout from "layout/FrontLayout"
+import { NextPage } from "next"
+import Link from "next/link"
+import React, { useEffect, useState } from "react"
+import Marquee from "react-fast-marquee"
+import { Zoom } from "react-reveal"
+import styled from "styled-components"
+import SliderTwo from "react-slick"
 import CampaignSlider from "../components/camp-slider/Slider"
-import { useQuery } from "@apollo/client";
-import { useRecoilValue } from "recoil";
-import { UserAtom } from "atoms/UserAtom";
-import { GET_ACTIVE_PETITION, GET_PETITION } from "apollo/queries/petitionQuery";
+import { useQuery } from "@apollo/client"
+import { useRecoilValue } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
+import { GET_ACTIVE_PETITION, GET_PETITION } from "apollo/queries/petitionQuery"
 
-import {
-	ICampaign,
-	Strapi_Testimony,
-} from "types/Applicant.types";
-
+import { ICampaign, Strapi_Testimony } from "types/Applicant.types"
 
 const testimonies: Strapi_Testimony[] | null = [
 	{
@@ -40,7 +36,7 @@ const testimonies: Strapi_Testimony[] | null = [
 		company: "MJS Berhad",
 		job_position: "",
 		body: "I am very excited about this platform that can really protect and preserve every individual's humanity and ensure that every citizen can live a life of dignity and a life that is worthy of a human being.",
-		image: "anitha.jpg"
+		image: "anitha.jpg",
 	},
 	{
 		id: "88uiwhkjhwjknmd",
@@ -48,7 +44,7 @@ const testimonies: Strapi_Testimony[] | null = [
 		job_position: "",
 		company: "Legal Connect",
 		body: "I am sure the common citizen will now have hope. Thanks to the inventor of this wonder tools for social activism. I just can’t wait to have my campaign running and start galvanizing for individual support. With this I can now impact my local community.",
-		image: "rosy.jpg"
+		image: "rosy.jpg",
 	},
 	{
 		id: "88uiwhkjhwjknmd",
@@ -56,8 +52,8 @@ const testimonies: Strapi_Testimony[] | null = [
 		company: "",
 		job_position: "",
 		body: "What an awesome technology. Big thanks to the CEO and before I die in silence it is high time I start voicing out the political challenges bedeviling my community. The underdevelopment, lack of basic amenities and the high level of criminality. I am pretty sure that with this platform I can win supporters who will join voices with me to campaign against these challenges. Kudos to People Power Technology.",
-		image: "john.jpg"
-	}
+		image: "john.jpg",
+	},
 ]
 
 const HomePage = () => {
@@ -70,14 +66,15 @@ const HomePage = () => {
 			setCamp(data.getPetitions)
 		},
 		onError: (err) => console.log(err),
-	});
+	})
 
-	const user = useRecoilValue(UserAtom);
+	const user = useRecoilValue(UserAtom)
+
 	useEffect(() => {
 		if (user !== null) {
 			window.location.href = `/`
 		}
-	}, [])
+	})
 
 	// useQuery(GET_CAMPAIGNS, {
 	// 	client: apollo,
@@ -95,28 +92,19 @@ const HomePage = () => {
 					<div className="container m-c _index d-flex py-3 flex-column-reverse flex-md-row align-items-md-center">
 						<div className="_index-txt">
 							<h1 className="  mb-3">
-								The <span className=" fw-700 fs-48">World’s Technology</span>{" "}
-								For <span className="fw-700 fs-48">Social</span> Change.{" "}
+								The <span className=" fw-700 fs-48">World’s Technology</span> For <span className="fw-700 fs-48">Social</span> Change.{" "}
 								{/* <span className="fw-700 fs-48">Criminal</span> &{" "}
 								<span className="fw-700 fs-48">Social Injustice</span> */}
 							</h1>
 							<p className="mb-5 fs-16">
-								There are so much to talk about: Social policy, Government
-								decisions, Politics, Environment, Empowerment, Development, Crime, Human Right etc.
+								There are so much to talk about: Social policy, Government decisions, Politics, Environment, Empowerment, Development, Crime, Human Right etc.
 							</p>
-							<div
-								className="btn-holder d-flex flex-wrap"
-								style={{ gap: "1rem" }}
-							>
+							<div className="btn-holder d-flex flex-wrap" style={{ gap: "1rem" }}>
 								<Link href="/auth?mode=signup">
-									<a className="btn btn-warning btn-lg rounded-pill px-4 py-2 text-light font-weight-bolder fs-20 ">
-										Join Now
-									</a>
+									<a className="btn btn-warning btn-lg rounded-pill px-4 py-2 text-light font-weight-bolder fs-20 ">Join Now</a>
 								</Link>
 								<Link href="/about">
-									<button className="btn btn-lg border-warning font-weight-bold text-warning py-2 px-4 rounded-pill fs-20">
-										Learn More
-									</button>
+									<button className="btn btn-lg border-warning font-weight-bold text-warning py-2 px-4 rounded-pill fs-20">Learn More</button>
 								</Link>
 							</div>
 						</div>
@@ -171,23 +159,18 @@ const HomePage = () => {
 						<p className="text-center fw-bold mb-5 fs-2"> Campaigns</p>
 						<main>
 							<div className="campaign-list">
-								{campaigns?.length >= 1
-									? (campaigns?.slice(0, 6).map((camp, i) => <CampCard camp={camp} key={i} />))
-									: (<div></div>)}
+								{campaigns?.length >= 1 ? campaigns?.slice(0, 6).map((camp, i) => <CampCard camp={camp} key={i} />) : <div></div>}
 							</div>
 							{campaigns && campaigns?.length > 6 && (
 								<div className="d-flex justify-content-center mt-3">
 									<Link href="/campaigns">
-										<a className="btn border-warning text-warning font-weight-bolder px-4 py-2 rounded-pill">
-											View More
-										</a>
+										<a className="btn border-warning text-warning font-weight-bolder px-4 py-2 rounded-pill">View More</a>
 									</Link>
 								</div>
 							)}
 						</main>
 					</div>
 				</section>
-
 
 				<section className="community-saying">
 					<div className="py-10 w-2/3 mx-auto text-center">
@@ -198,7 +181,8 @@ const HomePage = () => {
 							<TeamSlide />
 						</div>
 						<div className="text-base">
-							With our team of professionals, journalists, content writers, designers and social skilled workers, you can leave with us the complexity of writing, designing, editing and organizing your campaigns and other administration.
+							With our team of professionals, journalists, content writers, designers and social skilled workers, you can leave with us the complexity of
+							writing, designing, editing and organizing your campaigns and other administration.
 						</div>
 					</div>
 				</section>
@@ -210,16 +194,16 @@ const HomePage = () => {
 						<div className="lg:w-1/2 my-auto lg:p-0 p-5">
 							<div className="lg:text-3xl text-xl font-bold">Subscribe for our Human Right Applications and Proceedings</div>
 							<div className="text-lg">
-								Our Human Right Application is built and automated to address all forms of human right abuse and with thousands of our Human Right Lawyers and Social Skilled workers across the globe, you can now be able to influence policy makers and compel those in power to respect human right and administer justice through Human Right Proceedings.
+								Our Human Right Application is built and automated to address all forms of human right abuse and with thousands of our Human Right Lawyers and
+								Social Skilled workers across the globe, you can now be able to influence policy makers and compel those in power to respect human right and
+								administer justice through Human Right Proceedings.
 							</div>
 						</div>
 					</div>
 				</section>
 				<section className="py-5 community-saying">
 					<div className="_community-saying container">
-						<p className="text-center mb-5 fs-1 fw-bold">
-							What the community says
-						</p>
+						<p className="text-center mb-5 fs-1 fw-bold">What the community says</p>
 						<div className="container">
 							<Slider testimonies={testimonies} />
 						</div>
@@ -227,22 +211,12 @@ const HomePage = () => {
 				</section>
 			</Wrapper>
 		</FrontLayout>
-	);
-};
+	)
+}
 
-export default HomePage;
+export default HomePage
 
-const SecondRowComp = ({
-	img,
-	text1,
-	text2,
-	link,
-}: {
-	img: string;
-	text1: string;
-	text2: string;
-	link?: string;
-}): JSX.Element => {
+const SecondRowComp = ({ img, text1, text2, link }: { img: string; text1: string; text2: string; link?: string }): JSX.Element => {
 	return (
 		<div className="arrow second-row-cards">
 			<div className="container _second-row-cards  d-flex flex-column flex-md-row align-items-center">
@@ -257,8 +231,8 @@ const SecondRowComp = ({
 				</Link>
 			</div>
 		</div>
-	);
-};
+	)
+}
 
 const secondRowContent = [
 	// {
@@ -279,7 +253,7 @@ const secondRowContent = [
 		text2: "A Staff",
 		link: "/about#career",
 	},
-];
+]
 
 const Wrapper = styled.div`
 	.c-pointer {
@@ -315,4 +289,4 @@ const Wrapper = styled.div`
 			border: 3px solid orange;
 		}
 	}
-`;
+`

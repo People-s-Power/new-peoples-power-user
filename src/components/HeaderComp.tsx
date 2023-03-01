@@ -24,8 +24,8 @@ const Header = (): JSX.Element => {
 	const navItems = (loggedIn: boolean) => [
 		{ title: "Home", link: loggedIn ? `/` : "auth" },
 		{ title: "My Profile", link: loggedIn ? `/user?page=${user.id}` : "auth" },
-		{ title: "Messages", link: "messages" },
-		{ title: "My Connection", link: "connection" },
+		{ title: "Messages", link: "/messages" },
+		{ title: "My Connection", link: "/connection" },
 		// { title: "Explore", link: "campaigns" },
 	];
 
@@ -83,7 +83,7 @@ const Header = (): JSX.Element => {
 						{user ? (
 							navItems(Boolean(user)).map((nav, i) => (
 								<li onClick={() => localStorage.setItem("page", `${user?.id}`)} className="nav-item pt-2" key={i}>
-									<Link href={`/${nav.link}`}>
+									<Link href={`${nav.link}`}>
 										<a
 											className={
 												pathname == `/${nav.link}`
@@ -151,7 +151,7 @@ const Header = (): JSX.Element => {
 				<menu className="animate__animated animate__fadeInDown d-flex flex-column align-items-start d-md-none">
 					{navItems(Boolean(user)).map((nav, i) => (
 						<div className="text-center py-2" key={i}>
-							<Link href={`/${nav.link}`}>
+							<Link href={`${nav.link}`}>
 								<a
 									className={
 										pathname == `/${nav.link}`
