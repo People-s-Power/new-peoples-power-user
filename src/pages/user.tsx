@@ -37,6 +37,9 @@ import CampComp from "components/CampComp"
 import PostActionCard from "components/PostActionCard"
 import { Dropdown } from "rsuite"
 import Cookies from "js-cookie"
+import VictoryCard from "components/VictoryCard"
+import Updates from "components/updates"
+import FollowSlides from "components/camp-slider/FollowSlides"
 
 const user = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -105,50 +108,33 @@ const user = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {
-					authorId: query?.page,
+					authorId: author.id,
 				},
 			})
 			console.log(data.data.timeline)
-			const general = [
+			let general = [
 				...data.data.timeline.adverts,
-				{
-					__typename: "Follow",
-				},
-				...data.data.timeline.updates,
-				{
-					__typename: "Follow",
-				},
+				// ...data.data.timeline.updates,
 				...data.data.timeline.events,
-				{
-					__typename: "Follow",
-				},
 				...data.data.timeline.petitions,
-				{
-					__typename: "Follow",
-				},
 				...data.data.timeline.posts,
-				{
-					__typename: "Follow",
-				},
 				...data.data.timeline.victories,
-				{
-					__typename: "Follow",
-				},
 			]
-			const randomize = (values: any) => {
-				let index = values.length,
-					randomIndex
-				while (index != 0) {
-					randomIndex = Math.floor(Math.random() * index)
-					index--
-					;[values[index], values[randomIndex]] = [values[randomIndex], values[index]]
+			const randomizedItems = general.sort(() => Math.random() - 0.5)
+			const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			let newArray = []
+			for (let i = 0; i < sortedItems.length; i++) {
+				newArray.push(sortedItems[i])
+				if ((i + 1) % 3 === 0) {
+					newArray.push({
+						__typename: "Follow",
+					})
 				}
-				return values
 			}
-			randomize(general)
-			setAll(general)
+			// console.log(newArray)
+			setAll(newArray.reverse())
 		} catch (err) {
-			console.log(err)
+			console.log(err.response)
 		}
 	}
 
@@ -184,7 +170,7 @@ const user = () => {
 		if (all[0] === undefined) {
 			getData()
 		}
-	}, [user !== null])
+	}, [author])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
@@ -313,7 +299,7 @@ const user = () => {
 					<Slider />
 
 					<div className="lg:flex mt-3">
-						<div className="lg:w-1/2 mt-3 h-80 lg:mr-4 rounded-md">
+						<div className="lg:w-1/3 mt-3 h-80 lg:mr-4 rounded-md">
 							{author?.id === query.page ? (
 								<div className="text-base p-3">
 									<div className="my-2">
@@ -409,7 +395,7 @@ const user = () => {
 								</div>
 							</div>
 						) : (
-							<div className="w-full">
+							<div className="lg:w-4/6">
 								{query.page === author?.id ? (
 									<PostActionCard
 										authorImage={author?.image}
@@ -442,11 +428,27 @@ const user = () => {
 														</div>
 													)
 												case "Victory":
-													return <div>victories</div>
+													return (
+														<div key={index}>
+															<VictoryCard post={single} />
+														</div>
+													)
 												case "Post":
 													return (
 														<div key={index}>
 															<CampComp post={single} />
+														</div>
+													)
+												case "Update":
+													return (
+														<div key={index}>
+															<Updates updates={single} />
+														</div>
+													)
+												case "Follow":
+													return (
+														<div key={index}>
+															<FollowSlides />
 														</div>
 													)
 											}
@@ -515,7 +517,7 @@ const user = () => {
                             */}
 							</div>
 						)}
-						<div className="w-72 bg-grey"></div>
+						{/* <div className="w-72 bg-grey"></div> */}
 					</div>
 				</div>
 				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />

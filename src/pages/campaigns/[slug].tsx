@@ -13,12 +13,6 @@ import { CampaignShareMenuList } from "components/campaign-comp/CampaignTable";
 import EndorseCampaignComp from "components/campaign-comp/EndorseCampaignComp";
 import Endorsements from "components/campaign-comp/Endorsements";
 import FrontLayout from "layout/FrontLayout";
-import {
-	GetStaticPaths,
-	GetStaticPathsResult,
-	GetStaticProps,
-	NextPage,
-} from "next";
 import Head from "next/head";
 import { ParsedUrlQuery } from "querystring";
 import React, { Fragment, useEffect, useState } from "react";
