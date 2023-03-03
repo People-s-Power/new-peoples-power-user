@@ -40,12 +40,15 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					itemId: post._id,
 				},
 			})
-			toast.success("Post liked successfully")
+			toast.success("Victory liked successfully")
 			console.log(data)
 		} catch (error) {
 			console.log(error)
 			toast.warn("Oops! Something went wrong")
 		}
+	}
+	function liked(id, array) {
+		return array.some((obj) => obj._id === id)
 	}
 	return (
 		<div className="p-3 border-b border-gray-400 my-3">
@@ -70,7 +73,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			<div className="pt-3 flex justify-between">
 				<div className="flex" onClick={() => like()}>
 					<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{post.likes?.length} likes</div>
+					<div className={liked(author.id, post.likes) ? "text-warning text-sm my-auto ml-2" : "text-sm my-auto ml-2"}>{post.likes?.length} likes</div>
 				</div>
 				<div className="flex">
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />

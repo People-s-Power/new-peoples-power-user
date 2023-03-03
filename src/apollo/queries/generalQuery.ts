@@ -33,6 +33,7 @@ export const GET_ALL = gql`
 				image
 				likes {
 					name
+					_id
 				}
 				__typename
 				shares
