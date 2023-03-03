@@ -22,7 +22,7 @@ import axios from "axios";
 const EndorseCampaignComp = ({ camp }: { camp: ICampaign }): JSX.Element => {
 	const [body, setBody] = useState("");
 	const router = useRouter()
-	const [id, setId] = useState(camp?.id);
+	const [id, setId] = useState(camp?._id);
 	const [loading, setLoading] = useState(false)
 	const user = useRecoilValue(UserAtom);
 
