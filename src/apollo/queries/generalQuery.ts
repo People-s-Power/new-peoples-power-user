@@ -45,6 +45,18 @@ export const GET_ALL = gql`
 					image
 					name
 				}
+				comments {
+					content
+					_id
+					author {
+						_id
+						name
+						email
+						image
+					}
+					date
+					likes
+				}
 			}
 
 			petitions {
@@ -99,6 +111,18 @@ export const GET_ALL = gql`
 					email
 					image
 					_id
+				}
+				comments {
+					content
+					_id
+					author {
+						_id
+						name
+						email
+						image
+					}
+					date
+					likes
 				}
 				isPetition
 			}
@@ -157,6 +181,19 @@ export const CONNECTIONS = gql`
 			name
 			image
 			_id
+		}
+	}
+`
+
+export const COMMENT = gql`
+	mutation comment($authorId: ID!, $itemId: ID!, $content: String!) {
+		comment(authorId: $authorId, itemId: $itemId, content: $content) {
+			_id
+			content
+			author {
+				_id
+			}
+			date
 		}
 	}
 `
