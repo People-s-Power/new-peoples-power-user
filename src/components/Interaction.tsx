@@ -133,7 +133,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				</div>
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 					<Dropdown.Item>Promote</Dropdown.Item>
-					<Dropdown.Item>Report post</Dropdown.Item>
+					{post.author?._id === author?.id ? null : <Dropdown.Item>Report post</Dropdown.Item>}
 					{post.author?._id === author?.id ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
 					<Dropdown.Item>Save</Dropdown.Item>
 					{post.author?._id === author?.id ? (

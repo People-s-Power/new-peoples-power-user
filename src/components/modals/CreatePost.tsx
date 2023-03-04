@@ -23,10 +23,9 @@ const CreatePost = ({
 	handelPetition(): void
 	orgs: any
 }): JSX.Element => {
-	const [filesPreview, setFilePreview] = useState<any>([])
+	const [filesPreview, setFilePreview] = useState<any>(post?.image || [])
 	const author = useRecoilValue(UserAtom)
 	const [active, setActive] = useState<any>(author)
-
 	const [loading, setLoading] = useState(false)
 	const [body, setBody] = useState(post?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
@@ -78,9 +77,10 @@ const CreatePost = ({
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(UPDATE_POST),
 				variables: {
-					authorId: author.id || active._id,
+					authorId: author.id,
 					body: body,
 					postId: post._id,
+					imageFile: filesPreview,
 				},
 			})
 			console.log(data)
