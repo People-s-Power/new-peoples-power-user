@@ -17,6 +17,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
 	const [content, setContent] = useState("")
+	const [comments, setComments] = useState(false)
+
 	const share = async () => {
 		try {
 			const { data } = await axios.post("share", {
@@ -88,7 +90,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			</div>
 			<div className="text-sm p-2 leading-loose">{post.body}</div>
 			<div className="p-2">
-				<img className="w-full h-50 rounded-md" src={post.image} alt="" />
+				<img className="w-full h-50 rounded-md" src={post.image[0]} alt="" />
 				{author?.id === post.author?._id ? (
 					<div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
 				) : null}
@@ -117,7 +119,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
 					<div className={liked(author.id, post.likes) ? "text-warning text-sm my-auto ml-2" : "text-sm my-auto ml-2"}>{post.likes?.length} likes</div>
 				</div>
-				<div className="flex">
+				<div className="flex" onClick={() => setComments(!comments)}>
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post.comments?.length} Comments</div>
 				</div>
@@ -134,25 +136,29 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<Dropdown.Item>Save</Dropdown.Item>
 				</Dropdown>
 			</div>
-			<div className="flex border-t border-gray-200 p-2 relative">
-				<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
-				<input type="text" onChange={(e) => setContent(e.target.value)} className="p-2 w-full border border-black text-sm" placeholder="Write a comment" />
-				<img src="./images/send.png" onClick={() => comment(post._id)} className="w-6 h-6 absolute top-4 right-6" alt="" />
-			</div>
-			{post.comments.length > 0
-				? post.comments?.map((comment, index) => (
-						<div key={index} className="flex p-2">
-							<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
-							<div className="w-full bg-gray-100 p-2 flex justify-between">
-								<div className="">
-									<div className="font-bold text-sm mt-1">{comment.author.name}</div>
-									<div className="text-xs mt-1">{comment.content}</div>
+			{comments === true ? (
+				<div>
+					<div className="flex border-t border-gray-200 p-2 relative">
+						<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
+						<input type="text" onChange={(e) => setContent(e.target.value)} className="p-2 w-full border border-black text-sm" placeholder="Write a comment" />
+						<img src="./images/send.png" onClick={() => comment(post._id)} className="w-6 h-6 absolute top-4 right-6" alt="" />
+					</div>
+					{post.comments.length > 0
+						? post.comments?.map((comment, index) => (
+								<div key={index} className="flex p-2">
+									<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
+									<div className="w-full bg-gray-100 p-2 flex justify-between">
+										<div className="">
+											<div className="font-bold text-sm mt-1">{comment.author.name}</div>
+											<div className="text-xs mt-1">{comment.content}</div>
+										</div>
+										<div className="text-sm">{/* <ReactTimeAgo date={new Date(comment.date)} /> */}</div>
+									</div>
 								</div>
-								<div className="text-sm">{/* <ReactTimeAgo date={new Date(comment.date)} /> */}</div>
-							</div>
-						</div>
-				  ))
-				: null}
+						  ))
+						: null}
+				</div>
+			) : null}
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<ToastContainer />
 		</div>

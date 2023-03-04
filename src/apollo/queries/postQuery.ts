@@ -1,61 +1,57 @@
-import gql from "graphql-tag";
+import gql from "graphql-tag"
 
-export const CREATE_POST = gql `
-mutation createPost($body: String!, $imageFile: String!) {
-    createPost(body: $body, imageFile: $imageFile) {
-        body
-        comments {
-            author
-            body
-        }
-        image
-        author {
-            name
-            email
-        }
-    }
-}
+export const CREATE_POST = gql`
+	mutation createPost($authorId: ID!, $body: String!, $imageFile: [String!]!) {
+		createPost(authorId: $authorId, body: $body, imageFile: $imageFile) {
+			_id
+			body
+			isPetition
+			image
+			promoted
+			createdAt
+			updatedAt
+		}
+	}
 `
 
-export const UPDATE_POST = gql `
-mutation updatePost($body: String!, $postId: ID!) {
-    updatePost(body: $body, postId: $postId) {
-        body
-        comments {
-            author
-            body
-        }
-        image
-        author {
-            name
-            email
-        }
-    }
-}
+export const UPDATE_POST = gql`
+	mutation updatePost($body: String!, $postId: ID!) {
+		updatePost(body: $body, postId: $postId) {
+			body
+			comments {
+				author
+				body
+			}
+			image
+			author {
+				name
+				email
+			}
+		}
+	}
 `
 
-export const GET_POSTS = gql 
-`
-query getPosts{
-    getPosts {
-        _id
-        body
-        comments {
-            author
-            body
-        }
-        image
-        likes
-        shares
-        author {
-            name
-            email
-        }
-    }
-}
+export const GET_POSTS = gql`
+	query getPosts {
+		getPosts {
+			_id
+			body
+			comments {
+				author
+				body
+			}
+			image
+			likes
+			shares
+			author {
+				name
+				email
+			}
+		}
+	}
 `
 
-// export const GET_POST = gql 
+// export const GET_POST = gql
 // `
 // query getPost($ID: ID!){
 //     getPost(id: $ID){
@@ -76,7 +72,7 @@ query getPosts{
 //     }
 // }
 // `
-// export const UPDATE_BODY = gql 
+// export const UPDATE_BODY = gql
 // `mutation updatePost() {
 //     updatePost(body: "Try rest shall", postId: "635d7d633d10e290b5583a90") {
 //         body
@@ -93,13 +89,11 @@ query getPosts{
 //     }
 // }`
 
-export const GET_USER_POSTS = gql 
-`
-query myPosts{
-    myPosts{
-        body
-        image
-        
-    }
-}
+export const GET_USER_POSTS = gql`
+	query myPosts {
+		myPosts {
+			body
+			image
+		}
+	}
 `
