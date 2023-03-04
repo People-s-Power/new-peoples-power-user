@@ -107,7 +107,7 @@ function Buildprofile(): React.ReactElement {
 				country,
 				city,
 				description,
-				myInterest,
+				interests: myInterest,
 			})
 			console.log(data)
 			toast.success("Profile Updates Successfully!")
