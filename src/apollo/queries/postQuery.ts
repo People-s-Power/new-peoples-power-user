@@ -15,18 +15,15 @@ export const CREATE_POST = gql`
 `
 
 export const UPDATE_POST = gql`
-	mutation updatePost($body: String!, $postId: ID!) {
-		updatePost(body: $body, postId: $postId) {
+	mutation updatePost($authorId: ID!, $body: String!, $postId: ID!) {
+		updatePost(authorId: $authorId, body: $body, postId: $postId) {
+			_id
 			body
-			comments {
-				author
-				body
-			}
+			isPetition
 			image
-			author {
-				name
-				email
-			}
+			promoted
+			createdAt
+			updatedAt
 		}
 	}
 `

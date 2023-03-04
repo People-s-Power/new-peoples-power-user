@@ -11,13 +11,12 @@ import { SHARE, LIKE, COMMENT } from "apollo/queries/generalQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
-import Comments from "./Comments"
+import Interaction from "./Interaction"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
-	const [comments, setComments] = useState(false)
 	const [more, setMore] = useState(post.body.length > 100 ? true : false)
 	const [liked, setLiked] = useState(false)
 	const [likes, setLikes] = useState(post.likes.length)
@@ -112,41 +111,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					</div>
 				) : null}
 			</div>
-			<div className="pt-3 flex justify-between">
-				{/* <div className="flex">
-                    <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">10 Supports</div>
-                </div> */}
-				{liked ? (
-					<div className="flex" onClick={() => like()}>
-						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
-						<div className={"text-warning text-sm my-auto ml-2"}>{likes} likes</div>
-					</div>
-				) : (
-					<div className="flex" onClick={() => like()}>
-						<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-						<div className={"text-sm my-auto ml-2"}>{likes} likes</div>
-					</div>
-				)}
-
-				<div className="flex" onClick={() => setComments(!comments)}>
-					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{post.comments?.length} Comments</div>
-				</div>
-				<div className="flex" onClick={() => share()}>
-					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
-				</div>
-				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-					{/* <Link href={`/promote?slug=${post?.slug}`}>
-                        <Dropdown.Item>Promote</Dropdown.Item>
-                    </Link> */}
-					<Dropdown.Item>Report post</Dropdown.Item>
-					{post.author?._id === author?.id ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
-					<Dropdown.Item>Save</Dropdown.Item>
-				</Dropdown>
-			</div>
-			{comments === true ? <Comments comments={post.comments} /> : null}
+			<Interaction post={post} />
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<ToastContainer />
 		</div>

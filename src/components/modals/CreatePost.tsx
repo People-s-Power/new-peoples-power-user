@@ -50,56 +50,52 @@ const CreatePost = ({
 		array.splice(index, 1)
 		setFilePreview(array)
 	}
+
 	const handleSubmit = async () => {
 		setLoading(true)
-		if (post === null) {
-			try {
-				const { data } = await axios.post(SERVER_URL + "/graphql", {
-					query: print(CREATE_POST),
-					variables: {
-						authorId: active.id || active._id,
-						body: body,
-						imageFile: filesPreview,
-					},
-				})
-				console.log(data)
-				handelClick()
-				setBody("")
-				// setFilePreview({
-				// 	type: "",
-				// 	file: "",
-				// 	name: "",
-				// })
-				setLoading(false)
-			} catch (error) {
-				console.log(error)
-			}
-		} else {
-			try {
-				const { data } = await axios.post(SERVER_URL + "/graphql", {
-					query: print(UPDATE_POST),
-					variables: {
-						body: body,
-						postId: post._id,
-					},
-				})
-				console.log(data)
-				handelClick()
-				setBody("")
-				setFilePreview({
-					type: "",
-					file: "",
-					name: "",
-				})
-				setLoading(false)
-			} catch (error) {
-				console.log(error)
-			}
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(CREATE_POST),
+				variables: {
+					authorId: active.id || active._id,
+					body: body,
+					imageFile: filesPreview,
+				},
+			})
+			console.log(data)
+			handelClick()
+			setBody("")
+			setFilePreview([])
+			setLoading(false)
+		} catch (error) {
+			console.log(error)
 		}
 	}
+
+	const handleUpdate = async () => {
+		setLoading(true)
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UPDATE_POST),
+				variables: {
+					authorId: author.id || active._id,
+					body: body,
+					postId: post._id,
+				},
+			})
+			console.log(data)
+			handelClick()
+			setBody("")
+			setLoading(false)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	useEffect(() => {
 		setActive(author)
 	}, [author !== null])
+
 	const speaker = (
 		<Popover>
 			<div onClick={() => setActive(author)} className="flex m-1">
@@ -191,9 +187,15 @@ const CreatePost = ({
 						>
 							Make petition
 						</div>
-						<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
-							{loading ? "Loading..." : "Post"}
-						</button>
+						{post === null ? (
+							<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
+								{loading ? "Loading..." : "Post"}
+							</button>
+						) : (
+							<button onClick={handleUpdate} className="p-1 bg-warning text-white rounded-sm w-20">
+								{loading ? "Loading..." : "Update"}
+							</button>
+						)}
 					</div>
 				</Modal.Footer>
 			</Modal>
