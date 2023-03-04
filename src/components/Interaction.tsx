@@ -11,6 +11,7 @@ import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { Loader } from "rsuite"
+import { DELETE_POST } from "apollo/queries/postQuery"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -51,7 +52,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					itemId: post._id,
 				},
 			})
-			// toast.success("Post liked successfully")
 			console.log(data)
 			setLiked(!liked)
 			liked === true ? setLikes(likes - 1) : setLikes(likes + 1)
@@ -91,6 +91,22 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			setLoading(false)
 		}
 	}
+	const deletePost = async () => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(DELETE_POST),
+				variables: {
+					authorId: author.id,
+					postId: post._id,
+				},
+			})
+			console.log(data)
+			toast.success("Post deleted successfully")
+		} catch (error) {
+			console.log(error)
+			toast.warn("Opps! something occurred")
+		}
+	}
 
 	return (
 		<div>
@@ -116,9 +132,15 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
 				</div>
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+					<Dropdown.Item>Promote</Dropdown.Item>
 					<Dropdown.Item>Report post</Dropdown.Item>
 					{post.author?._id === author?.id ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
 					<Dropdown.Item>Save</Dropdown.Item>
+					{post.author?._id === author?.id ? (
+						<Dropdown.Item onClick={deletePost}>
+							<span className="text-red-500">Delete</span>
+						</Dropdown.Item>
+					) : null}
 				</Dropdown>
 			</div>
 			{comments === true ? (
