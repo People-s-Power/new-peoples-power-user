@@ -63,7 +63,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 							</div>
 							<div className="text-xs">
 								{" "}
-								<ReactTimeAgo date={new Date(petition.createdAt.substring(0, 10))} />
+								<ReactTimeAgo date={new Date(petition.createdAt)} />
 							</div>
 						</div>
 					</div>

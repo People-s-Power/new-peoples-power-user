@@ -116,10 +116,10 @@ const HomePage = () => {
 				...data.data.timeline.victories,
 			]
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
-			// const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			const sortedItems = randomizedItems.sort((a, b) => b.createdAt?.substring(0, 10) - a.createdAt?.substring(0, 10))
 			let newArray = []
-			for (let i = 0; i < randomizedItems.length; i++) {
-				newArray.push(randomizedItems[i])
+			for (let i = 0; i < sortedItems.length; i++) {
+				newArray.push(sortedItems[i])
 				if ((i + 1) % 3 === 0) {
 					newArray.push({
 						__typename: "Follow",

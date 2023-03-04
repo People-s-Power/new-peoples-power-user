@@ -34,7 +34,7 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 							</div>
 							<div className="text-xs">
 								{" "}
-								<ReactTimeAgo date={new Date(advert.createdAt.substring(0, 10))} locale="en-US" />
+								<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
 							</div>
 						</div>
 					</div>

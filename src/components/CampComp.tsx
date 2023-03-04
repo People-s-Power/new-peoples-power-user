@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Dropdown } from "rsuite"
 import ReactTimeAgo from "react-time-ago"
 import CreatePost from "./modals/CreatePost"
@@ -11,13 +11,16 @@ import { SHARE, LIKE, COMMENT } from "apollo/queries/generalQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
+import Comments from "./Comments"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
-	const [content, setContent] = useState("")
 	const [comments, setComments] = useState(false)
+	const [more, setMore] = useState(post.body.length > 100 ? true : false)
+	const [liked, setLiked] = useState(false)
+	const [likes, setLikes] = useState(post.likes.length)
 
 	const share = async () => {
 		try {
@@ -33,6 +36,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		}
 	}
 
+	useEffect(() => {
+		setLiked(post.likes.some((obj) => obj._id === author.id))
+	}, [])
+
 	const like = async () => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -42,35 +49,14 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					itemId: post._id,
 				},
 			})
-			toast.success("Post liked successfully")
+			// toast.success("Post liked successfully")
 			console.log(data)
+			setLiked(!liked)
+			liked === true ? setLikes(likes - 1) : setLikes(likes + 1)
 		} catch (error) {
 			console.log(error)
 			toast.warn("Oops! Something went wrong")
 		}
-	}
-
-	const comment = async (id) => {
-		if (content.length === 0) return
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(COMMENT),
-				variables: {
-					authorId: author.id,
-					itemId: id,
-					content: content,
-				},
-			})
-			toast.success("Comment sent")
-			console.log(data)
-		} catch (error) {
-			console.log(error)
-			toast.warn("Oops! Something went wrong")
-		}
-	}
-
-	function liked(id, array) {
-		return array.some((obj) => obj._id === id)
 	}
 
 	return (
@@ -83,12 +69,28 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
 						</div>
 						<div className="text-base">
-							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt.substring(0, 10))} />
+							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
 						</div>
 					</div>
 				</div>
 			</div>
-			<div className="text-sm p-2 leading-loose">{post.body}</div>
+			{more ? (
+				<div className="text-sm p-2 leading-loose">
+					{post.body.slice(0, 100)}{" "}
+					<span className="text-warning underline" onClick={() => setMore(!more)}>
+						..see more
+					</span>
+				</div>
+			) : (
+				<div className="text-sm p-2 leading-loose">
+					{post.body}
+					{post.body.length > 100 ? (
+						<span className="text-warning underline" onClick={() => setMore(!more)}>
+							see less
+						</span>
+					) : null}
+				</div>
+			)}
 			<div className="p-2">
 				<img className="w-full h-50 rounded-md" src={post.image[0]} alt="" />
 				{author?.id === post.author?._id ? (
@@ -115,10 +117,18 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
                     <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
                     <div className="text-sm my-auto ml-2">10 Supports</div>
                 </div> */}
-				<div className="flex" onClick={() => like()}>
-					<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-					<div className={liked(author.id, post.likes) ? "text-warning text-sm my-auto ml-2" : "text-sm my-auto ml-2"}>{post.likes?.length} likes</div>
-				</div>
+				{liked ? (
+					<div className="flex" onClick={() => like()}>
+						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
+						<div className={"text-warning text-sm my-auto ml-2"}>{likes} likes</div>
+					</div>
+				) : (
+					<div className="flex" onClick={() => like()}>
+						<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
+						<div className={"text-sm my-auto ml-2"}>{likes} likes</div>
+					</div>
+				)}
+
 				<div className="flex" onClick={() => setComments(!comments)}>
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post.comments?.length} Comments</div>
@@ -136,29 +146,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<Dropdown.Item>Save</Dropdown.Item>
 				</Dropdown>
 			</div>
-			{comments === true ? (
-				<div>
-					<div className="flex border-t border-gray-200 p-2 relative">
-						<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
-						<input type="text" onChange={(e) => setContent(e.target.value)} className="p-2 w-full border border-black text-sm" placeholder="Write a comment" />
-						<img src="./images/send.png" onClick={() => comment(post._id)} className="w-6 h-6 absolute top-4 right-6" alt="" />
-					</div>
-					{post.comments.length > 0
-						? post.comments?.map((comment, index) => (
-								<div key={index} className="flex p-2">
-									<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
-									<div className="w-full bg-gray-100 p-2 flex justify-between">
-										<div className="">
-											<div className="font-bold text-sm mt-1">{comment.author.name}</div>
-											<div className="text-xs mt-1">{comment.content}</div>
-										</div>
-										<div className="text-sm">{/* <ReactTimeAgo date={new Date(comment.date)} /> */}</div>
-									</div>
-								</div>
-						  ))
-						: null}
-				</div>
-			) : null}
+			{comments === true ? <Comments comments={post.comments} /> : null}
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<ToastContainer />
 		</div>
