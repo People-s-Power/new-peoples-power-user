@@ -12,6 +12,10 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { Loader } from "rsuite"
 import { DELETE_POST } from "apollo/queries/postQuery"
+import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
+import { useQuery } from "@apollo/client"
+import { apollo } from "apollo"
+import { IOrg } from "types/Applicant.types"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -24,6 +28,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const [qty, setQty] = useState(4)
 	const [allComment, setAllComment] = useState(post.comments)
 	const [loading, setLoading] = useState(false)
+	const [orgs, setOrgs] = useState<IOrg[]>([])
 
 	const share = async () => {
 		try {
@@ -38,7 +43,35 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			console.log(err)
 		}
 	}
+	useQuery(GET_ORGANIZATIONS, {
+		variables: { ID: author?.id },
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data.getUserOrganizations)
+			setOrgs(data.getUserOrganizations)
+		},
+		onError: (err) => {
+			// console.log(err)
+		},
+	})
 
+	function isOwner(id) {
+		return id === author.id || orgs.some((obj) => obj._id === id)
+	}
+	author.orgOperating.map((org) => {
+		useQuery(GET_ORGANIZATION, {
+			variables: { ID: org },
+			client: apollo,
+			onCompleted: (data) => {
+				// console.log(data)
+				setOrgs([...orgs, data.getOrganzation])
+			},
+			onError: (err) => {
+				console.log(err.message)
+			},
+		})
+	})
+	// }
 	useEffect(() => {
 		setLiked(post.likes.some((obj) => obj._id === author.id))
 	}, [])
@@ -59,8 +92,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			console.log(error)
 		}
 	}
-	const comment = async (id) => {
+	const comment = async (e, id) => {
 		if (content.length === 0) return
+		if (e.key !== "Enter") return
+
 		try {
 			setLoading(true)
 
@@ -91,12 +126,12 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			setLoading(false)
 		}
 	}
-	const deletePost = async () => {
+	const deletePost = async (id) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(DELETE_POST),
 				variables: {
-					authorId: author.id,
+					authorId: id,
 					postId: post._id,
 				},
 			})
@@ -132,15 +167,15 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
 				</div>
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-					<Dropdown.Item>Promote</Dropdown.Item>
-					{post.author?._id === author?.id ? null : <Dropdown.Item>Report post</Dropdown.Item>}
-					{post.author?._id === author?.id ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
+					{isOwner(post.author._id) ? null : <Dropdown.Item>Report post</Dropdown.Item>}
+					{isOwner(post.author._id) ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
 					<Dropdown.Item>Save</Dropdown.Item>
-					{post.author?._id === author?.id ? (
-						<Dropdown.Item onClick={deletePost}>
+					{isOwner(post.author._id) ? (
+						<Dropdown.Item onClick={() => deletePost(post.author._id)}>
 							<span className="text-red-500">Delete</span>
 						</Dropdown.Item>
 					) : null}
+					{isOwner(post.author._id) ? <Dropdown.Item>Promote</Dropdown.Item> : null}
 				</Dropdown>
 			</div>
 			{comments === true ? (
@@ -150,12 +185,13 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 						<input
 							type="text"
 							value={content}
+							onKeyPress={(e) => comment(e, post._id)}
 							onChange={(e) => setContent(e.target.value)}
 							className="p-2 w-full border border-black text-sm"
 							placeholder="Write a comment"
 						/>
 						<div className="absolute top-4 right-6">
-							{loading ? <Loader /> : <img src="./images/send.png" onClick={() => comment(post._id)} className="w-6 h-6" alt="" />}
+							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => comment(e, post._id)} className="w-6 h-6" alt="" />}
 						</div>
 					</div>
 					{allComment.length > 0

@@ -17,7 +17,7 @@ import { print } from "graphql"
 import axios from "axios"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { useRecoilValue } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { apollo } from "apollo"
 import { useQuery } from "@apollo/client"
@@ -40,9 +40,9 @@ const HomePage = () => {
 	const handelPetition = () => setOpenPetition(!openPetition)
 	const handelAdClick = () => setOpenAd(!openAd)
 	const handelEventClick = () => setOpenEvent(!openEvent)
-	const [following, setFollow] = useState(false)
+	// const [following, setFollow] = useState(false)
 	const [all, setAll] = useState<any>([])
-	const [type, setType] = useState("")
+	// const [type, setType] = useState("")
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [orgId, setOrgId] = useState("")
 
@@ -157,12 +157,12 @@ const HomePage = () => {
 				},
 			})
 			console.log(data)
-			toast.success("Followed!")
-			setFollow(true)
+			// toast.success("Followed!")
+			// setFollow(true)
 			getUsers()
 		} catch (error) {
 			console.log(error)
-			toast.warn("Oops an error occoured!")
+			// toast.warn("Oops an error occoured!")
 		}
 	}
 	const getUsers = async () => {

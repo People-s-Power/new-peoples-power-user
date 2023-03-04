@@ -6,7 +6,6 @@ import { Dropdown } from "rsuite"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
-
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 
@@ -77,7 +76,7 @@ const CreatePost = ({
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(UPDATE_POST),
 				variables: {
-					authorId: author.id,
+					authorId: active._id,
 					body: body,
 					postId: post._id,
 					imageFile: filesPreview,
@@ -93,7 +92,7 @@ const CreatePost = ({
 	}
 
 	useEffect(() => {
-		setActive(author)
+		post === null ? setActive(author) : setActive(post.author)
 	}, [author !== null])
 
 	const speaker = (
@@ -120,12 +119,20 @@ const CreatePost = ({
 					</div>
 				</Modal.Header>
 				<Modal.Body>
-					<Whisper placement="bottom" trigger="click" speaker={speaker}>
+					{post === null ? (
+						<Whisper placement="bottom" trigger="click" speaker={speaker}>
+							<div className="flex">
+								<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+								<div className="text-sm">{active?.name}</div>
+							</div>
+						</Whisper>
+					) : (
 						<div className="flex">
 							<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
 							<div className="text-sm">{active?.name}</div>
 						</div>
-					</Whisper>
+					)}
+
 					<textarea
 						value={body}
 						onChange={(e) => setBody(e.target.value)}
