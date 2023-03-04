@@ -126,6 +126,91 @@ export const GET_ALL = gql`
 				}
 				isPetition
 			}
+			updates {
+				body
+				petition {
+					_id
+					title
+					image
+					excerpt
+					aim
+					target
+					body
+					slug
+					status
+					createdAt
+					updatedAt
+					comments {
+						_id
+						content
+						date
+						likes
+						author {
+							_id
+							name
+							email
+							image
+						}
+					}
+					addedFrom
+					numberOfPaidViewsCount
+					numberOfPaidEndorsementCount
+					endorsements {
+						id
+						body
+						author {
+							id
+							name
+							email
+							image
+						}
+					}
+					likes {
+						_id
+						name
+						email
+						image
+					}
+					promoted
+					views
+					category
+					region
+					author {
+						_id
+						name
+						email
+						image
+					}
+				}
+				image
+				comments {
+					_id
+					content
+					date
+					likes
+					author {
+						_id
+						name
+						email
+						image
+					}
+				}
+				likes {
+					_id
+					name
+					email
+					image
+				}
+				shares
+				author {
+					_id
+					name
+					email
+					image
+				}
+				__typename
+			}
+      
 			events {
 				_id
 				audience

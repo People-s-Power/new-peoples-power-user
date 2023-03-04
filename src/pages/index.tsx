@@ -109,17 +109,17 @@ const HomePage = () => {
 			console.log(data.data.timeline)
 			let general = [
 				...data.data.timeline.adverts,
-				// ...data.data.timeline.updates,
+				...data.data.timeline.updates,
 				...data.data.timeline.events,
 				...data.data.timeline.petitions,
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,
 			]
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
-			const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			// const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
 			let newArray = []
-			for (let i = 0; i < sortedItems.length; i++) {
-				newArray.push(sortedItems[i])
+			for (let i = 0; i < randomizedItems.length; i++) {
+				newArray.push(randomizedItems[i])
 				if ((i + 1) % 3 === 0) {
 					newArray.push({
 						__typename: "Follow",

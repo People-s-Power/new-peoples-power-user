@@ -1,108 +1,143 @@
-import React from 'react';
-import { Dropdown } from 'rsuite';
-import { useRecoilValue } from "recoil";
-import { UserAtom } from "atoms/UserAtom";
-import Link from 'next/link';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { SHARE, LIKE } from "apollo/queries/generalQuery";
-import axios from "axios";
-import { SERVER_URL } from "utils/constants";
-import { print } from 'graphql';
-import { useRouter } from 'next/router'
-
+import React, { useState } from "react"
+import { Dropdown } from "rsuite"
+import { useRecoilValue } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
+import Link from "next/link"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { COMMENT, LIKE } from "apollo/queries/generalQuery"
+import axios from "axios"
+import { SERVER_URL } from "utils/constants"
+import { print } from "graphql"
+import { useRouter } from "next/router"
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
-    const author = useRecoilValue(UserAtom);
-    const router = useRouter()
-    const share = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(SHARE),
-                variables: {
-                    authorId: author.id,
-                    itemId: updates._id
-                }
-            })
-            toast.success('Post has been shared');
-            console.log(data)
-        } catch (error) {
-            console.log(error);
-            toast.warn('Oops! Something went wrong');
-        }
-    }
+	const author = useRecoilValue(UserAtom)
+	const router = useRouter()
+	const [content, setContent] = useState("")
 
-    const like = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(LIKE),
-                variables: {
-                    authorId: author.id,
-                    itemId: updates.id
-                }
-            })
-            toast.success('Post liked successfully');
-            console.log(data)
-        } catch (error) {
-            console.log(error);
-            toast.warn('Oops! Something went wrong');
-        }
-    }
-    return (
-        <div className="p-3 border-b border-gray-400 my-3">
-            <div className="flex justify-between border-b border-gray-200 pb-3">
-                <div className='flex'>
-                    <img className="w-12 h-12 rounded-full" src={updates.petition?.authorImg} alt="" />
-                    <div className="ml-2">
-                        <div className="text-base capitalize">{updates.petition?.authorName} <span className="text-xs">{author?.id === updates.authorId ? '. You' : ''}</span></div>
-                        {/* <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div> */}
-                    </div>
-                </div>
-            </div>
-            <div className="text-sm p-2 leading-loose">
-                {updates.petition?.title}
-            </div>
-            <div className='p-2'>
-                <img className="w-full h-80 rounded-md  object-cover" src={updates.image} alt="" />
-            </div>
-            <div className="font-bold text-lg">
-                Petition Update
-            </div>
-            <div className="text-sm p-2 leading-loose">
-                {updates.body}
-            </div>
-            <div className="w-full relative">
-                <button onClick={() => router.push(`/campaigns/${updates.petition.slug}`)} className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
-                    View More
-                </button>
-            </div>
-            <div className="pt-3 flex justify-between">
-                {/* <div className="flex">
+	const share = async () => {
+		try {
+			const { data } = await axios.post("share", {
+				body: "share",
+				author: author.id,
+				itemId: updates._id,
+			})
+			console.log(data)
+			toast.success("Post has been shared")
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+	const comment = async (id) => {
+		if (content.length === 0) return
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(COMMENT),
+				variables: {
+					authorId: author.id,
+					itemId: id,
+					content: content,
+				},
+			})
+			toast.success("Comment sent")
+			console.log(data)
+		} catch (error) {
+			console.log(error)
+			toast.warn("Oops! Something went wrong")
+		}
+	}
+
+	function liked(id, array) {
+		return array.some((obj) => obj._id === id)
+	}
+	const like = async () => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(LIKE),
+				variables: {
+					authorId: author.id,
+					itemId: updates._id,
+				},
+			})
+			toast.success("Post liked successfully")
+			console.log(data)
+		} catch (error) {
+			console.log(error)
+			toast.warn("Oops! Something went wrong")
+		}
+	}
+	return (
+		<div className="p-3 border-b border-gray-400 my-3">
+			<div className="flex justify-between border-b border-gray-200 pb-3">
+				<div className="flex">
+					<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
+					<div className="ml-2">
+						<div className="text-base capitalize">
+							{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
+						</div>
+						{/* <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div> */}
+					</div>
+				</div>
+			</div>
+			<div className="text-sm p-2 leading-loose">{updates.petition?.title}</div>
+			<div className="p-2">
+				<img className="w-full h-80 rounded-md  object-cover" src={updates.image} alt="" />
+			</div>
+			<div className="font-bold text-lg">Petition Update</div>
+			<div className="text-sm p-2 leading-loose">{updates.body}</div>
+			<div className="w-full relative">
+				<button onClick={() => router.push(`/campaigns/${updates.petition.slug}`)} className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
+					View More
+				</button>
+			</div>
+			<div className="pt-3 flex justify-between">
+				{/* <div className="flex">
                     <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
                     <div className="text-sm my-auto ml-2">10 Supports</div>
                 </div> */}
-                <div className="flex" onClick={() => like()}>
-                    <img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">{updates.likes.length} likes</div>
-                </div>
-                <div className="flex">
-                    <img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">{ } Comments</div>
-                </div>
-                <div className="flex" onClick={() => share()}>
-                    <img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">{updates.shares.length} Shares</div>
-                </div>
-                <Dropdown placement="leftStart" title={<img className='h-6 w-6' src="/images/edit.svg" alt="" />} noCaret>
-                    {/* {
+				<div className="flex" onClick={() => like()}>
+					<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
+					<div className={liked(author.id, updates.likes) ? "text-warning text-sm my-auto ml-2" : "text-sm my-auto ml-2"}>{updates.likes?.length} likes</div>
+				</div>
+				<div className="flex">
+					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
+					<div className="text-sm my-auto ml-2">{} Comments</div>
+				</div>
+				<div className="flex" onClick={() => share()}>
+					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
+					<div className="text-sm my-auto ml-2">{updates.shares} Shares</div>
+				</div>
+				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+					{/* {
                         post.author?._id === author?.id ? (<Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item>) : null
                     } */}
-                    <Dropdown.Item>Edit</Dropdown.Item>
-                </Dropdown>
-            </div>
-            <ToastContainer />
-        </div>
-    );
-};
+					<Dropdown.Item>Edit</Dropdown.Item>
+				</Dropdown>
+			</div>
+			<div className="flex border-t border-gray-200 p-2 relative">
+				<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
+				<input type="text" onChange={(e) => setContent(e.target.value)} className="p-2 w-full border border-black text-sm" placeholder="Write a comment" />
+				<img src="./images/send.png" onClick={() => comment(updates._id)} className="w-6 h-6 absolute top-4 right-6" alt="" />
+			</div>
+			{updates.comments.length > 0
+				? updates.comments?.map((comment, index) => (
+						<div key={index} className="flex p-2">
+							<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
+							<div className="w-full bg-gray-100 p-2 flex justify-between">
+								<div className="">
+									<div className="font-bold text-sm mt-1">{comment.author.name}</div>
+									<div className="text-xs mt-1">{comment.content}</div>
+								</div>
+								<div className="text-sm">{/* <ReactTimeAgo date={new Date(comment.date)} /> */}</div>
+							</div>
+						</div>
+				  ))
+				: null}
+			<ToastContainer />
+		</div>
+	)
+}
 
-export default Updates;
+export default Updates
