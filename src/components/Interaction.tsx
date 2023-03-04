@@ -4,25 +4,25 @@ import ReactTimeAgo from "react-time-ago"
 import CreatePost from "./modals/CreatePost"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
-import Link from "next/link"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { SHARE, LIKE, COMMENT } from "apollo/queries/generalQuery"
+import { LIKE, COMMENT } from "apollo/queries/generalQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
+import { Loader } from "rsuite"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
 	const [comments, setComments] = useState(false)
-	const [more, setMore] = useState(post.body.length > 100 ? true : false)
 	const [liked, setLiked] = useState(false)
 	const [likes, setLikes] = useState(post.likes.length)
 	const [content, setContent] = useState("")
 	const [qty, setQty] = useState(4)
 	const [allComment, setAllComment] = useState(post.comments)
+	const [loading, setLoading] = useState(false)
 
 	const share = async () => {
 		try {
@@ -57,12 +57,13 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			liked === true ? setLikes(likes - 1) : setLikes(likes + 1)
 		} catch (error) {
 			console.log(error)
-			toast.warn("Oops! Something went wrong")
 		}
 	}
 	const comment = async (id) => {
 		if (content.length === 0) return
 		try {
+			setLoading(true)
+
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(COMMENT),
 				variables: {
@@ -83,10 +84,11 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				...allComment,
 			])
 			setContent(" ")
+			setLoading(false)
 			console.log(data)
 		} catch (error) {
 			console.log(error)
-			// toast.warn("Oops! Something went wrong")
+			setLoading(false)
 		}
 	}
 
@@ -123,8 +125,16 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				<div>
 					<div className="flex border-t border-gray-200 p-2 relative">
 						<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
-						<input type="text" onChange={(e) => setContent(e.target.value)} className="p-2 w-full border border-black text-sm" placeholder="Write a comment" />
-						<img src="./images/send.png" onClick={() => comment(post._id)} className="w-6 h-6 absolute top-4 right-6" alt="" />
+						<input
+							type="text"
+							value={content}
+							onChange={(e) => setContent(e.target.value)}
+							className="p-2 w-full border border-black text-sm"
+							placeholder="Write a comment"
+						/>
+						<div className="absolute top-4 right-6">
+							{loading ? <Loader /> : <img src="./images/send.png" onClick={() => comment(post._id)} className="w-6 h-6" alt="" />}
+						</div>
 					</div>
 					{allComment.length > 0
 						? allComment?.slice(0, qty).map((comment, index) => (
@@ -150,6 +160,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				</div>
 			) : null}
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
+			<ToastContainer />
 		</div>
 	)
 }

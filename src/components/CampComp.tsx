@@ -15,48 +15,7 @@ import Interaction from "./Interaction"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
-	const handelClick = () => setOpenPost(!openPost)
-	const [openPost, setOpenPost] = useState(false)
-	const [more, setMore] = useState(post.body.length > 100 ? true : false)
-	const [liked, setLiked] = useState(false)
-	const [likes, setLikes] = useState(post.likes.length)
-
-	const share = async () => {
-		try {
-			const { data } = await axios.post("share", {
-				body: "share",
-				author: author.id,
-				itemId: post._id,
-			})
-			console.log(data)
-			toast.success("Post has been shared")
-		} catch (err) {
-			console.log(err)
-		}
-	}
-
-	useEffect(() => {
-		setLiked(post.likes.some((obj) => obj._id === author.id))
-	}, [])
-
-	const like = async () => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(LIKE),
-				variables: {
-					authorId: author.id,
-					itemId: post._id,
-				},
-			})
-			// toast.success("Post liked successfully")
-			console.log(data)
-			setLiked(!liked)
-			liked === true ? setLikes(likes - 1) : setLikes(likes + 1)
-		} catch (error) {
-			console.log(error)
-			toast.warn("Oops! Something went wrong")
-		}
-	}
+	const [more, setMore] = useState(post.body.length > 250 ? true : false)
 
 	return (
 		<div className="p-3 border-b border-gray-400 my-3">
@@ -75,7 +34,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			</div>
 			{more ? (
 				<div className="text-sm p-2 leading-loose">
-					{post.body.slice(0, 100)}{" "}
+					{post.body.slice(0, 250)}{" "}
 					<span className="text-warning underline" onClick={() => setMore(!more)}>
 						..see more
 					</span>
@@ -83,7 +42,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			) : (
 				<div className="text-sm p-2 leading-loose">
 					{post.body}
-					{post.body.length > 100 ? (
+					{post.body.length > 250 ? (
 						<span className="text-warning underline" onClick={() => setMore(!more)}>
 							see less
 						</span>
@@ -112,7 +71,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				) : null}
 			</div>
 			<Interaction post={post} />
-			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<ToastContainer />
 		</div>
 	)
