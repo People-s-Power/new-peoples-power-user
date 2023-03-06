@@ -147,22 +147,22 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		<div>
 			<div className="pt-3 flex justify-between">
 				{liked ? (
-					<div className="flex" onClick={() => like()}>
+					<div className="flex cursor-pointer" onClick={() => like()}>
 						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
 						<div className={"text-warning text-sm my-auto ml-2"}>{likes} likes</div>
 					</div>
 				) : (
-					<div className="flex" onClick={() => like()}>
+					<div className="flex  cursor-pointer" onClick={() => like()}>
 						<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
 						<div className={"text-sm my-auto ml-2"}>{likes} likes</div>
 					</div>
 				)}
 
-				<div className="flex" onClick={() => setComments(!comments)}>
+				<div className="flex  cursor-pointer" onClick={() => setComments(!comments)}>
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{allComment.length} Comments</div>
 				</div>
-				<div className="flex" onClick={() => share()}>
+				<div className="flex  cursor-pointer" onClick={() => share()}>
 					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
 				</div>

@@ -182,8 +182,8 @@ const HomePage = () => {
 
 	return (
 		<FrontLayout showFooter={false}>
-			<main className="flex mx-20">
-				<aside className="w-[20%] text-center fixed bg-white left-20">
+			<main className="flex lg:mx-20">
+				<aside className="w-[20%] sm:hidden text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
 						<img src={author?.image} className="w-[80px] mx-auto left-0 right-0 rounded-full h-[80px] " alt="" />
@@ -228,7 +228,7 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<section className="w-full shadow-sm w-[50%] mx-auto">
+				<section className="w-full shadow-sm lg:w-[50%] mx-auto">
 					<PostActionCard
 						authorImage={author?.image}
 						handelOpenFindExpart={handelOpenFindExpart}
@@ -287,7 +287,7 @@ const HomePage = () => {
 						{/* <CampComp /> */}
 					</div>
 				</section>
-				<aside className="w-[20%] p-2 fixed bg-white right-20">
+				<aside className="w-[20%] sm:hidden p-2 fixed bg-white right-20">
 					<div className="text-sm">Grow your feed by following persons and organizations that interest you</div>
 					{users.slice(0, 3).map((user, index) => (
 						<div key={index} className="flex justify-between my-4">

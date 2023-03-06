@@ -50,7 +50,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				</div>
 			)}
 			<div className="p-2">
-				<img className="w-full h-50 rounded-md object-cover" src={post.image[0]} alt="" />
+				{post.image.length > 0 ? <img className="w-full h-80 rounded-md object-cover" src={post?.image[0]} alt="" /> : null}
 				{author?.id === post.author?._id ? (
 					<div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
 				) : null}
