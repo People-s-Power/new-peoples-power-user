@@ -61,6 +61,7 @@ const HomePage = () => {
 			// console.log(err)
 		},
 	})
+
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
 		client: apollo,
@@ -100,6 +101,9 @@ const HomePage = () => {
 	}
 	async function getData() {
 		try {
+			await axios.get(`share/feed/${author?.id}`).then(function (response) {
+				console.log(response.data)
+			})
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {

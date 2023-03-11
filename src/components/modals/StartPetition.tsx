@@ -63,7 +63,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			const { data } = await axios.post("/petition", {
 				title: title,
 				category: category,
-				image: image.file,
+				image: [image.file],
 				aim: aim,
 				target: target,
 				body: body,
@@ -85,9 +85,9 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 				name: "",
 			})
 		} catch (error) {
-			console.log(error)
+			console.log(error.response)
 			toast.warn("Oops! Something went wrong")
-            setLoading(false)
+			setLoading(false)
 		}
 	}
 	const updatePetition = async () => {
@@ -96,10 +96,11 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			const { data } = await axios.put("https://apiv5-xacq2.ondigitalocean.app/api/v3/petition", {
 				title: title,
 				category: category,
-				image: image.type === "image" ? image.file : "",
+				image: [image.file],
 				aim: aim,
 				target: target,
 				body: body,
+				id: active._id || active.id,
 			})
 			console.log(data)
 			setLoading(false)

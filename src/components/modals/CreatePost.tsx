@@ -132,7 +132,6 @@ const CreatePost = ({
 							<div className="text-sm">{active?.name}</div>
 						</div>
 					)}
-
 					<textarea
 						value={body}
 						onChange={(e) => setBody(e.target.value)}

@@ -4,27 +4,54 @@ import ReactTimeAgo from "react-time-ago"
 import Link from "next/link"
 import StartPetition from "./modals/StartPetition"
 import CreateVictories from "./modals/CreateVictories"
-
+import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
+import { useQuery } from "@apollo/client"
+import { apollo } from "apollo"
+import { IOrg } from "types/Applicant.types"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import AddUpdates from "./modals/AddUpdates"
-import { SHARE, LIKE } from "apollo/queries/generalQuery"
 import axios from "axios"
-import { SERVER_URL } from "utils/constants"
-import { print } from "graphql"
+import ShareModal from "./modals/ShareModal"
 
 const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
-
+	const [open, setOpen] = useState(false)
 	const handelPetition = () => setOpenPetition(!openPetition)
 	const [openPetition, setOpenPetition] = useState(false)
 	const handelVictory = () => setOpenVictory(!openVictory)
 	const [openVictory, setOpenVictory] = useState(false)
 	const handelUpdates = () => setOpenUpdates(!openUpdates)
 	const [openUpdates, setOpenUpdates] = useState(false)
+	const [orgs, setOrgs] = useState<IOrg[]>([])
+
+	useQuery(GET_ORGANIZATIONS, {
+		variables: { ID: author?.id },
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data.getUserOrganizations)
+			setOrgs(data.getUserOrganizations)
+		},
+		onError: (err) => {
+			// console.log(err)
+		},
+	})
+
+	author.orgOperating.map((org) => {
+		useQuery(GET_ORGANIZATION, {
+			variables: { ID: org },
+			client: apollo,
+			onCompleted: (data) => {
+				// console.log(data)
+				setOrgs([...orgs, data.getOrganzation])
+			},
+			onError: (err) => {
+				console.log(err.message)
+			},
+		})
+	})
 
 	const deletePetition = () => {
 		axios.delete(`petition/single/${petition.id}`).then((response) => {
@@ -35,20 +62,6 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 		//     console.log(error);
 		//     toast.warn("Oops an error occoured!")
 		// })
-	}
-
-	const share = async () => {
-		try {
-			const { data } = await axios.post("share", {
-				body: "share",
-				author: author.id,
-				itemId: petition._id,
-			})
-			console.log(data)
-			toast.success("Petition has been shared")
-		} catch (err) {
-			console.log(err)
-		}
 	}
 
 	return (
@@ -84,7 +97,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 						<div className="text-sm my-auto ml-2 bg-warning p-2 rounded-sm">Endorse petition</div>
 					</div>
 				</Link>
-				<div className="flex cursor-pointer" onClick={() => share()}>
+				<div className="flex cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8 my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{petition.shares} Shares</div>
 				</div>
@@ -112,6 +125,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 			<StartPetition open={openPetition} handelClick={handelPetition} data={petition} orgs={null} />
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />
 			<ToastContainer />
+			<ShareModal open={open} handelClick={() => setOpen(!open)} single={petition} orgs={orgs} />
 		</div>
 	)
 }

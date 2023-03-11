@@ -16,6 +16,7 @@ import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
 import { useQuery } from "@apollo/client"
 import { apollo } from "apollo"
 import { IOrg } from "types/Applicant.types"
+import ShareModal from "./modals/ShareModal"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -29,20 +30,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const [allComment, setAllComment] = useState(post.comments)
 	const [loading, setLoading] = useState(false)
 	const [orgs, setOrgs] = useState<IOrg[]>([])
+	const [open, setOpen] = useState(false)
 
-	const share = async () => {
-		try {
-			const { data } = await axios.post("share", {
-				body: "share",
-				author: author.id,
-				itemId: post._id,
-			})
-			console.log(data)
-			toast.success("Post has been shared")
-		} catch (err) {
-			console.log(err)
-		}
-	}
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
 		client: apollo,
@@ -98,7 +87,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 		try {
 			setLoading(true)
-
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(COMMENT),
 				variables: {
@@ -162,7 +150,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{allComment.length} Comments</div>
 				</div>
-				<div className="flex  cursor-pointer" onClick={() => share()}>
+				<div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
 				</div>
@@ -219,6 +207,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			) : null}
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<ToastContainer />
+			<ShareModal open={open} handelClick={() => setOpen(!open)} single={post} orgs={orgs} />
 		</div>
 	)
 }
