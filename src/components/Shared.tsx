@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import ReactTimeAgo from "react-time-ago"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
+import Interaction from "./Interaction"
 
 const Shared = ({ shared }: { shared: any }) => {
 	const author = useRecoilValue(UserAtom)
@@ -22,7 +23,7 @@ const Shared = ({ shared }: { shared: any }) => {
 					</div>
 				</div>
 			</div>
-			<div>{shared.body}</div>
+			<div className="text-sm p-2 ">{shared.body}</div>
 			<div className="px-2">
 				<div className="flex justify-between border-b border-gray-200 pb-3">
 					<div className="flex">
@@ -53,6 +54,7 @@ const Shared = ({ shared }: { shared: any }) => {
 				)}
 				{shared.itemImage.length > 0 ? <img className="w-full h-80 rounded-md object-cover" src={shared?.itemImage[0]} alt="" /> : null}
 			</div>
+			{/* <Interaction post={shared} /> */}
 		</div>
 	)
 }

@@ -62,7 +62,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	})
 	// }
 	useEffect(() => {
-		setLiked(post.likes.some((obj) => obj._id === author.id))
+		setLiked(post.likes?.some((obj) => obj._id === author.id))
 	}, [])
 
 	const like = async () => {

@@ -46,7 +46,6 @@ const HomePage = () => {
 	// const [type, setType] = useState("")
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [orgId, setOrgId] = useState("")
-	const [feeds, setFeeds] = useState([])
 	const [openFindExpart, setOpenFindExpart] = useState(false)
 
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
@@ -101,12 +100,11 @@ const HomePage = () => {
 		}
 	}
 	async function getData() {
-		await axios.get(`share/feed/${author?.id}`).then(function (response) {
-			console.log(response.data)
-			setFeeds(response.data)
-		})
-
 		try {
+			let feed
+			await axios.get(`share/feed/${author?.id}`).then(function (response) {
+				feed = response.data
+			})
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {
@@ -115,7 +113,7 @@ const HomePage = () => {
 			})
 			// console.log(data.data.timeline)
 			let general = [
-				...feeds,
+				...feed,
 				...data.data.timeline.adverts,
 				...data.data.timeline.updates,
 				...data.data.timeline.events,
@@ -135,7 +133,7 @@ const HomePage = () => {
 					})
 				}
 			}
-			// console.log(newArray)
+			console.log(newArray)
 			setAll(newArray.reverse())
 		} catch (err) {
 			console.log(err)
