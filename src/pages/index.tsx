@@ -28,6 +28,7 @@ import Updates from "components/updates"
 import PostActionCard from "components/PostActionCard"
 import FindExpartModal from "components/modals/FindExpartModal"
 import VictoryCard from "components/VictoryCard"
+import Shared from "components/Shared"
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom)
@@ -45,7 +46,7 @@ const HomePage = () => {
 	// const [type, setType] = useState("")
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [orgId, setOrgId] = useState("")
-
+	const [feeds, setFeeds] = useState([])
 	const [openFindExpart, setOpenFindExpart] = useState(false)
 
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
@@ -100,18 +101,21 @@ const HomePage = () => {
 		}
 	}
 	async function getData() {
+		await axios.get(`share/feed/${author?.id}`).then(function (response) {
+			console.log(response.data)
+			setFeeds(response.data)
+		})
+
 		try {
-			await axios.get(`share/feed/${author?.id}`).then(function (response) {
-				console.log(response.data)
-			})
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {
-					authorId: author.id,
+					authorId: author?.id,
 				},
 			})
-			console.log(data.data.timeline)
+			// console.log(data.data.timeline)
 			let general = [
+				...feeds,
 				...data.data.timeline.adverts,
 				...data.data.timeline.updates,
 				...data.data.timeline.events,
@@ -119,6 +123,7 @@ const HomePage = () => {
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,
 			]
+			// console.log(general)
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
 			const sortedItems = randomizedItems.sort((a, b) => b.createdAt?.substring(0, 10) - a.createdAt?.substring(0, 10))
 			let newArray = []
@@ -133,7 +138,7 @@ const HomePage = () => {
 			// console.log(newArray)
 			setAll(newArray.reverse())
 		} catch (err) {
-			console.log(err.response)
+			console.log(err)
 		}
 	}
 
@@ -284,6 +289,12 @@ const HomePage = () => {
 									return (
 										<div key={index}>
 											<FollowSlides />
+										</div>
+									)
+								default:
+									return (
+										<div key={index}>
+											<Shared shared={single} />
 										</div>
 									)
 							}

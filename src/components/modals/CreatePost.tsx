@@ -50,6 +50,7 @@ const CreatePost = ({
 	}
 
 	const handleSubmit = async () => {
+		if (category === "Add Category") return
 		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -58,6 +59,7 @@ const CreatePost = ({
 					authorId: active.id || active._id,
 					body: body,
 					imageFile: filesPreview,
+					categories: category,
 				},
 			})
 			console.log(data)

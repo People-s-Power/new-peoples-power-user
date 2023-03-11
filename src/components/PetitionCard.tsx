@@ -111,7 +111,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 					<Link href={`/promote?slug=${petition?.slug}`}>
 						<Dropdown.Item>Promote</Dropdown.Item>
 					</Link>
-					{author?.id === petition.authorId ? (
+					{author?.id === petition.author._id ? (
 						<div>
 							<Dropdown.Item onClick={() => handelVictory()}>Celebrate Victory</Dropdown.Item>
 							<Dropdown.Item onClick={() => handelUpdates()}>Update</Dropdown.Item>
