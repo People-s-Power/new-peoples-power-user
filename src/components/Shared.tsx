@@ -54,7 +54,7 @@ const Shared = ({ shared }: { shared: any }) => {
 				)}
 				{shared.itemImage.length > 0 ? <img className="w-full h-80 rounded-md object-cover" src={shared?.itemImage[0]} alt="" /> : null}
 			</div>
-			{/* <Interaction post={shared} /> */}
+			<Interaction post={shared} />
 		</div>
 	)
 }

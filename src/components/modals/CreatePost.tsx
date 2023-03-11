@@ -59,7 +59,7 @@ const CreatePost = ({
 					authorId: active.id || active._id,
 					body: body,
 					imageFile: filesPreview,
-					categories: category,
+					categories: [category],
 				},
 			})
 			console.log(data)
@@ -82,6 +82,7 @@ const CreatePost = ({
 					body: body,
 					postId: post._id,
 					imageFile: filesPreview,
+					categories: [category],
 				},
 			})
 			console.log(data)
