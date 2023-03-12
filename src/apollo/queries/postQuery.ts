@@ -1,8 +1,8 @@
 import gql from "graphql-tag"
 
 export const CREATE_POST = gql`
-	mutation createPost($authorId: ID!, $body: String!, $imageFile: [String!]!) {
-		createPost(authorId: $authorId, body: $body, imageFile: $imageFile) {
+	mutation createPost($authorId: ID!, $body: String!, $imageFile: [String!]!, $categories: [String!]!) {
+		createPost(authorId: $authorId, body: $body, imageFile: $imageFile, categories: $categories) {
 			_id
 			body
 			isPetition
