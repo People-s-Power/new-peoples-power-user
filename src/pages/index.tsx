@@ -123,7 +123,8 @@ const HomePage = () => {
 			]
 			// console.log(general)
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
-			const sortedItems = randomizedItems.sort((a, b) => b.createdAt?.substring(0, 10) - a.createdAt?.substring(0, 10))
+			const sortedItems = randomizedItems.sort((a, b) => b.createdAt - a.createdAt)
+
 			let newArray = []
 			for (let i = 0; i < sortedItems.length; i++) {
 				newArray.push(sortedItems[i])

@@ -12,13 +12,10 @@ const Shared = ({ shared }: { shared: any }) => {
 		<div className="p-3 border-b border-gray-400 my-3">
 			<div className="flex justify-between border-b border-gray-200 pb-3">
 				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={shared.creatorImage} alt="" />
+					<img className="w-12 h-12 rounded-full" src={shared.author?.image} alt="" />
 					<div className="ml-2">
 						<div className="text-base font-bold capitalize">
-							{shared.creatorName} <span className="text-xs">{shared?.creatorId === author?.id ? ". You" : ""}</span>
-						</div>
-						<div className="text-base">
-							{shared.creatorName} created this post <ReactTimeAgo date={new Date(shared.createdAt)} />
+							{shared.author?.name} <span className="text-xs">{author?.id === shared.author?._id ? ". You" : ""}</span>
 						</div>
 					</div>
 				</div>
@@ -27,10 +24,13 @@ const Shared = ({ shared }: { shared: any }) => {
 			<div className="px-2">
 				<div className="flex justify-between border-b border-gray-200 pb-3">
 					<div className="flex">
-						<img className="w-12 h-12 rounded-full" src={shared.author?.image} alt="" />
+						<img className="w-12 h-12 rounded-full" src={shared.creatorImage} alt="" />
 						<div className="ml-2">
 							<div className="text-base font-bold capitalize">
-								{shared.author?.name} <span className="text-xs">{author?.id === shared.author?._id ? ". You" : ""}</span>
+								{shared.creatorName} <span className="text-xs">{shared?.creatorId === author?.id ? ". You" : ""}</span>
+							</div>
+							<div className="text-base">
+								{shared.creatorName} created this post <ReactTimeAgo date={new Date(shared.createdAt)} />
 							</div>
 						</div>
 					</div>
