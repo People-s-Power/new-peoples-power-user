@@ -25,7 +25,6 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { MY_ADVERTS } from "apollo/queries/advertsQuery"
 import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery"
-
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
@@ -188,34 +187,20 @@ const user = () => {
 		router.push(`/org?page=${id}`)
 	}
 
-	const follow = () => {
-		axios
-			.post("/user/follow", {
-				userId: page,
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: user.id,
+					followId: id,
+				},
 			})
-			.then(function (response) {
-				toast.success("Followed!")
-				setFollow(true)
-			})
-			.catch(function (error) {
-				console.log(error)
-				toast.warn("Oops an error occoured!")
-			})
-	}
-
-	const unFollow = () => {
-		axios
-			.put("/user/follow", {
-				userId: page,
-			})
-			.then(function (response) {
-				toast.success("Unfollowed!")
-				setFollow(false)
-			})
-			.catch(function (error) {
-				console.log(error)
-				toast.warn("Oops an error occoured!")
-			})
+			console.log(data)
+			// getUsers()
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -241,18 +226,19 @@ const user = () => {
 								<div className="flex flex-column justify-center">
 									<div className="flex">
 										<div className="text-xl font-bold ">{user?.name}</div>
-										<Link href="/connection">
-											<div className="text-xs text-gray-900 flex my-auto ml-6">
-												{user?.followers.length} Followers
+										<div className="flex cursor-pointer my-auto ml-6">
+											<Link href="/connection?page=followers">
+												<div className="text-xs text-gray-900 ml-2"> {user?.followers.length} Followers</div>
+											</Link>
+											<Link href="/connection?page=following">
 												<div className="text-xs text-gray-900 ml-2">Following {user?.following.length}</div>
-											</div>
-										</Link>
+											</Link>
+										</div>
 									</div>
 									<div className="text-sm font-thin w-96">{user?.description.substring(0, 100) + "..."}</div>
 									<div className="flex">
 										<img className="w-4 h-4 mr-3 my-auto" src="/images/home/icons/akar-icons_location.png" alt="" />
 										<div className="pt-1 text-sm">
-											{" "}
 											{user?.city}, {user?.country}
 										</div>
 									</div>
@@ -260,43 +246,12 @@ const user = () => {
 								<div className="font-black text-lg">
 									<Link href={`/mycamp/profile`}>
 										<button className="bg-transparent p-2 text-warning">
-											{" "}
 											<span>&#x270E;</span> Edit
 										</button>
 									</Link>
 								</div>
 							</div>
-
-							{/* {author?.id === query.page ? (
-                                    <div className="font-black text-lg">
-                                        <Link href={`mycamp/profile`}>
-                                            <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
-                                        </Link>
-                                    </div>
-                                ) : (
-                                    following === true ? (
-                                        <div>
-                                            <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
-                                        </div>
-                                    )
-                                )} */}
 						</div>
-
-						{/* {author?.id === query.page ? (
-                            <div className="text-center font-black text-lg">
-                                <Link href="/mycamp">
-                                    <button className=" bg-transparent p-2 w-44 text-warning">Dashboard</button>
-                                </Link>
-                                <button className=" bg-transparent p-2 w-44 text-warning" onClick={() => setProduct(!product)}> Products</button>
-                                <Link href={'/about'}>
-                                    <button className=" bg-transparent p-2 w-44 text-warning"> Careers</button>
-                                </Link>
-                            </div>
-                        ) : (<div></div>)} */}
 					</div>
 					<Slider />
 

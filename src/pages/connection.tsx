@@ -8,15 +8,17 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
+import router, { useRouter } from "next/router"
 
 import { FOLLOW, FOLLOWERS, FOLLOWING } from "apollo/queries/generalQuery"
 
 const connection = () => {
+	const { query } = useRouter()
 	const [users, setUsers] = useState<IUser[]>([])
 	const [followers, setFollowers] = useState<IUser[]>([])
 	const [following, setFollowing] = useState<IUser[]>([])
 	const author = useRecoilValue(UserAtom)
-	const [active, setActive] = useState("connect")
+	const [active, setActive] = useState(query.page || "connect")
 
 	const getUsers = async () => {
 		try {
