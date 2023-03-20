@@ -50,6 +50,18 @@ export const MY_ADVERTS = gql`
 			action
 			audience
 			image
+			likes {
+				name
+			}
+			__typename
+			author {
+				_id
+				email
+				image
+				name
+			}
+			createdAt
+			updatedAt
 		}
 	}
 `

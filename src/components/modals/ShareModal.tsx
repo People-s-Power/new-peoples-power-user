@@ -9,7 +9,7 @@ import AdvertsComp from "components/AdvertsCard"
 import EventsCard from "components/EventsCard"
 import PetitionComp from "components/PetitionCard"
 import VictoryCard from "components/VictoryCard"
-import CampComp from "components/VictoryCard"
+import CampComp from "components/CampComp"
 import Updates from "components/updates"
 
 const ShareModal = ({ open, handelClick, orgs, single }: { open: boolean; handelClick(): void; orgs: any; single: any }) => {
@@ -80,7 +80,7 @@ const ShareModal = ({ open, handelClick, orgs, single }: { open: boolean; handel
 						value={body}
 						onChange={(e) => setBody(e.target.value)}
 						name=""
-						className="w-full h-32 border border-white text-sm"
+						className="w-full h-8 border border-white text-sm"
 						placeholder={"Write your thought about this " + single.__typename + "..."}
 					></textarea>
 				</Modal.Body>

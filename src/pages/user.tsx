@@ -24,7 +24,10 @@ import "react-toastify/dist/ReactToastify.css"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { MY_ADVERTS } from "apollo/queries/advertsQuery"
-import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery"
+import { GET_USER_POSTS } from "apollo/queries/postQuery"
+import { MY_VICTORIES } from "apollo/queries/victories"
+import { MY_EVENT } from "apollo/queries/eventQuery"
+import { FOLLOW } from "apollo/queries/generalQuery"
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
@@ -62,7 +65,9 @@ const user = () => {
 	const [orgId, setOrgId] = useState("")
 	const [all, setAll] = useState<any>([])
 	const [adverts, setAdverts] = useState<any>([])
-
+	const [posts, setPosts] = useState<any>([])
+	const [victories, setVictories] = useState<any>([])
+	const [events, setEvents] = useState<any>([])
 	const [openFindExpart, setOpenFindExpart] = useState(false)
 
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
@@ -88,8 +93,37 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: author?.id },
 		onCompleted: (data) => {
-			console.log(data)
+			// console.log(data)
 			setAdverts(data.myAdverts)
+		},
+		onError: (err) => console.log(err),
+	})
+
+	useQuery(MY_VICTORIES, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			// console.log(data)
+			setVictories(data.myVictories)
+		},
+		onError: (err) => console.log(err),
+	})
+
+	useQuery(MY_EVENT, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			// console.log(data)
+			setEvents(data.authorEvents)
+		},
+		onError: (err) => console.log(err),
+	})
+
+	useQuery(GET_USER_POSTS, {
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data)
+			setPosts(data.myPosts)
 		},
 		onError: (err) => console.log(err),
 	})
@@ -104,26 +138,12 @@ const user = () => {
 	}
 	async function getData() {
 		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(GET_ALL),
-				variables: {
-					authorId: author.id,
-				},
-			})
-			console.log(data.data.timeline)
-			let general = [
-				...data.data.timeline.adverts,
-				// ...data.data.timeline.updates,
-				...data.data.timeline.events,
-				...data.data.timeline.petitions,
-				...data.data.timeline.posts,
-				...data.data.timeline.victories,
-			]
+			let general = [...campaigns, ...posts, ...adverts, ...victories, ...events]
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
-			const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			// const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
 			let newArray = []
-			for (let i = 0; i < sortedItems.length; i++) {
-				newArray.push(sortedItems[i])
+			for (let i = 0; i < randomizedItems.length; i++) {
+				newArray.push(randomizedItems[i])
 				if ((i + 1) % 3 === 0) {
 					newArray.push({
 						__typename: "Follow",
@@ -138,38 +158,26 @@ const user = () => {
 	}
 
 	useEffect(() => {
-		getData()
 		try {
 			axios
-				.get(`/user/single/${query.page}`)
+				.get(`/user/single/${query?.page}`)
 				.then(function (response) {
 					setUser(response.data.user)
-					console.log(response.data)
-					response.data.user.followers.map((single: any) => {
-						if (single === author.id) {
-							setFollow(true)
-						} else {
-							setFollow(false)
-						}
-					})
-					console.log(response.data.user)
+					setCampaigns(response.data.Petitions)
+					// console.log(response.data)
 					response.data.user.orgOperating.map((operating: any) => {
 						setOrgId(operating)
 						refetch()
 					})
-					setCampaigns(response.data.campaigns)
 				})
 				.catch(function (error) {
-					console.log(error)
-					// router.push(`/org?page=${query?.page}`   )
+					console.log(error.response)
 				})
 		} catch (error) {
 			console.log(error)
 		}
-		if (all[0] === undefined) {
-			getData()
-		}
-	}, [author])
+		getData()
+	}, [user])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },

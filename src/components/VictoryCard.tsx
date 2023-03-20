@@ -12,7 +12,7 @@ import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 
-const CampComp = ({ post }: { post: any }): JSX.Element => {
+const Victory = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
@@ -85,7 +85,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			</div>
 			<div className="text-sm p-2 leading-loose">{post.body}</div>
 			<div className="p-2">
-				<img src={post.image} className="w-full h-80 rounded-md object-cover" alt="" />
+				<img src={post?.image} className="w-full h-80 rounded-md object-cover" alt="" />
 			</div>
 			<div className="text-sm leading-loose p-2">
 				Congratulations to all who supported this campaign, on getting a massive victory. Our petition has just won. Lets keep making the change that we need.
@@ -135,4 +135,4 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	)
 }
 
-export default CampComp
+export default Victory

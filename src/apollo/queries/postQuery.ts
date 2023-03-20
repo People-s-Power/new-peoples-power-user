@@ -51,8 +51,37 @@ export const GET_POSTS = gql`
 export const GET_USER_POSTS = gql`
 	query myPosts {
 		myPosts {
+			_id
 			body
+			createdAt
 			image
+			likes {
+				_id
+				name
+				email
+				image
+			}
+			shares
+			__typename
+			author {
+				name
+				email
+				image
+				_id
+			}
+			comments {
+				content
+				_id
+				author {
+					_id
+					name
+					email
+					image
+				}
+				date
+				likes
+			}
+			isPetition
 		}
 	}
 `

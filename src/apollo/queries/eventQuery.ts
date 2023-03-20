@@ -61,11 +61,10 @@ export const CREATE_EVENT = gql`
 `
 
 export const MY_EVENT = gql`
-	query authorEvents($authorId: ID!, $page: Int!, $limit: Int!) {
-		authorEvents(authorId: $authorId, page: $page, limit: $limit) {
+	query authorEvents($authorId: ID!) {
+		authorEvents(authorId: $authorId) {
 			_id
 			audience
-			authorId
 			author {
 				_id
 				name
@@ -75,16 +74,20 @@ export const MY_EVENT = gql`
 			description
 			startDate
 			endDate
+			createdAt
+			__typename
 			time
 			image
+			name
+			likes {
+				name
+			}
 			interested {
 				authorId
 				authorImg
 				name
 			}
-			likes
 			name
-			shares
 			type
 		}
 	}
