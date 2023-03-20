@@ -9,7 +9,9 @@ import { UserAtom } from "atoms/UserAtom"
 import { useRecoilValue } from "recoil"
 import { GET_ALL_USERS } from "apollo/queries/generalQuery"
 import Select from "react-select"
-
+import { SERVER_URL } from "utils/constants"
+import { print } from "graphql"
+import { FOLLOW } from "apollo/queries/generalQuery"
 import { apollo } from "apollo"
 import { useQuery } from "@apollo/client"
 
@@ -83,6 +85,21 @@ function Buildprofile(): React.ReactElement {
 					setImg(reader.result as any)
 				}
 			}
+		}
+	}
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: user.id,
+					followId: id,
+				},
+			})
+			console.log(data)
+			// getUsers()
+		} catch (error) {
+			console.log(error)
 		}
 	}
 	const uploadFileToServer = async () => {
@@ -267,9 +284,19 @@ function Buildprofile(): React.ReactElement {
 											(People and organizations with similar insterests or location with you)
 										</div>
 										<div className="flex flex-wrap">
-											{users.slice(0, 12).map((user, index) => (
-												<ConnectionCard key={index} user={user} />
-											))}
+											{users.slice(0, 12).map((user, index) =>
+												user._id !== user.id ? (
+													<div key={index} className="w-[25%] p-6">
+														<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+														<div className="text-xl py-2">{user.name} </div>
+														<div className="w-16 h-[1px] bg-gray-200"></div>
+														<div className="text-xs text-gray-700 my-3">500 Followers</div>
+														<div className="text-xs text-gray-900 my-6" onClick={() => follow(user._id)}>
+															+ Follow
+														</div>
+													</div>
+												) : null
+											)}
 										</div>
 										<div className="text-center mx-auto my-8">
 											<button className="p-2 bg-warning text-white rounded-sm" onClick={handleSubmit}>
