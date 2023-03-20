@@ -241,10 +241,12 @@ const user = () => {
 								<div className="flex flex-column justify-center">
 									<div className="flex">
 										<div className="text-xl font-bold ">{user?.name}</div>
-										<div className="text-xs text-gray-900 flex my-auto ml-6">
-											{user?.followers.length} Followers
-											<div className="text-xs text-gray-900 ml-2">Following {user?.following.length}</div>
-										</div>
+										<Link href="/connection">
+											<div className="text-xs text-gray-900 flex my-auto ml-6">
+												{user?.followers.length} Followers
+												<div className="text-xs text-gray-900 ml-2">Following {user?.following.length}</div>
+											</div>
+										</Link>
 									</div>
 									<div className="text-sm font-thin w-96">{user?.description.substring(0, 100) + "..."}</div>
 									<div className="flex">

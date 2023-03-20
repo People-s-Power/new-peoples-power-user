@@ -1,17 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
-import "animate.css";
-import Link from "next/link";
-import React from "react";
-import LoginComp from "./LoginComp";
-import { useRouter } from 'next/router'
-import { UserAtom } from "atoms/UserAtom";
-import { useRecoilValue } from "recoil";
+import "animate.css"
+import Link from "next/link"
+import React from "react"
+import LoginComp from "./LoginComp"
+import { useRouter } from "next/router"
+import { UserAtom } from "atoms/UserAtom"
+import { useRecoilValue } from "recoil"
 
 const LoginPage = (): JSX.Element => {
-	const user = useRecoilValue(UserAtom);
+	const user = useRecoilValue(UserAtom)
 	const router = useRouter()
 
-	if (typeof window !== 'undefined') {
+	if (typeof window !== "undefined") {
 		localStorage.clear()
 		// localStorage.setItem('page', user?.id);
 	}
@@ -29,20 +29,15 @@ const LoginPage = (): JSX.Element => {
 							</Link>
 						</p>
 					</div>
-					<p className="fs-5 mb-3">
-						Sign in with your social media accounts for easy syncing and more
-						secure privacy.
-					</p>
-					<LoginComp onSuccess={(data) => (window.location.href = `/`, localStorage.setItem('page', user?.id))} />
+					<p className="fs-5 mb-3">Sign in with your social media accounts for easy syncing and more secure privacy.</p>
+					<LoginComp onSuccess={(data) => ((window.location.href = `/`), localStorage.setItem("page", user?.id))} />
 					<Link href="/auth?mode=forgot password">
-						<a className="text-decoration-none text-center d-block">
-							Forgot Password
-						</a>
+						<a className="text-decoration-none text-center d-block">Forgot Password</a>
 					</Link>
 				</div>
 			</div>
 		</>
-	);
-};
+	)
+}
 
-export default LoginPage;
+export default LoginPage

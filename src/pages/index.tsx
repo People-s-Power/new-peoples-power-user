@@ -303,22 +303,24 @@ const HomePage = () => {
 				</section>
 				<aside className="w-[20%] sm:hidden p-2 fixed bg-white right-20">
 					<div className="text-sm">Grow your feed by following persons and organizations that interest you</div>
-					{users.slice(0, 3).map((user, index) => (
-						<div key={index} className="flex justify-between my-4">
-							<img src={user.image} className="w-12 m-2 h-12 rounded-full" alt="" />
-							<div className="w-[80%]">
-								<div className="text-base font-light">{user.name} </div>
-								{/* <div className="text-xs">Joshua who you followed
-									started following King Erics</div> */}
-								<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[60%] mt-2 rounded-md">
-									<div className="text-lg">+</div>
-									<div className="my-auto text-sm" onClick={() => follow(user)}>
-										Follow
+					{users.slice(0, 3).map((user, index) =>
+						user._id !== author?.id ? (
+							<div key={index} className="flex justify-between my-4">
+								<img src={user.image} className="w-12 m-2 h-12 rounded-full" alt="" />
+								<div className="w-[80%]">
+									<div className="text-base font-light">{user.name} </div>
+									{/* <div className="text-xs">Joshua who you followed
+								started following King Erics</div> */}
+									<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[60%] mt-2 rounded-md">
+										<div className="text-lg">+</div>
+										<div className="my-auto text-sm" onClick={() => follow(user)}>
+											Follow
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					))}
+						) : null
+					)}
 					<Link href="/connection">
 						<div className="text-sm text-warning cursor-pointer">view who you followed is following</div>
 					</Link>

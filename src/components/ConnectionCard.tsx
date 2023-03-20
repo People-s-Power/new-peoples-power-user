@@ -5,33 +5,13 @@ import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FOLLOW } from "apollo/queries/generalQuery";
 
-import { SERVER_URL } from "utils/constants";
-import { print } from 'graphql';
-
-const ConnectionCard = ({ user }: { user: IUser }): JSX.Element => {
+const ConnectionCard = ({ user, follow }: { user: IUser, follow:any }): JSX.Element => {
     // console.log(user)
     const [following, setFollow] = useState(false)
     const author = useRecoilValue(UserAtom);
 
-    const follow = async () => {
-        try {
-            const { data } = await axios.post(SERVER_URL + '/graphql', {
-                query: print(FOLLOW),
-                variables: {
-                    followerId: author.id, followId: user._id,
-                }
-            })
-            console.log(data)
-            toast.success("Followed!")
-            setFollow(true)
-        } catch (error) {
-            console.log(error);
-            toast.warn("Oops an error occoured!")
-        }
-
-    }
+   
 
     return (
         <div className="w-[25%] p-6">

@@ -126,6 +126,7 @@ export const GET_ALL = gql`
 				}
 				isPetition
 			}
+
 			updates {
 				body
 				petition {
@@ -210,7 +211,7 @@ export const GET_ALL = gql`
 				}
 				__typename
 			}
-      
+
 			events {
 				_id
 				audience
@@ -266,6 +267,24 @@ export const CONNECTIONS = gql`
 			name
 			image
 			_id
+		}
+	}
+`
+export const FOLLOWERS = gql`
+	query getUserFollowers($userId: String!) {
+		getUserFollowers(userId: $userId) {
+			name
+			image
+			id
+		}
+	}
+`
+export const FOLLOWING = gql`
+	query getUserFollowing($userId: String!) {
+		getUserFollowing(userId: $userId) {
+			name
+			image
+			id
 		}
 	}
 `
