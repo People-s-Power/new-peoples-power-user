@@ -31,11 +31,30 @@ export const GET_EVENTS = gql`
 `
 
 export const CREATE_EVENT = gql`
-	mutation createEvent($name: String!, $description: String!, $endDate: String!, $startDate: String!, $time: String!, $type: String!, $imageFile: String!) {
-		createEvent(name: $name, description: $description, endDate: $endDate, startDate: $startDate, time: $time, type: $type, imageFile: $imageFile) {
+	mutation createEvent(
+		$author: ID!
+		$audience: String!
+		$name: String!
+		$description: String!
+		$endDate: String!
+		$startDate: String!
+		$time: String!
+		$type: String!
+		$imageFile: [String!]!
+	) {
+		createEvent(
+			name: $name
+			description: $description
+			endDate: $endDate
+			startDate: $startDate
+			time: $time
+			type: $type
+			imageFile: $imageFile
+			audience: $audience
+			author: $author
+		) {
 			_id
 			audience
-			authorId
 			author {
 				_id
 				name
@@ -48,13 +67,9 @@ export const CREATE_EVENT = gql`
 			time
 			image
 			interested {
-				authorId
-				authorImg
 				name
 			}
-			likes
 			name
-			shares
 			type
 		}
 	}

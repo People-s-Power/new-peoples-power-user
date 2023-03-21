@@ -177,7 +177,7 @@ const user = () => {
 			console.log(error)
 		}
 		getData()
-	}, [user])
+	}, [])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
@@ -219,7 +219,7 @@ const user = () => {
 						{`CITIZEN PLAINT`} || {user?.name}{" "}
 					</title>
 				</Head>
-				<div className="lg:mx-32">
+				<div className="lg:mx-40">
 					<div className="rounded-md ">
 						<div className="relative ">
 							<div>
@@ -419,70 +419,8 @@ const user = () => {
 											}
 									  })
 									: null}
-
-								{/* {campaigns?.map((camp, i) => (
-                                <div key={i} className="mt-3 bg-gray-50 w-full rounded-md flex relative">
-                                    <div className='absolute right-2 top-2'>
-                                        <div className="dropdown">
-                                            <a className="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            </a>
-                                            {query.page === author?.id ? (
-                                                <ul className="dropdown-menu">
-                                                    <li>
-                                                        <Link href={`/promote?slug=${camp?.slug}`}>
-                                                            <a className="btn pl-2">{camp?.promoted ? "Upgrade" : "Promote"}</a>
-                                                        </Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link href={`/editcamp?page=${camp?.slug}`}>
-                                                            <a className="btn pl-2">Edit</a>
-                                                        </Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link href={`/updates?page=${camp?.id}/${camp?.slug}`}>
-                                                            <a className="btn pl-2">Add Updates</a>
-                                                        </Link>
-                                                    </li>
-                                                </ul>
-                                            ) : null}
-                                        </div>
-                                    </div>
-
-                                    <div className="w-96 mr-4">
-                                        <img className="w-96 h-full" src={camp.image} alt="" />
-                                    </div>
-
-                                    <div className="w-full my-auto">
-                                        <div className="uppercase text-lg font-bold">{camp.title}</div>
-                                        <div className="text-sm">{camp.excerpt}</div>
-                                        <div className="flex justify-between mr-10">
-                                            <div>
-                                                <div className="text-gray-900 text-xs"> Created At {camp.createdAt.slice(0, 10)}</div>
-                                                {/* <div className="text-gray-900 text-xs">Created By { } Alabo Excel</div> 
-                                            </div>
-                                            {/* <div className="flex cursor-pointer">
-                                                {camp?.author.image === null ? (
-                                                    <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-                                                ) : (
-                                                    <img className="w-8 h-8 " src={camp?.author.image} alt="" />
-                                                )}
-                                                <p className="pl-2 mt-2">{user?.name} </p>
-                                            </div> 
-                                            <p className="fst-italic">
-                                                <i className="fa fa-users lg:mr-8"></i>
-                                                {(camp?.endorsements?.length) + 1} Supporters
-                                            </p>
-                                        </div>
-                                        <Link href={`/campaigns/${camp?.slug}`}>
-                                            <button className="btn btn-warning mt-2">Read More</button>
-                                        </Link>
-                                    </div>
-                                </div> 
-                            ))}
-                            */}
 							</div>
 						)}
-						{/* <div className="w-72 bg-grey"></div> */}
 					</div>
 				</div>
 				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />

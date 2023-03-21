@@ -43,6 +43,7 @@ const CreatePost = ({
 			}
 		}
 	}
+	
 	const clearFile = (index) => {
 		const array = filesPreview
 		array.splice(index, 1)

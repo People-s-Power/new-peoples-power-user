@@ -1,7 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from 'rsuite';
 import { useState, useRef } from 'react'
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
@@ -51,7 +50,7 @@ const AddUpdates = ({ open, handelClick, petition }: { open: boolean, handelClic
             await axios.post('petition/update', {
                 petitionId: petition.id,
                 body: body,
-                image: image.file,
+                image: [image.file],
                 authorId: author.id
             })
             toast.success("Updates added successfulluy");

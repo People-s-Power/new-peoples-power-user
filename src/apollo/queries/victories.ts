@@ -35,3 +35,11 @@ export const MY_VICTORIES = gql`
 		}
 	}
 `
+export const CREATE_VICTORIES = gql`
+	mutation createVictory($authorId: ID!, $body: String!, $imageFile: [String!]!) {
+		createVictory(authorId: $authorId, body: $body, imageFile: $imageFile) {
+			_id
+			body
+		}
+	}
+`

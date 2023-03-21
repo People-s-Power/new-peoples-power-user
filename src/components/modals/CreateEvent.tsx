@@ -5,8 +5,11 @@ import { CREATE_EVENT } from "apollo/queries/eventQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
+import { useRecoilValue } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
 
 const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void }): JSX.Element => {
+	const author = useRecoilValue(UserAtom)
 	const [image, setFilePreview] = useState({
 		type: "",
 		file: "",
@@ -18,6 +21,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 	const [startDate, setStartDate] = useState("")
 	const [time, setTime] = useState("")
 	const [type, setType] = useState("")
+	const [audience, setAudience] = useState("")
 
 	const uploadRef = useRef<HTMLInputElement>(null)
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,13 +48,15 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CREATE_EVENT),
 				variables: {
+					author: author.id,
 					name: name,
 					description: des,
 					endDate: endDate,
 					startDate: startDate,
 					time: time,
 					type: type,
-					imageFile: image.file,
+					imageFile: [image.file],
+					audience: audience,
 				},
 			})
 			console.log(data)
@@ -119,10 +125,10 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 						</div>
 						<div className="w-[45%] text-sm">
 							<div className="text-sm my-1">Target audience</div>
-							<select name="" id="" className="w-full border border-gray-700 text-sm">
+							<select name="" id="" onChange={(e) => setAudience(e.target.value)} className="w-full border border-gray-700 text-sm">
 								<option value="everyone">Everyone</option>
-								<option value="followers">My Connections</option>
-								<option value="followers">Interest</option>
+								<option value="connections">My Connections</option>
+								<option value="interest">Interest</option>
 								<option value="location">Location</option>
 							</select>
 						</div>
