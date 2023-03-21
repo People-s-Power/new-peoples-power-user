@@ -17,7 +17,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 	const [category, setCategory] = useState("Add Category")
 	const author = useRecoilValue(UserAtom)
 	const [active, setActive] = useState<any>(null)
-
+	const [id, setId] = useState(data?._id || "")
 	const [image, setFilePreview] = useState({
 		type: data === null ? "" : "image",
 		file: data?.image || "",
@@ -96,11 +96,11 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			const { data } = await axios.put("https://apiv5-xacq2.ondigitalocean.app/api/v3/petition", {
 				title: title,
 				category: category,
-				image: [image.file],
+				// image: [image.file],
 				aim: aim,
 				target: target,
 				body: body,
-				id: active._id || active.id,
+				id: id,
 			})
 			console.log(data)
 			setLoading(false)
@@ -149,7 +149,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			<Modal open={open} onClose={handelClick}>
 				<Modal.Header>
 					<div className="border-b border-gray-200 p-3 w-full">
-						<Modal.Title>Create petition</Modal.Title>
+						{data === null ? <Modal.Title>Create petition</Modal.Title> : <Modal.Title>Edit petition</Modal.Title>}
 					</div>
 				</Modal.Header>
 				<Modal.Body>

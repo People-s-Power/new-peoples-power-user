@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { Dropdown } from "rsuite"
 import ReactTimeAgo from "react-time-ago"
-import CreatePost from "./modals/CreatePost"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
-import Link from "next/link"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { SHARE, LIKE, COMMENT } from "apollo/queries/generalQuery"
-import axios from "axios"
-import { SERVER_URL } from "utils/constants"
-import { print } from "graphql"
 import Interaction from "./Interaction"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {

@@ -10,6 +10,7 @@ import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRouter } from "next/router"
+import Interaction from "./Interaction"
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -92,49 +93,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 					View More
 				</button>
 			</div>
-			<div className="pt-3 flex justify-between">
-				{/* <div className="flex">
-                    <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">10 Supports</div>
-                </div> */}
-				<div className="flex" onClick={() => like()}>
-					<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-					<div className={liked(author.id, updates.likes) ? "text-warning text-sm my-auto ml-2" : "text-sm my-auto ml-2"}>{updates.likes?.length} likes</div>
-				</div>
-				<div className="flex">
-					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{} Comments</div>
-				</div>
-				<div className="flex" onClick={() => share()}>
-					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{updates.shares} Shares</div>
-				</div>
-				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-					{/* {
-                        post.author?._id === author?.id ? (<Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item>) : null
-                    } */}
-					<Dropdown.Item>Edit</Dropdown.Item>
-				</Dropdown>
-			</div>
-			<div className="flex border-t border-gray-200 p-2 relative">
-				<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
-				<input type="text" onChange={(e) => setContent(e.target.value)} className="p-2 w-full border border-black text-sm" placeholder="Write a comment" />
-				<img src="./images/send.png" onClick={() => comment(updates._id)} className="w-6 h-6 absolute top-4 right-6" alt="" />
-			</div>
-			{updates.comments.length > 0
-				? updates.comments?.map((comment, index) => (
-						<div key={index} className="flex p-2">
-							<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
-							<div className="w-full bg-gray-100 p-2 flex justify-between">
-								<div className="">
-									<div className="font-bold text-sm mt-1">{comment.author.name}</div>
-									<div className="text-xs mt-1">{comment.content}</div>
-								</div>
-								<div className="text-sm">{/* <ReactTimeAgo date={new Date(comment.date)} /> */}</div>
-							</div>
-						</div>
-				  ))
-				: null}
+			<Interaction post={updates} />
 			<ToastContainer />
 		</div>
 	)

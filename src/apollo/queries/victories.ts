@@ -43,3 +43,20 @@ export const CREATE_VICTORIES = gql`
 		}
 	}
 `
+
+export const UPDATE_VICTORIES = gql`
+	mutation updateVictory($authorId: ID!, $body: String!, $imageFile: [String!]!, $victoryId: String!) {
+		updateVictory(authorId: $authorId, body: $body, imageFile: $imageFile, victoryId: $victoryId) {
+			_id
+			body
+		}
+	}
+`
+export const DELETE_VICTORIES = gql`
+	mutation removeVictory($id: ID!) {
+		removeVictory(id: $id) {
+			_id
+			body
+		}
+	}
+`

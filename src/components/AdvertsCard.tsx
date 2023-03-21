@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
+import Interaction from "./Interaction"
 
 const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -49,16 +50,17 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 				<div className="w-2/3">{advert.email}</div>
 				<div>
 					<a href={advert.link}>
-						<button className="p-2 bg-warning ">{advert.action}</button>
+						<button className="p-2 bg-warning text-white">{advert.action}</button>
 					</a>
 				</div>
-				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+				{/* <Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 					{author?.id === advert.author._id && <Dropdown.Item>Edit</Dropdown.Item>}
 					<Dropdown.Item>
 						<span onClick={() => share()}>Share ads</span>
 					</Dropdown.Item>
-				</Dropdown>
+				</Dropdown> */}
 			</div>
+			<Interaction post={advert} />
 			<ToastContainer />
 		</div>
 	)

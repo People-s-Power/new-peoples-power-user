@@ -15,6 +15,7 @@ import { UserAtom } from "atoms/UserAtom"
 import AddUpdates from "./modals/AddUpdates"
 import axios from "axios"
 import ShareModal from "./modals/ShareModal"
+import Interaction from "./Interaction"
 
 const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -86,11 +87,8 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 			<div className="p-2">
 				<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
 			</div>
-			<div className="pt-3 flex justify-between">
-				{/* <div className="flex">
-                    <img className="w-8 h-8" src="/images/home/icons/akar-icons_people-group.svg" alt="" />
-                    <div className="text-sm my-auto ml-2">10 Supports</div>
-                </div> */}
+			<Interaction post={petition} />
+			{/* <div className="pt-3 flex justify-between">
 				<Link href={`/campaigns/${petition?.slug}`}>
 					<div className="flex cursor-pointer">
 						<img className="w-8 h-8 my-auto" src="/images/home/icons/ion_finger-print-sharp.png" alt="" />
@@ -120,7 +118,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 						</div>
 					) : null}
 				</Dropdown>
-			</div>
+			</div> */}
 			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={petition} />
 			<StartPetition open={openPetition} handelClick={handelPetition} data={petition} orgs={null} />
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />

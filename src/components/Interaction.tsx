@@ -17,11 +17,32 @@ import { useQuery } from "@apollo/client"
 import { apollo } from "apollo"
 import { IOrg } from "types/Applicant.types"
 import ShareModal from "./modals/ShareModal"
-
+import Link from "next/link"
+import CreateAdvert from "./modals/CreateAdvert"
+import CreateEvent from "./modals/CreateEvent"
+import AddUpdates from "./modals/AddUpdates"
+import StartPetition from "./modals/StartPetition"
+import CreateVictories from "./modals/CreateVictories"
+import { useRouter } from "next/router"
+import { DELETE_VICTORIES } from "apollo/queries/victories"
 const CampComp = ({ post }: { post: any }): JSX.Element => {
+	const router = useRouter()
 	const author = useRecoilValue(UserAtom)
-	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
+	const [openAd, setOpenAd] = useState(false)
+	const [openEvent, setOpenEvent] = useState(false)
+	const [openPetition, setOpenPetition] = useState(false)
+
+	const handelVictory = () => setOpenVictory(!openVictory)
+	const [openVictory, setOpenVictory] = useState(false)
+	const handelUpdates = () => setOpenUpdates(!openUpdates)
+
+	const [openUpdates, setOpenUpdates] = useState(false)
+	const handelClick = () => setOpenPost(!openPost)
+	const handelPetition = () => setOpenPetition(!openPetition)
+	const handelAdClick = () => setOpenAd(!openAd)
+	const handelEventClick = () => setOpenEvent(!openEvent)
+
 	const [comments, setComments] = useState(false)
 	const [liked, setLiked] = useState(false)
 	const [likes, setLikes] = useState(post.likes.length)
@@ -81,6 +102,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			console.log(error)
 		}
 	}
+	const promote = (slug) => {
+		router.push(`/promote?slug=${slug}`)
+	}
+
 	const comment = async (e, id) => {
 		if (content.length === 0) return
 		if (e.key !== "Enter") return
@@ -112,6 +137,21 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		} catch (error) {
 			console.log(error)
 			setLoading(false)
+		}
+	}
+	const deleteVictory = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(DELETE_VICTORIES),
+				variables: {
+					id: id,
+				},
+			})
+			console.log(data)
+			toast.success("Victory deleted successfully")
+		} catch (error) {
+			console.log(error)
+			toast.warn("Opps! something occurred")
 		}
 	}
 	const deletePost = async (id) => {
@@ -152,18 +192,83 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				</div>
 				<div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{post.shares} Shares</div>
+					<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
 				</div>
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-					{isOwner(post.author._id) ? null : <Dropdown.Item>Report post</Dropdown.Item>}
-					{isOwner(post.author._id) ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
-					<Dropdown.Item>Save</Dropdown.Item>
-					{isOwner(post.author._id) ? (
-						<Dropdown.Item onClick={() => deletePost(post.author._id)}>
-							<span className="text-red-500">Delete</span>
-						</Dropdown.Item>
-					) : null}
-					{isOwner(post.author._id) ? <Dropdown.Item>Promote</Dropdown.Item> : null}
+					{(() => {
+						switch (post.__typename) {
+							case "Advert":
+								return (
+									<div>
+										<Link href={`/report?page=${post?._id}`}>
+											<Dropdown.Item>Report</Dropdown.Item>
+										</Link>
+										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelAdClick}>Edit</Dropdown.Item> : null}
+									</div>
+								)
+							case "Event":
+								return (
+									<div>
+										<Link href={`/report?page=${post?._id}`}>
+											<Dropdown.Item>Report</Dropdown.Item>
+										</Link>
+										{isOwner(post.author._id) ? <Dropdown.Item>Promote</Dropdown.Item> : null}
+										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelEventClick}>Edit</Dropdown.Item> : null}
+									</div>
+								)
+							case "Petition":
+								return (
+									<div>
+										<Link href={`/report?page=${post?._id}`}>
+											<Dropdown.Item>Report</Dropdown.Item>
+										</Link>
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item>
+												<span onClick={() => promote(post.slug)}>Promote</span>
+											</Dropdown.Item>
+										) : null}
+										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelPetition}>Edit</Dropdown.Item> : null}
+									</div>
+								)
+							case "Victory":
+								return (
+									<div>
+										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelVictory}>Edit</Dropdown.Item> : null}{" "}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item onClick={() => deleteVictory(post.author._id)}>
+												<span className="text-red-500">Delete</span>
+											</Dropdown.Item>
+										) : null}
+									</div>
+								)
+							case "Post":
+								return (
+									<div>
+										<Link href={`/report?page=${post?._id}`}>
+											<Dropdown.Item>Report</Dropdown.Item>
+										</Link>
+										{isOwner(post.author._id) ? <Dropdown.Item>Promote</Dropdown.Item> : null}{" "}
+										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item onClick={() => deletePost(post.author._id)}>
+												<span className="text-red-500">Delete</span>
+											</Dropdown.Item>
+										) : null}
+									</div>
+								)
+							case "Update":
+								return (
+									<div>
+										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelUpdates}>Edit</Dropdown.Item> : null}
+										<Link href={`/report?page=${post?._id}`}>
+											<Dropdown.Item>Report</Dropdown.Item>
+										</Link>
+									</div>
+								)
+							default:
+								null
+						}
+					})()}
 				</Dropdown>
 			</div>
 			{comments === true ? (
@@ -206,6 +311,14 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				</div>
 			) : null}
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
+			<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={post} />
+			{/* <FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} /> */}
+			<CreateEvent open={openEvent} handelClick={handelEventClick} />
+			<CreateAdvert open={openAd} handelClick={handelAdClick} />
+
+			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} />
+			<CreateVictories open={openVictory} handelClick={handelVictory} victory={post} />
+
 			<ToastContainer />
 			<ShareModal open={open} handelClick={() => setOpen(!open)} single={post} orgs={orgs} />
 		</div>

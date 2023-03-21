@@ -16,7 +16,20 @@ export const GET_ALL = gql`
 				likes {
 					name
 				}
+				comments {
+					content
+					_id
+					author {
+						_id
+						name
+						email
+						image
+					}
+					date
+					likes
+				}
 				__typename
+				shares
 				author {
 					_id
 					email
@@ -79,8 +92,20 @@ export const GET_ALL = gql`
 				_id
 				image
 				likes {
-					name
 					_id
+					name
+					email
+					image
+				}
+				comments {
+					_id
+					content
+					author {
+						_id
+						name
+						image
+					}
+					date
 				}
 				numberOfPaidEndorsementCount
 				numberOfPaidViewsCount
@@ -129,6 +154,7 @@ export const GET_ALL = gql`
 
 			updates {
 				body
+				_id
 				petition {
 					_id
 					title
@@ -174,6 +200,19 @@ export const GET_ALL = gql`
 					}
 					promoted
 					views
+					comments {
+						_id
+						content
+						date
+						likes
+						author {
+							_id
+							name
+							email
+							image
+						}
+					}
+
 					category
 					region
 					author {
@@ -221,6 +260,19 @@ export const GET_ALL = gql`
 					email
 					image
 				}
+				comments {
+					content
+					_id
+					author {
+						_id
+						name
+						email
+						image
+					}
+					date
+					likes
+				}
+				shares
 				description
 				startDate
 				endDate

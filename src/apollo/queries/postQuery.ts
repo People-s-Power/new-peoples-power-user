@@ -15,8 +15,8 @@ export const CREATE_POST = gql`
 `
 
 export const UPDATE_POST = gql`
-	mutation updatePost($authorId: ID!, $body: String!, $postId: ID!, $imageFile: [String!]!) {
-		updatePost(authorId: $authorId, body: $body, postId: $postId, imageFile: $imageFile) {
+	mutation updatePost($authorId: ID!, $body: String!, $postId: ID!, $imageFile: [String!]!, $categories: [String!]!) {
+		updatePost(authorId: $authorId, body: $body, postId: $postId, imageFile: $imageFile, categories: $categories) {
 			_id
 			body
 			isPetition

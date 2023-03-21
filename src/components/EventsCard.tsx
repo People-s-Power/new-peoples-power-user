@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { apollo } from "apollo"
+import Interaction from "./Interaction"
 
 const EventsCard = ({ event }: { event: any }) => {
 	const [open, setOpen] = useState(false)
@@ -86,14 +87,14 @@ const EventsCard = ({ event }: { event: any }) => {
 					<button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
 						Interested
 					</button>
-					<Dropdown title={<img className="" src="/images/edit.svg" alt="" />} noCaret>
+					{/* <Dropdown title={<img className="" src="/images/edit.svg" alt="" />} noCaret>
 						<Dropdown.Item>
-							{" "}
 							<span onClick={() => share()}> Share Event </span>
 						</Dropdown.Item>
 						{event.author.id === author?.id ? <Dropdown.Item>Edit Event</Dropdown.Item> : null}
-					</Dropdown>
+					</Dropdown> */}
 				</div>
+				<Interaction post={event} />
 			</div>
 			{/* <EventModal open={open} handelClick={handelClick} /> */}
 			<ToastContainer />
