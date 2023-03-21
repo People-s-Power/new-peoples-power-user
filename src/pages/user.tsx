@@ -425,7 +425,7 @@ const user = () => {
 				</div>
 				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} />
-				<CreateAdvert open={openAd} handelClick={handelAdClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
 				<ToastContainer />
 			</>

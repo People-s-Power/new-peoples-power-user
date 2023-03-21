@@ -339,7 +339,7 @@ const HomePage = () => {
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} />
-				<CreateAdvert open={openAd} handelClick={handelAdClick} />
+				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<ToastContainer />
 			</main>
 		</FrontLayout>
