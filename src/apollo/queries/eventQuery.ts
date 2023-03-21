@@ -30,6 +30,53 @@ export const GET_EVENTS = gql`
 	}
 `
 
+export const UPDATE_EVENT = gql`
+	mutation updateEvent(
+		$authorId: ID!
+		$eventId: ID!
+		$audience: String!
+		$name: String!
+		$description: String!
+		$endDate: String!
+		$startDate: String!
+		$time: String!
+		$type: String!
+		$imageFile: [String!]!
+	) {
+		updateEvent(
+			name: $name
+			description: $description
+			endDate: $endDate
+			startDate: $startDate
+			time: $time
+			type: $type
+			imageFile: $imageFile
+			audience: $audience
+			authorId: $authorId
+			eventId: $eventId
+		) {
+			_id
+			audience
+			author {
+				_id
+				name
+				email
+				image
+			}
+			description
+			startDate
+			endDate
+			time
+			image
+			interested {
+				name
+			}
+			name
+			type
+		}
+	}
+`
+
 export const CREATE_EVENT = gql`
 	mutation createEvent(
 		$author: ID!

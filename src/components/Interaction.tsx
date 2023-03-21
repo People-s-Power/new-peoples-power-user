@@ -25,6 +25,7 @@ import StartPetition from "./modals/StartPetition"
 import CreateVictories from "./modals/CreateVictories"
 import { useRouter } from "next/router"
 import { DELETE_VICTORIES } from "apollo/queries/victories"
+
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const router = useRouter()
 	const author = useRecoilValue(UserAtom)
@@ -313,9 +314,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
 			<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={post} />
 			{/* <FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} /> */}
-			<CreateEvent open={openEvent} handelClick={handelEventClick} />
-			<CreateAdvert open={openAd} handelClick={handelAdClick} />
-
+			<CreateEvent open={openEvent} handelClick={handelEventClick} event={post} />
+			<CreateAdvert open={openAd} handelClick={handelAdClick} advert={post} />
 			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} />
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={post} />
 

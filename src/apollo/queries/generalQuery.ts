@@ -34,6 +34,7 @@ export const GET_ALL = gql`
 					_id
 					email
 					image
+					description
 					name
 				}
 				createdAt
@@ -56,6 +57,7 @@ export const GET_ALL = gql`
 					_id
 					email
 					image
+					description
 					name
 				}
 				comments {
@@ -79,6 +81,7 @@ export const GET_ALL = gql`
 					_id
 					name
 					email
+					description
 					image
 				}
 				body
@@ -136,6 +139,7 @@ export const GET_ALL = gql`
 					email
 					image
 					_id
+					description
 				}
 				comments {
 					content
@@ -245,6 +249,7 @@ export const GET_ALL = gql`
 				author {
 					_id
 					name
+					description
 					email
 					image
 				}
@@ -259,6 +264,7 @@ export const GET_ALL = gql`
 					name
 					email
 					image
+					description
 				}
 				comments {
 					content
@@ -276,6 +282,7 @@ export const GET_ALL = gql`
 				description
 				startDate
 				endDate
+				audience
 				createdAt
 				__typename
 				time
@@ -289,7 +296,7 @@ export const GET_ALL = gql`
 					authorImg
 					name
 				}
-				name
+				
 				type
 			}
 		}

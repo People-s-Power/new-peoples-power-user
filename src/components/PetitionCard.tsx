@@ -67,7 +67,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 
 	return (
 		<div className="p-3 border-b border-gray-400 my-3">
-			<div className="flex justify-between">
+			<div className="">
 				<Link href={`/user?page=${petition.authorId}`}>
 					<div className="flex">
 						<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
@@ -82,6 +82,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 						</div>
 					</div>
 				</Link>
+				<div className="text-sm my-1">{petition.author.description}</div>
 			</div>
 			<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 			<div className="p-2">

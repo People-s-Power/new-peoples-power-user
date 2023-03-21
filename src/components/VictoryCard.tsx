@@ -73,7 +73,7 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 
 	return (
 		<div className="p-3 border-b border-gray-400 my-3">
-			<div className="flex justify-between border-b border-gray-200 pb-3">
+			<div className=" border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
 					<div className="ml-2">
@@ -83,6 +83,7 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 						<div className="text-base">Celebrated this victory/testimony</div>
 					</div>
 				</div>
+				<div className="text-sm my-1">{post.author.description}</div>
 			</div>
 			<div className="text-sm p-2 leading-loose">{post.body}</div>
 			<div className="p-2">

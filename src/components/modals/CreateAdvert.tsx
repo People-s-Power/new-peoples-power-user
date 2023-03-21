@@ -4,26 +4,26 @@ import { useRef, useState } from "react"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
-import { CREATE_ADVERT } from "apollo/queries/advertsQuery"
+import { CREATE_ADVERT, UPDATE_ADVERT } from "apollo/queries/advertsQuery"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 
-const CreateAdvert = ({ open, handelClick }: { open: boolean; handelClick(): void }): JSX.Element => {
+const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClick(): void; advert: any }): JSX.Element => {
 	const [image, setFilePreview] = useState({
 		type: "",
 		file: "",
 		name: "",
 	})
 	const uploadRef = useRef<HTMLInputElement>(null)
-	const [caption, setCaption] = useState("")
-	const [link, setLink] = useState("")
-	const [duration, setDuration] = useState("")
-	const [message, setMessage] = useState("")
-	const [email, setEmail] = useState("")
-	const [audience, setAudience] = useState("")
-	const [action, setAction] = useState("")
+	const [caption, setCaption] = useState(advert?.caption || "")
+	const [link, setLink] = useState(advert?.link || "")
+	const [duration, setDuration] = useState(advert?.duration || "")
+	const [message, setMessage] = useState(advert?.message || "")
+	const [email, setEmail] = useState(advert?.email || "")
+	const [audience, setAudience] = useState(advert?.audience || "")
+	const [action, setAction] = useState(advert?.action || "")
 	const [loading, setLoading] = useState(false)
 	const author = useRecoilValue(UserAtom)
 
@@ -84,7 +84,45 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean; handelClick(): voi
 			toast.warn("Oops something happened")
 		}
 	}
-
+	const handleEdit = async () => {
+		setLoading(true)
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UPDATE_ADVERT),
+				variables: {
+					authorId: author.id,
+					message: message,
+					caption: caption,
+					audience: audience,
+					action: action,
+					link: link,
+					duration: duration,
+					email: email,
+					imageFile: [image.file],
+					advertId: advert._id,
+				},
+			})
+			toast("Advert Edited Successfully")
+			console.log(data)
+			handelClick()
+			setMessage("")
+			setCaption("")
+			setAudience("")
+			setLink("")
+			setAction("")
+			setEmail("")
+			setDuration("")
+			setLoading(true)
+			setFilePreview({
+				type: "",
+				file: "",
+				name: "",
+			})
+		} catch (error) {
+			console.log(error.response)
+			toast.warn("Oops something happened")
+		}
+	}
 	return (
 		<>
 			<Modal open={open} onClose={handelClick}>
@@ -103,20 +141,20 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean; handelClick(): voi
 				</div>
 				<div className="mt-2">
 					<div className="text-sm my-1">Caption</div>
-					<input type="text" onChange={(e) => setCaption(e.target.value)} className="p-1 border border-gray-700 w-full rounded-sm" />
+					<input value={caption} type="text" onChange={(e) => setCaption(e.target.value)} className="p-1 border border-gray-700 w-full rounded-sm" />
 				</div>
 				<div className="mt-2">
 					<div className="text-sm my-1">Message</div>
-					<textarea onChange={(e) => setMessage(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
+					<textarea value={message} onChange={(e) => setMessage(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
 				</div>
 				<div className="flex justify-between mt-2">
 					<div className="w-[45%]">
 						<div className="text-sm my-1">Email</div>
-						<input onChange={(e) => setEmail(e.target.value)} type="email" className="w-full border border-gray-700 text-sm" />
+						<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full border border-gray-700 text-sm" />
 					</div>
 					<div className="w-[45%] text-sm">
 						<div className="text-sm my-1">Website link</div>
-						<input onChange={(e) => setLink(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
+						<input value={link} onChange={(e) => setLink(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
 					</div>
 				</div>
 				<div className="flex justify-between mt-2">
@@ -126,19 +164,9 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean; handelClick(): voi
 					</div>
 					<div className="w-[45%] text-sm">
 						<div className="text-sm my-1">Duration</div>
-						<input onChange={(e) => setDuration(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
+						<input value={duration} onChange={(e) => setDuration(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
 					</div>
 				</div>
-				{/* <div className='flex justify-between mt-2'>
-                    <div className="w-[45%]">
-                        <div className='text-sm my-1'>Start date</div>
-                        <input type="date" className="w-full border border-gray-700 text-sm" />
-                    </div>
-                    <div className="w-[45%] text-sm">
-                        <div className='text-sm my-1'>End date</div>
-                        <input type="date" className="w-full border border-gray-700 text-sm" />
-                    </div>
-                </div> */}
 				<div className="flex justify-between mt-2">
 					<div className="w-[45%] text-sm">
 						<div className="text-sm my-1">Target audience</div>
@@ -162,9 +190,15 @@ const CreateAdvert = ({ open, handelClick }: { open: boolean; handelClick(): voi
 				</div>
 				{/* </Modal.Body> */}
 				<Modal.Footer>
-					<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
-						{loading ? "Loading..." : "Create Product"}
-					</button>
+					{advert === null ? (
+						<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+							{loading ? "Loading..." : "Create Product"}
+						</button>
+					) : (
+						<button onClick={handleEdit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+							{loading ? "Loading..." : "Update Product"}
+						</button>
+					)}
 				</Modal.Footer>
 			</Modal>
 			<ToastContainer />

@@ -174,6 +174,7 @@ enum CampaignStatusEnum {
 }
 
 export interface ICampaign extends Document {
+	name: string
 	caption: string
 	title: string
 	video: string

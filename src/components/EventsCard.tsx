@@ -53,7 +53,7 @@ const EventsCard = ({ event }: { event: any }) => {
 	}
 	return (
 		<div className="rounded-md shadow-sm p-3">
-			<div className="flex justify-between my-3">
+			<div className=" my-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
 					<div className="ml-2">
@@ -63,6 +63,7 @@ const EventsCard = ({ event }: { event: any }) => {
 						<div className="text-xs">{event.author.name} created this as an event</div>
 					</div>
 				</div>
+				<div className="text-sm my-1">{event.author.description}</div>
 			</div>
 			<div className="text-xl my-3">{event.name}</div>
 			<img src={event.image} alt="" className="rounded-md w-full  object-cover h-80" />

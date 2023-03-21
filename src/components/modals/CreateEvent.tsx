@@ -1,29 +1,29 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Modal } from "rsuite"
-import { useState, useRef } from "react"
-import { CREATE_EVENT } from "apollo/queries/eventQuery"
+import { Loader, Modal } from "rsuite"
+import { useState, useRef, useEffect } from "react"
+import { CREATE_EVENT, UPDATE_EVENT } from "apollo/queries/eventQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 
-const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void }): JSX.Element => {
+const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(): void; event: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
+	const [name, setName] = useState(event?.name || "")
+	const [des, setDes] = useState(event?.description || "")
+	const [endDate, setEndDate] = useState(event?.endDate || "")
+	const [startDate, setStartDate] = useState(event?.startDate || "")
+	const [time, setTime] = useState(event?.time || "")
+	const [type, setType] = useState(event?.type || "")
+	const [audience, setAudience] = useState(event?.audience || "")
+	const [loading, setLoading] = useState(false)
+	const uploadRef = useRef<HTMLInputElement>(null)
 	const [image, setFilePreview] = useState({
-		type: "",
-		file: "",
+		type: event === null ? "" : "image",
+		file: event?.image || "",
 		name: "",
 	})
-	const [name, setName] = useState("")
-	const [des, setDes] = useState("")
-	const [endDate, setEndDate] = useState("")
-	const [startDate, setStartDate] = useState("")
-	const [time, setTime] = useState("")
-	const [type, setType] = useState("")
-	const [audience, setAudience] = useState("")
-
-	const uploadRef = useRef<HTMLInputElement>(null)
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		const reader = new FileReader()
@@ -44,6 +44,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 		}
 	}
 	const handleSubmit = async () => {
+		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CREATE_EVENT),
@@ -62,6 +63,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 			console.log(data)
 			handelClick()
 			// setBody("")
+			setLoading(false)
 			setFilePreview({
 				type: "",
 				file: "",
@@ -69,6 +71,40 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 			})
 		} catch (error) {
 			console.log(error)
+			setLoading(false)
+		}
+	}
+	const handleEdit = async () => {
+		setLoading(true)
+		console.log(event)
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UPDATE_EVENT),
+				variables: {
+					authorId: author.id,
+					eventId: event._id,
+					name: name,
+					description: des,
+					endDate: endDate,
+					startDate: startDate,
+					time: time,
+					type: type,
+					imageFile: [image.file],
+					audience: audience,
+				},
+			})
+			console.log(data)
+			handelClick()
+			// setBody("")
+			setLoading(false)
+			setFilePreview({
+				type: "",
+				file: "",
+				name: "",
+			})
+		} catch (error) {
+			console.log(error)
+			setLoading(false)
 		}
 	}
 	return (
@@ -76,7 +112,7 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 			<Modal open={open} onClose={handelClick}>
 				<Modal.Header>
 					<div className="border-b border-gray-200 p-3 w-full">
-						<Modal.Title>Create event</Modal.Title>
+						{event === null ? <Modal.Title>Create event</Modal.Title> : <Modal.Title>Edit event</Modal.Title>}
 					</div>
 				</Modal.Header>
 				<Modal.Body>
@@ -102,11 +138,11 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 					</div>
 					<div className="mt-2">
 						<div className="text-sm my-1">Title of Event</div>
-						<input onChange={(e) => setName(e.target.value)} type="text" className="p-1 border border-gray-700 w-full rounded-sm" />
+						<input value={name} onChange={(e) => setName(e.target.value)} type="text" className="p-1 border border-gray-700 w-full rounded-sm" />
 					</div>
 					<div className="mt-2">
 						<div className="text-sm my-1">About event</div>
-						<textarea onChange={(e) => setDes(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
+						<textarea value={des} onChange={(e) => setDes(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
 					</div>
 					<div className="flex justify-between mt-2">
 						<div className="w-[45%]">
@@ -135,9 +171,15 @@ const CreateEvent = ({ open, handelClick }: { open: boolean; handelClick(): void
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
-						Create Event
-					</button>
+					{event === null ? (
+						<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+							{loading ? <Loader /> : "Create Event"}
+						</button>
+					) : (
+						<button onClick={handleEdit} className="p-1 bg-warning text-white rounded-md w-44 my-4">
+							{loading ? <Loader /> : "Edit Event"}
+						</button>
+					)}
 				</Modal.Footer>
 			</Modal>
 		</>
