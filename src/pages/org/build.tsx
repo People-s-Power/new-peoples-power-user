@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react"
 import FrontLayout from "layout/FrontLayout"
 import { Steps, Button } from "rsuite"
-import ConnectionCard from "../components/ConnectionCard"
+// import ConnectionCard from "../components/ConnectionCard"
 import axios from "axios"
-import { IUser } from "types/Applicant.types"
+import { IUser, IOrg } from "types/Applicant.types"
 import { useRouter } from "next/router"
 import { UserAtom } from "atoms/UserAtom"
 import { useRecoilValue } from "recoil"
@@ -14,7 +14,7 @@ import { print } from "graphql"
 import { FOLLOW } from "apollo/queries/generalQuery"
 import { apollo } from "apollo"
 import { useQuery } from "@apollo/client"
-
+import { UPDATE_ORG, GET_ORGANIZATION } from "apollo/queries/orgQuery"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
@@ -32,8 +32,9 @@ function Buildprofile(): React.ReactElement {
 	const [city, setCity] = useState("")
 	const [description, setDescription] = useState("")
 	const [myInterest, setMyInterest] = useState<string[]>([])
-	const user = useRecoilValue(UserAtom)
-
+	// const user = useRecoilValue(UserAtom)
+	const { query } = useRouter()
+	const [org, setOrg] = useState<IOrg>()
 	useEffect(() => {
 		// Get countries
 		axios
@@ -44,6 +45,16 @@ function Buildprofile(): React.ReactElement {
 			})
 			.catch((err) => console.log(err))
 	}, [])
+
+	useQuery(GET_ORGANIZATION, {
+		variables: { ID: query.page },
+		client: apollo,
+		onCompleted: (data) => {
+			console.log(data.getOrganzation)
+			setOrg(data.getOrganzation)
+		},
+		onError: (err) => console.log(err),
+	})
 
 	useEffect(() => {
 		// Get countries
@@ -87,13 +98,13 @@ function Buildprofile(): React.ReactElement {
 			}
 		}
 	}
-	const follow = async (id) => {
+	const follow = async (user) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(FOLLOW),
 				variables: {
-					followerId: user.id,
-					followId: id,
+					followerId: query.page,
+					followId: user.id,
 				},
 			})
 			console.log(data)
@@ -102,39 +113,54 @@ function Buildprofile(): React.ReactElement {
 			console.log(error)
 		}
 	}
+
 	const uploadFileToServer = async () => {
 		if (!img) {
 			uploadRef.current?.click()
 		} else {
 			try {
-				const { data } = await axios.post("/user/upload", { image: img })
+				// setLoading(true);
+				const { data } = await axios.post(`/organization/uploadimg/${query.page}`, { image: img })
 				toast("Image uploaded successfully")
 				setImg("")
 				onNext()
 			} catch (error) {
 				console.log(error)
+			} finally {
+				// setLoading(false);
 			}
 		}
 	}
+
 	const handleSubmit = async () => {
 		try {
-			const { data } = await axios.put("/user/update", {
-				name: user.name,
-				phone: user.phone,
-				country,
-				city,
-				description,
-				interests: myInterest,
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UPDATE_ORG),
+				variables: {
+					UpdateInput: {
+						orgId: query.page,
+						name: org.name,
+						email: org.email,
+						phone: org.phone,
+						website: org.website,
+						linkedIn: "",
+						twitter: "",
+						facebook: "",
+						instagram: "",
+						country: country,
+						city: city,
+						state: "",
+					},
+				},
 			})
 			console.log(data)
-			toast.success("Profile Updates Successfully!")
-			router.push(`/`)
+			// toast.success("Organization Updated Successfully!")
+			router.push(`/org?page=${query.page}`)
 		} catch (error) {
 			console.log(error)
-			toast.warn("Oops an error occured!")
+			toast.warn("Oops and error occoured")
 		}
 	}
-
 	useQuery(GET_ALL_USERS, {
 		client: apollo,
 		onCompleted: (data) => {
@@ -150,6 +176,7 @@ function Buildprofile(): React.ReactElement {
 	const descriptionNext = () => {
 		description !== "" ? onNext() : null
 	}
+
 	return (
 		<div>
 			<FrontLayout showFooter={false}>
@@ -284,19 +311,17 @@ function Buildprofile(): React.ReactElement {
 											(People and organizations with similar insterests or location with you)
 										</div>
 										<div className="flex flex-wrap">
-											{users.slice(0, 12).map((user, index) =>
-												user._id !== user.id ? (
-													<div key={index} className="w-[25%] p-6">
-														<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-														<div className="text-xl py-2">{user.name} </div>
-														<div className="w-16 h-[1px] bg-gray-200"></div>
-														<div className="text-xs text-gray-700 my-3">500 Followers</div>
-														<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
-															+ Follow
-														</div>
+											{users.slice(0, 12).map((user, index) => (
+												<div key={index} className="w-[25%] p-6">
+													<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+													<div className="text-xl py-2">{user.name} </div>
+													<div className="w-16 h-[1px] bg-gray-200"></div>
+													<div className="text-xs text-gray-700 my-3">500 Followers</div>
+													<div className="text-xs text-gray-900 my-6" onClick={() => follow(user)}>
+														+ Follow
 													</div>
-												) : null
-											)}
+												</div>
+											))}
 										</div>
 										<div className="text-center mx-auto my-8">
 											<button className="p-2 bg-warning text-white rounded-sm" onClick={handleSubmit}>

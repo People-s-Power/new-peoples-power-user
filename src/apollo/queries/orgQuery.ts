@@ -8,6 +8,7 @@ export const CREATE_ORG = gql`
 			phone
 			website
 			description
+			_id
 		}
 	}
 `
@@ -100,6 +101,14 @@ export const DELETE_OPERATOR = gql`
 				role
 				userId
 			}
+		}
+	}
+`
+export const DELETE_ORG = gql`
+	mutation deleteOrganization($id: ID!) {
+		deleteOrganization(id: $id) {
+			image
+			_id
 		}
 	}
 `

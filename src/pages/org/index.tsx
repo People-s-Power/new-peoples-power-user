@@ -14,12 +14,14 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import Slider from "../../components/camp-slider/Slider"
 import router, { useRouter } from "next/router"
-import { GET_ORGANIZATION, GET_ORGANIZATIONS } from "apollo/queries/orgQuery"
+import { GET_ORGANIZATION, GET_ORGANIZATIONS, DELETE_ORG } from "apollo/queries/orgQuery"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { SERVER_URL } from "utils/constants"
 import { MY_ADVERTS } from "apollo/queries/advertsQuery"
-
+import { GET_USER_POSTS } from "apollo/queries/postQuery"
+import { MY_VICTORIES } from "apollo/queries/victories"
+import { MY_EVENT } from "apollo/queries/eventQuery"
 import CreatePost from "../../components/modals/CreatePost"
 import CreateAdvert from "../../components/modals/CreateAdvert"
 import CreateEvent from "../../components/modals/CreateEvent"
@@ -47,7 +49,9 @@ const org = () => {
 	const uploadRef = useRef<HTMLInputElement>(null)
 	const [following, setFollow] = useState(false)
 	const [adverts, setAdverts] = useState<any>([])
-
+	const [posts, setPosts] = useState<any>([])
+	const [victories, setVictories] = useState<any>([])
+	const [events, setEvents] = useState<any>([])
 	const [openPost, setOpenPost] = useState(false)
 	const [openAd, setOpenAd] = useState(false)
 	const [openEvent, setOpenEvent] = useState(false)
@@ -114,55 +118,53 @@ const org = () => {
 		onError: (err) => {},
 	})
 
+	useQuery(MY_VICTORIES, {
+		client: apollo,
+		variables: { authorId: query.page },
+		onCompleted: (data) => {
+			// console.log(data)
+			setVictories(data.myVictories)
+		},
+		onError: (err) => console.log(err),
+	})
+
+	useQuery(MY_EVENT, {
+		client: apollo,
+		variables: { authorId: query.page },
+		onCompleted: (data) => {
+			// console.log(data)
+			setEvents(data.authorEvents)
+		},
+		onError: (err) => console.log(err),
+	})
+
+	useQuery(GET_USER_POSTS, {
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data)
+			setPosts(data.myPosts)
+		},
+		onError: (err) => console.log(err),
+	})
+
 	async function getData() {
 		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(GET_ALL),
-				variables: {
-					authorId: query.page,
-				},
-			})
-			console.log(data.data.timeline)
-			let general = [
-				...data.data.timeline.adverts,
-				{
-					__typename: "Follow",
-				},
-				...data.data.timeline.updates,
-				{
-					__typename: "Follow",
-				},
-				...data.data.timeline.events,
-				{
-					__typename: "Follow",
-				},
-				...data.data.timeline.petitions,
-				{
-					__typename: "Follow",
-				},
-				...data.data.timeline.posts,
-				{
-					__typename: "Follow",
-				},
-				...data.data.timeline.victories,
-				{
-					__typename: "Follow",
-				},
-			]
-			const randomize = (values: any) => {
-				let index = values.length,
-					randomIndex
-				while (index != 0) {
-					randomIndex = Math.floor(Math.random() * index)
-					index--
-					;[values[index], values[randomIndex]] = [values[randomIndex], values[index]]
+			let general = [...campaigns, ...posts, ...adverts, ...victories, ...events]
+			const randomizedItems = general.sort(() => Math.random() - 0.5)
+			// const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			let newArray = []
+			for (let i = 0; i < randomizedItems.length; i++) {
+				newArray.push(randomizedItems[i])
+				if ((i + 1) % 3 === 0) {
+					newArray.push({
+						__typename: "Follow",
+					})
 				}
-				return values
 			}
-			randomize(general)
-			setAll(general)
+			// console.log(newArray)
+			setAll(newArray.reverse())
 		} catch (err) {
-			console.log(err)
+			console.log(err.response)
 		}
 	}
 
@@ -183,47 +185,39 @@ const org = () => {
 		}
 	}, [])
 
-	const follow = () => {
-		axios
-			.post("/user/follow", {
-				userId: page,
+	const deleteOrg = async () => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(DELETE_ORG),
+				variables: {
+					id: query.page,
+				},
 			})
-			.then(function (response) {
-				toast.success("Followed!")
-				setFollow(true)
-			})
-			.catch(function (error) {
-				console.log(error)
-				toast.warn("Oops an error occoured!")
-			})
+			console.log(data)
+			toast.success("Organization deleted!")
+			router.push("/")
+		} catch (error) {
+			console.log(error)
+		}
 	}
-	const unFollow = () => {
-		axios
-			.put("/user/follow", {
-				userId: page,
-			})
-			.then(function (response) {
-				toast.success("Unfollowed!")
-				setFollow(true)
-			})
-			.catch(function (error) {
-				console.log(error)
-				toast.warn("Oops an error occoured!")
-			})
-	}
+	// const follow = () => {
+	// 	axios
+	// 		.post("/user/follow", {
+	// 			userId: page,
+	// 		})
+	// 		.then(function (response) {
+	// 			toast.success("Followed!")
+	// 			setFollow(true)
+	// 		})
+	// 		.catch(function (error) {
+	// 			console.log(error)
+	// 			toast.warn("Oops an error occoured!")
+	// 		})
+	// }
 
 	const singleOrg = (id: string) => {
-		// axios.get(`/orgs/${id}`)
-		//     .then(function (response) {
-		//         console.log(response)
-		//         setUser(response.data)
 		router.push(`/org?page=${id}`)
 		localStorage.setItem("page", `${id}`)
-		//         setOrganization(true)
-		//     })
-		//     .catch(function (error) {
-		//         console.log(error);
-		//     })
 	}
 
 	const handleImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -299,60 +293,22 @@ const org = () => {
 											</div>
 											<div className="text-sm font-thin w-96">{user?.description.substring(0, 100) + "..."}</div>
 											<div className="pt-1 text-sm">
-												{" "}
 												{user?.city}, {user?.country}
 											</div>
 										</div>
 										<div className="font-black text-lg mr-32">
 											<Link href={`/org/update?page=${user?._id}`}>
 												<button className="bg-transparent p-2 text-warning">
-													{" "}
 													<span>&#x270E;</span> Edit
 												</button>
 											</Link>
+											<button onClick={() => deleteOrg()} className="bg-transparent p-2 text-red-600">Delete</button>
 										</div>
 									</div>
-									{/* {
-                                        user?.author === author?.id ? (
-                                            <div className="font-black text-lg">
-                                                <Link href={'/org/update'}>
-                                                    <button className="bg-transparent p-2 text-warning"> <span>&#x270E;</span> Edit</button>
-                                                </Link>
-                                            </div>
-                                        ) : (
-                                            following === true ? (
-                                                <div>
-                                                    <button onClick={() => unFollow()} className="bg-transparent p-2 text-warning">Unfollow</button>
-                                                </div>
-                                            ) : (
-                                                <div>
-                                                    <button onClick={() => follow()} className="bg-transparent p-2 text-warning"> <span>&#10010;</span> Follow</button>
-                                                </div>
-                                            )
-                                        )
-                                    } */}
 								</div>
 							</div>
 						</div>
-
-						{/* {author?.id === query.page ? (
-                            <div className="text-center font-black text-lg">
-                                <Link href="/mycamp">
-                                    <button className=" bg-transparent p-2 w-44 text-warning">Dashboard</button>
-                                </Link>
-                                <button className=" bg-transparent p-2 w-44 text-warning" onClick={() => setProduct(!product)}> Products</button>
-                                <Link href={'/about'}>
-                                    <button className=" bg-transparent p-2 w-44 text-warning"> Careers</button>
-                                </Link>
-                            </div>
-                        ) : (<div></div>)} */}
 					</div>
-					{/* <Slider /> */}
-					{/* <div className="text-center text-lg p-3">
-                        <Link href={`/startcamp`}>
-                            <button className="bg-gray-200 w-44 p-2 rounded-full"> Start Campaign...</button>
-                        </Link>
-                    </div> */}
 					<div className="lg:flex mt-3">
 						<div className="lg:w-96 mt-3 h-80 lg:mr-4 rounded-md bg-gray-50">
 							{user?.author === author?.id ? (
@@ -360,14 +316,6 @@ const org = () => {
 									<Link href={`/addadmin?page=${query.page}`}>
 										<button className="bg-transparent text-warning">Admin</button>
 									</Link>
-									{/* <div className="flex cursor-pointer my-2" onClick={() => { router.push(`/user?page=${author?.id}`), setOrganization(false) }}>
-                                        {user?.image === "Upload org Image" ? (
-                                            <img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-                                        ) : (
-                                            <img className="w-8 h-8 rounded-full" src={author?.image} alt="" />
-                                        )}
-                                        <p className="pl-2 mt-2 capitalize">{author?.name}</p>
-                                    </div> */}
 									<div className="my-2">
 										<Link href="/mycamp">
 											<button className="bg-transparent">Dashboard</button>

@@ -76,6 +76,7 @@ export interface IOrg extends Document {
 	state: string
 	city: string
 	id: string
+	website: string
 }
 
 export interface IApplicant extends Document {

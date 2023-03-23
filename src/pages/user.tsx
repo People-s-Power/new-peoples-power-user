@@ -264,7 +264,7 @@ const user = () => {
 					<Slider />
 
 					<div className="lg:flex mt-3">
-						<div className="lg:w-1/3 mt-3 h-80 lg:mr-4 rounded-md">
+						<div className="lg:w-1/3 mt-3 lg:mr-4 rounded-md">
 							{author?.id === query.page ? (
 								<div className="text-base p-3">
 									<div className="my-2">
@@ -274,7 +274,6 @@ const user = () => {
 									</div>
 									<div className="my-2">
 										<button className=" bg-transparent" onClick={() => setProduct(!product)}>
-											{" "}
 											Products
 										</button>
 									</div>
