@@ -36,6 +36,9 @@ import CampComp from "components/CampComp"
 import { print } from "graphql"
 import PostActionCard from "components/PostActionCard"
 import { Dropdown } from "rsuite"
+import FollowSlides from "components/camp-slider/FollowSlides"
+import VictoryCard from "components/VictoryCard"
+import Updates from "components/updates"
 
 const org = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -302,7 +305,9 @@ const org = () => {
 													<span>&#x270E;</span> Edit
 												</button>
 											</Link>
-											<button onClick={() => deleteOrg()} className="bg-transparent p-2 text-red-600">Delete</button>
+											<button onClick={() => deleteOrg()} className="bg-transparent p-2 text-red-600">
+												Delete
+											</button>
 										</div>
 									</div>
 								</div>
@@ -390,30 +395,52 @@ const org = () => {
 											switch (single.__typename) {
 												case "Advert":
 													return (
-														<div>
-															<AdvertsComp advert={single} key={index} />
+														<div key={index}>
+															<AdvertsComp advert={single} />
 														</div>
 													)
 												case "Event":
 													return (
-														<div>
-															<EventsCard key={index} event={single} />
+														<div key={index}>
+															<EventsCard event={single} />
 														</div>
 													)
 												case "Petition":
 													return (
-														<div>
-															<PetitionComp petition={single} key={index} />
+														<div key={index}>
+															<PetitionComp petition={single} />
 														</div>
 													)
 												case "Victory":
-													return <div>victories</div>
-												case "Post":
 													return (
-														<div>
-															<CampComp key={index} post={single} />
+														<div key={index}>
+															<VictoryCard post={single} />
 														</div>
 													)
+												case "Post":
+													return (
+														<div key={index}>
+															<CampComp post={single} />
+														</div>
+													)
+												case "Update":
+													return (
+														<div key={index}>
+															<Updates updates={single} />
+														</div>
+													)
+												case "Follow":
+													return (
+														<div key={index}>
+															<FollowSlides />
+														</div>
+													)
+												// default:
+												// 	return (
+												// 		<div key={index}>
+												// 			<Shared shared={single} />
+												// 		</div>
+												// 	)
 											}
 									  })
 									: null}

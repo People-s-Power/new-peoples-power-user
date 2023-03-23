@@ -213,7 +213,11 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										<Link href={`/report?page=${post?._id}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
-										{isOwner(post.author._id) ? <Dropdown.Item>Promote</Dropdown.Item> : null}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item>
+												<span onClick={() => promote(post._id)}>Promote</span>{" "}
+											</Dropdown.Item>
+										) : null}
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelEventClick}>Edit</Dropdown.Item> : null}
 									</div>
 								)
@@ -248,7 +252,11 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										<Link href={`/report?page=${post?._id}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
-										{isOwner(post.author._id) ? <Dropdown.Item>Promote</Dropdown.Item> : null}{" "}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item>
+												<span onClick={() => promote(post._id)}>Promote</span>
+											</Dropdown.Item>
+										) : null}{" "}
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelClick}>Edit</Dropdown.Item> : null}
 										{isOwner(post.author._id) ? (
 											<Dropdown.Item onClick={() => deletePost(post.author._id)}>
