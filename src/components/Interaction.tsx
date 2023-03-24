@@ -260,7 +260,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 									<div>
 										<Dropdown.Item onClick={() => handelVictory()}>Celebrate Victory</Dropdown.Item>
 										<Dropdown.Item onClick={() => handelUpdates()}>Update</Dropdown.Item>
-										<Link href={`/report?page=${post?._id}`}>
+										<Link href={`/report?page=${post?.slug}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
 										{isOwner(post.author._id) ? (

@@ -105,12 +105,11 @@ const PromoteComp = (): JSX.Element => {
 	// if (!view && !endorse) {
 	return (
 		<div>
-			<PromoteForm campaign={query.slug} />
-			{/* {endorse ? (
+			{/* <PromoteForm campaign={query.slug} /> */}
+			{endorse ? (
 				campaign && <PromoteFormEndorsement campaign={campaign} />
 			) : view ? (
-				campaign && 
-				<PromoteForm campaign={campaign} />
+				campaign && <PromoteForm campaign={campaign} />
 			) : (
 				<FrontLayout>
 					<Wrapper className="container">
@@ -143,7 +142,7 @@ const PromoteComp = (): JSX.Element => {
 										{/* <li className="nav-item mb-2 ms-3">
 												Hit the promote button below to reach our Community of
 												Supporters who are interested in supporting this Campaign.
-											</li> 
+											</li>  */}
 									</ul>
 									<div>
 										{transactions && transactions?.length > 1
@@ -170,7 +169,7 @@ const PromoteComp = (): JSX.Element => {
 						</div>
 					</Wrapper>
 				</FrontLayout>
-			)} */}
+			)}
 		</div>
 	)
 	// } else if (endorse) {
@@ -253,7 +252,7 @@ const PromoteForm = ({ campaign }: { campaign: any }) => {
 			purpose: PaymentPurposeEnum.CAMPAIGNVIEWS,
 			key: campaign,
 			numberOfViews: views,
-			name: user?.name,
+			name: user.name,
 			custom_fields: [
 				{
 					display_name: PaymentPurposeEnum.CAMPAIGNVIEWS,
@@ -372,142 +371,142 @@ const PromoteForm = ({ campaign }: { campaign: any }) => {
 	)
 }
 
-// const PromoteFormEndorsement = ({ campaign }: { campaign: ICampaign }) => {
-// 	const user = useRecoilValue(UserAtom)
+const PromoteFormEndorsement = ({ campaign }: { campaign: ICampaign }) => {
+	const user = useRecoilValue(UserAtom)
 
-// 	const [views, setViews] = useState(10)
+	const [views, setViews] = useState(10)
 
-// 	const [amount, setAmount] = useState(20)
-// 	const [loadingPrice, setLoadingPrice] = useState(false)
+	const [amount, setAmount] = useState(20)
+	const [loadingPrice, setLoadingPrice] = useState(false)
 
-// 	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
+	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
 
-// 	const paystack_config: PaystackProps = {
-// 		reference: new Date().getTime().toString(),
-// 		email: user?.email as string,
-// 		amount: parseFloat(amount.toFixed(2)) * 100,
-// 		firstname: user?.firstName,
-// 		lastname: user?.lastName,
-// 		currency,
-// 		publicKey: process.env.NODE_ENV === "production" ? (Cookies.get(IEnvironments.PAYSTACK_PK) as string) : "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
-// 		metadata: {
-// 			purpose: PaymentPurposeEnum.CAMPAIGNENDORSE,
-// 			key: campaign?.id,
-// 			numberOfEndorsements: views,
-// 			name: user.name,
-// 			custom_fields: [
-// 				{
-// 					display_name: PaymentPurposeEnum.CAMPAIGNENDORSE,
-// 					value: campaign?.title,
-// 					variable_name: "title",
-// 				},
-// 			],
-// 		},
-// 	}
+	const paystack_config: PaystackProps = {
+		reference: new Date().getTime().toString(),
+		email: user?.email as string,
+		amount: parseFloat(amount.toFixed(2)) * 100,
+		firstname: user?.firstName,
+		lastname: user?.lastName,
+		currency,
+		publicKey: process.env.NODE_ENV === "production" ? (Cookies.get(IEnvironments.PAYSTACK_PK) as string) : "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
+		metadata: {
+			purpose: PaymentPurposeEnum.CAMPAIGNENDORSE,
+			key: campaign?.id,
+			numberOfEndorsements: views,
+			name: user.name,
+			custom_fields: [
+				{
+					display_name: PaymentPurposeEnum.CAMPAIGNENDORSE,
+					value: campaign?.title,
+					variable_name: "title",
+				},
+			],
+		},
+	}
 
-// 	const initializePayment = usePaystackPayment(paystack_config)
-// 	const router = useRouter()
-// 	const onSuccess = async () => {
-// 		console.log(paystack_config)
-// 		router.push("/mycamp")
-// 	}
-// 	const onClose = () => {
-// 		console.log("")
-// 	}
+	const initializePayment = usePaystackPayment(paystack_config)
+	const router = useRouter()
+	const onSuccess = async () => {
+		console.log(paystack_config)
+		router.push("/mycamp")
+	}
+	const onClose = () => {
+		console.log("")
+	}
 
-// 	useEffect(() => {
-// 		const convert = async () => {
-// 			try {
-// 				setLoadingPrice(true)
-// 				const unit = await checkFX(currency)
-// 				const result = unit * 20
+	useEffect(() => {
+		const convert = async () => {
+			try {
+				setLoadingPrice(true)
+				const unit = await checkFX(currency)
+				const result = unit * 20
 
-// 				setAmount(views * result)
-// 			} catch (error) {
-// 				console.log(error)
-// 			} finally {
-// 				setLoadingPrice(false)
-// 			}
-// 		}
-// 		convert()
-// 	}, [currency, views])
+				setAmount(views * result)
+			} catch (error) {
+				console.log(error)
+			} finally {
+				setLoadingPrice(false)
+			}
+		}
+		convert()
+	}, [currency, views])
 
-// 	return (
-// 		<FrontLayout>
-// 			<Wrapper className="container">
-// 				<div className="md:w-[506px] m-auto">
-// 					<div className="cursor-pointer text-sm text-blue-700" onClick={() => window.history.back()}>
-// 						Go back
-// 					</div>
-// 					<div className="text-center mt-3">
-// 						Wow <span className="fw-bold">{user?.firstName}</span>…you are just one step away from reaching our Community of Supporters who will help you
-// 						achieve your campaign goal. Spare in some cash to win your supporters.
-// 					</div>
-// 					<p className="my-4 text-center fw-bold">How do you want to promote your campaign Endorsements ?</p>
+	return (
+		<FrontLayout>
+			<Wrapper className="container">
+				<div className="md:w-[506px] m-auto">
+					<div className="cursor-pointer text-sm text-blue-700" onClick={() => window.history.back()}>
+						Go back
+					</div>
+					<div className="text-center mt-3">
+						Wow <span className="fw-bold">{user?.firstName}</span>…you are just one step away from reaching our Community of Supporters who will help you
+						achieve your campaign goal. Spare in some cash to win your supporters.
+					</div>
+					<p className="my-4 text-center fw-bold">How do you want to promote your campaign Endorsements ?</p>
 
-// 					<h5 className="fw-bold">Bulk Option</h5>
-// 					<div className="bulk">
-// 						{bulkOptionsEndorse.map((option, i) => (
-// 							<button key={i} className="row w-100 bulk-option align-items-center justify-content-between">
-// 								<p className="m-0 col-4">{option.endorsements} Endorsements</p>
-// 								<p className="m-0 col-4">=</p>
-// 								<PaystackButton
-// 									reference={new Date().getTime().toString()}
-// 									email={user?.email as string}
-// 									amount={option.price * 100}
-// 									firstname={user?.firstName}
-// 									lastname={user?.lastName}
-// 									onSuccess={onSuccess}
-// 									publicKey={
-// 										process.env.NODE_ENV === "production"
-// 											? (Cookies.get(IEnvironments.PAYSTACK_PK) as string)
-// 											: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28"
-// 									}
-// 									metadata={{
-// 										purpose: PaymentPurposeEnum.CAMPAIGNENDORSE,
-// 										key: campaign?.id,
-// 										numberOfEndorsements: option.endorsements,
-// 										name: user.name,
-// 										custom_fields: [
-// 											{
-// 												display_name: PaymentPurposeEnum.CAMPAIGNENDORSE,
-// 												value: campaign?.title,
-// 												variable_name: "title",
-// 											},
-// 										],
-// 									}}
-// 									text={`N${option.price}`}
-// 									className="btn text-primary col-4"
-// 								/>
-// 							</button>
-// 						))}
-// 					</div>
+					<h5 className="fw-bold">Bulk Option</h5>
+					<div className="bulk">
+						{bulkOptionsEndorse.map((option, i) => (
+							<button key={i} className="row w-100 bulk-option align-items-center justify-content-between">
+								<p className="m-0 col-4">{option.endorsements} Endorsements</p>
+								<p className="m-0 col-4">=</p>
+								<PaystackButton
+									reference={new Date().getTime().toString()}
+									email={user?.email as string}
+									amount={option.price * 100}
+									firstname={user?.firstName}
+									lastname={user?.lastName}
+									onSuccess={onSuccess}
+									publicKey={
+										process.env.NODE_ENV === "production"
+											? (Cookies.get(IEnvironments.PAYSTACK_PK) as string)
+											: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28"
+									}
+									metadata={{
+										purpose: PaymentPurposeEnum.CAMPAIGNENDORSE,
+										key: campaign?.id,
+										numberOfEndorsements: option.endorsements,
+										name: user.name,
+										custom_fields: [
+											{
+												display_name: PaymentPurposeEnum.CAMPAIGNENDORSE,
+												value: campaign?.title,
+												variable_name: "title",
+											},
+										],
+									}}
+									text={`N${option.price}`}
+									className="btn text-primary col-4"
+								/>
+							</button>
+						))}
+					</div>
 
-// 					<h5 className="fw-bold my-3">Customize</h5>
-// 					<form>
-// 						<div className="form-group text-center">
-// 							<label className="pr-1">Endorsements</label>
-// 							<input type="number" value={views} onChange={(e) => setViews(+e.target.value)} style={{ width: "4rem", appearance: "none" }} />
-// 							<i className="fas fa-exchange-alt"></i>
-// 							<input type="text" value={loadingPrice ? "calculating..." : formateMoney(amount, currency)} disabled />
-// 							<select className="" onChange={(e) => setCurrency(e.target.value as CurrencyListEnum)}>
-// 								<option>{CurrencyListEnum.NGN}</option>
-// 								<option>{CurrencyListEnum.GHS}</option>
-// 								<option>{CurrencyListEnum.ZAR}</option>
-// 								<option>{CurrencyListEnum.USD}</option>
-// 							</select>
-// 						</div>
-// 					</form>
-// 					<div className="text-center">
-// 						<button className="btn btn-warning my-4" onClick={() => initializePayment(onSuccess, onClose)}>
-// 							Click to pay
-// 						</button>
-// 					</div>
-// 				</div>
-// 			</Wrapper>
-// 		</FrontLayout>
-// 	)
-// }
+					<h5 className="fw-bold my-3">Customize</h5>
+					<form>
+						<div className="form-group text-center">
+							<label className="pr-1">Endorsements</label>
+							<input type="number" value={views} onChange={(e) => setViews(+e.target.value)} style={{ width: "4rem", appearance: "none" }} />
+							<i className="fas fa-exchange-alt"></i>
+							<input type="text" value={loadingPrice ? "calculating..." : formateMoney(amount, currency)} disabled />
+							<select className="" onChange={(e) => setCurrency(e.target.value as CurrencyListEnum)}>
+								<option>{CurrencyListEnum.NGN}</option>
+								<option>{CurrencyListEnum.GHS}</option>
+								<option>{CurrencyListEnum.ZAR}</option>
+								<option>{CurrencyListEnum.USD}</option>
+							</select>
+						</div>
+					</form>
+					<div className="text-center">
+						<button className="btn btn-warning my-4" onClick={() => initializePayment(onSuccess, onClose)}>
+							Click to pay
+						</button>
+					</div>
+				</div>
+			</Wrapper>
+		</FrontLayout>
+	)
+}
 
 const bulkOptions = [
 	{ views: 100, price: 1000 },

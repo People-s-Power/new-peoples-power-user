@@ -45,7 +45,7 @@ const report = () => {
 			})
 			console.log(data)
 			setLoading(false)
-			router.push(`/campaigns`)
+			router.push(`/`)
 			toast.success("Petition reported successfully!")
 		} catch (error) {
 			console.log(error)

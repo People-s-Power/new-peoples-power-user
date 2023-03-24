@@ -73,7 +73,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			setLoading(false)
 			setPreview(false)
 			toast("Petition Created Successfully")
-			router.push(`/promote?slug=${data._id}`)
+			router.push(`/promote?slug=${data.slug}`)
 			setTitle("")
 			setCategory("")
 			setAim("")
