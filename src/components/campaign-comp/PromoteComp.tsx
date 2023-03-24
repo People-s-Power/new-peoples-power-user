@@ -236,12 +236,9 @@ const Wrapper = styled.div`
 
 const PromoteForm = ({ campaign }: { campaign: any }) => {
 	const user = useRecoilValue(UserAtom)
-
 	const [views, setViews] = useState(10)
-
 	const [amount, setAmount] = useState(20)
 	const [loadingPrice, setLoadingPrice] = useState(false)
-
 	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
 
 	const paystack_config: PaystackProps = {

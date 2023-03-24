@@ -224,6 +224,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							case "Petition":
 								return (
 									<div>
+										<Dropdown.Item onClick={() => handelVictory()}>Celebrate Victory</Dropdown.Item>
+										<Dropdown.Item onClick={() => handelUpdates()}>Update</Dropdown.Item>
 										<Link href={`/report?page=${post?._id}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
