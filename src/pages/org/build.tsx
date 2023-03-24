@@ -182,9 +182,9 @@ function Buildprofile(): React.ReactElement {
 			<FrontLayout showFooter={false}>
 				<main className="w-2/3 mx-auto">
 					<Steps current={step}>
-						<Steps.Item title="Photo" />
-						<Steps.Item title="Location" />
-						<Steps.Item title="Bio/Description" />
+						<Steps.Item title="Logo" />
+						<Steps.Item title="Service Location" />
+						<Steps.Item title="Business/Description" />
 						<Steps.Item title="Interests" />
 						<Steps.Item title="Followers" />
 					</Steps>
@@ -193,13 +193,13 @@ function Buildprofile(): React.ReactElement {
 							case 0:
 								return (
 									<div>
-										<div className="text-xl text-center py-14">Add your photo to build your profile</div>
+										<div className="text-xl text-center py-14">Add your Logo to build your profile</div>
 										<div>
 											<input type="file" ref={uploadRef} className="d-none" onChange={handleImg} />
 											<img
 												onClick={() => uploadRef.current?.click()}
 												className="rounded-full hover:opacity-50 w-44 h-44 mx-auto"
-												src={img || "/images/person.png"}
+												src={img || "/images/logo.png"}
 												alt=""
 											/>
 										</div>
@@ -216,7 +216,7 @@ function Buildprofile(): React.ReactElement {
 							case 1:
 								return (
 									<div>
-										<div className="text-xl text-center py-14">Add your location to get personalised content</div>
+										<div className="text-xl text-center py-14">Add your Business location to get personalised content</div>
 										<div className="lg:flex justify-evenly">
 											<div>
 												<div>Country</div>
@@ -244,7 +244,7 @@ function Buildprofile(): React.ReactElement {
 							case 2:
 								return (
 									<div>
-										<div className="text-xl text-center py-14">Explain briefly about yourself</div>
+										<div className="text-xl text-center py-14">Explain briefly about your Business</div>
 										<div className="w-full">
 											<div className="w-full">
 												<div>Bio/Description</div>

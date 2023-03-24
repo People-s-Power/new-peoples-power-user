@@ -108,17 +108,19 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 									name="color"
 									options={category}
 								/>
-								<Select
-									className="mb-4"
-									classNamePrefix="select"
-									onChange={(val: any) => setSubCategoryValue(val.value)}
-									placeholder="Select Sub-Category of Service Provider"
-									isClearable={true}
-									isSearchable={true}
-									name="color"
-									options={subCategory}
-								/>
-								<Select
+								{categoryValue === "NGO" ? (
+									<Select
+										className="mb-4"
+										classNamePrefix="select"
+										onChange={(val: any) => setSubCategoryValue(val.value)}
+										placeholder="Select Sub-Category of Service Provider"
+										isClearable={true}
+										isSearchable={true}
+										name="color"
+										options={subCategory}
+									/>
+								) : null}
+								{/* <Select
 									className="mb-4"
 									classNamePrefix="select"
 									placeholder="Select Location of Service Provider"
@@ -126,11 +128,11 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 									isSearchable={true}
 									name="color"
 									options={states}
-								/>
+								/> */}
 								<Select
 									className="mb-4"
 									classNamePrefix="select"
-									placeholder="Select Country"
+									placeholder="Select Country of Service Provider"
 									isClearable={true}
 									isSearchable={true}
 									name="color"

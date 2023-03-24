@@ -217,22 +217,24 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 						</select>
 					</div>
 				</div>
-				<div className="lg:flex justify-between">
-					<div className="w-[45%] my-1">
-						<div className="text-sm">Country</div>
-						<div>
-							{/* <input onChange={(e) => setCountry(e.target.value)} type="text" className="rounded-sm" placeholder="Nigeria" /> */}
-							<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
+				{audience === "Location" ? (
+					<div className="lg:flex justify-between">
+						<div className="w-[45%] my-1">
+							<div className="text-sm">Country</div>
+							<div>
+								{/* <input onChange={(e) => setCountry(e.target.value)} type="text" className="rounded-sm" placeholder="Nigeria" /> */}
+								<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
+							</div>
+						</div>
+						<div className="w-[45%] my-1">
+							<div className="text-sm">City</div>
+							<div>
+								{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
+								<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
+							</div>
 						</div>
 					</div>
-					<div className="w-[45%] my-1"> 
-						<div className="text-sm">City</div>
-						<div>
-							{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
-							<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
-						</div>
-					</div>
-				</div>
+				) : null}
 				{/* </Modal.Body> */}
 				<Modal.Footer>
 					{advert === null ? (

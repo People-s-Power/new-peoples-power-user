@@ -303,7 +303,7 @@ const HomePage = () => {
 				</section>
 				<aside className="w-[20%] sm:hidden p-2 fixed bg-white right-20">
 					<div className="text-sm">Grow your feed by following persons and organizations that interest you</div>
-					{users.slice(0, 3).map((user, index) =>
+					{users.slice(0, 4).map((user, index) =>
 						user._id !== author?.id ? (
 							<div key={index} className="flex justify-between my-4">
 								<img src={user.image} className="w-12 m-2 h-12 rounded-full" alt="" />

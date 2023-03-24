@@ -105,21 +105,23 @@ const FollowSlides = () => {
 			<div className="">
 				<div className="text-center font-bold text-lg my-3">Grow Your Feed</div>
 				<SliderTwo {...settings}>
-					{users.map((user, i) => (
-						<div key={i} className="my-4 w-1/2 text-center border p-1">
-							<img src={user.image} className="w-12 mx-auto h-12 rounded-full" alt="" />
-							<div className="">
-								<div className="text-base font-light">{user.name} </div>
-								<div className="text-xs"></div>
-								<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-32 mx-auto mt-2 rounded-md">
-									<div className="text-lg">+</div>
-									<div className="my-auto text-sm" onClick={() => follow(user)}>
-										Follow
+					{users.map((user, i) =>
+						user._id !== author?.id ? (
+							<div key={i} className="my-4 w-1/2 text-center border p-1">
+								<img src={user.image} className="w-12 mx-auto h-12 rounded-full" alt="" />
+								<div className="">
+									<div className="text-base font-light">{user.name} </div>
+									<div className="text-xs"></div>
+									<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-32 mx-auto mt-2 rounded-md">
+										<div className="text-lg">+</div>
+										<div className="my-auto text-sm" onClick={() => follow(user)}>
+											Follow
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					))}
+						) : null
+					)}
 					<div className="my-4 w-1/2 text-center border p-1 h-auto">
 						<div className="my-12 ">
 							<Link href="/connection">
