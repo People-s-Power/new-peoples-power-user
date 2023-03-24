@@ -158,6 +158,7 @@ const user = () => {
 	}
 
 	useEffect(() => {
+		getData()
 		try {
 			axios
 				.get(`/user/single/${query?.page}`)
@@ -177,7 +178,7 @@ const user = () => {
 			console.log(error)
 		}
 		getData()
-	}, [])
+	}, [author, campaigns, posts, adverts, victories, events, query?.page])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },

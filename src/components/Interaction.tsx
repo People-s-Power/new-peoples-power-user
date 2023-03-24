@@ -223,7 +223,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 				<div className="flex  cursor-pointer" onClick={() => setComments(!comments)}>
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{allComment.length} Comments</div>
+					<div className="text-sm my-auto ml-2">{allComment?.length} Comments</div>
 				</div>
 				<div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
@@ -332,14 +332,14 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => commentBtn(post._id)} className="w-6 h-6 cursor-pointer" alt="" />}
 						</div>
 					</div>
-					{allComment.length > 0
+					{allComment?.length > 0
 						? allComment?.slice(0, qty).map((comment, index) => (
 								<div key={index} className="flex p-2">
 									<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
 									<div className="w-full bg-gray-100 p-2 flex justify-between">
 										<div className="">
 											<div className="font-bold text-sm mt-1">{comment.author.name}</div>
-											<div className="text-xs mt-1">{comment.content}</div>
+											<div className="text-xs mt-1">{comment?.content}</div>
 										</div>
 										<div className="text-sm">
 											<ReactTimeAgo date={new Date(comment.date)} />{" "}

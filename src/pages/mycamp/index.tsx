@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { MY_PETITION } from "apollo/queries/petitionQuery";
-import { UserAtom } from "atoms/UserAtom";
-import Slider from "components/camp-slider/Slider";
-import CampaignTable from "components/campaign-comp/CampaignTable";
-import { Wrapper } from "components/styled/style";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import authGuard from "hooks/authGuard";
-import FrontLayout from "layout/FrontLayout";
-import { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import { ICampaign } from "types/Applicant.types";
-import { apollo } from "apollo";
-import { MY_EVENT } from "apollo/queries/eventQuery";
-import { GET_USER_POSTS } from 'apollo/queries/postQuery'
-import { MY_ADVERTS } from "apollo/queries/advertsQuery";
-import router, { useRouter } from "next/router";
-import axios from 'axios';
+import React, { useState, useEffect } from "react"
+import { useQuery } from "@apollo/client"
+import { MY_PETITION } from "apollo/queries/petitionQuery"
+import { UserAtom } from "atoms/UserAtom"
+import Slider from "components/camp-slider/Slider"
+import CampaignTable from "components/campaign-comp/CampaignTable"
+import { Wrapper } from "components/styled/style"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import authGuard from "hooks/authGuard"
+import FrontLayout from "layout/FrontLayout"
+import { NextPage } from "next"
+import Head from "next/head"
+import Link from "next/link"
+import { useRecoilValue } from "recoil"
+import { ICampaign } from "types/Applicant.types"
+import { apollo } from "apollo"
+import { MY_EVENT } from "apollo/queries/eventQuery"
+import { GET_USER_POSTS } from "apollo/queries/postQuery"
+import { MY_ADVERTS } from "apollo/queries/advertsQuery"
+import router, { useRouter } from "next/router"
+import axios from "axios"
 
-import { SERVER_URL } from "utils/constants";
-import { print } from 'graphql';
-dayjs.extend(relativeTime);
+import { SERVER_URL } from "utils/constants"
+import { print } from "graphql"
+dayjs.extend(relativeTime)
 
 const MyCamp: NextPage = (): JSX.Element => {
-	const author = useRecoilValue(UserAtom);
+	const author = useRecoilValue(UserAtom)
 	const [petition, setPetition] = useState([])
 	const [post, setPost] = useState([])
 	const [events, setEvents] = useState([])
-	const [adverts, setAdverts] = useState([]);
-	const { query } = useRouter();
-	const [campaigns, setCampaigns] = useState([]);
+	const [adverts, setAdverts] = useState([])
+	const { query } = useRouter()
+	const [campaigns, setCampaigns] = useState([])
 
 	// const loading = true;
 	const getGeneral = () => {
 		let general = [...petition, ...post, ...adverts, ...events]
 		const randomize = (values: any) => {
-			let index = values.length, randomIndex;
+			let index = values.length,
+				randomIndex
 			while (index != 0) {
-				randomIndex = Math.floor(Math.random() * index);
-				index--;
-				[values[index], values[randomIndex]] = [
-					values[randomIndex], values[index]];
+				randomIndex = Math.floor(Math.random() * index)
+				index--
+				;[values[index], values[randomIndex]] = [values[randomIndex], values[index]]
 			}
-			return values;
+			return values
 		}
 		randomize(general)
 		setCampaigns(general)
@@ -60,7 +60,7 @@ const MyCamp: NextPage = (): JSX.Element => {
 			getGeneral()
 		},
 		onError: (e) => console.log(e),
-	});
+	})
 	useQuery(MY_ADVERTS, {
 		client: apollo,
 		variables: { authorId: author?.id },
@@ -69,9 +69,8 @@ const MyCamp: NextPage = (): JSX.Element => {
 			setAdverts(data.myAdverts)
 			getGeneral()
 		},
-		onError: (err) => {
-		},
-	});
+		onError: (err) => {},
+	})
 	useQuery(GET_USER_POSTS, {
 		client: apollo,
 		onCompleted: (data) => {
@@ -79,29 +78,28 @@ const MyCamp: NextPage = (): JSX.Element => {
 			setPost(data.myPosts)
 			getGeneral()
 		},
-		onError: (err) => {
-		},
-	});
+		onError: (err) => {},
+	})
 
 	const getEvent = async () => {
 		try {
-			const { data } = await axios.post(SERVER_URL + '/graphql', {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(MY_EVENT),
 				variables: {
 					authorId: author?.id,
-					page: 1
-				}
+					page: 1,
+				},
 			})
 			console.log(data)
 			setEvents(data.myEvents)
 		} catch (error) {
-			console.log(error);
+			console.log(error)
 		}
 	}
 	useEffect(() => {
 		getEvent()
 		getGeneral()
-	}, [])
+	}, [adverts, petition, post, events, author])
 	return (
 		<FrontLayout showFooter={false}>
 			<>
@@ -120,7 +118,6 @@ const MyCamp: NextPage = (): JSX.Element => {
 							</a>
 						</Link> */}
 						<div className="mt-4 ">
-
 							{campaigns.length > 0 ? (
 								<div>
 									<h3 className="fs-4 fw-bold text-center">Check Campaign Progress</h3>
@@ -138,7 +135,7 @@ const MyCamp: NextPage = (): JSX.Element => {
 				</Wrapper>
 			</>
 		</FrontLayout>
-	);
-};
+	)
+}
 
-export default authGuard(MyCamp);
+export default authGuard(MyCamp)

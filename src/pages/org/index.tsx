@@ -186,7 +186,7 @@ const org = () => {
 		if (all[0] === undefined) {
 			getData()
 		}
-	}, [])
+	}, [adverts, posts, victories, events, campaigns])
 
 	const deleteOrg = async () => {
 		try {
