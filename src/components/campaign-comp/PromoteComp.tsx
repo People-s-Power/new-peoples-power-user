@@ -105,10 +105,12 @@ const PromoteComp = (): JSX.Element => {
 	// if (!view && !endorse) {
 	return (
 		<div>
-			{endorse ? (
+			<PromoteForm campaign={query.slug} />
+			{/* {endorse ? (
 				campaign && <PromoteFormEndorsement campaign={campaign} />
 			) : view ? (
-				campaign && <PromoteForm campaign={campaign} />
+				campaign && 
+				<PromoteForm campaign={campaign} />
 			) : (
 				<FrontLayout>
 					<Wrapper className="container">
@@ -141,7 +143,7 @@ const PromoteComp = (): JSX.Element => {
 										{/* <li className="nav-item mb-2 ms-3">
 												Hit the promote button below to reach our Community of
 												Supporters who are interested in supporting this Campaign.
-											</li> */}
+											</li> 
 									</ul>
 									<div>
 										{transactions && transactions?.length > 1
@@ -168,7 +170,7 @@ const PromoteComp = (): JSX.Element => {
 						</div>
 					</Wrapper>
 				</FrontLayout>
-			)}
+			)} */}
 		</div>
 	)
 	// } else if (endorse) {
@@ -232,7 +234,7 @@ const Wrapper = styled.div`
 	}
 `
 
-const PromoteForm = ({ campaign }: { campaign: ICampaign }) => {
+const PromoteForm = ({ campaign }: { campaign: any }) => {
 	const user = useRecoilValue(UserAtom)
 
 	const [views, setViews] = useState(10)
@@ -252,13 +254,13 @@ const PromoteForm = ({ campaign }: { campaign: ICampaign }) => {
 		publicKey: process.env.NODE_ENV === "production" ? (Cookies.get(IEnvironments.PAYSTACK_PK) as string) : "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
 		metadata: {
 			purpose: PaymentPurposeEnum.CAMPAIGNVIEWS,
-			key: campaign?.id,
+			key: campaign,
 			numberOfViews: views,
 			name: user.name,
 			custom_fields: [
 				{
 					display_name: PaymentPurposeEnum.CAMPAIGNVIEWS,
-					value: campaign?.title,
+					value: campaign,
 					variable_name: "title",
 				},
 			],

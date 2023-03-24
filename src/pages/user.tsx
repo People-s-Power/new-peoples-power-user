@@ -350,7 +350,8 @@ const user = () => {
 													<button className="p-2 bg-warning ">Sign up</button>
 												</div>
 												<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-													<Dropdown.Item>Advertise</Dropdown.Item>
+													<Link href={`/promote?slug=${advert._id}`}> </Link>
+													<Dropdown.Item></Dropdown.Item>
 													<Dropdown.Item>Edit</Dropdown.Item>
 												</Dropdown>
 											</div>

@@ -229,7 +229,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										</Link>
 										{isOwner(post.author._id) ? (
 											<Dropdown.Item>
-												<span onClick={() => promote(post.slug)}>Promote</span>
+												<span onClick={() => promote(post._id)}>Promote</span>
 											</Dropdown.Item>
 										) : null}
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelPetition}>Edit</Dropdown.Item> : null}
