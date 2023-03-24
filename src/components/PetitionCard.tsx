@@ -87,8 +87,15 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 			<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 			<div className="p-2">
 				<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
+				<div className="my-3 flex justify-end">
+					<Link href={`/campaigns/${petition?.slug}`}>
+						<button className="p-2 ml-auto w-40 bg-warning">View Full Petiton</button>
+					</Link>
+				</div>
 			</div>
-			<Interaction post={petition} />
+			<div>
+				<Interaction post={petition} />
+			</div>
 			{/* <div className="pt-3 flex justify-between">
 				<Link href={`/campaigns/${petition?.slug}`}>
 					<div className="flex cursor-pointer">

@@ -140,6 +140,36 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			setLoading(false)
 		}
 	}
+	const commentBtn = async (id) => {
+		try {
+			setLoading(true)
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(COMMENT),
+				variables: {
+					authorId: author.id,
+					itemId: id,
+					content: content,
+				},
+			})
+			setAllComment([
+				{
+					author: {
+						name: author.name,
+						image: author.image,
+					},
+					content: content,
+					date: new Date(),
+				},
+				...allComment,
+			])
+			setContent(" ")
+			setLoading(false)
+			console.log(data)
+		} catch (error) {
+			console.log(error)
+			setLoading(false)
+		}
+	}
 	const deleteVictory = async (id) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -178,12 +208,16 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				{liked ? (
 					<div className="flex cursor-pointer" onClick={() => like()}>
 						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
-						<div className={"text-warning text-sm my-auto ml-2"}>{likes} likes</div>
+						<div className={"text-warning text-sm my-auto ml-2"}>
+							{likes} {post.__typename === "Petition" ? "endorsed" : "likes"}
+						</div>
 					</div>
 				) : (
 					<div className="flex  cursor-pointer" onClick={() => like()}>
 						<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
-						<div className={"text-sm my-auto ml-2"}>{likes} likes</div>
+						<div className={"text-sm my-auto ml-2"}>
+							{likes} {post.__typename === "Petition" ? "endorsed" : "likes"}
+						</div>
 					</div>
 				)}
 
@@ -295,7 +329,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							placeholder="Write a comment"
 						/>
 						<div className="absolute top-4 right-6">
-							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => comment(e, post._id)} className="w-6 h-6" alt="" />}
+							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => commentBtn(post._id)} className="w-6 h-6 cursor-pointer" alt="" />}
 						</div>
 					</div>
 					{allComment.length > 0
