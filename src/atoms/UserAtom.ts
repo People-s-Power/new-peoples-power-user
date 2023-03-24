@@ -11,7 +11,7 @@ export const UserAtom = atom({
 // 	default: [],
 // });
 
-// export const UserCampaignAtom = atom({
-// 	key: "UserCamp",
-// 	default: [],
-// });
+export const UserCampaignAtom = atom({
+	key: "UserCamp",
+	default: [],
+});
