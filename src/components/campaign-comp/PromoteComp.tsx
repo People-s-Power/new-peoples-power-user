@@ -107,9 +107,9 @@ const PromoteComp = (): JSX.Element => {
 		<div>
 			{/* <PromoteForm campaign={query.slug} /> */}
 			{endorse ? (
-				campaign && <PromoteFormEndorsement campaign={campaign} />
+				<PromoteFormEndorsement campaign={campaign} />
 			) : view ? (
-				campaign && <PromoteForm campaign={campaign} />
+				<PromoteForm campaign={campaign} />
 			) : (
 				<FrontLayout>
 					<Wrapper className="container">
@@ -306,7 +306,7 @@ const PromoteForm = ({ campaign }: { campaign: any }) => {
 					<h5 className="fw-bold">Bulk Option</h5>
 					<div className="bulk">
 						{bulkOptions.map((option, i) => (
-							<button key={i} className="row w-100 bulk-option align-items-center justify-content-between">
+							<div key={i} className="row w-100 bulk-option align-items-center justify-content-between cursor-pointer">
 								<p className="m-0 col-4">
 									<i className="fas fa-eye"></i> {option.views} Views
 								</p>
@@ -339,7 +339,7 @@ const PromoteForm = ({ campaign }: { campaign: any }) => {
 									text={`N${option.price}`}
 									className="btn text-primary col-4"
 								/>
-							</button>
+							</div>
 						))}
 					</div>
 
