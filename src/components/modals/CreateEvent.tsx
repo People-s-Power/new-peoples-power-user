@@ -162,10 +162,10 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 						<div className="w-[45%] text-sm">
 							<div className="text-sm my-1">Target audience</div>
 							<select name="" id="" onChange={(e) => setAudience(e.target.value)} className="w-full border border-gray-700 text-sm">
-								<option value="everyone">Everyone</option>
-								<option value="connections">My Connections</option>
-								<option value="interest">Interest</option>
-								<option value="location">Location</option>
+								<option value="Everyone">Everyone</option>
+								<option value="Connections">My Connections</option>
+								<option value="Interest">Interest</option>
+								<option value="Location">Location</option>
 							</select>
 						</div>
 					</div>

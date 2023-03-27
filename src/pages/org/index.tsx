@@ -26,7 +26,7 @@ import CreatePost from "../../components/modals/CreatePost"
 import CreateAdvert from "../../components/modals/CreateAdvert"
 import CreateEvent from "../../components/modals/CreateEvent"
 import StartPetition from "../../components/modals/StartPetition"
-
+import { Modal } from "rsuite"
 import { GET_ALL, GET_ALL_USERS, FOLLOW } from "apollo/queries/generalQuery"
 
 import AdvertsComp from "components/AdvertsCard"
@@ -60,7 +60,7 @@ const org = () => {
 	const [openEvent, setOpenEvent] = useState(false)
 	const [openPetition, setOpenPetition] = useState(false)
 	const [all, setAll] = useState<any>([])
-
+	const [open, setOpen] = useState(false)
 	const handelClick = () => setOpenPost(!openPost)
 	const handelPetition = () => setOpenPetition(!openPetition)
 	const handelAdClick = () => setOpenAd(!openAd)
@@ -123,7 +123,7 @@ const org = () => {
 
 	useQuery(MY_VICTORIES, {
 		client: apollo,
-		variables: { authorId: query.page },
+		variables: { authorId: query?.page },
 		onCompleted: (data) => {
 			// console.log(data)
 			setVictories(data.myVictories)
@@ -173,16 +173,15 @@ const org = () => {
 
 	useEffect(() => {
 		getData()
-		axios
-			.get(`/campaign/orgcampaign/${page}`)
-			.then(function (response) {
-				// console.log(response)
-				setCampaigns(response.data)
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-
+		// axios
+		// 	.get(`/campaign/orgcampaign/${page}`)
+		// 	.then(function (response) {
+		// 		// console.log(response)
+		// 		setCampaigns(response.data)
+		// 	})
+		// 	.catch(function (error) {
+		// 		console.log(error)
+		// 	})
 		if (all[0] === undefined) {
 			getData()
 		}
@@ -305,7 +304,7 @@ const org = () => {
 													<span>&#x270E;</span> Edit
 												</button>
 											</Link>
-											<button onClick={() => deleteOrg()} className="bg-transparent p-2 text-red-600">
+											<button onClick={() => setOpen(!open)} className="bg-transparent p-2 text-red-600">
 												Delete
 											</button>
 										</div>
@@ -348,7 +347,7 @@ const org = () => {
 							) : null}
 						</div>
 						{product ? (
-							<div className="w-full rounded-md mt-3">
+							<div className="lg:w-4/6 rounded-md mt-3">
 								<div className="bg-transparent cursor-pointer w-36 my-2 mx-auto flex justify-between" onClick={() => handelAdClick()}>
 									<div className="text-center my-auto">
 										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
@@ -379,7 +378,7 @@ const org = () => {
 								</div>
 							</div>
 						) : (
-							<div className="w-full">
+							<div className="lg:w-4/6">
 								<PostActionCard
 									authorImage={author?.image}
 									handelOpenFindExpart={handelOpenFindExpart}
@@ -448,6 +447,19 @@ const org = () => {
 						)}
 					</div>
 				</div>
+				<Modal open={open} onClose={() => setOpen(!open)}>
+					<div className="p-3">
+						<p>Are you sure you want to delete this organization?</p>
+					</div>
+					<Modal.Footer>
+						<button className="bg-transparent p-3 mx-3" onClick={() => setOpen(!open)}>
+							Cancel
+						</button>
+						<button className="bg-red-500 p-3 text-white mx-3" onClick={() => deleteOrg()}>
+							Delete
+						</button>
+					</Modal.Footer>
+				</Modal>
 				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />

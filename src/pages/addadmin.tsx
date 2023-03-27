@@ -5,13 +5,13 @@ import Head from "next/head"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { IUser } from "types/Applicant.types"
-import { ADD_OPERATOR, GET_ORGANIZATION, DELETE_OPERATOR } from "apollo/queries/orgQuery"
+import { ADD_OPERATOR, GET_ORGANIZATION, DELETE_OPERATOR, EDIT_OPERATOR } from "apollo/queries/orgQuery"
 import { apollo } from "apollo"
 import { useQuery } from "@apollo/client"
 import { print } from "graphql"
 import { SERVER_URL } from "utils/constants"
 import { Tooltip, Whisper, Button, ButtonToolbar } from "rsuite"
-
+import { Modal } from "rsuite"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import user from "./user"
@@ -34,8 +34,10 @@ const addadmin = () => {
 	const [clicked, setClicked] = useState(false)
 	const [operator, setOperator] = useState<Operator[]>([])
 	const [operators, setOperators] = useState<IUser[]>([])
-
+	const [open, setOpen] = useState(false)
 	const [id, setId] = useState("")
+	const [userId, setUserId] = useState<any>("")
+
 	const router = useRouter()
 
 	useQuery(GET_ORGANIZATION, {
@@ -102,6 +104,31 @@ const addadmin = () => {
 			location.reload()
 		} catch (error) {
 			toast.warn("Oops an error occoured")
+		}
+	}
+
+	const updateAdmin = async () => {
+		try {
+			setLoading(true)
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				// client: apollo,
+				query: print(EDIT_OPERATOR),
+				variables: {
+					CreateOperator: {
+						userId: userId,
+						role: role,
+						orgId: query.page,
+					},
+				},
+			})
+			setLoading(false)
+			console.log(data)
+			toast.success("Admin role updated ")
+			setOpen(false)
+			// location.reload()
+		} catch (error) {
+			toast.warn("Oops an error occoured")
+			setLoading(false)
 		}
 	}
 
@@ -183,7 +210,7 @@ const addadmin = () => {
 						</div>
 					</div>
 					{admin === true && admins === true ? (
-						operators.length > 0 ? (
+						operators?.length > 0 ? (
 							operators.map((org, i) => (
 								<div key={i} className="w-full flex px-2 py-1 w-[80%] mx-auto bg-gray-200 my-2 relative">
 									<img src={org.image} className="w-12 rounded-full h-12 " alt="" />
@@ -200,6 +227,16 @@ const addadmin = () => {
 												<button>{org?.role} &#x1F6C8;</button>
 											</Whisper>
 										)}
+									</div>
+									<div>
+										<button
+											onClick={() => {
+												setOpen(!open), setRole(org.role), setUserId(org?.id)
+											}}
+											className="bg-transparent w-44 p-2"
+										>
+											<span>&#x270E;</span> Edit
+										</button>
 									</div>
 									<div
 										onClick={() => {
@@ -359,6 +396,59 @@ const addadmin = () => {
 					)}
 				</div>
 				<ToastContainer />
+				<Modal open={open} onClose={() => setOpen(!open)}>
+					<div>
+						<div className="p-4">Update Admin role</div>
+						<div>
+							<div>
+								<div className="flex my-1">
+									<div className="my-auto mx-3">
+										<input
+											disabled={editor}
+											type="checkbox"
+											className="p-4"
+											value="admin"
+											checked={role === "admin"}
+											onChange={() => {
+												setRole("admin")
+											}}
+										/>
+									</div>
+									<div className="my-auto">
+										<div className="text-lg font-bold">Admin</div>
+										{/* <p>Event coverage, Writing and posting of campaigns, Editing of profile and campaigns, Promote campaigns, create an organization, Make update.	</p> */}
+									</div>
+								</div>
+								<div className="flex my-1">
+									<div className="my-auto mx-3">
+										<input
+											disabled={adminTag}
+											type="checkbox"
+											className="p-4"
+											value="editor"
+											checked={role === "editor"}
+											onChange={() => {
+												setRole("editor")
+											}}
+										/>
+									</div>
+									<div className="my-auto">
+										<div className="text-lg font-bold">Editor</div>
+										{/* <p>Edit profile, Edit campaigns and designs</p> */}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<Modal.Footer>
+						<button className="p-2 bg-transparent w-40" onClick={() => setOpen(!open)}>
+							Cancel
+						</button>
+						<button className="p-2 bg-warning w-40 text-white" onClick={() => updateAdmin()}>
+							Update
+						</button>
+					</Modal.Footer>
+				</Modal>
 			</>
 		</FrontLayout>
 	)

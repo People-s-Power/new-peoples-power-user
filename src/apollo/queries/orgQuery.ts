@@ -112,3 +112,10 @@ export const DELETE_ORG = gql`
 		}
 	}
 `
+export const EDIT_OPERATOR = gql`
+	mutation editOperator($CreateOperator: CreateOperator!) {
+		editOperator(input: $CreateOperator) {
+			image
+			_id
+		}
+	}`

@@ -35,7 +35,7 @@ const ShareModal = ({ open, handelClick, orgs, single }: { open: boolean; handel
 			handelClick()
 			setBody("")
 			setLoading(false)
-			toast.success("Post has been shared")
+			toast.success("Shared Successfully")
 		} catch (error) {
 			console.log(error)
 			setLoading(false)

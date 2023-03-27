@@ -360,7 +360,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			{/* <FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} /> */}
 			<CreateEvent open={openEvent} handelClick={handelEventClick} event={post} />
 			<CreateAdvert open={openAd} handelClick={handelAdClick} advert={post} />
-			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} />
+			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} update={post} />
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={post} />
 
 			<ToastContainer />

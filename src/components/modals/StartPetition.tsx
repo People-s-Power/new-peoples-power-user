@@ -96,7 +96,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			const { data } = await axios.put("https://apiv5-xacq2.ondigitalocean.app/api/v3/petition", {
 				title: title,
 				category: category,
-				image: [image.file],
+				image: [...image.file],
 				aim: aim,
 				target: target,
 				body: body,
@@ -118,6 +118,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			})
 		} catch (error) {
 			console.log(error)
+			setLoading(false)
 			toast.warn("Oops! Something went wrong")
 		}
 	}
