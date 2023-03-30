@@ -70,7 +70,7 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 				name: "",
 			})
 		} catch (error) {
-			console.log(error)
+			console.log(error.response)
 			setLoading(false)
 		}
 	}
@@ -89,8 +89,8 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 					startDate: startDate,
 					time: time,
 					type: type,
-					imageFile: [image.file],
-					audience: audience,
+					imageFile: [...image.file],
+					// audience: audience,
 				},
 			})
 			console.log(data)

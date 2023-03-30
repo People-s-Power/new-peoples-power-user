@@ -53,6 +53,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const [loading, setLoading] = useState(false)
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [open, setOpen] = useState(false)
+	const [update, setUpdate] = useState(null)
+	const [victories, setVictories] = useState(null)
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -239,6 +241,11 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelAdClick}>Edit</Dropdown.Item> : null}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item>
+												<span onClick={() => promote(post._id)}>Promote</span>
+											</Dropdown.Item>
+										) : null}
 									</div>
 								)
 							case "Event":
@@ -253,13 +260,30 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 											</Dropdown.Item>
 										) : null}
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelEventClick}>Edit</Dropdown.Item> : null}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item>
+												<span onClick={() => promote(post._id)}>Promote</span>
+											</Dropdown.Item>
+										) : null}
 									</div>
 								)
 							case "Petition":
 								return (
 									<div>
-										<Dropdown.Item onClick={() => handelVictory()}>Celebrate Victory</Dropdown.Item>
-										<Dropdown.Item onClick={() => handelUpdates()}>Update</Dropdown.Item>
+										<Dropdown.Item
+											onClick={() => {
+												handelVictory(), setVictories(null)
+											}}
+										>
+											Celebrate Victory
+										</Dropdown.Item>
+										<Dropdown.Item
+											onClick={() => {
+												handelUpdates(), setUpdate(null)
+											}}
+										>
+											Update
+										</Dropdown.Item>
 										<Link href={`/report?page=${post?.slug}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
@@ -274,7 +298,15 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							case "Victory":
 								return (
 									<div>
-										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelVictory}>Edit</Dropdown.Item> : null}{" "}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item
+												onClick={() => {
+													handelVictory(), setVictories(post)
+												}}
+											>
+												Edit
+											</Dropdown.Item>
+										) : null}{" "}
 										{isOwner(post.author._id) ? (
 											<Dropdown.Item onClick={() => deleteVictory(post.author._id)}>
 												<span className="text-red-500">Delete</span>
@@ -304,7 +336,15 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							case "Update":
 								return (
 									<div>
-										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelUpdates}>Edit</Dropdown.Item> : null}
+										{isOwner(post.author._id) ? (
+											<Dropdown.Item
+												onClick={() => {
+													handelUpdates(), setUpdate(post)
+												}}
+											>
+												Edit
+											</Dropdown.Item>
+										) : null}
 										<Link href={`/report?page=${post?._id}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
@@ -360,8 +400,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			{/* <FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} /> */}
 			<CreateEvent open={openEvent} handelClick={handelEventClick} event={post} />
 			<CreateAdvert open={openAd} handelClick={handelAdClick} advert={post} />
-			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} update={post} />
-			<CreateVictories open={openVictory} handelClick={handelVictory} victory={post} />
+			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} update={update} />
+			<CreateVictories open={openVictory} handelClick={handelVictory} victory={victories} />
 
 			<ToastContainer />
 			<ShareModal open={open} handelClick={() => setOpen(!open)} single={post} orgs={orgs} />

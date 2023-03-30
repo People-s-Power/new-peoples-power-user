@@ -46,6 +46,9 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 		})
 	}
 	const handleSubmit = async () => {
+		if (image.file === "" || body === "") {
+			return toast.warn("Please fill all fields")
+		}
 		setLoading(true)
 		try {
 			await axios.post("petition/update", {

@@ -34,7 +34,6 @@ export const UPDATE_EVENT = gql`
 	mutation updateEvent(
 		$authorId: ID!
 		$eventId: ID!
-		$audience: String!
 		$name: String!
 		$description: String!
 		$endDate: String!
@@ -51,7 +50,6 @@ export const UPDATE_EVENT = gql`
 			time: $time
 			type: $type
 			imageFile: $imageFile
-			audience: $audience
 			authorId: $authorId
 			eventId: $eventId
 		) {
