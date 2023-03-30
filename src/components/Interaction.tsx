@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { LIKE, COMMENT } from "apollo/queries/generalQuery"
+import { LIKE, COMMENT, VIEW } from "apollo/queries/generalQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
@@ -203,10 +203,24 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			toast.warn("Opps! something occurred")
 		}
 	}
+	const view = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(VIEW),
+				variables: {
+					authorId: author.id,
+					postId: id,
+				},
+			})
+			console.log(data)
+		} catch (err) {
+			console.log(err.response)
+		}
+	}
 
 	return (
 		<div>
-			<div className="pt-3 flex justify-between">
+			<div className="pt-3 flex justify-between" onMouseEnter={() => view(post._id || post.id)}>
 				{liked ? (
 					<div className="flex cursor-pointer" onClick={() => like()}>
 						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
