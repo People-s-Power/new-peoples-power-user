@@ -55,20 +55,12 @@ const addadmin = () => {
 			.get(`/user`)
 			.then(function (response) {
 				setUsers(response.data)
-				const list: any = []
-				operator.map((single: any) => {
-					response.data.map((user: any) => {
-						if (user.id === single.userId) {
-							list.push({ ...user, ...{ role: single.role } })
-							setOperators(list)
-						}
-					})
-				})
+				allAdmins()
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
-	}, [])
+	}, [operator])
 
 	const allAdmins = () => {
 		setOperators([])
@@ -210,14 +202,14 @@ const addadmin = () => {
 						</div>
 					</div>
 					{admin === true && admins === true ? (
-						operators?.length > 0 ? (
+						operators?.length >= 1 ? (
 							operators.map((org, i) => (
-								<div key={i} className="w-full flex px-2 py-1 w-[80%] mx-auto bg-gray-200 my-2 relative">
+								<div key={i} className="w-full flex justify-between px-2 py-1 w-[80%] mx-auto bg-gray-200 my-2">
 									<img src={org.image} className="w-12 rounded-full h-12 " alt="" />
 									<div className="text-base capitalize ml-4 w-44 my-auto">
 										{org?.firstName} {org.lastName}
 									</div>
-									<div className="mx-auto my-auto text-xm capitalize w-32">
+									<div className="my-auto text-xm capitalize w-32">
 										{org?.role === "admin" ? (
 											<Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={adminTooltip}>
 												<button>{org?.role} &#x1F6C8;</button>
@@ -242,7 +234,7 @@ const addadmin = () => {
 										onClick={() => {
 											removeAdmin(org.id)
 										}}
-										className="absolute cursor-pointer top-4 right-4"
+										className=" cursor-pointer my-auto"
 									>
 										&#10006;
 									</div>
@@ -251,9 +243,7 @@ const addadmin = () => {
 						) : (
 							<div className="text-center text-3xl my-4">No Admins yet</div>
 						)
-					) : (
-						<></>
-					)}
+					) : null}
 					{admin === true && admins === false ? (
 						<div className="mt-20 w-2/3 mx-auto">
 							<div className="text-center text-3xl font-bold">Add an Admin</div>
