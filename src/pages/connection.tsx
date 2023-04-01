@@ -11,6 +11,7 @@ import { UserAtom } from "atoms/UserAtom"
 import router, { useRouter } from "next/router"
 
 import { FOLLOW, FOLLOWERS, FOLLOWING } from "apollo/queries/generalQuery"
+import Link from "next/link"
 
 const connection = () => {
 	const { query } = useRouter()
@@ -67,7 +68,7 @@ const connection = () => {
 		getUsers()
 		getFollowers()
 		getFollowing()
-	}, [users, followers, following])
+	}, [])
 
 	const follow = async (id) => {
 		try {
@@ -137,7 +138,9 @@ const connection = () => {
 									<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
 										Unollow
 									</div>
-									<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
+									<Link href={`/messages?page=${user.id}`}>
+										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
+									</Link>
 								</div>
 						  ))
 						: null}
