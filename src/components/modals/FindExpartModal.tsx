@@ -11,6 +11,9 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import PropTypes, { InferProps } from "prop-types"
 import Select from "react-select"
+import { io } from "socket.io-client"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const FindExpartModalProp = {
 	author: PropTypes.shape({ image: PropTypes.string, name: PropTypes.string }).isRequired,
@@ -26,6 +29,9 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 	const [cities, setCities] = useState([])
 	const [categoryValue, setCategoryValue] = React.useState("")
 	const [subCategoryValue, setSubCategoryValue] = React.useState("")
+	const [city, setCity] = useState("")
+	const user = useRecoilValue(UserAtom)
+	const [loading, setLoading] = useState(false)
 	useEffect(() => {
 		// Get countries
 		axios
@@ -50,6 +56,11 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 		}
 	}, [country])
 
+	const socket = io(SERVER_URL, {
+		query: {
+			user_id: user?.id,
+		},
+	})
 	const category = [
 		{ value: "NGO", label: "Non-Governmental Organization (NGO)" },
 		{ value: "coaching and mentoring", label: "Coaching and mentoring" },
@@ -71,15 +82,31 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 		{ value: "others", label: "Others" },
 	]
 	const handleSubmit = () => {
-		if (screen === 1 && categoryValue && subCategoryValue) {
+		if (screen === 1 && categoryValue) {
 			setScreen(2)
 		}
-		if (screen === 2 && categoryValue && subCategoryValue) {
-			console.log(message)
-			setScreen(1)
-			setCategoryValue("")
-			setSubCategoryValue("")
-			handelClose()
+		if (screen === 2 && categoryValue) {
+			setLoading(true)
+			// console.log(message)
+			socket.emit(
+				"find_experts",
+				{
+					category: categoryValue,
+					subCategory: subCategoryValue,
+					country: country,
+					city: city,
+					userId: user.id,
+					message: message,
+				},
+				(response) => {
+					toast.success(response)
+					handelClose()
+					setScreen(1)
+					setCategoryValue("")
+					setSubCategoryValue("")
+					setLoading(false)
+				}
+			)
 		}
 	}
 	return (
@@ -146,6 +173,7 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 									isClearable={true}
 									isSearchable={true}
 									name="color"
+									onChange={(val: any) => setCity(val.value)}
 									options={cities}
 								/>
 								<textarea
@@ -167,10 +195,11 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 
 				<Modal.Footer>
 					<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm ">
-						{screen === 1 ? "Next" : "SendMessage"}
+						{screen === 1 ? "Next" : loading ? "Loading..." : "SendMessage"}
 					</button>
 				</Modal.Footer>
 			</Modal>
+			<ToastContainer />
 		</>
 	)
 }
