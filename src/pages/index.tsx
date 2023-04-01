@@ -148,6 +148,7 @@ const HomePage = () => {
 	// 		}
 	// 	}, 5000)
 	// }, [])
+	
 
 	useEffect(() => {
 		getSingle()

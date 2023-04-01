@@ -17,7 +17,7 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 		file: update?.image || "",
 		name: "",
 	})
-	const [body, setBody] = useState(petition.body || "")
+	const [body, setBody] = useState(update?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
