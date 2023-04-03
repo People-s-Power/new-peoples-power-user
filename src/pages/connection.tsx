@@ -125,7 +125,9 @@ const connection = () => {
 									<div className="text-xl py-2">{user.name} </div>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
 									{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
+									<Link href={`/messages?page=${user.id}`}>
 									<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
+									</Link>
 								</div>
 						  ))
 						: active === "following"

@@ -76,7 +76,6 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 								{petition.author.name} <span className="text-xs">{author?.id === petition.author._id ? ". You" : ""}</span>
 							</div>
 							<div className="text-xs">
-								{" "}
 								<ReactTimeAgo date={new Date(petition.createdAt)} />
 							</div>
 						</div>
@@ -84,9 +83,9 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 				</Link>
 				<div className="text-sm my-1">{petition.author.description}</div>
 			</div>
-			<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 			<div className="p-2">
 				<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
+				<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 				<div className="my-3 flex justify-end">
 					<Link href={`/campaigns/${petition?.slug}`}>
 						<button className="p-2 ml-auto w-40 bg-warning">View Full Petiton</button>

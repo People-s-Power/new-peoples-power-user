@@ -5,26 +5,43 @@ export const GET_EVENTS = gql`
 		events {
 			_id
 			audience
-			authorId
 			author {
 				_id
 				name
 				email
 				image
+				description
 			}
+			comments {
+				content
+				_id
+				author {
+					_id
+					name
+					email
+					image
+				}
+				date
+				likes
+			}
+			shares
 			description
 			startDate
 			endDate
+			audience
+			createdAt
+			__typename
 			time
 			image
+			name
+			likes {
+				name
+			}
 			interested {
 				authorId
 				authorImg
 				name
 			}
-			likes
-			name
-			shares
 			type
 		}
 	}

@@ -13,6 +13,7 @@ import { apollo } from "apollo"
 import { useQuery } from "@apollo/client"
 import { CREATE_ORG } from "apollo/queries/orgQuery"
 import { print } from "graphql"
+import Select from "react-select"
 
 const create = () => {
 	const router = useRouter()
@@ -23,6 +24,29 @@ const create = () => {
 	const [orgDes, setOrgDes] = useState("")
 	const [orgWeb, setOrgWeb] = useState("")
 	const [loading, setLoading] = useState(false)
+	const [category, setCategory] = useState<any>("")
+	const [subCategory, setSubCategory] = useState<any>("")
+
+	const categories = [
+		{ value: "NGO", label: "Non-Governmental Organization (NGO)" },
+		{ value: "coaching and mentoring", label: "Coaching and mentoring" },
+		{ value: "health", label: "Health" },
+		{ value: "leadership development", label: "Leadership development" },
+		{ value: "law", label: "Law" },
+		{ value: "information technology", label: "Information technology" },
+		{ value: "others", label: "Others" },
+	]
+	const subCategories = [
+		{ value: "human right awareness", label: "Human right awareness" },
+		{ value: "social policy", label: "Social Policy" },
+		{ value: "criminal justice", label: "Criminal Justice" },
+		{ value: "human right action", label: "Human Right Action" },
+		{ value: "environment", label: "Environment" },
+		{ value: "health", label: "Health" },
+		{ value: "disability", label: "Disability" },
+		{ value: "equality", label: "Equality" },
+		{ value: "others", label: "Others" },
+	]
 
 	const handleSubmit = async () => {
 		try {
@@ -30,7 +54,15 @@ const create = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CREATE_ORG),
 				variables: {
-					CreateOrgInput: { name: orgName, email: orgEmail, phone: orgPhone, description: orgDes, website: orgWeb },
+					CreateOrgInput: {
+						name: orgName,
+						email: orgEmail,
+						phone: orgPhone,
+						description: orgDes,
+						website: orgWeb,
+						category: [category],
+						subCategory: [subCategory],
+					},
 				},
 			})
 			console.log(data)
@@ -58,7 +90,28 @@ const create = () => {
 						<input type="number" required className="p-3 w-full" placeholder="Enter Organizations Phone Number" onChange={(e) => setOrgPhone(e.target.value)} />
 					</div>
 					<input type="text" required className="p-3 w-full" placeholder="Enter Organizations Website" onChange={(e) => setOrgWeb(e.target.value)} />
-
+					<Select
+						className="my-2"
+						classNamePrefix="select"
+						placeholder="Select Category of Service Provider"
+						onChange={(val: any) => setCategory(val.value)}
+						isClearable={true}
+						isSearchable={true}
+						name="color"
+						options={categories}
+					/>
+					{category === "NGO" ? (
+						<Select
+							className="my-2"
+							classNamePrefix="select"
+							onChange={(val: any) => setSubCategory(val.value)}
+							placeholder="Select Sub-Category of Service Provider"
+							isClearable={true}
+							isSearchable={true}
+							name="color"
+							options={subCategories}
+						/>
+					) : null}
 					<div className="my-2">
 						<textarea required className="h-20 w-full" placeholder="Enter a Short Description" onChange={(e) => setOrgDes(e.target.value)}></textarea>
 					</div>

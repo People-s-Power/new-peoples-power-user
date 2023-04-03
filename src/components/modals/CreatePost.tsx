@@ -70,6 +70,7 @@ const CreatePost = ({
 			setLoading(false)
 		} catch (error) {
 			console.log(error)
+			setLoading(false)
 		}
 	}
 
@@ -92,6 +93,7 @@ const CreatePost = ({
 			setLoading(false)
 		} catch (error) {
 			console.log(error)
+			setLoading(false)
 		}
 	}
 
@@ -106,7 +108,7 @@ const CreatePost = ({
 				<div className="text-sm my-auto">{author?.name}</div>
 			</div>
 			{orgs?.map((org: any, index: number) => (
-				<div onClick={() => setActive(org)} key={index} className="flex m-1">
+				<div onClick={() => setActive(org)} key={index} className="flex m-1 cursor-pointer">
 					<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
 					<div className="text-sm my-auto">{org?.name}</div>
 				</div>

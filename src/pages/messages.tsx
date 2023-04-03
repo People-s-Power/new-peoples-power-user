@@ -54,9 +54,9 @@ const messages = () => {
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} onClick={() => setActive(item)} className="flex p-3 hover:bg-gray-100">
-								<img src={item.users[0].image} className="w-10 h-10 rounded-full" alt="" />
+								<img src={item.users[0]._id === user.id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-2/3 ml-4">
-									<div className="text-base font-bold">{item.users[0].name}</div>
+									<div className="text-base font-bold">{item.users[0]._id === user.id ? item.users[0].name : item.users[1].name}</div>
 									<div className="text-sm">{item.messages[item.messages.length - 1].text}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
@@ -65,7 +65,7 @@ const messages = () => {
 							</div>
 						))}
 				</div>
-				<div className="w-[40%] shadow-sm fixed right-32 h-full overflow-y-scroll">
+				<div className="w-[45%] shadow-sm fixed right-32 h-full overflow-y-scroll">
 					{active === null ? (
 						<div className="text-center text-sm"></div>
 					) : (
@@ -73,9 +73,9 @@ const messages = () => {
 							<div className="p-2 text-center text-xs text-gray-400 border-b border-gray-200">
 								<ReactTimeAgo date={new Date(active?.createdAt)} />
 							</div>
-							<div className="p-3 border-b border-warning">
+							<div className="p-3">
 								<div className="flex mb-3">
-									<img src={active.users[0].image} className="w-12 h-12 rounded-full" alt="" />
+									<img src={active.users[0]._id === user.id ? active.users[1].image : active.users[0].image} className="w-12 h-12 rounded-full" alt="" />
 									<div className="ml-4 my-auto">
 										<div className="text-sm">{active.users[0].name}</div>
 										<div className="text-xs">
@@ -98,7 +98,7 @@ const messages = () => {
 						</div>
 					)}
 					{active !== null || query.page !== undefined ? (
-						<div>
+						<div className="fixed bottom-0 w-[45%]">
 							<textarea
 								onChange={(e) => setMessage(e.target.value)}
 								className="w-full h-32 text-sm p-2 border border-white"
