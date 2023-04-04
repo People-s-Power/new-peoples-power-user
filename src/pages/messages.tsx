@@ -45,7 +45,7 @@ const messages = () => {
 	useEffect(() => {
 		socket.on("connect", function () {
 			socket.emit("get_dms", user.id, (response) => {
-				setMessages(response)
+				setMessages(response.reverse());
 				console.log(response)
 			})
 		})

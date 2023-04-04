@@ -26,7 +26,7 @@ const connection = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CONNECTIONS),
 				variables: {
-					authorId: author.id,
+					authorId: author?.id,
 				},
 			})
 			console.log(data)
@@ -40,7 +40,7 @@ const connection = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(FOLLOWERS),
 				variables: {
-					userId: author.id,
+					userId: author?.id,
 				},
 			})
 			// console.log(data)
@@ -54,7 +54,7 @@ const connection = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(FOLLOWING),
 				variables: {
-					userId: author.id,
+					userId: author?.id,
 				},
 			})
 			// console.log(data)
@@ -68,7 +68,7 @@ const connection = () => {
 		getUsers()
 		getFollowers()
 		getFollowing()
-	}, [])
+	}, [author, following, followers, users])
 
 	const follow = async (id) => {
 		try {
@@ -125,8 +125,8 @@ const connection = () => {
 									<div className="text-xl py-2">{user.name} </div>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
 									{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
-									<Link href={`/messages?page=${user.id}`}>
-									<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
+									<Link href={`/messages?page=${user._id}`}>
+										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
 									</Link>
 								</div>
 						  ))
@@ -140,7 +140,7 @@ const connection = () => {
 									<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
 										Unollow
 									</div>
-									<Link href={`/messages?page=${user.id}`}>
+									<Link href={`/messages?page=${user._id}`}>
 										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
 									</Link>
 								</div>

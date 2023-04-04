@@ -334,7 +334,7 @@ export const FOLLOWERS = gql`
 		getUserFollowers(userId: $userId) {
 			name
 			image
-			id
+			_id
 		}
 	}
 `
@@ -343,7 +343,7 @@ export const FOLLOWING = gql`
 		getUserFollowing(userId: $userId) {
 			name
 			image
-			id
+			_id
 		}
 	}
 `
