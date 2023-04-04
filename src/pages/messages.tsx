@@ -15,21 +15,12 @@ const messages = () => {
 	const [messages, setMessages] = useState<any>(null)
 	const [active, setActive] = useState<any>(null)
 	const { query } = useRouter()
-
+	const [rating, setRating] = useState<any>(0)
 	const socket = io(SERVER_URL, {
 		query: {
 			user_id: user?.id,
 		},
 	})
-	const blockUser = (id) => {
-		socket.emit(
-			"block_message",
-			{
-				participants: [user.id, id],
-			},
-			(response) => console.log("block_message:", response)
-		)
-	}
 
 	const sendDm = (id) => {
 		if (message !== "") {
@@ -54,10 +45,32 @@ const messages = () => {
 		socket.on("connect", function () {
 			socket.emit("get_dms", user.id, (response) => {
 				setMessages(response)
-				// console.log(response)
+				console.log(response)
 			})
 		})
 	}, [user, active])
+	
+	const blockUser = (id) => {
+		socket.emit(
+			"block_message",
+			{
+				participants: [user.id, id],
+			},
+			(response) => console.log("block_message:", response)
+		)
+	}
+
+	const resolve = (id) => {
+		socket.emit(
+			"send_reviews",
+			{
+				authorId: user.id,
+				messageId: id, // message id,
+				rating: rating,
+			},
+			(response) => console.log("send_reviews:", response)
+		)
+	}
 	return (
 		<FrontLayout showFooter={false}>
 			<div className="flex px-32">
@@ -119,7 +132,9 @@ const messages = () => {
 									value={message}
 								></textarea>
 								<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-									<Dropdown.Item>Resolve</Dropdown.Item>
+									<Dropdown.Item>
+										<span onClick={() => resolve(active.id)}>Resolve</span>
+									</Dropdown.Item>
 									<Dropdown.Item>Make a Testimony</Dropdown.Item>
 									<Link href={`/report?page=${active?.participants[0] || query.page}`}>
 										<Dropdown.Item>Report User/Ad</Dropdown.Item>
