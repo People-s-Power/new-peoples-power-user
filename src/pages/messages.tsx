@@ -6,6 +6,8 @@ import ReactTimeAgo from "react-time-ago"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import router, { useRouter } from "next/router"
+import { Dropdown } from "rsuite"
+import Link from "next/link"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
@@ -19,6 +21,16 @@ const messages = () => {
 			user_id: user?.id,
 		},
 	})
+	const blockUser = (id) => {
+		socket.emit(
+			"block_message",
+			{
+				participants: [user.id, id],
+			},
+			(response) => console.log("block_message:", response)
+		)
+	}
+
 	const sendDm = (id) => {
 		if (message !== "") {
 			const payload = {
@@ -54,9 +66,9 @@ const messages = () => {
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} onClick={() => setActive(item)} className="flex p-3 hover:bg-gray-100">
-								<img src={item.users[0]._id === user.id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
+								<img src={item.users[0]._id !== user.id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-2/3 ml-4">
-									<div className="text-base font-bold">{item.users[0]._id === user.id ? item.users[0].name : item.users[1].name}</div>
+									<div className="text-base font-bold">{item.users[0]._id !== user.id ? item.users[0].name : item.users[1].name}</div>
 									<div className="text-sm">{item.messages[item.messages.length - 1].text}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
@@ -75,9 +87,9 @@ const messages = () => {
 							</div>
 							<div className="p-3">
 								<div className="flex mb-3">
-									<img src={active.users[0]._id === user.id ? active.users[1].image : active.users[0].image} className="w-12 h-12 rounded-full" alt="" />
+									<img src={active.users[0]._id !== user.id ? active.users[0].image : active.users[1].image} className="w-12 h-12 rounded-full" alt="" />
 									<div className="ml-4 my-auto">
-										<div className="text-sm">{active.users[0].name}</div>
+										<div className="text-sm">{active.users[0]._id !== user.id ? active.users[0].name : active.users[1].name}</div>
 										<div className="text-xs">
 											<ReactTimeAgo date={new Date(active.updatedAt)} />
 										</div>
@@ -99,12 +111,24 @@ const messages = () => {
 					)}
 					{active !== null || query.page !== undefined ? (
 						<div className="fixed bottom-0 w-[45%]">
-							<textarea
-								onChange={(e) => setMessage(e.target.value)}
-								className="w-full h-32 text-sm p-2 border border-white"
-								placeholder="Write a message"
-								value={message}
-							></textarea>
+							<div className="flex">
+								<textarea
+									onChange={(e) => setMessage(e.target.value)}
+									className="w-full h-32 text-sm p-2 border border-white"
+									placeholder="Write a message"
+									value={message}
+								></textarea>
+								<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+									<Dropdown.Item>Resolve</Dropdown.Item>
+									<Dropdown.Item>Make a Testimony</Dropdown.Item>
+									<Link href={`/report?page=${active?.participants[0] || query.page}`}>
+										<Dropdown.Item>Report User/Ad</Dropdown.Item>
+									</Link>
+									<Dropdown.Item>
+										<span onClick={() => blockUser(active?.participants[0] || query.page)}>Block User</span>
+									</Dropdown.Item>
+								</Dropdown>
+							</div>
 							<div className="flex justify-between border-t border-gray-200 p-3">
 								<div className="flex w-20 justify-between">
 									<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />

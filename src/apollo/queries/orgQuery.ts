@@ -117,5 +117,10 @@ export const EDIT_OPERATOR = gql`
 		editOperator(input: $CreateOperator) {
 			image
 			_id
+			operators {
+				userId
+				role
+			}
 		}
-	}`
+	}
+`

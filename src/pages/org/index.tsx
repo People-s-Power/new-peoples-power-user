@@ -173,19 +173,7 @@ const org = () => {
 
 	useEffect(() => {
 		getData()
-		// axios
-		// 	.get(`/campaign/orgcampaign/${page}`)
-		// 	.then(function (response) {
-		// 		// console.log(response)
-		// 		setCampaigns(response.data)
-		// 	})
-		// 	.catch(function (error) {
-		// 		console.log(error)
-		// 	})
-		if (all[0] === undefined) {
-			getData()
-		}
-	}, [adverts, posts, victories, events, campaigns])
+	}, [adverts, posts, victories, events, campaigns, orgs])
 
 	const deleteOrg = async () => {
 		try {

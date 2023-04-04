@@ -14,7 +14,7 @@ import { Tooltip, Whisper, Button, ButtonToolbar } from "rsuite"
 import { Modal } from "rsuite"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import user from "./user"
+// import user from "./user"
 
 export interface Operator {
 	userId: string
@@ -37,9 +37,20 @@ const addadmin = () => {
 	const [open, setOpen] = useState(false)
 	const [id, setId] = useState("")
 	const [userId, setUserId] = useState<any>("")
-
+	const [step, setStep] = useState(0)
 	const router = useRouter()
+	const [professionals, setProfessionals] = useState<any>([])
 
+	const hireProfessonal = () => {
+		if (role === "") {
+			toast.warn("Please select a role")
+			return
+		}
+		if (step === 0) {
+			setStep(1)
+			return
+		}
+	}
 	useQuery(GET_ORGANIZATION, {
 		variables: { ID: query.page },
 		client: apollo,
@@ -117,7 +128,7 @@ const addadmin = () => {
 			console.log(data)
 			toast.success("Admin role updated ")
 			setOpen(false)
-			// location.reload()
+			location.reload()
 		} catch (error) {
 			toast.warn("Oops an error occoured")
 			setLoading(false)
@@ -321,65 +332,102 @@ const addadmin = () => {
 							</div>
 						</div>
 					) : admin === false && admins === false ? (
-						<div className="mt-20 w-2/3 mx-auto">
-							<div className="text-center text-3xl font-bold">Hire a trained professionals</div>
-							<div className="text-lg my-1">Leave the complexity of writing, designing and editing your campaigns and other administration to us.</div>
-							<div className="text-lg mt-4">
-								Our team of content writers, designers, journalists and social skill workers can handle your content, designs, updates and other administrations
-								while you focus on building a strong and physical campaigns with momentum.
-							</div>
-							<div>
-								<img src="/images/logo.svg" className="w-16 my-2 h-16 mx-auto" alt="" />
-								<div className="font-bold text-lg text-center my-2">
-									Evans G, what plan will you like to use? <br />
-									We’ll recommend the right plan for you.
-								</div>
-								<div className="text-base my-2">
-									Start your free 1-month trial today. Cancel anytime. We'll send you a reminder 7 days before your trial ends.
-								</div>
-								<div className="flex my-1 justify-between">
-									<div className="my-auto mx-3">
-										<input
-											onChange={() => {
-												setRole("admin")
-											}}
-											type="checkbox"
-											checked={role === "admin"}
-											className="p-4"
-										/>
+						<div>
+							{step === 0 ? (
+								<div className="mt-20 w-2/3 mx-auto">
+									<div className="text-center text-3xl font-bold">Hire a trained professionals</div>
+									<div className="text-lg my-1">Leave the complexity of writing, designing and editing your campaigns and other administration to us.</div>
+									<div className="text-lg mt-4">
+										Our team of content writers, designers, journalists and social skill workers can handle your content, designs, updates and other
+										administrations while you focus on building a strong and physical campaigns with momentum.
 									</div>
-									<div className="my-auto w-2/3">
-										<div className="text-lg font-bold">Admin</div>
-										<p>
-											Event coverage, Writing and posting of campaigns, Editing of profile and campaigns,
-											<br /> Promote campaigns, create an organization, Make update.{" "}
-										</p>
+									<div>
+										<img src="/images/logo.svg" className="w-16 my-2 h-16 mx-auto" alt="" />
+										<div className="font-bold text-lg text-center my-2">
+											Evans G, what plan will you like to use? <br />
+											We’ll recommend the right plan for you.
+										</div>
+										<div className="text-base my-2">
+											Start your free 1-month trial today. Cancel anytime. We'll send you a reminder 7 days before your trial ends.
+										</div>
+										<div className="flex my-1 justify-between">
+											<div className="my-auto mx-3">
+												<input
+													onChange={() => {
+														setRole("admin")
+													}}
+													type="checkbox"
+													checked={role === "admin"}
+													className="p-4"
+												/>
+											</div>
+											<div className="my-auto w-2/3">
+												<div className="text-lg font-bold">Admin</div>
+												<p>
+													Event coverage, Writing and posting of campaigns, Editing of profile and campaigns,
+													<br /> Promote campaigns, create an organization, Make update.{" "}
+												</p>
+											</div>
+											<button className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
+										</div>
+										<div className="flex my-3 justify-between">
+											<div className="my-auto mx-3">
+												<input
+													onChange={() => {
+														setRole("editor")
+													}}
+													checked={role === "editor"}
+													type="checkbox"
+													className="p-4"
+												/>
+											</div>
+											<div className="my-auto w-2/3">
+												<div className="text-lg font-bold">Editor</div>
+												<p>Edit profile, Edit campaigns and designs</p>
+											</div>
+											<button className="p-2 border borger-warning w-44 mx-1">N15, 000/Monthly</button>
+										</div>
 									</div>
-									<button className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
+									<div className="text-center my-4">
+										<button onClick={() => hireProfessonal()} className="p-2 bg-warning w-40 text-white">
+											Start
+										</button>
+									</div>
 								</div>
-								<div className="flex my-3 justify-between">
-									<div className="my-auto mx-3">
-										<input
-											onChange={() => {
-												setRole("editor")
-											}}
-											checked={role === "editor"}
-											type="checkbox"
-											className="p-4"
-										/>
+							) : (
+								<div className="mt-20 w-2/3 mx-auto">
+									<input
+										type="text"
+										className="p-3 rounded-md border border-gray w-full"
+										onChange={(e) => {
+											search(e)
+										}}
+										placeholder="Type here to search for a user to assign role"
+									/>
+									<div>
+										{professionals.map((search, i) => (
+											<div
+												key={i}
+												className={
+													clicked
+														? "bg-gray-400 text-white p-3 text-base mb-1 cursor-pointer "
+														: "" + "p-3 bg-gray-100 cursor-pointer hover:bg-gray-200 text-base mb-1"
+												}
+												onClick={() => {
+													setId(search.id), setClicked(true)
+												}}
+											>
+												{search.firstName} {search.lastName}
+											</div>
+										))}
 									</div>
-									<div className="my-auto w-2/3">
-										<div className="text-lg font-bold">Editor</div>
-										<p>Edit profile, Edit campaigns and designs</p>
+									<div className="text-center my-4">
+										<button onClick={() => hireProfessonal()} className="p-2 bg-warning w-40 text-white">
+											Assign
+										</button>
 									</div>
-									<button className="p-2 border borger-warning w-44 mx-1">N15, 000/Monthly</button>
 								</div>
-							</div>
-							<div className="text-center my-4">
-								<button disabled className="p-2 bg-warning w-40 text-white">
-									Start
-								</button>
-							</div>
+							)}
 						</div>
 					) : (
 						<></>
