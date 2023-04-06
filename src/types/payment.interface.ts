@@ -1,6 +1,8 @@
 export enum PaymentPurposeEnum {
-	CAMPAIGNVIEWS = "Promote Campagin views",
-	CAMPAIGNENDORSE = "Promote Campagin Endorsements",
+	VIEWS = "Promote views",
+	ENDORSE = "Promote Endorsements",
+	PROMOTION = "Promotion",
+	MESSAGE = "Promote in Messages",
 	APPLICANT_REGISTRATION = "New Applicant Registration",
 }
 

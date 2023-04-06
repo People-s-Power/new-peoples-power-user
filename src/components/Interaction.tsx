@@ -106,7 +106,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		}
 	}
 	const promote = (slug) => {
-		router.push(`/promote?slug=${slug}&view=true`)
+		router.push(`/promote?slug=${slug}`)
 	}
 
 	const comment = async (e, id) => {

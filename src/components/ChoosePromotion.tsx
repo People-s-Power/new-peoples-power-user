@@ -32,6 +32,15 @@ const PromoteModalComp = ({show,onHide}:{show:boolean,onHide():void}): JSX.Eleme
                 Promote Views
               </Button>
               <Button
+                className='btn btn-warning mr-3'
+                onClick={() =>
+                  router.push(`/promote?slug=${query?.slug}&message=true`)
+                }
+                
+                >
+                Promote Messages
+              </Button>
+              <Button
                 className='btn btn-warning'
                 onClick={() =>
                   router.push(`/promote?slug=${query?.slug}&endorse=true`)
