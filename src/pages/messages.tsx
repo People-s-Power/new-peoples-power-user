@@ -8,54 +8,104 @@ import { UserAtom } from "atoms/UserAtom"
 import router, { useRouter } from "next/router"
 import { Dropdown } from "rsuite"
 import Link from "next/link"
+import { Modal, Popover, Whisper } from "rsuite"
+import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
+
+import { apollo } from "apollo"
+import { useQuery } from "@apollo/client"
+import { print } from "graphql"
+import axios from "axios"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
 	const [message, setMessage] = useState<any>("")
 	const [messages, setMessages] = useState<any>(null)
-	const [active, setActive] = useState<any>(null)
+	const [active, setActive] = useState<any>(user)
+	const [show, setShow] = useState(null)
 	const { query } = useRouter()
 	const [rating, setRating] = useState<any>(0)
 	const [star, setStar] = useState<any>(false)
+	const [orgs, setOrgs] = useState<any>(null)
+	const [orgId, setOrgId] = useState("")
+
 	const socket = io(SERVER_URL, {
 		query: {
 			user_id: user?.id,
 		},
 	})
+	useQuery(GET_ORGANIZATIONS, {
+		variables: { ID: user?.id },
+		client: apollo,
+		onCompleted: (data) => {
+			// console.log(data.getUserOrganizations)
+			setOrgs(data.getUserOrganizations)
+		},
+		onError: (err) => {
+			// console.log(err)
+		},
+	})
+
+	const { refetch } = useQuery(GET_ORGANIZATION, {
+		variables: { ID: orgId },
+		client: apollo,
+		onCompleted: (data) => {
+			setOrgs([...orgs, data.getOrganzation])
+		},
+		onError: (err) => {
+			console.log(err.message)
+		},
+	})
+	const getSingle = () => {
+		try {
+			axios.get(`/user/single/${user?.id}`).then(function (response) {
+				// console.log(response.data.user.orgOperating)
+				response.data.user.orgOperating.map((operating: any) => {
+					setOrgId(operating)
+					refetch()
+				})
+			})
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	const sendDm = (id) => {
 		if (message !== "") {
 			const payload = {
 				to: id,
-				from: user.id,
+				from: active.id,
 				type: "text",
 				text: message,
-				dmType: "consumer-to-consumer",
+				dmType: active.__typename === "Organization" ? "consumer-to-organization" : "consumer-to-consumer",
 			}
 			socket.emit("send_dm", payload, (response) => {
 				setMessage("")
-				setActive(response)
+				setShow(response)
 				if (query.page !== undefined) {
 					router.push("/messages")
 				}
 			})
 		}
 	}
+	useEffect(() => {
+		setActive(user)
+		getSingle()
+	}, [show])
 
 	useEffect(() => {
 		socket.on("connect", function () {
-			socket.emit("get_dms", user.id, (response) => {
-				setMessages(response.reverse());
+			socket.emit("get_dms", active.id, (response) => {
+				setMessages(response.reverse())
 				console.log(response)
 			})
 		})
-	}, [user, active])
+	}, [show, active])
 
 	const blockUser = (id) => {
 		socket.emit(
 			"block_message",
 			{
-				participants: [user.id, id],
+				participants: [active.id, id],
 			},
 			(response) => console.log("block_message:", response)
 		)
@@ -69,7 +119,7 @@ const messages = () => {
 		socket.emit(
 			"send_reviews",
 			{
-				authorId: user.id,
+				authorId: active.id,
 				messageId: id, // message id,
 				rating: rating,
 			},
@@ -79,17 +129,50 @@ const messages = () => {
 		)
 		setStar(false)
 	}
+	const speaker = (
+		<Popover>
+			<div onClick={() => setActive(user)} className="flex m-1 cursor-pointer">
+				<img src={user?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+				<div className="text-sm my-auto">{user?.name}</div>
+			</div>
+			{orgs !== null
+				? orgs.map((org: any, index: number) => (
+						<div
+							onClick={() => {
+								setActive(org)
+							}}
+							key={index}
+							className="flex m-1 cursor-pointer"
+						>
+							<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+							<div className="text-sm my-auto">{org?.name}</div>
+						</div>
+				  ))
+				: null}
+		</Popover>
+	)
+
 	return (
 		<FrontLayout showFooter={false}>
 			<div className="flex px-32">
 				<div className="w-[40%] overflow-y-auto h-full">
 					<div className="text-lg p-3">Messages</div>
+					{orgs && (
+						<div className="my-2">
+							<Whisper placement="bottom" trigger="click" speaker={speaker}>
+								<div className="flex cursor-pointer">
+									<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+									<div className="text-sm my-auto">{active?.name}</div>
+								</div>
+							</Whisper>
+						</div>
+					)}
 					{messages &&
 						messages.map((item, index) => (
-							<div key={index} onClick={() => setActive(item)} className="flex p-3 hover:bg-gray-100 cursor-pointer">
-								<img src={item.users[0]._id !== user.id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
+							<div key={index} onClick={() => setShow(item)} className="flex p-3 hover:bg-gray-100 cursor-pointer">
+								<img src={item.users[0]._id !== active?.id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-2/3 ml-4">
-									<div className="text-base font-bold">{item.users[0]._id !== user.id ? item.users[0].name : item.users[1].name}</div>
+									<div className="text-base font-bold">{item.users[0]._id !== active?.id ? item.users[0].name : item.users[1].name}</div>
 									<div className="text-sm">{item.messages[item.messages.length - 1].text}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
@@ -99,25 +182,25 @@ const messages = () => {
 						))}
 				</div>
 				<div className="w-[45%] shadow-sm fixed right-32 h-full overflow-y-auto">
-					{active === null ? (
+					{show === null ? (
 						<div className="text-center text-sm"></div>
 					) : (
 						<div>
 							<div className="p-2 text-center text-xs text-gray-400 border-b border-gray-200">
-								<ReactTimeAgo date={new Date(active?.createdAt)} />
+								<ReactTimeAgo date={new Date(show?.createdAt)} />
 							</div>
 							<div className="p-3">
 								<div className="flex mb-3">
-									<img src={active.users[0]._id !== user.id ? active.users[0].image : active.users[1].image} className="w-12 h-12 rounded-full" alt="" />
+									<img src={show.users[0]._id !== active?.id ? show.users[0].image : show.users[1].image} className="w-12 h-12 rounded-full" alt="" />
 									<div className="ml-4 my-auto">
-										<div className="text-sm">{active.users[0]._id !== user.id ? active.users[0].name : active.users[1].name}</div>
+										<div className="text-sm">{show.users[0]._id !== active?.id ? show.users[0].name : show.users[1].name}</div>
 										<div className="text-xs">
-											<ReactTimeAgo date={new Date(active.updatedAt)} />
+											<ReactTimeAgo date={new Date(show.updatedAt)} />
 										</div>
 									</div>
 								</div>
-								{active.messages.map((item, index) =>
-									item.from === user.id ? (
+								{show.messages.map((item, index) =>
+									item.from === active?.id ? (
 										<div key={index} className="text-xs my-2 p-1 bg-warning w-1/2 ml-auto rounded-md text-right">
 											{item.text}
 										</div>
@@ -130,7 +213,7 @@ const messages = () => {
 							</div>
 						</div>
 					)}
-					{active !== null || query.page !== undefined ? (
+					{show !== null || query.page !== undefined ? (
 						<div className="fixed bottom-0 w-[45%] ">
 							<div className="flex relative">
 								<textarea
@@ -140,15 +223,17 @@ const messages = () => {
 									value={message}
 								></textarea>
 								<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-									<Dropdown.Item>
-										<span onClick={() => resolve(active.id)}>Resolve</span>
-									</Dropdown.Item>
+									{active.__typename === "Organization" && (
+										<Dropdown.Item>
+											<span onClick={() => resolve(active.id)}>Resolve</span>
+										</Dropdown.Item>
+									)}
 									<Dropdown.Item>Make a Testimony</Dropdown.Item>
-									<Link href={`/report?page=${active?.participants[0] || query.page}`}>
+									<Link href={`/report?page=${show?.participants[0] || query.page}`}>
 										<Dropdown.Item>Report User/Ad</Dropdown.Item>
 									</Link>
 									<Dropdown.Item>
-										<span onClick={() => blockUser(active?.participants[0] || query.page)}>Block User</span>
+										<span onClick={() => blockUser(show?.participants[0] || query.page)}>Block User</span>
 									</Dropdown.Item>
 								</Dropdown>
 								{star === true && (
@@ -217,7 +302,7 @@ const messages = () => {
 											</div>
 										</div>
 										<p className="text-xm">“ Give reasons why you are rating “</p>
-										<div onClick={() => resolve(active.id)} className="text-sm text-warning cursor-pointer px-3 float-right mb-10">
+										<div onClick={() => resolve(show.id)} className="text-sm text-warning cursor-pointer px-3 float-right mb-10">
 											Send
 										</div>
 									</div>
@@ -230,7 +315,7 @@ const messages = () => {
 										<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/charm_camera-video.svg" alt="" />
 										<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/bi_file-earmark-arrow-down.svg" alt="" />
 									</div>
-									<div onClick={() => sendDm(active?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+									<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
 										Send
 									</div>
 								</div>

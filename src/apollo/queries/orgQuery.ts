@@ -49,6 +49,7 @@ export const GET_ORGANIZATIONS = gql`
 			country
 			city
 			website
+			__typename
 		}
 	}
 `
@@ -78,6 +79,7 @@ export const GET_ORGANIZATION = gql`
 			country
 			city
 			website
+			__typename
 		}
 	}
 `
