@@ -5,26 +5,27 @@ import React, { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import UserMenu from "./user-profile/UserMenu";
 import { Dropdown } from 'rsuite';
-import { SERVER_URL } from "utils/constants"
+// import { SERVER_URL } from "utils/constants"
 import { io } from "socket.io-client"
+import { socket } from "pages/_app"
 
 const Header = (): JSX.Element => {
 	const user = useRecoilValue(UserAtom);
 	const [menu, setMenu] = useState(false);
 	const [count, setCount] = useState(0);
-	const socket = io(SERVER_URL, {
-		query: {
-			user_id: user?.id,
-		},
-	})
+	// const socket = io(SERVER_URL, {
+	// 	query: {
+	// 		user_id: user?.id,
+	// 	},
+	// })
 
 	useEffect(() => {
-		socket.on("connect", function () {
+		if (socket.connected) {
 			socket.emit("notifications", user.id, (response) => {
-				console.log(response)
+				// console.log(response)
 				setCount(response.unReadCount)
 			})
-		})
+		}
 	}, [user])
 
 	const { pathname } = useRouter();

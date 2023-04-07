@@ -60,16 +60,17 @@ function Buildprofile(): React.ReactElement {
 
 	const [img, setImg] = useState("")
 	const interest = [
-		"Human Right",
-		"Social Policy",
-		"Criminal Justice",
-		"Environment Justice",
-		"Health",
-		"Politics",
-		"Discrimination",
-		"Development",
-		"Disability",
+		"human right awareness",
+		"social policy",
+		"criminal justice",
+		"environment justice",
+		"health",
+		"politics",
+		"discrimination",
+		"development",
+		"disability",
 	]
+
 	const onNext = () => onChange(step + 1)
 	const onPrevious = () => onChange(step - 1)
 
@@ -261,7 +262,7 @@ function Buildprofile(): React.ReactElement {
 														name="interests_spec"
 														className="interests p-2 rounded-full"
 													/>
-													<div className="my-auto mx-4">{single}</div>
+													<div className="my-auto mx-4 capitalize">{single}</div>
 												</div>
 											))}
 										</div>

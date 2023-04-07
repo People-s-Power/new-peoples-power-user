@@ -16,7 +16,7 @@ import { gql, useLazyQuery } from "@apollo/client"
 import { useApollo } from "apollo"
 import { Fragment } from "react"
 import { UserAtom } from "atoms/UserAtom"
-import { HTTP_URI, TOKEN_NAME, WS_URI } from "utils/constants"
+import { HTTP_URI, TOKEN_NAME, WS_URI, SERVER_URL } from "utils/constants"
 import cookie from "js-cookie"
 import { ThemeProvider } from "styled-components"
 import { theme } from "utils/theme"
@@ -41,6 +41,14 @@ const token = cookie.get(TOKEN_NAME)
 // export const io = socketIOClient(WS_URI as string, {
 // 	extraHeaders: { Authorization: token || "" },
 // });
+
+import { io } from "socket.io-client"
+const user = cookie.get("user_id")
+export const socket = io(SERVER_URL, {
+	query: {
+		user_id: user,
+	},
+})
 
 axios.defaults.baseURL = HTTP_URI
 // axios.defaults.withCredentials = true;

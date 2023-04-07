@@ -9,16 +9,17 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
-import { io } from "socket.io-client"
+// import { io } from "socket.io-client"
+import { socket } from "pages/_app"
 
 const NotificationComp = ({ item }: { item: any }) => {
 	// console.log(item)
 	const author = useRecoilValue(UserAtom)
-	const socket = io(SERVER_URL, {
-		query: {
-			user_id: author?.id,
-		},
-	})
+	// const socket = io(SERVER_URL, {
+	// 	query: {
+	// 		user_id: author?.id,
+	// 	},
+	// })
 	const readNotication = (id: any) => {
 		socket.emit('readNotice', {
 			userId: author.id,

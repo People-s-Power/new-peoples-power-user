@@ -14,6 +14,7 @@ import Select from "react-select"
 import { io } from "socket.io-client"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { socket } from "utils/sockets"
 
 const FindExpartModalProp = {
 	author: PropTypes.shape({ image: PropTypes.string, name: PropTypes.string }).isRequired,
@@ -56,11 +57,11 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 		}
 	}, [country])
 
-	const socket = io(SERVER_URL, {
-		query: {
-			user_id: user?.id,
-		},
-	})
+	// const socket = io(SERVER_URL, {
+	// 	query: {
+	// 		user_id: user?.id,
+	// 	},
+	// })
 	const category = [
 		{ value: "NGO", label: "Non-Governmental Organization (NGO)" },
 		{ value: "coaching and mentoring", label: "Coaching and mentoring" },

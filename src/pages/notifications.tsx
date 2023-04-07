@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
 import FrontLayout from "layout/FrontLayout"
 import NotificationComp from "components/NotificationComp"
-import { SERVER_URL } from "utils/constants"
-import { io } from "socket.io-client"
+// import { SERVER_URL } from "utils/constants"
+// import { io } from "socket.io-client"
+import { socket } from "pages/_app"
 
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
@@ -10,18 +11,21 @@ import { UserAtom } from "atoms/UserAtom"
 const notifications = () => {
 	const user = useRecoilValue(UserAtom)
 	const [notification, setNotifications] = useState<any>(null)
-	const socket = io(SERVER_URL, {
-		query: {
-			user_id: user?.id,
-		},
-	})
+	// const socket = io(SERVER_URL, {
+	// 	query: {
+	// 		user_id: user?.id,
+	// 	},
+	// })
 	useEffect(() => {
-		socket.on("connect", function () {
-			socket.emit("notifications", user.id, (response) => {
+		// console.log(socket)
+		// socket.on("connect", function () {
+		if (socket.connected) {
+			socket.emit("notifications", user?.id, (response) => {
 				setNotifications(response.notications)
 				// console.log(response)
 			})
-		})
+		}
+		// })
 	}, [user])
 
 

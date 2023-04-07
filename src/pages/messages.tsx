@@ -8,13 +8,14 @@ import { UserAtom } from "atoms/UserAtom"
 import router, { useRouter } from "next/router"
 import { Dropdown } from "rsuite"
 import Link from "next/link"
-import { Modal, Popover, Whisper } from "rsuite"
+import { Popover, Whisper } from "rsuite"
 import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
-
+import { Loader } from "rsuite"
 import { apollo } from "apollo"
 import { useQuery } from "@apollo/client"
-import { print } from "graphql"
+// import { print } from "graphql"
 import axios from "axios"
+import { socket } from "pages/_app"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
@@ -29,6 +30,7 @@ const messages = () => {
 	const [orgId, setOrgId] = useState("")
 	const uploadRef = useRef<HTMLInputElement>(null)
 	const [filesPreview, setFilePreview] = useState<any>([])
+	const [loading, setLoading] = useState(false)
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {
@@ -45,11 +47,11 @@ const messages = () => {
 			}
 		}
 	}
-	const socket = io(SERVER_URL, {
-		query: {
-			user_id: user?.id,
-		},
-	})
+	// const socket = io(SERVER_URL, {
+	// 	query: {
+	// 		user_id: user?.id,
+	// 	},
+	// })
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: user?.id },
@@ -88,6 +90,7 @@ const messages = () => {
 	}
 	const sendFile = (id) => {
 		if (filesPreview.length > 0) {
+			setLoading(true)
 			const payload = {
 				to: id,
 				from: active.id || active._id,
@@ -99,6 +102,7 @@ const messages = () => {
 				console.log(response)
 				setFilePreview([])
 				setShow(response)
+				setLoading(false)
 				if (query.page !== undefined) {
 					router.push("/messages")
 				}
@@ -107,6 +111,7 @@ const messages = () => {
 	}
 	const sendDm = (id) => {
 		if (message !== "") {
+			setLoading(true)
 			const payload = {
 				to: id,
 				from: active.id || active._id,
@@ -117,6 +122,7 @@ const messages = () => {
 			socket.emit("send_dm", payload, (response) => {
 				setMessage("")
 				setShow(response)
+				setLoading(false)
 				if (query.page !== undefined) {
 					router.push("/messages")
 				}
@@ -129,12 +135,12 @@ const messages = () => {
 	}, [user])
 
 	useEffect(() => {
-		socket.on("connect", function () {
+		if (socket.connected) {
 			socket.emit("get_dms", active.id || active._id, (response) => {
 				setMessages(response.reverse())
 				console.log(response)
 			})
-		})
+		}
 	}, [show, active])
 
 	const blockUser = (id) => {
@@ -194,11 +200,18 @@ const messages = () => {
 				<div className="w-[40%] overflow-y-auto h-full">
 					<div className="text-lg p-3">Messages</div>
 					{orgs && (
-						<div className="my-2">
+						<div className="my-2 bg-warning p-2 rounded-md">
 							<Whisper placement="bottom" trigger="click" speaker={speaker}>
-								<div className="flex cursor-pointer">
-									<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
-									<div className="text-sm my-auto">{active?.name}</div>
+								<div className="flex justify-between ">
+									<div className="flex cursor-pointer">
+										<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+										<div className="text-sm my-auto">{active?.name}</div>
+									</div>
+									<div className="my-auto">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#ffffff" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
+											<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+										</svg>
+									</div>
 								</div>
 							</Whisper>
 						</div>
@@ -209,7 +222,7 @@ const messages = () => {
 								<img src={item.users[0]._id !== active?.id || active._id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-2/3 ml-4">
 									<div className="text-base font-bold">{item.users[0]._id !== active?.id || active._id ? item.users[0].name : item.users[1].name}</div>
-									<div className="text-sm">{item.messages[item.messages.length - 1].text?.substring(0, 20)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
+									<div className="text-sm">{item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
 									<ReactTimeAgo date={new Date(item.updatedAt)} />
@@ -217,7 +230,7 @@ const messages = () => {
 							</div>
 						))}
 				</div>
-				<div className="w-[45%] shadow-sm fixed right-32 h-full">
+				<div className="w-[45%] shadow-md fixed right-32 h-full">
 					{show === null ? (
 						<div className="text-center text-sm"></div>
 					) : (
@@ -237,7 +250,7 @@ const messages = () => {
 								</div>
 								{show.messages.map((item, index) =>
 									item.from === active?.id || active._id ? (
-										<div key={index} className="text-xs my-2 p-1 bg-warning w-1/2 ml-auto rounded-md text-right">
+										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-1/2 ml-auto rounded-md">
 											{item.text}
 											<img src={item?.file} alt="" />
 										</div>
@@ -364,10 +377,10 @@ const messages = () => {
 									{
 										filesPreview.length >= 1 ? (
 											<div onClick={() => sendFile(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
-												Send
+												{loading ? <Loader /> : "Send"}
 											</div>) : (
 											<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
-												Send
+												{loading ? <Loader /> : "Send"}
 											</div>
 										)
 									}
