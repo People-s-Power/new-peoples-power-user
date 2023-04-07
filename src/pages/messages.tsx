@@ -362,7 +362,7 @@ const messages = () => {
 										))}
 									</div>
 									{
-										filesPreview.length > 1 ? (
+										filesPreview.length >= 1 ? (
 											<div onClick={() => sendFile(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
 												Send
 											</div>) : (
@@ -371,9 +371,9 @@ const messages = () => {
 											</div>
 										)
 									}
-									<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+									{/* <div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
 										Send
-									</div>
+									</div> */}
 								</div>
 							) : null}
 						</div>
