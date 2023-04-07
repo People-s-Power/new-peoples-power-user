@@ -14,7 +14,7 @@ import Select from "react-select"
 import { io } from "socket.io-client"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { socket } from "utils/sockets"
+import { socket } from "pages/_app"
 
 const FindExpartModalProp = {
 	author: PropTypes.shape({ image: PropTypes.string, name: PropTypes.string }).isRequired,
