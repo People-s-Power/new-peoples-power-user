@@ -118,7 +118,9 @@ const org = () => {
 			console.log(data)
 			setAdverts(data.myAdverts)
 		},
-		onError: (err) => {},
+		onError: (err) => {
+			console.log(err)
+		},
 	})
 
 	useQuery(MY_VICTORIES, {
@@ -152,10 +154,10 @@ const org = () => {
 
 	async function getData() {
 		try {
-			let general = [...campaigns, ...posts, ...adverts, ...victories, ...events]
+			const general = [...campaigns, ...posts, ...adverts, ...victories, ...events]
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
 			// const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
-			let newArray = []
+			const newArray = []
 			for (let i = 0; i < randomizedItems.length; i++) {
 				newArray.push(randomizedItems[i])
 				if ((i + 1) % 3 === 0) {
@@ -429,7 +431,7 @@ const org = () => {
 												// 		</div>
 												// 	)
 											}
-									  })
+									})
 									: null}
 							</div>
 						)}

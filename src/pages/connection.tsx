@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import FrontLayout from "layout/FrontLayout"
-import ConnectionCard from "../components/ConnectionCard"
+// import ConnectionCard from "../components/ConnectionCard"
 import { CONNECTIONS } from "apollo/queries/generalQuery"
 import { IUser } from "types/Applicant.types"
 import axios from "axios"
@@ -8,8 +8,7 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
-import router, { useRouter } from "next/router"
-
+import { useRouter } from "next/router"
 import { FOLLOW, FOLLOWERS, FOLLOWING } from "apollo/queries/generalQuery"
 import Link from "next/link"
 
@@ -93,59 +92,59 @@ const connection = () => {
 			<div className="mx-32 shadow-sm p-6">
 				<div className="flex">
 					<input type="text" className="p-3 w-96 rounded-full pl-10 text-sm" placeholder="Search" />
-					<div onClick={() => setActive("connect")} className={active === "connect" ? "border-b border-warning my-auto mx-4" : " my-auto mx-4"}>
+					<div onClick={() => setActive("connect")} className={active === "connect" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
 						People You may Know
 					</div>
-					<div onClick={() => setActive("followers")} className={active === "followers" ? "border-b border-warning my-auto mx-4" : " my-auto mx-4"}>
+					<div onClick={() => setActive("followers")} className={active === "followers" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
 						Followers
 					</div>
-					<div onClick={() => setActive("following")} className={active === "following" ? "border-b border-warning my-auto mx-4" : " my-auto mx-4"}>
+					<div onClick={() => setActive("following")} className={active === "following" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
 						Following
 					</div>
 				</div>
 				<div className="flex flex-wrap">
 					{active === "connect"
 						? users.map((user, index) =>
-								user._id !== author.id ? (
+							user._id !== author.id ? (
+								<div key={index} className="w-[25%] p-6">
+									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+									<div className="text-xl py-2">{user.name} </div>
+									<div className="w-16 h-[1px] bg-gray-200"></div>
+									<div className="text-xs text-gray-700 my-3">500 Followers</div>
+									<div className="text-xs text-gray-900 my-6 cursor-pointer" onClick={() => follow(user._id)}>
+										+ Follow
+									</div>
+								</div>
+							) : null
+						)
+						: active === "followers"
+							? followers.map((user, index) => (
+								<div key={index} className="w-[25%] p-6">
+									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+									<div className="text-xl py-2">{user.name} </div>
+									<div className="w-16 h-[1px] bg-gray-200"></div>
+									{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
+									<Link href={`/messages?page=${user._id}`}>
+										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
+									</Link>
+								</div>
+							))
+							: active === "following"
+								? following.map((user, index) => (
 									<div key={index} className="w-[25%] p-6">
 										<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 										<div className="text-xl py-2">{user.name} </div>
 										<div className="w-16 h-[1px] bg-gray-200"></div>
-										<div className="text-xs text-gray-700 my-3">500 Followers</div>
-										<div className="text-xs text-gray-900 my-6" onClick={() => follow(user._id)}>
-											+ Follow
+										{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
+										<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
+											Unollow
 										</div>
+										<Link href={`/messages?page=${user._id}`}>
+											<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>
+										</Link>
 									</div>
-								) : null
-						  )
-						: active === "followers"
-						? followers.map((user, index) => (
-								<div key={index} className="w-[25%] p-6">
-									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-									<div className="text-xl py-2">{user.name} </div>
-									<div className="w-16 h-[1px] bg-gray-200"></div>
-									{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
-									<Link href={`/messages?page=${user._id}`}>
-										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
-									</Link>
-								</div>
-						  ))
-						: active === "following"
-						? following.map((user, index) => (
-								<div key={index} className="w-[25%] p-6">
-									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-									<div className="text-xl py-2">{user.name} </div>
-									<div className="w-16 h-[1px] bg-gray-200"></div>
-									{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
-									<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
-										Unollow
-									</div>
-									<Link href={`/messages?page=${user._id}`}>
-										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md">Send message</div>
-									</Link>
-								</div>
-						  ))
-						: null}
+								))
+								: null}
 				</div>
 			</div>
 		</FrontLayout>

@@ -33,6 +33,7 @@ const messages = () => {
 			user_id: user?.id,
 		},
 	})
+
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: user?.id },
 		client: apollo,
@@ -73,10 +74,10 @@ const messages = () => {
 		if (message !== "") {
 			const payload = {
 				to: id,
-				from: active.id,
+				from: active.id || active._id,
 				type: "text",
 				text: message,
-				dmType: active.__typename === "Organization" ? "consumer-to-organization" : "consumer-to-consumer",
+				dmType: active?.__typename === undefined ? "consumer-to-consumer" : "consumer-to-organization",
 			}
 			socket.emit("send_dm", payload, (response) => {
 				setMessage("")
@@ -90,11 +91,11 @@ const messages = () => {
 	useEffect(() => {
 		setActive(user)
 		getSingle()
-	}, [show])
+	}, [user])
 
 	useEffect(() => {
 		socket.on("connect", function () {
-			socket.emit("get_dms", active.id, (response) => {
+			socket.emit("get_dms", active.id || active._id, (response) => {
 				setMessages(response.reverse())
 				console.log(response)
 			})
@@ -105,7 +106,7 @@ const messages = () => {
 		socket.emit(
 			"block_message",
 			{
-				participants: [active.id, id],
+				participants: [active.id || active._id, id],
 			},
 			(response) => console.log("block_message:", response)
 		)
@@ -137,17 +138,17 @@ const messages = () => {
 			</div>
 			{orgs !== null
 				? orgs.map((org: any, index: number) => (
-						<div
-							onClick={() => {
-								setActive(org)
-							}}
-							key={index}
-							className="flex m-1 cursor-pointer"
-						>
-							<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
-							<div className="text-sm my-auto">{org?.name}</div>
-						</div>
-				  ))
+					<div
+						onClick={() => {
+							setActive(org)
+						}}
+						key={index}
+						className="flex m-1 cursor-pointer"
+					>
+						<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+						<div className="text-sm my-auto">{org?.name}</div>
+					</div>
+				))
 				: null}
 		</Popover>
 	)
@@ -170,9 +171,9 @@ const messages = () => {
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} onClick={() => setShow(item)} className="flex p-3 hover:bg-gray-100 cursor-pointer">
-								<img src={item.users[0]._id !== active?.id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
+								<img src={item.users[0]._id !== active?.id || active._id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-2/3 ml-4">
-									<div className="text-base font-bold">{item.users[0]._id !== active?.id ? item.users[0].name : item.users[1].name}</div>
+									<div className="text-base font-bold">{item.users[0]._id !== active?.id || active._id ? item.users[0].name : item.users[1].name}</div>
 									<div className="text-sm">{item.messages[item.messages.length - 1].text}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
@@ -191,16 +192,16 @@ const messages = () => {
 							</div>
 							<div className="p-3">
 								<div className="flex mb-3">
-									<img src={show.users[0]._id !== active?.id ? show.users[0].image : show.users[1].image} className="w-12 h-12 rounded-full" alt="" />
+									<img src={show.users[0]._id !== active?.id || active._id ? show.users[0].image : show.users[1].image} className="w-12 h-12 rounded-full" alt="" />
 									<div className="ml-4 my-auto">
-										<div className="text-sm">{show.users[0]._id !== active?.id ? show.users[0].name : show.users[1].name}</div>
+										<div className="text-sm">{show.users[0]._id !== active?.id || active._id ? show.users[0].name : show.users[1].name}</div>
 										<div className="text-xs">
 											<ReactTimeAgo date={new Date(show.updatedAt)} />
 										</div>
 									</div>
 								</div>
 								{show.messages.map((item, index) =>
-									item.from === active?.id ? (
+									item.from === active?.id || active._id ? (
 										<div key={index} className="text-xs my-2 p-1 bg-warning w-1/2 ml-auto rounded-md text-right">
 											{item.text}
 										</div>
@@ -223,9 +224,9 @@ const messages = () => {
 									value={message}
 								></textarea>
 								<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-									{active.__typename === "Organization" && (
+									{active?.__typename !== undefined && (
 										<Dropdown.Item>
-											<span onClick={() => resolve(active.id)}>Resolve</span>
+											<span onClick={() => resolve(active.id || active._id)}>Resolve</span>
 										</Dropdown.Item>
 									)}
 									<Dropdown.Item>Make a Testimony</Dropdown.Item>

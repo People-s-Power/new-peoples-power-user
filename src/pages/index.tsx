@@ -112,7 +112,7 @@ const HomePage = () => {
 				},
 			})
 			// console.log(data.data.timeline)
-			let general = [
+			const general = [
 				...feed,
 				...data.data.timeline.adverts,
 				...data.data.timeline.updates,
@@ -125,7 +125,7 @@ const HomePage = () => {
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
 			const sortedItems = randomizedItems.sort((a, b) => b.createdAt - a.createdAt)
 
-			let newArray = []
+			const newArray = []
 			for (let i = 0; i < sortedItems.length; i++) {
 				newArray.push(sortedItems[i])
 				if ((i + 1) % 3 === 0) {
