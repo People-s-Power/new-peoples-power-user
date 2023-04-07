@@ -9,9 +9,25 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
+import { io } from "socket.io-client"
 
 const NotificationComp = ({ item }: { item: any }) => {
+	// console.log(item)
 	const author = useRecoilValue(UserAtom)
+	const socket = io(SERVER_URL, {
+		query: {
+			user_id: author?.id,
+		},
+	})
+	const readNotication = (id: any) => {
+		socket.emit('readNotice', {
+			userId: author.id,
+			noticeId: id,
+		}, response =>
+			console.log('readNotice:', response),
+		);
+	}
+
 	const interested = async (event: any) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -31,7 +47,7 @@ const NotificationComp = ({ item }: { item: any }) => {
 		}
 	}
 	return (
-		<div className="border-b mx-auto border-gray-200 p-3 flex">
+		<div onMouseEnter={() => readNotication(item.id)} className="border-b mx-auto border-gray-200 p-3 flex">
 			<img src={item.authorImage} className="w-16 h-16 rounded-full my-auto" alt="" />
 			<div className="ml-6 my-auto">
 				<div className="text-base w-[80%]">{item.message}</div>

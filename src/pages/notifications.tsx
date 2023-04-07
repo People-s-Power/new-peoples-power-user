@@ -18,17 +18,19 @@ const notifications = () => {
 	useEffect(() => {
 		socket.on("connect", function () {
 			socket.emit("notifications", user.id, (response) => {
-				setNotifications(response)
-				console.log(response)
+				setNotifications(response.notications)
+				// console.log(response)
 			})
 		})
 	}, [user])
+
+
 	return (
 		<FrontLayout>
 			<div className="mx-32">
 				<div className="p-3 pl-8 border-b border-gray-200 text-lg">Notifications</div>
 				{notification &&
-					notification.map((item, index) => (
+					notification?.map((item, index) => (
 						<div key={index}>
 							<NotificationComp item={item} />
 						</div>

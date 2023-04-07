@@ -45,7 +45,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			reader.readAsDataURL(files[0])
 			reader.onloadend = () => {
 				if (reader.result) {
-					let type = files[0].name.substr(files[0].name.length - 3)
+					const type = files[0].name.substr(files[0].name.length - 3)
 					// console.log(type)
 					setFilePreview({
 						type: type === "mp4" ? "video" : "image",
@@ -130,17 +130,17 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			</div>
 			{orgs !== null
 				? orgs.map((org: any, index: number) => (
-						<div
-							onClick={() => {
-								setActive(org)
-							}}
-							key={index}
-							className="flex m-1 cursor-pointer"
-						>
-							<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
-							<div className="text-sm my-auto">{org?.name}</div>
-						</div>
-				  ))
+					<div
+						onClick={() => {
+							setActive(org)
+						}}
+						key={index}
+						className="flex m-1 cursor-pointer"
+					>
+						<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+						<div className="text-sm my-auto">{org?.name}</div>
+					</div>
+				))
 				: null}
 		</Popover>
 	)

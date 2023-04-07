@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import FrontLayout from "layout/FrontLayout"
 import { SERVER_URL } from "utils/constants"
 import { io } from "socket.io-client"
@@ -27,7 +27,24 @@ const messages = () => {
 	const [star, setStar] = useState<any>(false)
 	const [orgs, setOrgs] = useState<any>(null)
 	const [orgId, setOrgId] = useState("")
+	const uploadRef = useRef<HTMLInputElement>(null)
+	const [filesPreview, setFilePreview] = useState<any>([])
 
+	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (filesPreview.length < 1) {
+			const files = e.target.files
+			const reader = new FileReader()
+
+			if (files && files.length > 0) {
+				reader.readAsDataURL(files[0])
+				reader.onloadend = () => {
+					if (reader.result) {
+						setFilePreview([...filesPreview, reader.result as string])
+					}
+				}
+			}
+		}
+	}
 	const socket = io(SERVER_URL, {
 		query: {
 			user_id: user?.id,
@@ -69,7 +86,25 @@ const messages = () => {
 			console.log(error)
 		}
 	}
-
+	const sendFile = (id) => {
+		if (filesPreview.length > 0) {
+			const payload = {
+				to: id,
+				from: active.id || active._id,
+				type: "file",
+				file: filesPreview[0],
+				dmType: active?.__typename === undefined ? "consumer-to-consumer" : "consumer-to-org",
+			}
+			socket.emit("send_dm", payload, (response) => {
+				console.log(response)
+				setFilePreview([])
+				setShow(response)
+				if (query.page !== undefined) {
+					router.push("/messages")
+				}
+			})
+		}
+	}
 	const sendDm = (id) => {
 		if (message !== "") {
 			const payload = {
@@ -77,7 +112,7 @@ const messages = () => {
 				from: active.id || active._id,
 				type: "text",
 				text: message,
-				dmType: active?.__typename === undefined ? "consumer-to-consumer" : "consumer-to-organization",
+				dmType: active?.__typename === undefined ? "consumer-to-consumer" : "consumer-to-org",
 			}
 			socket.emit("send_dm", payload, (response) => {
 				setMessage("")
@@ -174,7 +209,7 @@ const messages = () => {
 								<img src={item.users[0]._id !== active?.id || active._id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-2/3 ml-4">
 									<div className="text-base font-bold">{item.users[0]._id !== active?.id || active._id ? item.users[0].name : item.users[1].name}</div>
-									<div className="text-sm">{item.messages[item.messages.length - 1].text}</div>
+									<div className="text-sm">{item.messages[item.messages.length - 1].text?.substring(0, 20)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
 									<ReactTimeAgo date={new Date(item.updatedAt)} />
@@ -182,11 +217,11 @@ const messages = () => {
 							</div>
 						))}
 				</div>
-				<div className="w-[45%] shadow-sm fixed right-32 h-full overflow-y-auto">
+				<div className="w-[45%] shadow-sm fixed right-32 h-full">
 					{show === null ? (
 						<div className="text-center text-sm"></div>
 					) : (
-						<div>
+						<div className="h-[60%] overflow-y-auto">
 							<div className="p-2 text-center text-xs text-gray-400 border-b border-gray-200">
 								<ReactTimeAgo date={new Date(show?.createdAt)} />
 							</div>
@@ -204,10 +239,12 @@ const messages = () => {
 									item.from === active?.id || active._id ? (
 										<div key={index} className="text-xs my-2 p-1 bg-warning w-1/2 ml-auto rounded-md text-right">
 											{item.text}
+											<img src={item?.file} alt="" />
 										</div>
 									) : (
 										<div key={index} className="text-xs my-2">
 											{item.text}
+											<img src={item?.file} alt="" />
 										</div>
 									)
 								)}
@@ -215,7 +252,7 @@ const messages = () => {
 						</div>
 					)}
 					{show !== null || query.page !== undefined ? (
-						<div className="fixed bottom-0 w-[45%] ">
+						<div className="fixed bottom-0 w-[45%] bg-white ">
 							<div className="flex relative">
 								<textarea
 									onChange={(e) => setMessage(e.target.value)}
@@ -224,7 +261,7 @@ const messages = () => {
 									value={message}
 								></textarea>
 								<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-									{active?.__typename !== undefined && (
+									{show?.type === "customer-org" && (
 										<Dropdown.Item>
 											<span onClick={() => resolve(active.id || active._id)}>Resolve</span>
 										</Dropdown.Item>
@@ -312,10 +349,28 @@ const messages = () => {
 							{star === false ? (
 								<div className="flex justify-between border-t border-gray-200 p-3">
 									<div className="flex w-20 justify-between">
-										<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
-										<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/charm_camera-video.svg" alt="" />
+										<img onClick={() => uploadRef.current?.click()} className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
+										<img onClick={() => uploadRef.current?.click()} className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/charm_camera-video.svg" alt="" />
 										<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/bi_file-earmark-arrow-down.svg" alt="" />
 									</div>
+									<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
+									<div className="flex">
+										{filesPreview.map((file, index) => (
+											<div key={index} className="relative w-20 h-20 mx-1">
+												<img src={file} className="w-12 h-12" alt="" />
+											</div>
+										))}
+									</div>
+									{
+										filesPreview.length > 1 ? (
+											<div onClick={() => sendFile(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+												Send
+											</div>) : (
+											<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+												Send
+											</div>
+										)
+									}
 									<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
 										Send
 									</div>
