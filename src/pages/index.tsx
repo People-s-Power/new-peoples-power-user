@@ -111,7 +111,7 @@ const HomePage = () => {
 					authorId: author?.id,
 				},
 			})
-			console.log(data.data.timeline)
+			// console.log(data.data.timeline)
 			const general = [
 				...feed,
 				...data.data.timeline.adverts,
@@ -148,7 +148,7 @@ const HomePage = () => {
 	// 		}
 	// 	}, 5000)
 	// }, [])
-	
+
 
 	useEffect(() => {
 		getSingle()
@@ -276,7 +276,7 @@ const HomePage = () => {
 								case "Post":
 									return (
 										<div key={index}>
-											<CampComp post={single} />
+											<CampComp open={() => handelOpenFindExpart()} post={single} openPetition={() => handelPetition()} />
 										</div>
 									)
 								case "Update":
@@ -335,7 +335,7 @@ const HomePage = () => {
 						<div className="my-3 text-sm">You can reach a larger audience by allowing others to follow your activity and read what you are sharing</div>
 					</div>
 				</aside>
-				
+
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />

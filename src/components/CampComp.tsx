@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import Interaction from "./Interaction"
 
-const CampComp = ({ post }: { post: any }): JSX.Element => {
+const CampComp = ({ post, open, openPetition }: { post: any, open: any, openPetition: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [more, setMore] = useState(post.body.length > 250 ? true : false)
 
@@ -46,7 +46,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			<div className="p-2">
 				{post.image.length > 0 ? <img className="w-full h-80 rounded-md object-cover" src={post?.image[0]} alt="" /> : null}
 				{author?.id === post.author?._id ? (
-					<div className="text-gray-400 p-1">N:B : At least 10 persons must support this post in order to make a petition</div>
+					<div className="text-gray-400 p-1">Hello {author.name}, you can  resolve your complaint speedily by finding an expert or converting your complaint to a petition
+						<button className="border border-warning p-1 mt-1 mr-4 text-black rounded-md bg-white" onClick={() => open()}>Find Expert</button>
+						<button className="border border-warning p-1 mt-1 text-black rounded-md bg-white" onClick={() => openPetition()}>Start Petition</button>
+					</div>
 				) : null}
 				{author?.id === post.author?._id && post.likes >= 10 ? (
 					<div>
@@ -54,7 +57,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							N:B : With more than 10 persons supporting this camplaint concern we recomend thatyou make this post a petition/campaign for the issues raised to
 							be addresed.Making this post a petition will send your campaign to the right person/authority who will address it.
 						</div>
-						<button className="border border-black p-2">Start Petition</button>
+						<button className="border border-black p-2" onClick={() => openPetition()}>Start Petition</button>
 					</div>
 				) : null}
 				{post.isPetition === true ? (
