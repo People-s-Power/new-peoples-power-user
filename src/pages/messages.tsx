@@ -397,7 +397,14 @@ const messages = () => {
 									</div>
 								) : null}
 							</div>
-						) : null) : <div className="text-center text-gray-400">You have been blocked this user</div>
+						) : <div className="p-4 text-center">
+							<img className="w-40 mx-auto h-40" src="/images/lolo.jpeg" alt="" />
+							<h5 className="my-4">Chat with your connections.</h5>
+							<p>Go to My Connections and followers or following to send message.</p>
+							<Link href={'/connection?page=followers'}>
+								<button className="bg-warning px-4 text-white p-2 my-4 rounded-sm">connections</button>
+							</Link>
+						</div>) : <div className="text-center text-gray-400">You have been blocked this user</div>
 					}
 				</div>
 			</div>

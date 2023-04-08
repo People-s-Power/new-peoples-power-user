@@ -50,7 +50,7 @@ const Header = (): JSX.Element => {
 					<div className="navbar-brand d-flex justify-content-between align-items-center justify-content-md-start min">
 						<Link href="/home">
 							<a className="navbar-brand">
-								<img src="/images/logo.png" className="rounded-full" alt="" loading="lazy" />
+								<img src="/images/lolo.jpeg" className="rounded-full" alt="" loading="lazy" />
 								<h6>{text}</h6>
 							</a>
 						</Link>
