@@ -291,11 +291,7 @@ export const GET_ALL = gql`
 				likes {
 					name
 				}
-				interested {
-					authorId
-					authorImg
-					name
-				}
+				
 				
 				type
 			}

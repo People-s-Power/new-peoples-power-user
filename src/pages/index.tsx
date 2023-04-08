@@ -116,7 +116,7 @@ const HomePage = () => {
 				...feed,
 				...data.data.timeline.adverts,
 				...data.data.timeline.updates,
-				...data.data.timeline.events,
+				// ...data.data.timeline.events,
 				...data.data.timeline.petitions,
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,

@@ -270,133 +270,135 @@ const messages = () => {
 							</div>
 						</div>
 					)}
-					{show !== null || query.page !== undefined ? (
-						<div className="fixed bottom-0 w-[45%] bg-white ">
-							<div className="flex relative">
-								<textarea
-									onChange={(e) => setMessage(e.target.value)}
-									className="w-full h-32 text-sm p-2 border border-white"
-									placeholder="Write a message"
-									value={message}
-								></textarea>
-								<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-									{show?.type === "customer-org" && (
+					{
+						show?.blocked !== true ? (show !== null || query.page !== undefined ? (
+							<div className="fixed bottom-0 w-[45%] bg-white ">
+								<div className="flex relative">
+									<textarea
+										onChange={(e) => setMessage(e.target.value)}
+										className="w-full h-32 text-sm p-2 border border-white"
+										placeholder="Write a message"
+										value={message}
+									></textarea>
+									<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+										{show?.type === "customer-org" && (
+											<Dropdown.Item>
+												<span onClick={() => resolve(active.id || active._id)}>Resolve</span>
+											</Dropdown.Item>
+										)}
+										<Dropdown.Item>Make a Testimony</Dropdown.Item>
+										<Link href={`/report?page=${show?.participants[0] || query.page}`}>
+											<Dropdown.Item>Report User/Ad</Dropdown.Item>
+										</Link>
 										<Dropdown.Item>
-											<span onClick={() => resolve(active.id || active._id)}>Resolve</span>
+											<span onClick={() => blockUser(show?.participants[0] || query.page)}>Block User</span>
 										</Dropdown.Item>
+									</Dropdown>
+									{star === true && (
+										<div className="absolute z-10 top-0 left-0 w-full bg-white h-full text-center">
+											<p className="text-xl">Rate the performance of this Organization</p>
+											<div className="flex my-2 justify-center cursor-pointer">
+												<div onClick={() => setRating(1)} className="mx-2">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="20"
+														height="20"
+														fill={rating >= 1 ? "#F7A607" : "#D9D9D9"}
+														className="bi bi-star-fill"
+														viewBox="0 0 16 16"
+													>
+														<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+													</svg>
+												</div>
+												<div onClick={() => setRating(2)} className="mx-2">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="20"
+														height="20"
+														fill={rating >= 2 ? "#F7A607" : "#D9D9D9"}
+														className="bi bi-star-fill"
+														viewBox="0 0 16 16"
+													>
+														<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+													</svg>
+												</div>
+												<div onClick={() => setRating(3)} className="mx-2">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="20"
+														height="20"
+														fill={rating >= 3 ? "#F7A607" : "#D9D9D9"}
+														className="bi bi-star-fill"
+														viewBox="0 0 16 16"
+													>
+														<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+													</svg>
+												</div>
+												<div onClick={() => setRating(4)} className="mx-2">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="20"
+														height="20"
+														fill={rating >= 4 ? "#F7A607" : "#D9D9D9"}
+														className="bi bi-star-fill"
+														viewBox="0 0 16 16"
+													>
+														<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+													</svg>
+												</div>
+												<div onClick={() => setRating(5)} className="mx-2">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="20"
+														height="20"
+														fill={rating >= 5 ? "#F7A607" : "#D9D9D9"}
+														className="bi bi-star-fill"
+														viewBox="0 0 16 16"
+													>
+														<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+													</svg>
+												</div>
+											</div>
+											<p className="text-xm">“ Give reasons why you are rating “</p>
+											<div onClick={() => resolve(show.id)} className="text-sm text-warning cursor-pointer px-3 float-right mb-10">
+												Send
+											</div>
+										</div>
 									)}
-									<Dropdown.Item>Make a Testimony</Dropdown.Item>
-									<Link href={`/report?page=${show?.participants[0] || query.page}`}>
-										<Dropdown.Item>Report User/Ad</Dropdown.Item>
-									</Link>
-									<Dropdown.Item>
-										<span onClick={() => blockUser(show?.participants[0] || query.page)}>Block User</span>
-									</Dropdown.Item>
-								</Dropdown>
-								{star === true && (
-									<div className="absolute z-10 top-0 left-0 w-full bg-white h-full text-center">
-										<p className="text-xl">Rate the performance of this Organization</p>
-										<div className="flex my-2 justify-center cursor-pointer">
-											<div onClick={() => setRating(1)} className="mx-2">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													fill={rating >= 1 ? "#F7A607" : "#D9D9D9"}
-													className="bi bi-star-fill"
-													viewBox="0 0 16 16"
-												>
-													<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-												</svg>
-											</div>
-											<div onClick={() => setRating(2)} className="mx-2">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													fill={rating >= 2 ? "#F7A607" : "#D9D9D9"}
-													className="bi bi-star-fill"
-													viewBox="0 0 16 16"
-												>
-													<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-												</svg>
-											</div>
-											<div onClick={() => setRating(3)} className="mx-2">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													fill={rating >= 3 ? "#F7A607" : "#D9D9D9"}
-													className="bi bi-star-fill"
-													viewBox="0 0 16 16"
-												>
-													<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-												</svg>
-											</div>
-											<div onClick={() => setRating(4)} className="mx-2">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													fill={rating >= 4 ? "#F7A607" : "#D9D9D9"}
-													className="bi bi-star-fill"
-													viewBox="0 0 16 16"
-												>
-													<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-												</svg>
-											</div>
-											<div onClick={() => setRating(5)} className="mx-2">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													fill={rating >= 5 ? "#F7A607" : "#D9D9D9"}
-													className="bi bi-star-fill"
-													viewBox="0 0 16 16"
-												>
-													<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-												</svg>
-											</div>
-										</div>
-										<p className="text-xm">“ Give reasons why you are rating “</p>
-										<div onClick={() => resolve(show.id)} className="text-sm text-warning cursor-pointer px-3 float-right mb-10">
-											Send
-										</div>
-									</div>
-								)}
-							</div>
-							{star === false ? (
-								<div className="flex justify-between border-t border-gray-200 p-3">
-									<div className="flex w-20 justify-between">
-										<img onClick={() => uploadRef.current?.click()} className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
-										<img onClick={() => uploadRef.current?.click()} className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/charm_camera-video.svg" alt="" />
-										<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/bi_file-earmark-arrow-down.svg" alt="" />
-									</div>
-									<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
-									<div className="flex">
-										{filesPreview.map((file, index) => (
-											<div key={index} className="relative w-20 h-20 mx-1">
-												<img src={file} className="w-12 h-12" alt="" />
-											</div>
-										))}
-									</div>
-									{
-										filesPreview.length >= 1 ? (
-											<div onClick={() => sendFile(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
-												{loading ? <Loader /> : "Send"}
-											</div>) : (
-											<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
-												{loading ? <Loader /> : "Send"}
-											</div>
-										)
-									}
-									{/* <div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
-										Send
-									</div> */}
 								</div>
-							) : null}
-						</div>
-					) : null}
+								{star === false ? (
+									<div className="flex justify-between border-t border-gray-200 p-3">
+										<div className="flex w-20 justify-between">
+											<img onClick={() => uploadRef.current?.click()} className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
+											<img onClick={() => uploadRef.current?.click()} className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/charm_camera-video.svg" alt="" />
+											<img className="w-4 h-4 my-auto  cursor-pointer" src="/images/home/icons/bi_file-earmark-arrow-down.svg" alt="" />
+										</div>
+										<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
+										<div className="flex">
+											{filesPreview.map((file, index) => (
+												<div key={index} className="relative w-20 h-20 mx-1">
+													<img src={file} className="w-12 h-12" alt="" />
+												</div>
+											))}
+										</div>
+										{
+											filesPreview.length >= 1 ? (
+												<div onClick={() => sendFile(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+													{loading ? <Loader /> : "Send"}
+												</div>) : (
+												<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+													{loading ? <Loader /> : "Send"}
+												</div>
+											)
+										}
+										{/* <div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+											Send
+										</div> */}
+									</div>
+								) : null}
+							</div>
+						) : null) : <div className="text-center text-gray-400">You have been blocked this user</div>
+					}
 				</div>
 			</div>
 		</FrontLayout>

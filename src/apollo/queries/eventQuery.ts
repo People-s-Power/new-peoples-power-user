@@ -37,11 +37,7 @@ export const GET_EVENTS = gql`
 			likes {
 				name
 			}
-			interested {
-				authorId
-				authorImg
-				name
-			}
+			
 			type
 		}
 	}

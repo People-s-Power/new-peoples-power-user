@@ -22,7 +22,7 @@ const notifications = () => {
 		if (socket.connected) {
 			socket.emit("notifications", user?.id, (response) => {
 				setNotifications(response.notications)
-				// console.log(response)
+				console.log(response)
 			})
 		}
 		// })
