@@ -5,8 +5,13 @@ import { UserAtom } from "atoms/UserAtom"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import Interaction from "./Interaction"
+interface IProps {
+	open?: any;
+	post: any;
+	openPetition?: any;
+}
 
-const CampComp = ({ post, open, openPetition }: { post: any, open: any, openPetition: any }): JSX.Element => {
+const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [more, setMore] = useState(post.body.length > 250 ? true : false)
 
