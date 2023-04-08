@@ -22,7 +22,7 @@ function Buildprofile(): React.ReactElement {
 	const [countries, setCountries] = useState([])
 	const [cities, setCities] = useState([])
 	const [step, setStep] = React.useState(0)
-	const onChange = (nextStep: React.SetStateAction<number>) => {
+	const onChange = (nextStep: any) => {
 		setStep(nextStep < 0 ? 0 : nextStep > 4 ? 4 : nextStep)
 	}
 	const router = useRouter()
@@ -179,7 +179,7 @@ function Buildprofile(): React.ReactElement {
 
 	return (
 		<div>
-			<FrontLayout showFooter={false}>
+			<FrontLayout showFooter={false} showHeader={false}>
 				<main className="w-2/3 mx-auto">
 					<Steps current={step}>
 						<Steps.Item title="Logo" />

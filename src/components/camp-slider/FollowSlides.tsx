@@ -57,7 +57,7 @@ const FollowSlides = () => {
 		}
 	}
 
-	var settings = {
+	const settings = {
 		infinite: false,
 		speed: 500,
 		slidesToShow: 3,
@@ -103,7 +103,7 @@ const FollowSlides = () => {
 	return (
 		<>
 			{users.length > 0 ? (
-				<div className="">
+				<div className="lg:hidden sm:block">
 					<div className="text-center font-bold text-lg my-3">Grow Your Feed</div>
 					<SliderTwo {...settings}>
 						{users.map((user, i) =>

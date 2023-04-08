@@ -6,18 +6,20 @@ import PropTypes from "prop-types";
 interface IProps {
 	showFooter?: boolean;
 	children: ReactChild;
+	showHeader?: boolean;
 }
 
 const FrontLayout: React.FC<IProps> = ({
 	showFooter,
 	children,
+	showHeader,
 }: IProps): JSX.Element => {
 	const text = `CITIZEN PLAINT`
 	return (
 		<Fragment>
-			<title>{ text }</title>
+			<title>{text}</title>
 			<div className="front">
-				<HeaderComp />
+				{showHeader === false ? null : <HeaderComp />}
 				<div className="children">{children}</div>
 				{showFooter && <Footer />}
 			</div>
