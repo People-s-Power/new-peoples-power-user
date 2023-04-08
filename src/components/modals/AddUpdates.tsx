@@ -27,7 +27,7 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 			reader.readAsDataURL(files[0])
 			reader.onloadend = () => {
 				if (reader.result) {
-					let type = files[0].name.substr(files[0].name.length - 3)
+					const type = files[0].name.substr(files[0].name.length - 3)
 					// console.log(type)
 					setFilePreview({
 						type: type === "mp4" ? "video" : "image",

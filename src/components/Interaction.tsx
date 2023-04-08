@@ -209,10 +209,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				query: print(VIEW),
 				variables: {
 					authorId: author.id,
-					postId: id,
+					itemId: id,
 				},
 			})
-			console.log(data)
+			// console.log(data)
 		} catch (err) {
 			console.log(err.response)
 		}
