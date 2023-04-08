@@ -222,14 +222,14 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		<div>
 			<div className="pt-3 flex justify-between" onMouseEnter={() => view(post._id || post.id)}>
 				{liked ? (
-					<div className="flex cursor-pointer" onClick={() => like()}>
+					<div className="flex  cursor-pointer" onClick={() => { like() }}>
 						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
 						<div className={"text-warning text-sm my-auto ml-2"}>
 							{likes} {post.__typename === "Petition" ? "endorsed" : "likes"}
 						</div>
 					</div>
 				) : (
-					<div className="flex  cursor-pointer" onClick={() => like()}>
+					<div className="flex  cursor-pointer" onClick={() => { like(); post.__typename === "Petition" ? setComments(true) : null }}>
 						<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
 						<div className={"text-sm my-auto ml-2"}>
 							{likes} {post.__typename === "Petition" ? "endorsed" : "likes"}
@@ -239,8 +239,9 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 				<div className="flex  cursor-pointer" onClick={() => setComments(!comments)}>
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
-					<div className="text-sm my-auto ml-2">{allComment?.length} Comments</div>
+					<div className="text-sm my-auto ml-2">{allComment?.length} {post.__typename === "Petition" ? "Reasons" : "Comments"} </div>
 				</div>
+				
 				<div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
@@ -380,7 +381,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							onKeyPress={(e) => comment(e, post._id)}
 							onChange={(e) => setContent(e.target.value)}
 							className="p-2 w-full border border-black text-sm"
-							placeholder="Write a comment"
+							placeholder={post.__typename === "Petition" ? "What is your reason for endorsing this Petition?" : "Write a comment"}
 						/>
 						<div className="absolute top-4 right-6">
 							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => commentBtn(post._id)} className="w-6 h-6 cursor-pointer" alt="" />}
