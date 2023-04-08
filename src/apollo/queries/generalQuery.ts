@@ -406,8 +406,8 @@ export const SHARE = gql`
 	}
 `
 
-export const VIEW = gql
-`mutation view($authorId: ID!, $itemId: ID!){
+export const VIEW = gql`
+mutation view($authorId: ID!, $itemId: ID!){
   view(authorId: $authorId, itemId: $itemId)
 }`
 

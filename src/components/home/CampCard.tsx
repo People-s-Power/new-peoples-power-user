@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-import { ICampaign } from "types/Applicant.types";
-import { truncateWord } from "utils";
+// import { ICampaign } from "types/Applicant.types";
+// import { truncateWord } from "utils";
 
-const CampaignCard = ({ camp }: { camp: ICampaign }): JSX.Element => {
+const CampaignCard = ({ camp }: { camp: any }): JSX.Element => {
 	function isValidUrl(string: any) {
 		try {
 			new URL(string);
@@ -20,14 +20,14 @@ const CampaignCard = ({ camp }: { camp: ICampaign }): JSX.Element => {
 				<a className="text-decoration-none link-dark">
 					<img src={camp?.image} className="card-image h-52 w-full" alt={camp?.title} />
 					<div className="card-body p-3">
-						<Link href={`/user?page=${camp?.authorId}`}>
-							<div className="flex cursor-pointer" onClick={() => localStorage.setItem("page", `${camp?.authorId}`)}>
-								{isValidUrl(camp?.authorImg) ? (
-									<img className="w-8 h-8 rounded-full" src={camp?.authorImg} alt="" />
+						<Link href={`/user?page=${camp?.author.id}`}>
+							<div className="flex cursor-pointer" onClick={() => localStorage.setItem("page", `${camp?.author.id}`)}>
+								{isValidUrl(camp?.author.image) ? (
+									<img className="w-8 h-8 rounded-full" src={camp?.author.image} alt="" />
 								) : (
 									<img className="w-8 h-8 opacity-50" src="/images/user.png" alt="" />
 								)}
-								<p className="pl-2 mt-2">{camp?.authorName}</p>
+								<p className="pl-2 mt-2">{camp?.author.name}</p>
 							</div>
 						</Link>
 						<p className="card-title fs-5 fw-bold capitalize">

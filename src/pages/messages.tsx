@@ -31,6 +31,7 @@ const messages = () => {
 	const uploadRef = useRef<HTMLInputElement>(null)
 	const [filesPreview, setFilePreview] = useState<any>([])
 	const [loading, setLoading] = useState(false)
+	const bottomRef = useRef(null);
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {
@@ -136,12 +137,16 @@ const messages = () => {
 
 	useEffect(() => {
 		if (socket.connected) {
-			socket.emit("get_dms", active.id || active._id, (response) => {
+			socket.emit("get_dms", active?.id || active?._id, (response) => {
 				setMessages(response.reverse())
 				console.log(response)
 			})
 		}
 	}, [show, active])
+
+	useEffect(() => {
+		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [show])
 
 	const blockUser = (id) => {
 		socket.emit(
@@ -261,6 +266,7 @@ const messages = () => {
 										</div>
 									)
 								)}
+								<div ref={bottomRef} />
 							</div>
 						</div>
 					)}

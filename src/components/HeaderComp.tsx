@@ -21,7 +21,7 @@ const Header = (): JSX.Element => {
 
 	useEffect(() => {
 		if (socket.connected) {
-			socket.emit("notifications", user.id, (response) => {
+			socket.emit("notifications", user?.id, (response) => {
 				// console.log(response)
 				setCount(response.unReadCount)
 			})
@@ -141,7 +141,9 @@ const Header = (): JSX.Element => {
 
 										>
 											{/* <img src="/images/ci_notification-outline-dot.svg" alt="" /> */}
-											<div className="text-white text-[8px] absolute text-center px-1 bg-red-500 h-[15px] font-semibold top-3 right-2 rounded-full">{count > 100 ? "99+" : count}</div>
+											{count > 0 && (
+												<div className="text-white text-[8px] absolute text-center px-1 bg-red-500 h-[15px] font-semibold top-3 right-2 rounded-full">{count > 100 ? "99+" : count}</div>
+											)}
 											<svg
 												width="19"
 												height="25"

@@ -111,7 +111,7 @@ const HomePage = () => {
 					authorId: author?.id,
 				},
 			})
-			// console.log(data.data.timeline)
+			console.log(data.data.timeline)
 			const general = [
 				...feed,
 				...data.data.timeline.adverts,
