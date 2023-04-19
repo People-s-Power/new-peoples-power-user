@@ -37,7 +37,13 @@ export const GET_EVENTS = gql`
 			likes {
 				name
 			}
-			
+			interested{
+				_id
+				image
+				email
+				name
+				__typename
+			}
 			type
 		}
 	}
@@ -79,8 +85,12 @@ export const UPDATE_EVENT = gql`
 			endDate
 			time
 			image
-			interested {
+			interested{
+				_id
+				image
+				email
 				name
+				__typename
 			}
 			name
 			type
@@ -124,8 +134,12 @@ export const CREATE_EVENT = gql`
 			endDate
 			time
 			image
-			interested {
+			interested{
+				_id
+				image
+				email
 				name
+				__typename
 			}
 			name
 			type
@@ -155,10 +169,12 @@ export const MY_EVENT = gql`
 			likes {
 				name
 			}
-			interested {
-				authorId
-				authorImg
+			interested{
+				_id
+				image
+				email
 				name
+				__typename
 			}
 			name
 			type
@@ -190,10 +206,12 @@ export const INTERESTED = gql`
 				likes
 			}
 			endDate
-			interested {
-				authorId
-				authorImg
+			interested{
+				_id
+				image
+				email
 				name
+				__typename
 			}
 			shares
 			likes {
@@ -211,6 +229,40 @@ export const INTERESTED = gql`
 				image
 			}
 			promoted
+		}
+	}
+`
+export const EVENT = gql`
+	query event($eventId: ID!) {
+		event(eventId: $eventId) {
+			_id
+			audience
+			author {
+				_id
+				name
+				email
+				image
+			}
+			description
+			startDate
+			endDate
+			createdAt
+			__typename
+			time
+			image
+			name
+			likes {
+				name
+			}
+			name
+			type
+			interested{
+				_id
+				image
+				email
+				name
+				__typename
+			}
 		}
 	}
 `

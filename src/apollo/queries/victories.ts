@@ -60,3 +60,38 @@ export const DELETE_VICTORIES = gql`
 		}
 	}
 `
+export const VICTORY = gql`
+	query victory($id: ID!) {
+		victory(id: $id) {
+			_id
+			body
+			image
+			likes {
+				name
+				_id
+			}
+			__typename
+			shares
+			updatedAt
+			createdAt
+			author {
+				_id
+				email
+				image
+				name
+			}
+			comments {
+				content
+				_id
+				author {
+					_id
+					name
+					email
+					image
+				}
+				date
+				likes
+			}
+		}
+	}
+`

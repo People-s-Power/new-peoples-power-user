@@ -93,3 +93,41 @@ export const DELETE_POST = gql`
 		}
 	}
 `
+
+export const GET_POST = gql`
+	query getPost($id: ID!) {
+		getPost (id: $id) {
+			_id
+			body
+			createdAt
+			image
+			likes {
+				_id
+				name
+				email
+				image
+			}
+			shares
+			__typename
+			author {
+				name
+				email
+				image
+				_id
+			}
+			comments {
+				content
+				_id
+				author {
+					_id
+					name
+					email
+					image
+				}
+				date
+				likes
+			}
+			isPetition
+		}
+	}
+`

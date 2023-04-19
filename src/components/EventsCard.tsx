@@ -76,8 +76,8 @@ const EventsCard = ({ event }: { event: any }) => {
 				{event.interested[0] === undefined ? null : (
 					<div className="flex my-6">
 						<div className="flex">
-							<img src={event.interested[0]?.authorImg} className="rounded-full w-10 h-10" alt="" />
-							<img src={event.interested[1]?.authorImg} className="rounded-full w-10 h-10 -ml-1" alt="" />
+							<img src={event.interested[0]?.image} className="rounded-full w-10 h-10" alt="" />
+							<img src={event.interested[1]?.image} className="rounded-full w-10 h-10 -ml-1" alt="" />
 						</div>
 						<div className="text-sm ml-2">
 							{event.interested[0]?.name} and {event.interested?.length} others are attending

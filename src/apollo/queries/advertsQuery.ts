@@ -105,3 +105,30 @@ export const MY_ADVERTS = gql`
 		}
 	}
 `
+export const ADVERT = gql`
+	query advert($advertId: ID!) {
+		advert(advertId: $advertId) {
+			_id
+			caption
+			message
+			email
+			duration
+			link
+			action
+			audience
+			image
+			likes {
+				name
+			}
+			__typename
+			author {
+				_id
+				email
+				image
+				name
+			}
+			createdAt
+			updatedAt
+		}
+	}
+`

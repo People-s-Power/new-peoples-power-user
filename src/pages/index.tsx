@@ -29,6 +29,8 @@ import PostActionCard from "components/PostActionCard"
 import FindExpartModal from "components/modals/FindExpartModal"
 import VictoryCard from "components/VictoryCard"
 import Shared from "components/Shared"
+import { socket } from "pages/_app"
+import Timeline from "components/Timeline"
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom)
@@ -47,7 +49,7 @@ const HomePage = () => {
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [orgId, setOrgId] = useState("")
 	const [openFindExpart, setOpenFindExpart] = useState(false)
-
+	// const [notification, setNotifications] = useState<any>([])
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 
 	useQuery(GET_ORGANIZATIONS, {
@@ -102,9 +104,16 @@ const HomePage = () => {
 	async function getData() {
 		try {
 			let feed
+			let notification
 			await axios.get(`share/feed/${author?.id}`).then(function (response) {
 				feed = response.data
 			})
+			if (socket.connected) {
+				socket.emit("notifications", author?.id, (response) => {
+					notification = response.notications
+					console.log(response)
+				})
+			}
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {
@@ -114,6 +123,7 @@ const HomePage = () => {
 			// console.log(data.data.timeline)
 			const general = [
 				...feed,
+				...notification,
 				...data.data.timeline.adverts,
 				...data.data.timeline.updates,
 				// ...data.data.timeline.events,
@@ -289,6 +299,12 @@ const HomePage = () => {
 									return (
 										<div key={index}>
 											<FollowSlides />
+										</div>
+									)
+								case undefined:
+									return (
+										<div key={index}>
+											<Timeline item={single} />
 										</div>
 									)
 								default:
