@@ -51,6 +51,7 @@ const HomePage = () => {
 	const [openFindExpart, setOpenFindExpart] = useState(false)
 	// const [notification, setNotifications] = useState<any>([])
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
+	const [count, setCount] = useState(0)
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -111,6 +112,7 @@ const HomePage = () => {
 			if (socket.connected) {
 				socket.emit("notifications", author?.id, (response) => {
 					notification = response.notications
+					setCount(response.unReadCount)
 					console.log(response)
 				})
 			}
@@ -254,6 +256,7 @@ const HomePage = () => {
 						handelClick={handelClick}
 						handelEventClick={handelEventClick}
 						handelPetition={handelPetition}
+						count={count}
 					/>
 					<div>
 						{all.map((single: any, index: number) => {

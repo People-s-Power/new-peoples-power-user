@@ -6,10 +6,11 @@ const PostActionCardProp = {
     handelClick: PropTypes.func.isRequired,
     handelEventClick: PropTypes.func.isRequired,
     handelPetition: PropTypes.func.isRequired,
-    handelOpenFindExpart: PropTypes.func.isRequired
+    handelOpenFindExpart: PropTypes.func.isRequired,
+    count: PropTypes.any,
 }
 
-export default function PostActionCard({ authorImage, handelClick, handelEventClick, handelPetition, handelOpenFindExpart }: InferProps<typeof PostActionCardProp>): JSX.Element {
+export default function PostActionCard({ authorImage, handelClick, handelEventClick, handelPetition, handelOpenFindExpart, count }: InferProps<typeof PostActionCardProp>): JSX.Element {
     return <div className="border-b border-gray-200">
         <div className="flex justify-center">
             <img src={authorImage ? authorImage : ''} className="w-14 h-14 mx-4 rounded-full" alt="" />
@@ -41,8 +42,12 @@ export default function PostActionCard({ authorImage, handelClick, handelEventCl
                 <div className="my-auto text-sm ml-3">Start Petition</div>
             </div>
         </div>
-        <div className="text-gray-500 text-center text-xs p-3">
-            14 New Post
-        </div>
+        
+        {
+            count > 0 && <div className="text-gray-500 text-center text-xs p-3">
+                {count} New Timeline Items
+            </div>
+        }
+
     </div>
 }

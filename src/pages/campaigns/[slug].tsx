@@ -47,7 +47,7 @@ const SingleCampaignPage = (): JSX.Element => {
 		onCompleted: (data) => {
 			console.log(data)
 			setCamp(data.getPetition)
-			setEndorsements(data.getPetition.endorsements)
+			setEndorsements(data.getPetition.comments)
 			setUpdate(data.getPetition.updates)
 		},
 		onError: (err) => console.log(err),
@@ -164,7 +164,7 @@ const SingleCampaignPage = (): JSX.Element => {
 											<Endorsements endorsement={endorsement} key={i} />
 										))}
 									</div>
-									{camp?.author?._id === user?.id ? null : endorsements.length >= 1 ? (
+									{/* {camp?.author?._id === user?.id ? null : endorsements.length >= 1 ? (
 										endorsements.map((endorse, i) =>
 											user?.id === endorse.author.id ? (
 												<div key={i}>
@@ -182,7 +182,7 @@ const SingleCampaignPage = (): JSX.Element => {
 										<div>
 											<EndorseCampaignComp camp={camp} />
 										</div>
-									)}
+									)} */}
 								</aside>
 							</main>
 						</div>
