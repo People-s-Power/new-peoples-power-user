@@ -158,6 +158,16 @@ const messages = () => {
 		)
 	}
 
+	const readMessage = (id, msg) => {
+		socket.emit('read_message', {
+			messageId: msg,
+			dmId: id,
+			userId: active.id || active._id,
+		}, response =>
+			console.log('read_message:', response),
+		);
+	}
+
 	const resolve = (id) => {
 		if (star === false) {
 			setStar(true)
@@ -223,8 +233,12 @@ const messages = () => {
 					)}
 					{messages &&
 						messages.map((item, index) => (
-							<div key={index} onClick={() => setShow(item)} className="flex p-3 hover:bg-gray-100 cursor-pointer">
+							<div key={index} onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id) }}
+								className={item.messages[item.messages.length - 1].from !== active.id ? item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer"}>
 								<img src={item.users[0]._id !== active?.id || active._id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
+								<div className="w-6 my-auto mx-auto">
+									{item.messages[item.messages.length - 1].from !== active.id ? item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null : null}
+								</div>
 								<div className="w-2/3 ml-4">
 									<div className="text-base font-bold">{item.users[0]._id !== active?.id || active._id ? item.users[0].name : item.users[1].name}</div>
 									<div className="text-sm">{item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
