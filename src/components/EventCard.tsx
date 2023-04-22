@@ -2,7 +2,6 @@
 import React from 'react';
 import { Dropdown } from 'rsuite';
 import { INTERESTED } from "apollo/queries/eventQuery";
-
 import { SERVER_URL } from "utils/constants";
 import { print } from 'graphql';
 import axios from 'axios';
@@ -23,7 +22,8 @@ const EventCard = ({ event }: { event: any }): JSX.Element => {
                     eventId: event._id,
                     authorId: author.id,
                     authorImg: author.image,
-                    name: author.name
+                    name: author.name,
+                    email: author.email
                 }
             })
             console.log(data)

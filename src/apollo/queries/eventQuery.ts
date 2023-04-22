@@ -183,8 +183,8 @@ export const MY_EVENT = gql`
 `
 
 export const INTERESTED = gql`
-	mutation interested($eventId: String!, $authorId: ID!, $authorImg: String!, $name: String!) {
-		interested(eventId: $eventId, authorId: $authorId, authorImg: $authorImg, name: $name) {
+	mutation interested($eventId: String!, $authorId: ID!, $authorImg: String!, $name: String!, $email: String!) {
+		interested(eventId: $eventId, authorId: $authorId, authorImg: $authorImg, name: $name, email: $email) {
 			_id
 			name
 			description

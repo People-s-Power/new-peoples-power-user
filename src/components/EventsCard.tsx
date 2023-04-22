@@ -26,6 +26,7 @@ const EventsCard = ({ event }: { event: any }) => {
 					authorId: author.id,
 					authorImg: author.image,
 					name: author.name,
+					email: author.email
 				},
 			})
 			console.log(data)
