@@ -101,18 +101,18 @@ const Timeline = ({ item }: { item: any }) => {
             case "Created-Victory":
               return (
                 <div>
-                  <div className="flex p-3 border">
+                  {/* <div className="flex p-3 border">
                     <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
                     <div className="my-auto text-sm">{item.message}</div>
-                  </div>
+                  </div> */}
                 </div>
               )
             case "Created-Petition":
               return <div>
-                <div className="flex p-3 border">
+                {/* <div className="flex p-3 border">
                   <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
                   <div className="my-auto text-sm">{item.message}</div>
-                </div>
+                </div> */}
               </div>
             case "Created-Post":
               return <div>

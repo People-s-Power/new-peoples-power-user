@@ -31,7 +31,7 @@ const notifications = () => {
 
 	return (
 		<FrontLayout>
-			<div className="mx-32">
+			<div className="lg:mx-32">
 				<div className="p-3 pl-8 border-b border-gray-200 text-lg">Notifications</div>
 				{notification &&
 					notification?.map((item, index) => (
