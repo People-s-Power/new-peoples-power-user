@@ -31,6 +31,7 @@ import VictoryCard from "components/VictoryCard"
 import Shared from "components/Shared"
 import { socket } from "pages/_app"
 import Timeline from "components/Timeline"
+import { Loader } from "rsuite"
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom)
@@ -52,6 +53,7 @@ const HomePage = () => {
 	// const [notification, setNotifications] = useState<any>([])
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 	const [count, setCount] = useState(0)
+	const [loading, setLoading] = useState(true)
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -104,6 +106,7 @@ const HomePage = () => {
 	}
 	async function getData() {
 		try {
+			setLoading(true)
 			let feed
 			let notification
 			await axios.get(`share/feed/${author?.id}`).then(function (response) {
@@ -147,13 +150,15 @@ const HomePage = () => {
 				}
 			}
 			console.log(newArray)
+			setLoading(false)
 			setAll(newArray.reverse())
 		} catch (err) {
 			console.log(err)
+			setLoading(false)
 		}
 	}
 
-	
+
 	const refresh = () => {
 		setAll([])
 	}
@@ -258,6 +263,11 @@ const HomePage = () => {
 						count={count}
 						refresh={refresh}
 					/>
+					{
+						loading ? <div className="w-full">
+							<Loader size="md" center />
+						</div> : null
+					}
 					<div>
 						{all.map((single: any, index: number) => {
 							// setType(single.__typename)
