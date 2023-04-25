@@ -70,11 +70,11 @@ const HomePage = () => {
 
 	const user = useRecoilValue(UserAtom)
 
-	useEffect(() => {
-		if (user !== null) {
-			window.location.href = `/`
-		}
-	})
+	// useEffect(() => {
+	// 	if (user !== null) {
+	// 		window.location.href = `/`
+	// 	}
+	// })
 
 	// useQuery(GET_CAMPAIGNS, {
 	// 	client: apollo,

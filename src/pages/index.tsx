@@ -113,7 +113,7 @@ const HomePage = () => {
 				socket.emit("notifications", author?.id, (response) => {
 					notification = response.notications
 					setCount(response.unReadCount)
-					console.log(response)
+					// console.log(response)
 				})
 			}
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -153,14 +153,13 @@ const HomePage = () => {
 		}
 	}
 
-	// useEffect(() => {
-	// 	setTimeout(() => {
-	// 		if (!author) {
-	// 			window.location.href = `/home`
-	// 		}
-	// 	}, 5000)
-	// }, [])
-
+	
+	const refresh = () => {
+		setAll([])
+	}
+	useEffect(() => {
+		getData()
+	}, [all])
 
 	useEffect(() => {
 		getSingle()
@@ -257,6 +256,7 @@ const HomePage = () => {
 						handelEventClick={handelEventClick}
 						handelPetition={handelPetition}
 						count={count}
+						refresh={refresh}
 					/>
 					<div>
 						{all.map((single: any, index: number) => {

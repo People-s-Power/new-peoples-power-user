@@ -19,6 +19,15 @@ const Header = (): JSX.Element => {
 	// 	},
 	// })
 
+	// useEffect(() => {
+	// 	// console.log(user)
+	// 	setTimeout(() => {
+	// 		if (user === null) {
+	// 			window.location.href = `/home`
+	// 		}
+	// 	}, 8000)
+	// })
+
 	useEffect(() => {
 		if (socket.connected) {
 			socket.emit("notifications", user?.id, (response) => {

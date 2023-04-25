@@ -8,9 +8,10 @@ const PostActionCardProp = {
     handelPetition: PropTypes.func.isRequired,
     handelOpenFindExpart: PropTypes.func.isRequired,
     count: PropTypes.any,
+    refresh: PropTypes.func
 }
 
-export default function PostActionCard({ authorImage, handelClick, handelEventClick, handelPetition, handelOpenFindExpart, count }: InferProps<typeof PostActionCardProp>): JSX.Element {
+export default function PostActionCard({ authorImage, handelClick, handelEventClick, handelPetition, handelOpenFindExpart, count, refresh }: InferProps<typeof PostActionCardProp>): JSX.Element {
     return <div className="border-b border-gray-200">
         <div className="flex justify-center">
             <img src={authorImage ? authorImage : ''} className="w-14 h-14 mx-4 rounded-full" alt="" />
@@ -42,10 +43,11 @@ export default function PostActionCard({ authorImage, handelClick, handelEventCl
                 <div className="my-auto text-sm ml-3">Start Petition</div>
             </div>
         </div>
-        
+
         {
-            count > 0 && <div className="text-gray-500 text-center text-xs p-3">
-                {count} New Timeline Items
+            count > 0 && <div className="w-40 mx-auto flex justify-evenly text-center text-warning border border-warning rounded-full text-xs p-2 m-1 cursor-pointer" onClick={() => refresh()}>
+                <img src="/images/arrow-up.svg" className='w-3' alt="" />
+                {count} New Post
             </div>
         }
 

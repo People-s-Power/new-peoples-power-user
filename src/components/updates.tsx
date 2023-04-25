@@ -11,6 +11,7 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRouter } from "next/router"
 import Interaction from "./Interaction"
+import ReactTimeAgo from "react-time-ago"
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -71,16 +72,21 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	}
 	return (
 		<div className="p-3 border-b border-gray-400 my-3">
-			<div className="flex justify-between border-b border-gray-200 pb-3">
-				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
-					<div className="ml-2">
-						<div className="text-base capitalize">
-							{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
+			<div>
+				<div className="flex justify-between border-b border-gray-200 pb-3">
+					<div className="flex">
+						<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
+						<div className="ml-2">
+							<div className="text-base capitalize">
+								{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
+							</div>
+							{/* <div className="text-xs">
+								<ReactTimeAgo date={new Date(updates.createdAt)} />
+							</div> */}
 						</div>
-						{/* <div className="text-xs"> <ReactTimeAgo date={post.createdAt} locale="en-US" /></div> */}
 					</div>
 				</div>
+				<div className="text-sm my-1">{updates.author.description}</div>
 			</div>
 			<div className="text-sm p-2 leading-loose">{updates.petition?.title}</div>
 			<div className="p-2">
