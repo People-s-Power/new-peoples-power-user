@@ -62,7 +62,7 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 				<Modal.Body>
 					<div className="flex">
 						<img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
-						<div className="text-sm">{author.name}</div>
+						<div className="text-sm">{author?.name}</div>
 					</div>
 					<textarea
 						value={body}

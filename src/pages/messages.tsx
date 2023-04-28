@@ -16,6 +16,7 @@ import { useQuery } from "@apollo/client"
 // import { print } from "graphql"
 import axios from "axios"
 import { socket } from "pages/_app"
+import CreateVictories from "components/modals/CreateVictories"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
@@ -32,7 +33,10 @@ const messages = () => {
 	const [filesPreview, setFilePreview] = useState<any>([])
 	const [loading, setLoading] = useState(false)
 	const bottomRef = useRef(null);
-
+	const [victory, setVictory] = useState<any>(false)
+	const makeTestimony = () => {
+		setVictory(true)
+	}
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {
 			const files = e.target.files
@@ -152,7 +156,7 @@ const messages = () => {
 		socket.emit(
 			"block_message",
 			{
-				participants: [active.id || active._id, id],
+				participants: [id, active.id || active._id],
 			},
 			(response) => console.log("block_message:", response)
 		)
@@ -235,12 +239,12 @@ const messages = () => {
 						messages.map((item, index) => (
 							<div key={index} onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id) }}
 								className={item.messages[item.messages.length - 1].from !== active.id ? item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer"}>
-								<img src={item.users[0]._id !== active?.id || active._id ? item.users[0].image : item.users[1].image} className="w-10 h-10 rounded-full" alt="" />
+								<img src={item.users[0]._id === active?.id || active._id ? item.users[1].image : item.users[0].image} className="w-10 h-10 rounded-full" alt="" />
 								<div className="w-6 my-auto mx-auto">
 									{item.messages[item.messages.length - 1].from !== active.id ? item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null : null}
 								</div>
 								<div className="w-2/3 ml-4">
-									<div className="text-base font-bold">{item.users[0]._id !== active?.id || active._id ? item.users[0].name : item.users[1].name}</div>
+									<div className="text-base font-bold">{item.users[0]._id === active?.id || active._id ? item.users[1].name : item.users[0].name}</div>
 									<div className="text-sm">{item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
@@ -269,9 +273,17 @@ const messages = () => {
 								</div>
 								{show.messages.map((item, index) =>
 									item.from === active?.id || active._id ? (
-										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-1/2 ml-auto rounded-md">
+										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-1/2 ml-auto rounded-md flex justify-between">
 											{item.text}
 											<img src={item?.file} alt="" />
+											{
+												item.delivered ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2" viewBox="0 0 16 16">
+													<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+												</svg> : item.received ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2-all" viewBox="0 0 16 16">
+													<path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
+													<path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
+												</svg> : null
+											}
 										</div>
 									) : (
 										<div key={index} className="text-xs my-2">
@@ -300,7 +312,9 @@ const messages = () => {
 												<span onClick={() => resolve(active.id || active._id)}>Resolve</span>
 											</Dropdown.Item>
 										)}
-										<Dropdown.Item>Make a Testimony</Dropdown.Item>
+										<Dropdown.Item>
+											<span onClick={() => makeTestimony()}>Make a Testimony</span>
+										</Dropdown.Item>
 										<Link href={`/report?page=${show?.participants[0] || query.page}`}>
 											<Dropdown.Item>Report User/Ad</Dropdown.Item>
 										</Link>
@@ -421,6 +435,7 @@ const messages = () => {
 						</div>) : <div className="text-center text-gray-400">You have been blocked this user</div>
 					}
 				</div>
+				<CreateVictories open={victory} handelClick={() => makeTestimony()} victory={null} />
 			</div>
 		</FrontLayout>
 	)
