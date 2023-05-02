@@ -150,8 +150,8 @@ const HomePage = () => {
 				}
 			}
 			console.log(newArray)
-			setLoading(false)
 			setAll(newArray.reverse())
+			setLoading(false)
 		} catch (err) {
 			console.log(err)
 			setLoading(false)
