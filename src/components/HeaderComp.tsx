@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import UserMenu from "./user-profile/UserMenu";
 import { Dropdown } from 'rsuite';
 // import { SERVER_URL } from "utils/constants"
-import { io } from "socket.io-client"
+// import { io } from "socket.io-client"
 import { socket } from "pages/_app"
 
 const Header = (): JSX.Element => {

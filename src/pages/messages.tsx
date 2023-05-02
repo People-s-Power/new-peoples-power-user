@@ -152,23 +152,27 @@ const messages = () => {
 	}, [show])
 
 	const blockUser = (id) => {
-		socket.emit(
-			"block_message",
-			{
-				participants: [id, active.id || active._id],
-			},
-			(response) => console.log("block_message:", response)
-		)
+		if (socket.connected) {
+			socket.emit(
+				"block_message",
+				{
+					participants: [id, active.id || active._id],
+				},
+				(response) => console.log("block_message:", response)
+			)
+		}
 	}
 
 	const readMessage = (id, msg) => {
-		socket.emit('read_message', {
-			messageId: msg,
-			dmId: id,
-			userId: active.id || active._id,
-		}, response =>
-			console.log('read_message:', response),
-		);
+		if (socket.connected) {
+			socket.emit('read_message', {
+				messageId: msg,
+				dmId: id,
+				userId: active.id || active._id,
+			}, response =>
+				console.log('read_message:', response),
+			);
+		}
 	}
 
 	const resolve = (id) => {
@@ -286,7 +290,7 @@ const messages = () => {
 								</div>
 								{show.messages.map((item, index) =>
 									item.from === active.id || active._id ? (
-										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-1/2 ml-auto rounded-md flex justify-between">
+										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-[80%] ml-auto rounded-md flex justify-between">
 											{item.text}
 											<img src={item?.file} alt="" />
 											{
@@ -299,7 +303,7 @@ const messages = () => {
 											}
 										</div>
 									) : (
-										<div key={index} className="text-xs my-2">
+										<div key={index} className="text-xs w-[80%] my-2">
 											{item.text}
 											<img src={item?.file} alt="" />
 										</div>

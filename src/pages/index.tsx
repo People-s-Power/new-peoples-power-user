@@ -53,7 +53,7 @@ const HomePage = () => {
 	// const [notification, setNotifications] = useState<any>([])
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 	const [count, setCount] = useState(0)
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(false)
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -161,10 +161,11 @@ const HomePage = () => {
 
 	const refresh = () => {
 		setAll([])
-	}
-	useEffect(() => {
 		getData()
-	}, [all])
+	}
+	// useEffect(() => {
+	// 	getData()
+	// }, [all])
 
 	useEffect(() => {
 		getSingle()
@@ -317,7 +318,7 @@ const HomePage = () => {
 								case undefined:
 									return (
 										<div key={index}>
-											<Timeline item={single} />
+											{/* <Timeline item={single} /> */}
 										</div>
 									)
 								default:
