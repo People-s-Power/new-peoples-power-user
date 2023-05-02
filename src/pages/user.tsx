@@ -72,11 +72,6 @@ const user = () => {
 
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 
-	let page: any
-	if (typeof window !== "undefined") {
-		page = localStorage.getItem("page")
-	}
-
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
 		client: apollo,
@@ -150,18 +145,17 @@ const user = () => {
 					})
 				}
 			}
-			// console.log(newArray)
+			console.log(newArray)
 			setAll(newArray.reverse())
 		} catch (err) {
 			console.log(err.response)
 		}
 	}
 
-	useEffect(() => {
-		getData()
+	const getSingle = () => {
 		try {
 			axios
-				.get(`/user/single/${query?.page}`)
+				.get(`/user/single/${query.page}`)
 				.then(function (response) {
 					setUser(response.data.user)
 					setCampaigns(response.data.Petitions)
@@ -177,8 +171,12 @@ const user = () => {
 		} catch (error) {
 			console.log(error)
 		}
+	}
+
+	useEffect(() => {
 		getData()
-	}, [author, campaigns, posts, adverts, victories, events, query?.page])
+		getSingle()
+	}, [adverts, author, posts, events ])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
@@ -374,52 +372,52 @@ const user = () => {
 								) : null}
 								{all[0] !== undefined
 									? all.map((single: any, index: number) => {
-											// setType(single.__typename)
-											switch (single.__typename) {
-												case "Advert":
-													return (
-														<div key={index}>
-															<AdvertsComp advert={single} />
-														</div>
-													)
-												case "Event":
-													return (
-														<div key={index}>
-															<EventsCard event={single} />
-														</div>
-													)
-												case "Petition":
-													return (
-														<div key={index}>
-															<PetitionComp petition={single} />
-														</div>
-													)
-												case "Victory":
-													return (
-														<div key={index}>
-															<VictoryCard post={single} />
-														</div>
-													)
-												case "Post":
-													return (
-														<div key={index}>
-															<CampComp post={single} />
-														</div>
-													)
-												case "Update":
-													return (
-														<div key={index}>
-															<Updates updates={single} />
-														</div>
-													)
-												case "Follow":
-													return (
-														<div key={index}>
-															<FollowSlides />
-														</div>
-													)
-											}
-									  })
+										// setType(single.__typename)
+										switch (single.__typename) {
+											case "Advert":
+												return (
+													<div key={index}>
+														<AdvertsComp advert={single} />
+													</div>
+												)
+											case "Event":
+												return (
+													<div key={index}>
+														<EventsCard event={single} />
+													</div>
+												)
+											case "Petition":
+												return (
+													<div key={index}>
+														<PetitionComp petition={single} />
+													</div>
+												)
+											case "Victory":
+												return (
+													<div key={index}>
+														<VictoryCard post={single} />
+													</div>
+												)
+											case "Post":
+												return (
+													<div key={index}>
+														<CampComp post={single} />
+													</div>
+												)
+											case "Update":
+												return (
+													<div key={index}>
+														<Updates updates={single} />
+													</div>
+												)
+											case "Follow":
+												return (
+													<div key={index}>
+														<FollowSlides />
+													</div>
+												)
+										}
+									})
 									: null}
 							</div>
 						)}

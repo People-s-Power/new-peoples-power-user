@@ -1,17 +1,24 @@
 import React from "react"
 import { Modal } from "rsuite"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { CREATE_VICTORIES, UPDATE_VICTORIES } from "apollo/queries/victories"
+import { useRouter } from "next/router"
 
 const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handelClick(): void; victory: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
 	const [body, setBody] = useState(victory?.body || "")
+	const router = useRouter()
+
+	// useEffect(() => {
+	// 	console.log(router)
+	// }, [])
+
 	const handelSubmit = async () => {
 		setLoading(true)
 		try {
@@ -56,7 +63,9 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 			<Modal open={open} onClose={handelClick}>
 				<Modal.Header>
 					<div className="border-b border-gray-200 p-3 w-full">
-						{victory === null ? <Modal.Title>Celebrate Victory</Modal.Title> : <Modal.Title>Edit Victory</Modal.Title>}
+						{
+							router.pathname === "/messages" ? <Modal.Title>Celebrate Trestimony</Modal.Title> : victory === null ? <Modal.Title>Celebrate Victory</Modal.Title> : <Modal.Title>Edit Victory</Modal.Title>
+						}
 					</div>
 				</Modal.Header>
 				<Modal.Body>
@@ -77,7 +86,7 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 					<div className="flex justify-between text-gray-500">
 						{victory === null ? (
 							<button onClick={handelSubmit} className="p-1 bg-warning text-white rounded-sm w-40">
-								{loading ? "Loading..." : "Celebrate Victory"}
+								{loading ? "Loading..." : router.pathname === "/messages" ? "Celebrate Testimony" : "Celebrate Victory"}
 							</button>
 						) : (
 							<button onClick={handelUpdate} className="p-1 bg-warning text-white rounded-sm w-40">

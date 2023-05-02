@@ -28,7 +28,7 @@ const connection = () => {
 					authorId: author?.id,
 				},
 			})
-			console.log(data)
+			// console.log(data)
 			setUsers(data.data.connections)
 		} catch (e) {
 			console.log(e)
