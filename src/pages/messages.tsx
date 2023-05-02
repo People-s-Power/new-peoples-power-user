@@ -34,9 +34,8 @@ const messages = () => {
 	const [loading, setLoading] = useState(false)
 	const bottomRef = useRef(null);
 	const [victory, setVictory] = useState<any>(false)
-	const makeTestimony = () => {
-		setVictory(true)
-	}
+	const makeTestimony = () => setVictory(!victory)
+
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {
 			const files = e.target.files
@@ -239,13 +238,22 @@ const messages = () => {
 						messages.map((item, index) => (
 							<div key={index} onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id) }}
 								className={item.messages[item.messages.length - 1].from !== active.id ? item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer"}>
-								<img src={item.users[0]._id === active._id || active.id ? item.users[1].image : item.users[0].image} className="w-10 h-10 rounded-full" alt="" />
+								{
+									item.type === "consumer-to-consumer" ? <img src={item.users[0]._id === active.id ? item.users[1].image : item.users[0].image
+									} className="w-10 h-10 rounded-full" alt="" /> :
+										<img src={item.users[0]._id === active._id ? item.users[1].image : item.users[0].image
+										} className="w-10 h-10 rounded-full" alt="" />
+								}
+
 								<div className="w-6 my-auto mx-auto">
 									{item.messages[item.messages.length - 1].from !== active.id || active._id ? item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null : null}
 								</div>
 								<div className="w-2/3 ml-4">
-									<div className="text-base font-bold">{item.users[0]._id === active._id || active.id ? item.users[1].name : item.users[0].name}</div>
-									<div className="text-sm">{item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
+									{
+										item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
+											: <div className="text-base font-bold">{item.users[0]._id === active._id ? item.users[1].name : item.users[0].name}</div>
+									}
+									<div className="text-sm"> <strong>{item.type === "support-to-consumer" ? "Expert Needed" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 								</div>
 								<div className="w-32 text-xs ml-auto">
 									<ReactTimeAgo date={new Date(item.updatedAt)} />
@@ -263,16 +271,21 @@ const messages = () => {
 							</div>
 							<div className="p-3">
 								<div className="flex mb-3">
-									<img src={show.users[0]._id === active._id || active.id ? show.users[1].image : show.users[0].image} className="w-12 h-12 rounded-full" alt="" />
+									{
+										show.type === "consumer-to-consumer" ? <img src={show.users[0]._id === active.id ? show.users[1].image : show.users[0].image} className="w-12 h-12 rounded-full" alt="" /> :
+											<img src={show.users[0]._id === active._id ? show.users[1].image : show.users[0].image} className="w-12 h-12 rounded-full" alt="" />
+									}
 									<div className="ml-4 my-auto">
-										<div className="text-sm">{show.users[0]._id === active._id || active.id ? show.users[1].name : show.users[0].name}</div>
+										{
+											show.type === "consumer-to-consumer" ? <div className="text-sm">{show.users[0]._id === active.id ? show.users[1].name : show.users[0].name}</div> : <div className="text-sm">{show.users[0]._id === active._id ? show.users[1].name : show.users[0].name}</div>
+										}
 										<div className="text-xs">
 											<ReactTimeAgo date={new Date(show.updatedAt)} />
 										</div>
 									</div>
 								</div>
 								{show.messages.map((item, index) =>
-									item.from === active._id || active.id ? (
+									item.from === active.id || active._id ? (
 										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-1/2 ml-auto rounded-md flex justify-between">
 											{item.text}
 											<img src={item?.file} alt="" />
@@ -435,7 +448,7 @@ const messages = () => {
 						</div>) : <div className="text-center text-gray-400">You have been blocked this user</div>
 					}
 				</div>
-				<CreateVictories open={victory} handelClick={() => makeTestimony()} victory={null} />
+				<CreateVictories open={victory} handelClick={makeTestimony} victory={null} />
 			</div>
 		</FrontLayout>
 	)
