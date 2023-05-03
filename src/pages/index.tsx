@@ -318,7 +318,7 @@ const HomePage = () => {
 								case undefined:
 									return (
 										<div key={index}>
-											{/* <Timeline item={single} /> */}
+											<Timeline item={single} />
 										</div>
 									)
 								default:

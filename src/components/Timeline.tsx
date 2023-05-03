@@ -10,6 +10,7 @@ import axios from "axios"
 import AdvertsComp from "./AdvertsCard"
 import EventsCard from "./EventsCard"
 import CampComp from "./CampComp"
+import Victory from "./VictoryCard"
 
 const Timeline = ({ item }: { item: any }) => {
   const [data, setData] = useState(null)
@@ -22,7 +23,7 @@ const Timeline = ({ item }: { item: any }) => {
           advertId: item.itemId,
         },
       })
-      console.log(data)
+      // console.log(data)
       setData(data.data.advert)
     } catch (e) {
       console.log(e.response)
@@ -51,12 +52,13 @@ const Timeline = ({ item }: { item: any }) => {
           id: item.itemId,
         },
       })
-      console.log(data)
+      // console.log(data)
       setData(data.data.getPost)
     } catch (e) {
       console.log(e.response)
     }
   }
+
   const fetchEvent = async () => {
     try {
       const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -65,12 +67,13 @@ const Timeline = ({ item }: { item: any }) => {
           eventId: item.itemId,
         },
       })
-      console.log(data)
+      // console.log(data)
       setData(data.data.event)
     } catch (e) {
       console.log(e.response)
     }
   }
+
   useEffect(() => {
     if (item.event === "Created-Advert") {
       fetchAdvert()
@@ -101,10 +104,11 @@ const Timeline = ({ item }: { item: any }) => {
             case "Created-Victory":
               return (
                 <div>
-                  {/* <div className="flex p-3 border">
+                  <div className="flex p-3 border">
                     <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
                     <div className="my-auto text-sm">{item.message}</div>
-                  </div> */}
+                  </div>
+                  {data && <Victory post={data} />}
                 </div>
               )
             case "Created-Petition":
