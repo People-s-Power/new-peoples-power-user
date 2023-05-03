@@ -40,7 +40,9 @@ export default class MyDocument extends Document {
 	render(): JSX.Element {
 		return (
 			<Html>
-				<Head />
+				<Head>
+					<link rel="stylesheet" href="/nprogress.css" />
+				</Head>
 				<body>
 					<Main />
 					<NextScript />

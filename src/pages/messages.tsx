@@ -241,7 +241,7 @@ const messages = () => {
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id) }}
-								className={item.messages[item.messages.length - 1].from !== active.id ? item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer"}>
+								className={item.unread === true ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer"}>
 								{
 									item.type === "consumer-to-consumer" ? <img src={item.users[0]._id === active.id ? item.users[1].image : item.users[0].image
 									} className="w-10 h-10 rounded-full" alt="" /> :
@@ -250,7 +250,7 @@ const messages = () => {
 								}
 
 								<div className="w-6 my-auto mx-auto">
-									{item.messages[item.messages.length - 1].from !== active.id || active._id ? item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null : null}
+									{item.unread === true ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
 								</div>
 								<div className="w-2/3 ml-4">
 									{
