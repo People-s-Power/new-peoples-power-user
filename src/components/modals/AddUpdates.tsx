@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Modal } from "rsuite"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import axios from "axios"
@@ -19,6 +19,11 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 	})
 	const [body, setBody] = useState(update?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
+
+	useEffect(() => {
+		// console.log(update)
+		// console.log(petition)
+	}, [])
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files

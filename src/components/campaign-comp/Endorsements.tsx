@@ -10,7 +10,7 @@ import { IEndorsement } from "types/Applicant.types";
 const Endorsements = ({
 	endorsement,
 }: {
-	endorsement: IEndorsement;
+	endorsement: any;
 }): JSX.Element => {
 	const user = useRecoilValue(UserAtom);
 	// const [isLiked, setIsLiked] = useState(false);
@@ -45,15 +45,15 @@ const Endorsements = ({
 					<img src={endorsement?.author?.image} className="me-2" alt="" />
 					<div className=" text-head">
 						<b className="d-block mb-0 name  ">
-							{endorsement?.author?.firstName} {endorsement?.author?.lastName}
+							{endorsement?.author?.name}
 						</b>
 						<small className="mt-0 date small">
-							<i>{timeago.format(endorsement?.createdAt)}</i>
+							<i>{timeago.format(endorsement?.date)}</i>
 						</small>
 					</div>
 				</div>
 				<div className="bottom">
-					<ReactMarkdown>{endorsement?.body}</ReactMarkdown>
+					<ReactMarkdown>{endorsement?.content}</ReactMarkdown>
 				</div>
 				{/* <hr className="" />
 				<div className="d-flex align-items-center  ">

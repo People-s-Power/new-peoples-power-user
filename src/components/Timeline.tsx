@@ -11,6 +11,7 @@ import AdvertsComp from "./AdvertsCard"
 import EventsCard from "./EventsCard"
 import CampComp from "./CampComp"
 import Victory from "./VictoryCard"
+import PetitionComp from "./PetitionCard"
 
 const Timeline = ({ item }: { item: any }) => {
   const [data, setData] = useState(null)
@@ -74,13 +75,17 @@ const Timeline = ({ item }: { item: any }) => {
     }
   }
 
+  const getPetition = () => {
+
+  }
+
   useEffect(() => {
     if (item.event === "Created-Advert") {
       fetchAdvert()
     } else if (item.event === "Created-Victory") {
       fetchVictory()
     } else if (item.event === "Created-Petition") {
-
+      getPetition()
     } else if (item.event === "Created-Post") {
       fetchPost()
     }
@@ -95,45 +100,58 @@ const Timeline = ({ item }: { item: any }) => {
           switch (item.event) {
             case "Created-Advert":
               return <div>
-                <div className="flex p-3 border">
-                  <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
-                  <div className="my-auto text-sm">{item.message}</div>
-                </div>
-                {data && <AdvertsComp advert={data} />}
+                {data && <div>
+                  <div className="flex p-3 border">
+                    <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                    <div className="my-auto text-sm">{item.message}</div>
+                  </div>
+                  <AdvertsComp advert={data} />
+                </div>}
               </div>
             case "Created-Victory":
               return (
                 <div>
-                  <div className="flex p-3 border">
-                    <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
-                    <div className="my-auto text-sm">{item.message}</div>
-                  </div>
-                  {data && <Victory post={data} />}
+                  {data && <div>
+                    <div className="flex p-3 border">
+                      <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                      <div className="my-auto text-sm">{item.message}</div>
+                    </div>
+                    <Victory post={data} />
+                  </div>}
                 </div>
               )
             case "Created-Petition":
               return <div>
-                {/* <div className="flex p-3 border">
-                  <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
-                  <div className="my-auto text-sm">{item.message}</div>
-                </div> */}
+                {data && <div>
+                  <div className="flex p-3 border">
+                    <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                    <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented" ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message)}</div>
+                  </div>
+                  <PetitionComp petition={data} />
+                </div>}
               </div>
             case "Created-Post":
               return <div>
-                <div className="flex p-3 border">
-                  <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
-                  <div className="my-auto text-sm">{item.message}</div>
-                </div>
-                {data && <CampComp post={data} />}
+                {
+                  data && <div>
+                    <div className="flex p-3 border">
+                      <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                      <div className="my-auto text-sm">{item.message}</div>
+                    </div>
+                    <CampComp post={data} />
+                  </div>
+                }
               </div>
             case "Created-Event":
               return (
                 <div>
-                  <div className="flex p-3 border">
-                    <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
-                    <div className="my-auto text-sm">{item.message}</div>
-                  </div>
-                  {data && <EventsCard event={data} />}
+                  {data && <div>
+                    <div className="flex p-3 border">
+                      <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                      <div className="my-auto text-sm">{item.message}</div>
+                    </div>
+                    <EventsCard event={data} />
+                  </div>}
                 </div>
               )
           }

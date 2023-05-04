@@ -62,7 +62,7 @@ Router.events.on("routeChangeError", () => Nprogress.done())
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	const client = new ApolloClient({
-		uri: "https://people-api-vkkzo.ondigitalocean.app",
+		uri: SERVER_URL,
 		cache: new InMemoryCache(),
 	})
 	// const client = useApollo(pageProps.apollo);
@@ -104,16 +104,16 @@ const Environments = gql`
 `
 const Layout = ({ children }: { children: React.ReactChild }) => {
 	const [user, setUser] = useRecoilState(UserAtom)
-	const [getEnvironments] = useLazyQuery(Environments, {
-		onCompleted: (d) => {
-			const data = d.getEnvs
-			data.forEach((d: { name: string; value: string }) => Cookies.set(d.name, d.value))
-		},
-		onError: (er) => console.log(er.message),
-	})
+	// const [getEnvironments] = useLazyQuery(Environments, {
+	// 	onCompleted: (d) => {
+	// 		const data = d.getEnvs
+	// 		data.forEach((d: { name: string; value: string }) => Cookies.set(d.name, d.value))
+	// 	},
+	// 	onError: (er) => console.log(er.message),
+	// })
 
 	useEffect(() => {
-		getEnvironments()
+		// getEnvironments()
 		async function getUser() {
 			try {
 				const { data } = await axios.get("/auth/me")

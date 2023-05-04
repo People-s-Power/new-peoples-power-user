@@ -80,7 +80,7 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 						<div className="text-base font-bold capitalize">
 							{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
 						</div>
-						<div className="text-base">Celebrated this victory/testimony</div>
+						<div className="text-base">Shared this victory/testimony</div>
 					</div>
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
@@ -89,9 +89,8 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 			<div className="p-2">
 				<img src={post?.image} className="w-full h-80 rounded-md object-cover" alt="" />
 			</div>
-			<div className="text-sm leading-loose p-2">
-				Congratulations to all who supported this campaign, on getting a massive victory. Our petition has just won. Lets keep making the change that we need.
-			</div>
+			{/* <div className="text-sm leading-loose p-2">
+			</div> */}
 			<Interaction post={post} />
 
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />

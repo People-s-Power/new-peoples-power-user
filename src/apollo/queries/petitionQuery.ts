@@ -116,100 +116,43 @@ export const MY_PETITION = gql`
 export const SINGLE_PETITION = gql`
 	query getPetition($slug: String!) {
 		getPetition(slug: $slug) {
-			title
 			_id
-			image
-			excerpt
-			aim
-			target
-			body
-			slug
-			status
-			createdAt
-			updatedAt
-			comments {
-				_id
-				content
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
-			addedFrom
-			numberOfPaidViewsCount
-			numberOfPaidEndorsementCount
-			endorsements {
-				id
-				author {
-					name
-					id
-				}
-				petition {
-					_id
-					title
-					image
-					excerpt
-					aim
-					target
-					createdAt
-				}
-				body
-				likes {
-					name
-					_id
-					image
-					email
-				}
-				createdAt
-				updatedAt
-			}
-			promoted
-			likes {
-				_id
-				name
-				email
-				image
-			}
-			views
-			category
-			region
-			author {
-				_id
-				name
-				email
-				image
-			}
-			updates {
-				body
-				image
-				author {
-					_id
-					name
-					email
-					image
-				}
-				shares
-				comments {
-					_id
-					content
-					author {
-						_id
-						name
-						email
-						image
-					}
-					date
-				}
-				likes {
-					name
-					_id
-					image
-				}
-			}
+    title
+    image
+    aim
+    body
+    target
+    slug
+    comments{
+      _id
+      content
+      author{
+        _id
+        name
+        email
+        image
+      }
+      date
+    }
+    likes{
+      _id
+      name
+    }
+    promoted
+    views
+    category
+    region
+    author{
+       _id
+        name
+        email
+        image
+    }
+    updates{
+      body
+      image
+      createdAt
+    }
 		}
 	}
 `

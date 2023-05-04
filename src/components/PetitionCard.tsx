@@ -88,7 +88,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 				<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 				<div className="my-3 flex justify-end">
 					<Link href={`/campaigns/${petition?.slug}`}>
-						<button className="p-2 ml-auto w-40 bg-warning">View Full Petiton</button>
+						<button className="p-2 ml-auto w-40 bg-warning text-white">View Full Petiton</button>
 					</Link>
 				</div>
 			</div>

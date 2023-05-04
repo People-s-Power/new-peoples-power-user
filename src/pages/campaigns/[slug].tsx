@@ -18,6 +18,7 @@ import { ICampaign, IEndorsement } from "types/Applicant.types"
 import Link from "next/link"
 import router, { useRouter } from "next/router"
 import { SINGLE_PETITION } from "apollo/queries/petitionQuery"
+import AddUpdates from "components/modals/AddUpdates"
 
 // const io = socket(SERVER_URL, {
 // 	extraHeaders: {
@@ -27,6 +28,7 @@ import { SINGLE_PETITION } from "apollo/queries/petitionQuery"
 
 export interface Update {
 	body: string
+	image: string
 }
 
 const SingleCampaignPage = (): JSX.Element => {
@@ -38,7 +40,7 @@ const SingleCampaignPage = (): JSX.Element => {
 	const { query } = useRouter()
 	const user = useRecoilValue(UserAtom)
 	const [update, setUpdate] = useState<Update[]>([])
-
+	const [open, setOpen] = useState(false)
 	const [camp, setCamp] = useState<any>([])
 
 	useQuery(SINGLE_PETITION, {
@@ -81,7 +83,7 @@ const SingleCampaignPage = (): JSX.Element => {
 	return (
 		<Fragment>
 			<Head>
-				<title>Campaign || {camp?.title}</title>
+				<title>Petition || {camp?.title}</title>
 				<meta name="description" content={camp?.body} />
 			</Head>
 			<FrontLayout>
@@ -92,7 +94,7 @@ const SingleCampaignPage = (): JSX.Element => {
 							<main className="single-camp-wrap px-2 d-flex flex-column flex-md-row align-items-sm-start justify-content-sm-between">
 								<div className="sec-1 pl-5 mb-5 left w-[50%]">
 									<div className="top">
-										<h1 className="m-0 p-0 text-warning fw-bold mb-3 fs-4">Explore Campaign</h1>
+										<h1 className="m-0 p-0 text-warning fw-bold mb-3 fs-4">Explore Petition</h1>
 										<img src={camp?.image} alt={camp?.title} loading="lazy" className="camp-image mb-0" />
 										{/* <div className="d-flex  share-like align-items-center">
 											<a
@@ -115,7 +117,7 @@ const SingleCampaignPage = (): JSX.Element => {
 									<div className="m-0 mt-2 fw-bold flex">
 										<img className="w-8 h-8 rounded-full" src={camp?.author?.image} alt="" />
 										<p className="ml-3 my-auto">
-											{`${camp?.author?.name}`} launched this campaign to {camp?.target}
+											{`${camp?.author?.name}`} launched this Petition to {camp?.target}
 										</p>
 									</div>
 									<div className="fs-5 my-3">{camp?.body}</div>
@@ -124,10 +126,16 @@ const SingleCampaignPage = (): JSX.Element => {
 									</Link>
 									{update.length >= 1 ? (
 										<div className="bg-gray-50 p-3 mt-5">
-											<div className="text-xl font-bold my-2">CAMPAIGN UPDATE</div>
+											<div className="text-xl font-bold my-2">PETITION UPDATE</div>
 											{update.map((item, i) => (
 												<div className="text-lg my-1" key={i}>
-													{item.body}
+													<img src={item.image} className="w-full h-80 rounded-md object-cover" alt="" />
+													<div className="text-sm">
+														{item.body}
+													</div>
+													<button onClick={() => setOpen(true)} className="bg-transparent p-2 text-warning ml-auto">
+														<span>&#x270E;</span> Edit
+													</button>
 												</div>
 											))}
 										</div>
@@ -186,6 +194,7 @@ const SingleCampaignPage = (): JSX.Element => {
 								</aside>
 							</main>
 						</div>
+						<AddUpdates open={open} handelClick={() => setOpen(!open)} update={update} petition={camp} />
 					</div>
 				</Wrapper>
 			</FrontLayout>

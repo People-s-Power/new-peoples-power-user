@@ -79,6 +79,18 @@ const messages = () => {
 			console.log(err.message)
 		},
 	})
+	const deleteChat = (id) => {
+		if (socket.connected) {
+			socket.emit('delete_dm', {
+				dmId: id,
+				userId: active.id || active._id,
+			}, response => {
+				console.log('delete_dm:', response)
+				getDm()
+			}
+			);
+		}
+	}
 	const getSingle = () => {
 		try {
 			axios.get(`/user/single/${user?.id}`).then(function (response) {
@@ -138,27 +150,46 @@ const messages = () => {
 		getSingle()
 	}, [user])
 
-	useEffect(() => {
+	const getDm = () => {
 		if (socket.connected) {
 			socket.emit("get_dms", active?.id || active?._id, (response) => {
 				setMessages(response.reverse())
 				console.log(response)
 			})
 		}
+	}
+	useEffect(() => {
+		getDm()
 	}, [show, active])
 
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [show])
 
+
 	const blockUser = (id) => {
 		if (socket.connected) {
 			socket.emit(
 				"block_message",
 				{
-					participants: [id, active.id || active._id],
+					messageId: id,
 				},
-				(response) => console.log("block_message:", response)
+				(response) => {
+					console.log("block_message:", response)
+					getDm()
+				}
+			)
+		}
+	}
+
+	const unblockUser = (id) => {
+		if (socket.connected) {
+			socket.emit(
+				"unblock_message",
+				{
+					messageId: id,
+				},
+				(response) => console.log("unblock_message:", response)
 			)
 		}
 	}
@@ -169,8 +200,20 @@ const messages = () => {
 				messageId: msg,
 				dmId: id,
 				userId: active.id || active._id,
-			}, response =>
+			}, (response) =>
 				console.log('read_message:', response),
+			);
+		}
+	}
+	
+	const deleteDm = (id, msg) => {
+		if (socket.connected) {
+			socket.emit('delete_message', {
+				messageId: msg,
+				dmId: id,
+				userId: active.id || active._id,
+			}, response =>
+				console.log('delete_message:', response),
 			);
 		}
 	}
@@ -193,6 +236,30 @@ const messages = () => {
 		)
 		setStar(false)
 	}
+
+	const markUnRead = (id) => {
+		if (socket.connected) {
+			socket.emit('mark_as_unread', {
+				dmId: id,
+				userId: active.id || active._id,
+			}, (response) => {
+				// console.log('mark_as_unread:', response)
+				getDm()
+			})
+		}
+	}
+	const markRead = (id, msg) => {
+		if (socket.connected) {
+			socket.emit('mark_as_read', {
+				dmId: id,
+				userId: active.id || active._id,
+			}, (response) => {
+				// console.log('mark_as_read:', response)
+				readMessage(id, msg)
+			})
+		}
+	}
+
 	const speaker = (
 		<Popover>
 			<div onClick={() => setActive(user)} className="flex m-1 cursor-pointer">
@@ -240,28 +307,43 @@ const messages = () => {
 					)}
 					{messages &&
 						messages.map((item, index) => (
-							<div key={index} onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id) }}
-								className={item.unread === true ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 cursor-pointer"}>
-								{
-									item.type === "consumer-to-consumer" ? <img src={item.users[0]._id === active.id ? item.users[1].image : item.users[0].image
-									} className="w-10 h-10 rounded-full" alt="" /> :
-										<img src={item.users[0]._id === active._id ? item.users[1].image : item.users[0].image
-										} className="w-10 h-10 rounded-full" alt="" />
-								}
-
-								<div className="w-6 my-auto mx-auto">
-									{item.unread === true ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
-								</div>
-								<div className="w-2/3 ml-4">
+							<div key={index} className={item.unread === true || item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
+								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
+									className={"w-full flex"}
+								>
 									{
-										item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
-											: <div className="text-base font-bold">{item.users[0]._id === active._id ? item.users[1].name : item.users[0].name}</div>
+										item.type === "consumer-to-consumer" ? <img src={item.users[0]._id === active.id ? item.users[1].image : item.users[0].image
+										} className="w-10 h-10 rounded-full" alt="" /> :
+											<img src={item.users[0]._id === active._id ? item.users[1].image : item.users[0].image
+											} className="w-10 h-10 rounded-full my-auto" alt="" />
 									}
-									<div className="text-sm"> <strong>{item.type === "support-to-consumer" ? "Expert Needed" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
+
+									<div className="w-6 my-auto mx-auto">
+										{item.unread === true || item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
+									</div>
+									<div className="w-[80%] ml-4">
+										{
+											item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
+												: <div className="text-base font-bold">{item.users[0]._id === active._id ? item.users[1].name : item.users[0].name}</div>
+										}
+										<div className="text-sm"> <strong>{item.type === "support-to-consumer" ? "Expert Needed" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
+										<ReactTimeAgo date={new Date(item.updatedAt)} />
+									</div>
+									{/* <div className="w-32 text-xs ml-auto">
+									</div> */}
+
 								</div>
-								<div className="w-32 text-xs ml-auto">
-									<ReactTimeAgo date={new Date(item.updatedAt)} />
-								</div>
+								<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+									<Dropdown.Item>
+										<span onClick={() => deleteChat(item.id)}>Delete</span>
+									</Dropdown.Item>
+									<Dropdown.Item>
+										<span onClick={() => markUnRead(item.id)}>Mark Unread</span>
+									</Dropdown.Item>
+									<Dropdown.Item>
+										<span onClick={() => markRead(item.id, item.messages[item.messages.length - 1]._id)}>Mark Read</span>
+									</Dropdown.Item>
+								</Dropdown>
 							</div>
 						))}
 				</div>
@@ -290,17 +372,24 @@ const messages = () => {
 								</div>
 								{show.messages.map((item, index) =>
 									item.from === active.id || active._id ? (
-										<div key={index} className="text-xs my-2 p-1 bg-gray-200 w-[80%] ml-auto rounded-md flex justify-between">
-											{item.text}
-											<img src={item?.file} alt="" />
-											{
-												item.delivered ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2" viewBox="0 0 16 16">
-													<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-												</svg> : item.received ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2-all" viewBox="0 0 16 16">
-													<path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
-													<path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
-												</svg> : null
-											}
+										<div key={index} className="flex">
+											<div className="text-xs my-2 p-1 bg-gray-200 w-[80%] ml-auto rounded-md flex justify-between">
+												{item.text}
+												<img src={item?.file} alt="" />
+												{
+													item.delivered ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2" viewBox="0 0 16 16">
+														<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+													</svg> : item.received ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2-all" viewBox="0 0 16 16">
+														<path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
+														<path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
+													</svg> : null
+												}
+											</div>
+											<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+												<Dropdown.Item>
+													<span onClick={() => deleteDm(show.id, item._id)}>Delete</span>
+												</Dropdown.Item>
+											</Dropdown>
 										</div>
 									) : (
 										<div key={index} className="text-xs w-[80%] my-2">
@@ -336,7 +425,7 @@ const messages = () => {
 											<Dropdown.Item>Report User/Ad</Dropdown.Item>
 										</Link>
 										<Dropdown.Item>
-											<span onClick={() => blockUser(show?.participants[0] || query.page)}>Block User</span>
+											<span onClick={() => blockUser(show?.id)}>Block User</span>
 										</Dropdown.Item>
 									</Dropdown>
 									{star === true && (
@@ -449,7 +538,7 @@ const messages = () => {
 							<Link href={'/connection?page=followers'}>
 								<button className="bg-warning px-4 text-white p-2 my-4 rounded-sm">connections</button>
 							</Link>
-						</div>) : <div className="text-center text-gray-400">You have been blocked this user</div>
+						</div>) : <div className="text-center text-gray-400">This user has been blocked </div>
 					}
 				</div>
 				<CreateVictories open={victory} handelClick={makeTestimony} victory={null} />
