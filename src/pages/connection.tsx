@@ -28,7 +28,7 @@ const connection = () => {
 					authorId: author?.id,
 				},
 			})
-			// console.log(data)
+			console.log(data)
 			setUsers(data.data.connections)
 		} catch (e) {
 			console.log(e)
@@ -67,7 +67,7 @@ const connection = () => {
 		getUsers()
 		getFollowers()
 		getFollowing()
-	}, [author, following, followers, users])
+	}, [author, active])
 
 	const follow = async (id) => {
 		try {
@@ -110,7 +110,7 @@ const connection = () => {
 									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 									<div className="text-xl py-2">{user.name} </div>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
-									<div className="text-xs text-gray-700 my-3">500 Followers</div>
+									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 									<div className="text-xs text-gray-900 my-6 cursor-pointer" onClick={() => follow(user._id)}>
 										+ Follow
 									</div>

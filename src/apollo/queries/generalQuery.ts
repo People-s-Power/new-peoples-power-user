@@ -322,6 +322,7 @@ export const CONNECTIONS = gql`
 			name
 			image
 			_id
+			followers
 		}
 	}
 `

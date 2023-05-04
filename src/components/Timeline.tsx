@@ -38,7 +38,7 @@ const Timeline = ({ item }: { item: any }) => {
           id: item.itemId,
         },
       })
-      console.log(data)
+      // console.log(data)
       setData(data.data.victory)
     } catch (e) {
       console.log(e.response)
