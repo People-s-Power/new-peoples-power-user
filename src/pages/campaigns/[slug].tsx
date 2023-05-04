@@ -197,7 +197,7 @@ const SingleCampaignPage = (): JSX.Element => {
 								</aside>
 							</main>
 						</div>
-						<AddUpdates open={open} handelClick={() => setOpen(!open)} update={single} petition={camp} />
+						{single !== null ? <AddUpdates open={open} handelClick={() => setOpen(!open)} update={single} petition={camp} /> : null}
 					</div>
 				</Wrapper>
 			</FrontLayout>
