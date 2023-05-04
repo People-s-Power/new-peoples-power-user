@@ -200,8 +200,10 @@ const messages = () => {
 				messageId: msg,
 				dmId: id,
 				userId: active.id || active._id,
-			}, (response) =>
+			}, (response) => {
 				console.log('read_message:', response),
+				getDm()
+				}
 			);
 		}
 	}
