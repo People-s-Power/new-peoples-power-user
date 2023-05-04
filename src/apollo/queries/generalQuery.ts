@@ -323,6 +323,7 @@ export const CONNECTIONS = gql`
 			image
 			_id
 			followers
+			description
 		}
 	}
 `
@@ -332,6 +333,7 @@ export const FOLLOWERS = gql`
 			name
 			image
 			_id
+			followers
 		}
 	}
 `
@@ -341,6 +343,7 @@ export const FOLLOWING = gql`
 			name
 			image
 			_id
+			followers
 		}
 	}
 `

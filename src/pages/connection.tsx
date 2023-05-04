@@ -123,7 +123,7 @@ const connection = () => {
 									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 									<div className="text-xl py-2">{user.name} </div>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
-									{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
+									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 									<Link href={`/messages?page=${user._id}`}>
 										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
 									</Link>
@@ -135,7 +135,7 @@ const connection = () => {
 										<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 										<div className="text-xl py-2">{user.name} </div>
 										<div className="w-16 h-[1px] bg-gray-200"></div>
-										{/* <div className="text-xs text-gray-700 my-3">500 Followers</div> */}
+										<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 										<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
 											Unollow
 										</div>

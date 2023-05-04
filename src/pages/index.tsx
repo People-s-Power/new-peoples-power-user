@@ -115,7 +115,7 @@ const HomePage = () => {
 			if (socket.connected) {
 				socket.emit("notifications", author?.id, (response) => {
 					notification = response.notications
-					setCount(response.unReadCount)
+					// setCount(response.unReadCount)
 					// console.log(response)
 				})
 			}
@@ -136,7 +136,10 @@ const HomePage = () => {
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,
 			]
-			// console.log(general)
+			console.log(general)
+			// const date = new Date()
+			// countObjectsWithMatchingDate(general, date.toISOString())
+
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
 			const sortedItems = randomizedItems.sort((a, b) => b.createdAt - a.createdAt)
 
@@ -149,7 +152,7 @@ const HomePage = () => {
 					})
 				}
 			}
-			console.log(newArray)
+			// console.log(newArray)
 			setAll(newArray.reverse())
 			setLoading(false)
 		} catch (err) {
@@ -158,10 +161,26 @@ const HomePage = () => {
 		}
 	}
 
+	// function countObjectsWithMatchingDate(array, date) {
+	// 	let num = 0;
+	// 	for (let i = 0; i < array.length; i++) {
+	// 		const date1 = new Date(array[i].createdAt)
+	// 		const date2 = new Date(date)
+	// 		if (
+	// 			date1.getDate() === date2.getDate() &&
+	// 			date1.getMonth() === date2.getMonth() &&
+	// 			date1.getFullYear() === date2.getFullYear()
+	// 		) {
+	// 			num++;
+	// 		}
+	// 	}
+	// 	setCount(num)
+	// }
 
 	const refresh = () => {
 		setAll([])
 		getData()
+		setCount(0)
 	}
 	// useEffect(() => {
 	// 	getData()
@@ -173,24 +192,7 @@ const HomePage = () => {
 		getData()
 	}, [author])
 
-	const follow = async (user: any) => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(FOLLOW),
-				variables: {
-					followerId: author.id,
-					followId: user._id,
-				},
-			})
-			console.log(data)
-			// toast.success("Followed!")
-			// setFollow(true)
-			getUsers()
-		} catch (error) {
-			console.log(error)
-			// toast.warn("Oops an error occoured!")
-		}
-	}
+
 	const getUsers = async () => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -336,19 +338,8 @@ const HomePage = () => {
 					<div className="text-sm">Grow your feed by following persons and organizations that interest you</div>
 					{users.slice(0, 4).map((user, index) =>
 						user._id !== author?.id ? (
-							<div key={index} className="flex justify-between my-4">
-								<img src={user.image} className="w-12 m-2 h-12 rounded-full" alt="" />
-								<div className="w-[80%]">
-									<div className="text-base font-light">{user.name} </div>
-									{/* <div className="text-xs">Joshua who you followed
-								started following King Erics</div> */}
-									<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[60%] mt-2 rounded-md">
-										<div className="text-lg">+</div>
-										<div className="my-auto text-sm" onClick={() => follow(user)}>
-											Follow
-										</div>
-									</div>
-								</div>
+							<div key={index}>
+								<Follow user={user} getUsers={getUsers()} />
 							</div>
 						) : null
 					)}
@@ -378,3 +369,55 @@ const HomePage = () => {
 }
 
 export default HomePage
+
+
+function Follow(user, getUsers) {
+	const [loading, setLoading] = useState(false)
+	const author = useRecoilValue(UserAtom)
+
+	// console.log(user)
+	const followUser = async (user: any) => {
+		try {
+			setLoading(true)
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: user._id,
+				},
+			})
+			console.log(data)
+			setLoading(false)
+			// toast.success("Followed!")
+			// setFollow(true)
+			// getUsers()
+		} catch (error) {
+			console.log(error)
+			setLoading(false)
+			// toast.warn("Oops an error occoured!")
+		}
+	}
+	return (
+		<div className="flex justify-between my-4">
+			<img src={user.user.image} className="w-12 m-2 h-12 rounded-full" alt="" />
+			<div className="w-[80%]">
+				<div className="text-base font-light">{user.user.name} </div>
+				<div className="text-xs">{user.user.description}</div>
+				{
+					loading ?
+						<div className="px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">
+							<div className="my-auto text-sm text-warning">
+								Following...
+							</div>
+						</div>
+						: <div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">
+							<div className="text-lg">+</div>
+							<div className="my-auto text-sm" onClick={() => followUser(user.user)}>
+								Follow
+							</div>
+						</div>
+				}
+			</div>
+		</div>
+	)
+}
