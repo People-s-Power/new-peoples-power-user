@@ -319,7 +319,7 @@ const messages = () => {
 									}
 
 									<div className="w-6 my-auto mx-auto">
-										{item.unread === true ? item.messages[item.messages.length - 1].to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null : null}
+										{item.unread === true || item.messages[item.messages.length - 1].to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
 									</div>
 									<div className="w-[80%] ml-4">
 										{
