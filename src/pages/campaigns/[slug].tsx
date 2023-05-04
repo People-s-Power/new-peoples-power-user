@@ -41,7 +41,8 @@ const SingleCampaignPage = (): JSX.Element => {
 	const user = useRecoilValue(UserAtom)
 	const [update, setUpdate] = useState<Update[]>([])
 	const [open, setOpen] = useState(false)
-	const [camp, setCamp] = useState<any>([])
+	const [camp, setCamp] = useState<any>(null)
+	const [single, setSingle] = useState(null)
 
 	useQuery(SINGLE_PETITION, {
 		client: apollo,
@@ -128,14 +129,16 @@ const SingleCampaignPage = (): JSX.Element => {
 										<div className="bg-gray-50 p-3 mt-5">
 											<div className="text-xl font-bold my-2">PETITION UPDATE</div>
 											{update.map((item, i) => (
-												<div className="text-lg my-1" key={i}>
-													<img src={item.image} className="w-full h-80 rounded-md object-cover" alt="" />
-													<div className="text-sm">
-														{item.body}
+												<div key={i}>
+													<div className="text-lg my-1">
+														<img src={item.image} className="w-full h-80 rounded-md object-cover" alt="" />
+														<div className="text-sm">
+															{item.body}
+														</div>
+														<button onClick={() => { setSingle(update[i]); setOpen(!open) }} className="bg-transparent p-2 text-warning ml-auto">
+															<span>&#x270E;</span> Edit
+														</button>
 													</div>
-													<button onClick={() => setOpen(true)} className="bg-transparent p-2 text-warning ml-auto">
-														<span>&#x270E;</span> Edit
-													</button>
 												</div>
 											))}
 										</div>
@@ -194,7 +197,7 @@ const SingleCampaignPage = (): JSX.Element => {
 								</aside>
 							</main>
 						</div>
-						<AddUpdates open={open} handelClick={() => setOpen(!open)} update={update} petition={camp} />
+						<AddUpdates open={open} handelClick={() => setOpen(!open)} update={single} petition={camp} />
 					</div>
 				</Wrapper>
 			</FrontLayout>

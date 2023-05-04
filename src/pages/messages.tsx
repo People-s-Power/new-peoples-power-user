@@ -205,7 +205,7 @@ const messages = () => {
 			);
 		}
 	}
-	
+
 	const deleteDm = (id, msg) => {
 		if (socket.connected) {
 			socket.emit('delete_message', {
@@ -307,7 +307,7 @@ const messages = () => {
 					)}
 					{messages &&
 						messages.map((item, index) => (
-							<div key={index} className={item.unread === true || item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
+							<div key={index} className={item.unread === true || item.messages[item.messages.length - 1].to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
 								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
 									className={"w-full flex"}
 								>
@@ -319,7 +319,7 @@ const messages = () => {
 									}
 
 									<div className="w-6 my-auto mx-auto">
-										{item.unread === true || item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
+										{item.unread === true ? item.messages[item.messages.length - 1].to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null : null}
 									</div>
 									<div className="w-[80%] ml-4">
 										{
@@ -517,10 +517,10 @@ const messages = () => {
 										</div>
 										{
 											filesPreview.length >= 1 ? (
-												<div onClick={() => sendFile(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+												<div onClick={() => sendFile(show?.participants[0] === active.id || active._id ? show.participants[1] || query.page : show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
 													{loading ? <Loader /> : "Send"}
 												</div>) : (
-												<div onClick={() => sendDm(show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
+												<div onClick={() => sendDm(show?.participants[0] === active.id || active._id ? show.participants[1] || query.page : show?.participants[0] || query.page)} className="text-sm text-warning cursor-pointer">
 													{loading ? <Loader /> : "Send"}
 												</div>
 											)
