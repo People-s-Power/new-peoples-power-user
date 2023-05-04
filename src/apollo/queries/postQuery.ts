@@ -49,8 +49,8 @@ export const GET_POSTS = gql`
 `
 
 export const GET_USER_POSTS = gql`
-	query myPosts {
-		myPosts {
+	query myPosts($authorId: ID!) {
+		myPosts (authorId: $authorId) {
 			_id
 			body
 			createdAt

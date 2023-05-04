@@ -360,7 +360,7 @@ const HomePage = () => {
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />
-				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} />
+				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<ToastContainer />
 			</main>
@@ -402,7 +402,7 @@ function Follow(user, getUsers) {
 			<img src={user.user.image} className="w-12 m-2 h-12 rounded-full" alt="" />
 			<div className="w-[80%]">
 				<div className="text-base font-light">{user.user.name} </div>
-				<div className="text-xs">{user.user.description}</div>
+				<div className="text-xs">{user.user.description.substring(0, 30)}</div>
 				{
 					loading ?
 						<div className="px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">

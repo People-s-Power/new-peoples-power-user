@@ -42,6 +42,7 @@ import Cookies from "js-cookie"
 import VictoryCard from "components/VictoryCard"
 import Updates from "components/updates"
 import FollowSlides from "components/camp-slider/FollowSlides"
+import { MY_PETITION } from "apollo/queries/petitionQuery"
 
 const user = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -93,6 +94,18 @@ const user = () => {
 		},
 		onError: (err) => console.log(err),
 	})
+	
+	useQuery(MY_PETITION, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			console.log(data)
+			setCampaigns(data.myPetition)
+		},
+		onError: (err) => {
+			console.log(err)
+		},
+	})
 
 	useQuery(MY_VICTORIES, {
 		client: apollo,
@@ -116,6 +129,7 @@ const user = () => {
 
 	useQuery(GET_USER_POSTS, {
 		client: apollo,
+		variables: { authorId: author?.id },
 		onCompleted: (data) => {
 			// console.log(data)
 			setPosts(data.myPosts)
@@ -145,7 +159,7 @@ const user = () => {
 					})
 				}
 			}
-			console.log(newArray)
+			// console.log(newArray)
 			setAll(newArray.reverse())
 		} catch (err) {
 			console.log(err.response)
@@ -158,7 +172,7 @@ const user = () => {
 				.get(`/user/single/${query.page}`)
 				.then(function (response) {
 					setUser(response.data.user)
-					setCampaigns(response.data.Petitions)
+					// setCampaigns(response.data.Petitions)
 					// console.log(response.data)
 					response.data.user.orgOperating.map((operating: any) => {
 						setOrgId(operating)
@@ -424,7 +438,7 @@ const user = () => {
 					</div>
 				</div>
 				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
-				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} />
+				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
 				<ToastContainer />

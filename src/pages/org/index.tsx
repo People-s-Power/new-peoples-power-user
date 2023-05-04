@@ -39,6 +39,7 @@ import { Dropdown } from "rsuite"
 import FollowSlides from "components/camp-slider/FollowSlides"
 import VictoryCard from "components/VictoryCard"
 import Updates from "components/updates"
+import { MY_PETITION } from "apollo/queries/petitionQuery"
 
 const org = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -115,8 +116,20 @@ const org = () => {
 		client: apollo,
 		variables: { authorId: query?.page },
 		onCompleted: (data) => {
-			console.log(data)
+			// console.log(data)
 			setAdverts(data.myAdverts)
+		},
+		onError: (err) => {
+			console.log(err)
+		},
+	})
+
+	useQuery(MY_PETITION, {
+		client: apollo,
+		variables: { authorId: query?.page },
+		onCompleted: (data) => {
+			console.log(data)
+			setCampaigns(data.myPetition)
 		},
 		onError: (err) => {
 			console.log(err)
@@ -145,8 +158,9 @@ const org = () => {
 
 	useQuery(GET_USER_POSTS, {
 		client: apollo,
+		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			// console.log(data)
+			console.log(data)
 			setPosts(data.myPosts)
 		},
 		onError: (err) => console.log(err),
@@ -262,9 +276,8 @@ const org = () => {
 										<input type="file" ref={uploadRef} onChange={handleImg} />
 										<button className="btn p-0 z-50" onClick={uploadFileToServer}>
 											<i
-												className={`fas fs-5 d-flex align-items-center justify-content-center  rounded-circle  text-secondary ${
-													img ? "fa-save" : "fa-pencil-alt"
-												}`}
+												className={`fas fs-5 d-flex align-items-center justify-content-center  rounded-circle  text-secondary ${img ? "fa-save" : "fa-pencil-alt"
+													}`}
 											></i>
 										</button>
 
@@ -380,57 +393,57 @@ const org = () => {
 								{all.length === 0 ? <div className="text-center">You dont have any campaign at the moment</div> : <></>}
 								{all[0] !== undefined
 									? all.map((single: any, index: number) => {
-											// setType(single.__typename)
-											switch (single.__typename) {
-												case "Advert":
-													return (
-														<div key={index}>
-															<AdvertsComp advert={single} />
-														</div>
-													)
-												case "Event":
-													return (
-														<div key={index}>
-															<EventsCard event={single} />
-														</div>
-													)
-												case "Petition":
-													return (
-														<div key={index}>
-															<PetitionComp petition={single} />
-														</div>
-													)
-												case "Victory":
-													return (
-														<div key={index}>
-															<VictoryCard post={single} />
-														</div>
-													)
-												case "Post":
-													return (
-														<div key={index}>
-															<CampComp post={single} />
-														</div>
-													)
-												case "Update":
-													return (
-														<div key={index}>
-															<Updates updates={single} />
-														</div>
-													)
-												case "Follow":
-													return (
-														<div key={index}>
-															<FollowSlides />
-														</div>
-													)
-												// default:
-												// 	return (
-												// 		<div key={index}>
-												// 			<Shared shared={single} />
-												// 		</div>
-												// 	)
-											}
+										// setType(single.__typename)
+										switch (single.__typename) {
+											case "Advert":
+												return (
+													<div key={index}>
+														<AdvertsComp advert={single} />
+													</div>
+												)
+											case "Event":
+												return (
+													<div key={index}>
+														<EventsCard event={single} />
+													</div>
+												)
+											case "Petition":
+												return (
+													<div key={index}>
+														<PetitionComp petition={single} />
+													</div>
+												)
+											case "Victory":
+												return (
+													<div key={index}>
+														<VictoryCard post={single} />
+													</div>
+												)
+											case "Post":
+												return (
+													<div key={index}>
+														<CampComp post={single} />
+													</div>
+												)
+											case "Update":
+												return (
+													<div key={index}>
+														<Updates updates={single} />
+													</div>
+												)
+											case "Follow":
+												return (
+													<div key={index}>
+														<FollowSlides />
+													</div>
+												)
+											// default:
+											// 	return (
+											// 		<div key={index}>
+											// 			<Shared shared={single} />
+											// 		</div>
+											// 	)
+										}
 									})
 									: null}
 							</div>
@@ -451,7 +464,7 @@ const org = () => {
 					</Modal.Footer>
 				</Modal>
 				<CreatePost open={openPost} handelPetition={handelPetition} handelClick={handelClick} post={null} orgs={orgs} />
-				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} />
+				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
 				<ToastContainer />

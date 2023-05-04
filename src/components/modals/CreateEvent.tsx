@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Loader, Modal } from "rsuite"
+import { Loader, Modal, Popover, Whisper } from "rsuite"
 import { useState, useRef, useEffect } from "react"
 import { CREATE_EVENT, UPDATE_EVENT } from "apollo/queries/eventQuery"
 import axios from "axios"
@@ -8,7 +8,7 @@ import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 
-const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(): void; event: any }): JSX.Element => {
+const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handelClick(): void; event: any, orgs: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [name, setName] = useState(event?.name || "")
 	const [des, setDes] = useState(event?.description || "")
@@ -24,6 +24,7 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 		file: event?.image || "",
 		name: "",
 	})
+	const [active, setActive] = useState<any>(null)
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		const reader = new FileReader()
@@ -43,13 +44,17 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 			}
 		}
 	}
+	useEffect(() => {
+		setActive(author)
+	}, [author !== null])
+
 	const handleSubmit = async () => {
 		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CREATE_EVENT),
 				variables: {
-					author: author.id,
+					authorId: active.id || active._id,
 					name: name,
 					description: des,
 					endDate: endDate,
@@ -74,6 +79,7 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 			setLoading(false)
 		}
 	}
+
 	const handleEdit = async () => {
 		setLoading(true)
 		console.log(event)
@@ -81,7 +87,7 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(UPDATE_EVENT),
 				variables: {
-					authorId: author.id,
+					authorId: active.id || active._id,
 					eventId: event._id,
 					name: name,
 					description: des,
@@ -107,6 +113,30 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 			setLoading(false)
 		}
 	}
+
+	const speaker = (
+		<Popover>
+			<div onClick={() => setActive(author)} className="flex m-1 cursor-pointer">
+				<img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+				<div className="text-sm my-auto">{author?.name}</div>
+			</div>
+			{orgs !== null
+				? orgs.map((org: any, index: number) => (
+					<div
+						onClick={() => {
+							setActive(org)
+						}}
+						key={index}
+						className="flex m-1 cursor-pointer"
+					>
+						<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+						<div className="text-sm my-auto">{org?.name}</div>
+					</div>
+				))
+				: null}
+		</Popover>
+	)
+
 	return (
 		<>
 			<Modal open={open} onClose={handelClick}>
@@ -116,6 +146,16 @@ const CreateEvent = ({ open, handelClick, event }: { open: boolean; handelClick(
 					</div>
 				</Modal.Header>
 				<Modal.Body>
+					{orgs !== null ? (
+						<div className="my-2">
+							<Whisper placement="bottom" trigger="click" speaker={speaker}>
+								<div className="flex cursor-pointer">
+									<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+									<div className="text-sm my-auto">{active?.name}</div>
+								</div>
+							</Whisper>
+						</div>
+					) : null}
 					<div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
 						{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />}
 						<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />

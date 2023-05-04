@@ -410,10 +410,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					) : null}
 				</div>
 			) : null}
-			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
+			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={orgs} />
 			<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={post} />
 			{/* <FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} /> */}
-			<CreateEvent open={openEvent} handelClick={handelEventClick} event={post} />
+			<CreateEvent open={openEvent} handelClick={handelEventClick} event={post} orgs={orgs} />
 			<CreateAdvert open={openAd} handelClick={handelAdClick} advert={post} />
 			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} update={update} />
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={victories} />

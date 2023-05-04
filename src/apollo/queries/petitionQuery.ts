@@ -84,32 +84,46 @@ export const GET_ACTIVE_PETITION = gql`
 `
 
 export const MY_PETITION = gql`
-	query myPetition {
-		myPetition {
-			aim
-			addedFrom
-			authorId
-			authorImg
-			authorName
-			body
-			category
-			createdAt
-			endorsements {
-				body
-			}
-			excerpt
-			id
-			image
-			likes
-			numberOfPaidEndorsementCount
-			numberOfPaidViewsCount
-			promoted
-			slug
-			status
-			target
+	query myPetition($authorId: ID!) {
+		myPetition(authorId: $authorId) {
+			_id
 			title
-			updatedAt
+			image
+			aim
+			body
+			target
+			slug
+			createdAt
+			comments{
+				_id
+				content
+				author{
+					_id
+					name
+					email
+					image
+				}
+				date
+			}
+			likes{
+				_id
+				name
+			}
+			promoted
 			views
+			category
+			region
+			author{
+				 _id
+					name
+					email
+					image
+			}
+			updates{
+				body
+				image
+				createdAt
+			}
 		}
 	}
 `
