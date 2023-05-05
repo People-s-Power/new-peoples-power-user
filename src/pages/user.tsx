@@ -94,7 +94,7 @@ const user = () => {
 		},
 		onError: (err) => console.log(err),
 	})
-	
+
 	useQuery(MY_PETITION, {
 		client: apollo,
 		variables: { authorId: author?.id },
@@ -149,10 +149,10 @@ const user = () => {
 		try {
 			const general = [...campaigns, ...posts, ...adverts, ...victories, ...events]
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
-			// const sortedItems = randomizedItems.sort((a, b) => b.createdAt.substring(0, 10) - a.createdAt.substring(0, 10))
+			const sortedItems = randomizedItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 			const newArray = []
-			for (let i = 0; i < randomizedItems.length; i++) {
-				newArray.push(randomizedItems[i])
+			for (let i = 0; i < sortedItems.length; i++) {
+				newArray.push(sortedItems[i])
 				if ((i + 1) % 3 === 0) {
 					newArray.push({
 						__typename: "Follow",
@@ -160,7 +160,7 @@ const user = () => {
 				}
 			}
 			// console.log(newArray)
-			setAll(newArray.reverse())
+			setAll(newArray)
 		} catch (err) {
 			console.log(err.response)
 		}
@@ -190,7 +190,7 @@ const user = () => {
 	useEffect(() => {
 		getData()
 		getSingle()
-	}, [adverts, author, posts, events ])
+	}, [adverts, author, posts, events])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },

@@ -141,7 +141,7 @@ const HomePage = () => {
 			// countObjectsWithMatchingDate(general, date.toISOString())
 
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
-			const sortedItems = randomizedItems.sort((a, b) => b.createdAt - a.createdAt)
+			const sortedItems = randomizedItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
 			const newArray = []
 			for (let i = 0; i < sortedItems.length; i++) {
@@ -153,7 +153,7 @@ const HomePage = () => {
 				}
 			}
 			// console.log(newArray)
-			setAll(newArray.reverse())
+			setAll(newArray)
 			setLoading(false)
 		} catch (err) {
 			console.log(err)
