@@ -10,6 +10,7 @@ export const CREATE_POST = gql`
 			promoted
 			createdAt
 			updatedAt
+			__typename
 		}
 	}
 `

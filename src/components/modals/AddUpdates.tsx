@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import axios from "axios"
-
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { UPDATE_POST } from "apollo/queries/postQuery"

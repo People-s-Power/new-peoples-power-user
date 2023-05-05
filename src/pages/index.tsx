@@ -32,6 +32,7 @@ import Shared from "components/Shared"
 import { socket } from "pages/_app"
 import Timeline from "components/Timeline"
 import { Loader } from "rsuite"
+import NotificationCard from "components/NotificationCard"
 
 const HomePage = () => {
 	const author = useRecoilValue(UserAtom)
@@ -356,7 +357,7 @@ const HomePage = () => {
 						<div className="my-3 text-sm">You can reach a larger audience by allowing others to follow your activity and read what you are sharing</div>
 					</div>
 				</aside>
-
+				{/* <NotificationCard hide={true} msg="Your Post have been created Successfully" link={null} /> */}
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />

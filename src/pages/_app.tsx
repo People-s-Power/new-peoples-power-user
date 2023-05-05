@@ -88,6 +88,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 					</RecoilRoot>
 				</ThemeProvider>
 			</ApolloProvider>
+			
 		</Fragment>
 	)
 }

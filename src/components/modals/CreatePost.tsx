@@ -8,6 +8,7 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
+import NotificationCard from "components/NotificationCard"
 
 const CreatePost = ({
 	open,
@@ -29,6 +30,9 @@ const CreatePost = ({
 	const [body, setBody] = useState(post?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
 	const [category, setCategory] = useState("Add Category")
+	const [notication, setNotication] = useState(false)
+	const [msg, setMsg] = useState("")
+	const [link, setLink] = useState("")
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
@@ -43,7 +47,7 @@ const CreatePost = ({
 			}
 		}
 	}
-	
+
 	const clearFile = (index) => {
 		const array = filesPreview
 		array.splice(index, 1)
@@ -68,6 +72,9 @@ const CreatePost = ({
 			setBody("")
 			setFilePreview([])
 			setLoading(false)
+			setLink(`/${data.data.createPost.__typename}?page=${data.data.createPost._id}`)
+			setMsg("Post Created Successfully!")
+			setNotication(true)
 		} catch (error) {
 			console.log(error)
 			setLoading(false)
@@ -211,6 +218,9 @@ const CreatePost = ({
 					</div>
 				</Modal.Footer>
 			</Modal>
+			{
+				notication && <NotificationCard hide={notication} msg={msg} link={link} />
+			}
 		</>
 	)
 }
