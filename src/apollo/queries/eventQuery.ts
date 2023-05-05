@@ -94,6 +94,7 @@ export const UPDATE_EVENT = gql`
 			}
 			name
 			type
+			__typename
 		}
 	}
 `
@@ -143,6 +144,7 @@ export const CREATE_EVENT = gql`
 			}
 			name
 			type
+			__typename
 		}
 	}
 `

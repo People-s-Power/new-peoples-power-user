@@ -37,6 +37,7 @@ export const UPDATE_ADVERT = gql`
 			shares
 			createdAt
 			updatedAt
+			__typename
 		}
 	}
 `
@@ -75,6 +76,7 @@ export const CREATE_ADVERT = gql`
 			shares
 			createdAt
 			updatedAt
+			__typename
 		}
 	}
 `

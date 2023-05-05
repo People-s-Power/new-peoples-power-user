@@ -98,6 +98,9 @@ const CreatePost = ({
 			handelClick()
 			setBody("")
 			setLoading(false)
+			setLink(`/${data.data.updatePost.__typename}?page=${data.data.updatePost._id}`)
+			setMsg("Post Updated Successfully!")
+			setNotication(true)
 		} catch (error) {
 			console.log(error)
 			setLoading(false)

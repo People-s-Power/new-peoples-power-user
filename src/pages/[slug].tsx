@@ -111,12 +111,12 @@ const Single = () => {
                   <EventsCard event={single} />
                 </div>
               )
-            case "Petition":
-              return (
-                <div>
-                  <PetitionComp petition={single} />
-                </div>
-              )
+            // case "Petition":
+            //   return (
+            //     <div>
+            //       <PetitionComp petition={single} />
+            //     </div>
+            //   )
             case "Victory":
               return (
                 <div>
@@ -129,12 +129,12 @@ const Single = () => {
                   {single !== null ? <CampComp post={single} /> : null}
                 </div>
               )
-            case "Update":
-              return (
-                <div>
-                  <Updates updates={single} />
-                </div>
-              )
+            // case "Update":
+            //   return (
+            //     <div>
+            //       <Updates updates={single} />
+            //     </div>
+            //   )
           }
         })()}
       </div>

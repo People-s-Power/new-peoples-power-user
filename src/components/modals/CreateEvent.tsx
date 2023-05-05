@@ -7,6 +7,7 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
+import NotificationCard from "components/NotificationCard"
 
 const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handelClick(): void; event: any, orgs: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -24,7 +25,11 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 		file: event?.image || "",
 		name: "",
 	})
-	const [active, setActive] = useState<any>(null)
+	const [active, setActive] = useState<any>(author)
+	const [notication, setNotication] = useState(false)
+	const [msg, setMsg] = useState("")
+	const [link, setLink] = useState("")
+
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		const reader = new FileReader()
@@ -67,7 +72,11 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			})
 			console.log(data)
 			handelClick()
+
 			// setBody("")
+			setLink(`/${data.data.createEvent.__typename}?page=${data.data.createEvent._id}`)
+			setMsg("Event Created Successfully!")
+			setNotication(true)
 			setLoading(false)
 			setFilePreview({
 				type: "",
@@ -103,6 +112,9 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			handelClick()
 			// setBody("")
 			setLoading(false)
+			setLink(`/${data.data.updateEvent.__typename}?page=${data.data.updateEvent._id}`)
+			setMsg("Event Edited Successfully!")
+			setNotication(true)
 			setFilePreview({
 				type: "",
 				file: "",
@@ -222,6 +234,9 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					)}
 				</Modal.Footer>
 			</Modal>
+			{
+				notication && <NotificationCard hide={notication} msg={msg} link={link} />
+			}
 		</>
 	)
 }

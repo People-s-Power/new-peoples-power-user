@@ -10,7 +10,7 @@ const NotificationCard = ({ hide, msg, link }: { hide: Boolean, msg: string, lin
   }, [])
   return (
     <>
-      <div className='absolute bottom-10 w-full'>
+      <div className='fixed bottom-10 w-full left-0 right-0 z-10'>
         {show && (
           <div className="flex px-6 w-1/2 mx-auto justify-between items-center bg-white shadow-lg rounded-lg py-3">
             <div>{msg}</div>

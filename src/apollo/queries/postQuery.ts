@@ -25,6 +25,7 @@ export const UPDATE_POST = gql`
 			promoted
 			createdAt
 			updatedAt
+			__typename
 		}
 	}
 `

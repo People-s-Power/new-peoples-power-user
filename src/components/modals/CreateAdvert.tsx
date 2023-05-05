@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import Select from "react-select"
+import NotificationCard from "components/NotificationCard"
 
 const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClick(): void; advert: any }): JSX.Element => {
 	const [image, setFilePreview] = useState({
@@ -32,6 +33,10 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 	const [countries, setCountries] = useState([])
 	const [cities, setCities] = useState([])
 	const [city, setCity] = useState("")
+	const [notication, setNotication] = useState(false)
+	const [msg, setMsg] = useState("")
+	const [link2, setLink2] = useState("")
+
 	useEffect(() => {
 		// Get countries
 		axios
@@ -92,7 +97,9 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					imageFile: [image.file],
 				},
 			})
-			toast("Advert Created Successfully")
+			setMsg("Advert Created Successfully!")
+			setLink2(`/${data.data.createdAd.__typename}?page=${data.data.createdAd._id}`)
+			setNotication(true)
 			console.log(data)
 			handelClick()
 			setMessage("")
@@ -131,7 +138,9 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					advertId: advert._id,
 				},
 			})
-			toast("Advert Edited Successfully")
+			setMsg("Advert Edited Successfully!")
+			setLink2(`/${data.data.updateAd.__typename}?page=${data.data.updateAd._id}`)
+			setNotication(true)
 			console.log(data)
 			handelClick()
 			setMessage("")
@@ -249,6 +258,9 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 				</Modal.Footer>
 			</Modal>
 			<ToastContainer />
+			{
+				notication && <NotificationCard hide={notication} msg={msg} link={link2} />
+			}
 		</>
 	)
 }
