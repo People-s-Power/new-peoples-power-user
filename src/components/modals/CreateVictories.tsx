@@ -19,14 +19,6 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
 
-	// useEffect(() => {
-	// 	console.log(router)
-	// }, [])
-	useEffect(() => {
-		setTimeout(() => {
-			setNotication(false)
-		}, 10000)
-	}, [notication])
 
 	const handelSubmit = async () => {
 		setLoading(true)
@@ -112,7 +104,7 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 				</Modal.Footer>
 			</Modal>
 			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link} />
+				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)}  />
 			}
 		</>
 	)

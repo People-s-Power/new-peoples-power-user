@@ -48,11 +48,6 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			.catch((err) => console.log(err))
 	}, [])
 	
-	useEffect(() => {
-		setTimeout(() => {
-			setNotication(false)
-		}, 10000)
-	}, [notication])
 
 	useEffect(() => {
 		// Get countries
@@ -265,7 +260,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			</Modal>
 			<ToastContainer />
 			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link2} />
+				notication && <NotificationCard hide={notication} msg={msg} link={link2} close={() => setNotication(!notication)}  />
 			}
 		</>
 	)

@@ -49,12 +49,6 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			}
 		}
 	}
-	useEffect(() => {
-		setTimeout(() => {
-			setNotication(false)
-		}, 10000)
-	}, [notication])
-
 	
 	useEffect(() => {
 		setActive(author)
@@ -242,7 +236,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				</Modal.Footer>
 			</Modal>
 			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link} />
+				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)}  />
 			}
 		</>
 	)

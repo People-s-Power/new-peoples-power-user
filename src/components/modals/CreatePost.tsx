@@ -48,11 +48,6 @@ const CreatePost = ({
 			}
 		}
 	}
-	useEffect(() => {
-		setTimeout(() => {
-			setNotication(false)
-		}, 10000)
-	}, [notication])
 
 	const clearFile = (index) => {
 		const array = filesPreview
@@ -228,7 +223,7 @@ const CreatePost = ({
 				</Modal.Footer>
 			</Modal>
 			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link} />
+				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
 			}
 		</>
 	)
