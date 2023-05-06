@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { apollo } from "apollo"
 import Interaction from "./Interaction"
+import HideComp from "./HideComp"
 
 const EventsCard = ({ event }: { event: any }) => {
 	const [open, setOpen] = useState(false)
@@ -57,12 +58,13 @@ const EventsCard = ({ event }: { event: any }) => {
 			<div className="border-b border-gray-200 my-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
-					<div className="ml-2">
+					<div className="ml-2 w-full">
 						<div className="text-base">
 							{event.author.name} <span className="text-xs"></span>
 						</div>
 						<div className="text-xs">{event.author.name} created this as an event</div>
 					</div>
+					<HideComp id={event._id} />
 				</div>
 				<div className="text-sm my-1">{event.author.description}</div>
 			</div>

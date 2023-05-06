@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import Interaction from "./Interaction"
+import HideComp from "./HideComp"
 
 const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -26,20 +27,20 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 	return (
 		<div className="p-3 border mb-3">
 			<div className=" border-b border-gray-200 pb-3">
-				<div className="flex justify-between">
-					<div className="flex">
-						<img className="w-12 h-12 rounded-full" src={advert.author.image} alt="" />
-						<div className="ml-2">
-							<div className="text-base capitalize">
-								{advert.author.name} <span className="text-xs">{author?.id === advert.author._id ? ". You" : ""}</span>
-							</div>
-							<div className="text-xs">
-								{" "}
-								<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
-							</div>
+				{/* <div className="flex justify-between"> */}
+				<div className="flex">
+					<img className="w-12 h-12 rounded-full" src={advert.author.image} alt="" />
+					<div className="ml-2 w-full">
+						<div className="text-base capitalize">
+							{advert.author.name} <span className="text-xs">{author?.id === advert.author._id ? ". You" : ""}</span>
+						</div>
+						<div className="text-xs">
+							<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
 						</div>
 					</div>
+					<HideComp id={advert._id} />
 				</div>
+				{/* </div> */}
 				<div>sponsored</div>
 			</div>
 			<div className="p-2">

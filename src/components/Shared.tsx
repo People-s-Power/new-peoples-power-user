@@ -3,6 +3,7 @@ import ReactTimeAgo from "react-time-ago"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import Interaction from "./Interaction"
+import HideComp from "./HideComp"
 
 const Shared = ({ shared }: { shared: any }) => {
 	const author = useRecoilValue(UserAtom)
@@ -13,11 +14,12 @@ const Shared = ({ shared }: { shared: any }) => {
 			<div className="flex justify-between border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={shared.author?.image} alt="" />
-					<div className="ml-2">
+					<div className="ml-2 w-full">
 						<div className="text-base font-bold capitalize">
 							{shared.author?.name} <span className="text-xs">{author?.id === shared.author?._id ? ". You" : ""}</span>
 						</div>
 					</div>
+					<HideComp id={shared._id} />
 				</div>
 			</div>
 			<div className="text-sm p-2 ">{shared.body}</div>

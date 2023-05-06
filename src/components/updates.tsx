@@ -12,6 +12,7 @@ import { print } from "graphql"
 import { useRouter } from "next/router"
 import Interaction from "./Interaction"
 import ReactTimeAgo from "react-time-ago"
+import HideComp from "./HideComp"
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -76,7 +77,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 				<div className="flex justify-between border-b border-gray-200 pb-3">
 					<div className="flex">
 						<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
-						<div className="ml-2">
+						<div className="ml-2 w-full">
 							<div className="text-base capitalize">
 								{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
 							</div>
@@ -84,6 +85,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 								<ReactTimeAgo date={new Date(updates.createdAt)} />
 							</div> */}
 						</div>
+						<HideComp id={updates.id} />
 					</div>
 				</div>
 				<div className="text-sm my-1">{updates.author.description}</div>

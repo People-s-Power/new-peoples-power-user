@@ -5,10 +5,8 @@ import { UserAtom } from "atoms/UserAtom"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import Interaction from "./Interaction"
-import { SERVER_URL } from "utils/constants"
-import axios from "axios"
-import { HIDE } from "apollo/queries/generalQuery"
-import { print } from "graphql"
+import HideComp from "./HideComp"
+
 
 interface IProps {
 	open?: any;
@@ -20,26 +18,13 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.E
 	const author = useRecoilValue(UserAtom)
 	const [more, setMore] = useState(post.body.length > 250 ? true : false)
 
-	const hide = async (id) => {
-		try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(HIDE),
-        variables: {
-					authorId: author.id,
-          itemId: id
-        },
-      })
-      console.log(data)
-    } catch (e) {
-      console.log(e.response)
-    }
-	}
+
 	return (
 		<div className="p-3 border rounded-md mb-3">
 			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
-					<div className="ml-2">
+					<div className="ml-2 w-full">
 						<div className="text-base font-bold capitalize">
 							{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
 						</div>
@@ -47,7 +32,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.E
 							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
 						</div>
 					</div>
-					<img src="/images/close.png" onClick={() => hide(post._id)} className="cursor-pointer w-3 h-3 ml-auto my-auto" alt="" />
+					<HideComp id={post._id} />
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>

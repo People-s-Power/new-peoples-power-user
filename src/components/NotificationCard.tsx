@@ -12,7 +12,7 @@ const NotificationCard = ({ hide, msg, link, close }: { hide: boolean, msg: stri
   return (
     <>
       <div className='fixed bottom-10 w-full left-0 right-0 z-10'>
-        {show && (link !== null ?
+        {show &&
           <Modal open={show} onClose={() => close()}>
             <Modal.Header>Success</Modal.Header>
             <Modal.Body>
@@ -21,12 +21,7 @@ const NotificationCard = ({ hide, msg, link, close }: { hide: boolean, msg: stri
                 <div>{msg} <Link href={link}><span className='text-warning cursor-pointer'>View</span></Link></div>
               </div>
             </Modal.Body>
-          </Modal> :
-          <div className="flex px-6 w-1/2 mx-auto justify-between items-center bg-white shadow-lg rounded-lg py-3">
-            <div>You have just removed an item from your timeline.</div>
-            <button className='p-2 bg-warning text-white' onClick={() => undo()}>Undo</button>
-          </div>
-        )
+          </Modal>
         }
       </div>
     </>

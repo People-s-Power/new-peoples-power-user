@@ -136,7 +136,7 @@ const Timeline = ({ item }: { item: any }) => {
                 {data && <div>
                   <div className="flex p-3 border">
                     <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
-                    <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented" ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message)}</div>
+                    <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented") ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message}</div>
                   </div>
                   <PetitionComp petition={data} />
                 </div>}

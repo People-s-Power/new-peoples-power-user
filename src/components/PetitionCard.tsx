@@ -16,6 +16,7 @@ import AddUpdates from "./modals/AddUpdates"
 import axios from "axios"
 import ShareModal from "./modals/ShareModal"
 import Interaction from "./Interaction"
+import HideComp from "./HideComp"
 
 const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -71,7 +72,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 				<Link href={`/user?page=${petition.authorId}`}>
 					<div className="flex">
 						<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
-						<div className="ml-2">
+						<div className="ml-2 w-full">
 							<div className="text-base capitalize">
 								{petition.author.name} <span className="text-xs">{author?.id === petition.author._id ? ". You" : ""}</span>
 							</div>
@@ -79,6 +80,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 								<ReactTimeAgo date={new Date(petition.createdAt)} />
 							</div>
 						</div>
+						<HideComp id={petition._id} />
 					</div>
 				</Link>
 				<div className="text-sm my-1">{petition.author.description}</div>

@@ -12,6 +12,7 @@ import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import Interaction from "./Interaction"
+import HideComp from "./HideComp"
 
 const Victory = ({ post }: { post: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -82,6 +83,7 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 						</div>
 						<div className="text-base">Shared this victory/testimony</div>
 					</div>
+					<HideComp id={post.id} />
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>
