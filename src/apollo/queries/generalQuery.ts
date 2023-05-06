@@ -411,6 +411,16 @@ mutation view($authorId: ID!, $itemId: ID!){
   view(authorId: $authorId, itemId: $itemId)
 }`
 
+export const HIDE = gql`
+mutation hideFor($authorId: ID!, $itemId: ID!){
+  hideFor(authorId: $authorId, itemId: $itemId)
+}`
+
+export const UNHIDE = gql`
+mutation unhide($authorId: ID!, $itemId: ID!){
+  unhide(authorId: $authorId, itemId: $itemId)
+}`
+
 // export const UNLIKE = gql
 // `mutation like($authorId: ID!, $itemId: ID!){
 //   like(authorId: $authorId, itemId: $itemId)

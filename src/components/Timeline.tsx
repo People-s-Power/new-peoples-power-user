@@ -3,7 +3,6 @@ import { ADVERT } from "apollo/queries/advertsQuery"
 import { VICTORY } from "apollo/queries/victories"
 import { GET_POST } from "apollo/queries/postQuery"
 import { EVENT } from "apollo/queries/eventQuery"
-
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import axios from "axios"
