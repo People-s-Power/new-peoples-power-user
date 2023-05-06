@@ -13,7 +13,7 @@ const NotificationCard = ({ hide, msg, link, close }: { hide: boolean, msg: stri
     <>
       <div className='fixed bottom-10 w-full left-0 right-0 z-10'>
         {show && (link !== null ?
-          <Modal open={show} onClose={close()}>
+          <Modal open={show} onClose={() => close()}>
             <Modal.Header>Success</Modal.Header>
             <Modal.Body>
               <div className='text-center'>
