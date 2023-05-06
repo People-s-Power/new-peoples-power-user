@@ -12,6 +12,7 @@ import EventsCard from "./EventsCard"
 import CampComp from "./CampComp"
 import Victory from "./VictoryCard"
 import PetitionComp from "./PetitionCard"
+import { SINGLE_PETITION_ID } from "apollo/queries/petitionQuery"
 
 const Timeline = ({ item }: { item: any }) => {
   const [data, setData] = useState(null)
@@ -75,8 +76,19 @@ const Timeline = ({ item }: { item: any }) => {
     }
   }
 
-  const getPetition = () => {
-
+  const getPetition = async () => {
+    try {
+      const { data } = await axios.post(SERVER_URL + "/graphql", {
+        query: print(SINGLE_PETITION_ID),
+        variables: {
+          id: item.itemId,
+        },
+      })
+      // console.log(data)
+      setData(data.data.getPetitionByID)
+    } catch (e) {
+      console.log(e.response)
+    }
   }
 
   useEffect(() => {

@@ -170,3 +170,46 @@ export const SINGLE_PETITION = gql`
 		}
 	}
 `
+export const SINGLE_PETITION_ID = gql`
+	query getPetitionByID($id: ID!) {
+		getPetitionByID(id: $id) {
+			_id
+    title
+    image
+    aim
+    body
+    target
+    slug
+    comments{
+      _id
+      content
+      author{
+        _id
+        name
+        email
+        image
+      }
+      date
+    }
+    likes{
+      _id
+      name
+    }
+    promoted
+    views
+    category
+    region
+    author{
+       _id
+        name
+        email
+        image
+    }
+    updates{
+      body
+      image
+      createdAt
+    }
+		}
+	}
+`
