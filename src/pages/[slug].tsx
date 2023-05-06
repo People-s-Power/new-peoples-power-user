@@ -73,7 +73,7 @@ const Single = () => {
           eventId: router.query.page,
         },
       })
-      // console.log(data)
+      console.log(data)
       setData(data.data.event)
     } catch (e) {
       console.log(e.response)
@@ -102,13 +102,13 @@ const Single = () => {
             case "Advert":
               return (
                 <div>
-                  <AdvertsComp advert={single} />
+                  {single !== null ? <AdvertsComp advert={single} /> : null}
                 </div>
               )
             case "Event":
               return (
                 <div>
-                  <EventsCard event={single} />
+                  {single !== null ? <EventsCard event={single} /> : null}
                 </div>
               )
             // case "Petition":
@@ -120,7 +120,7 @@ const Single = () => {
             case "Victory":
               return (
                 <div>
-                  <VictoryCard post={single} />
+                  {single !== null ? <VictoryCard post={single} /> : null}
                 </div>
               )
             case "Post":

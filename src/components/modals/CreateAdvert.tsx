@@ -47,6 +47,12 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			})
 			.catch((err) => console.log(err))
 	}, [])
+	
+	useEffect(() => {
+		setTimeout(() => {
+			setNotication(false)
+		}, 10000)
+	}, [notication])
 
 	useEffect(() => {
 		// Get countries

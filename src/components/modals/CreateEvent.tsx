@@ -50,6 +50,13 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 		}
 	}
 	useEffect(() => {
+		setTimeout(() => {
+			setNotication(false)
+		}, 10000)
+	}, [notication])
+
+	
+	useEffect(() => {
 		setActive(author)
 	}, [author !== null])
 
@@ -59,7 +66,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CREATE_EVENT),
 				variables: {
-					authorId: active.id || active._id,
+					author: active.id || active._id,
 					name: name,
 					description: des,
 					endDate: endDate,

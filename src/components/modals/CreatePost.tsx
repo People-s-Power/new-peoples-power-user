@@ -9,6 +9,7 @@ import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import NotificationCard from "components/NotificationCard"
+import notifications from "pages/notifications"
 
 const CreatePost = ({
 	open,
@@ -47,6 +48,11 @@ const CreatePost = ({
 			}
 		}
 	}
+	useEffect(() => {
+		setTimeout(() => {
+			setNotication(false)
+		}, 10000)
+	}, [notication])
 
 	const clearFile = (index) => {
 		const array = filesPreview

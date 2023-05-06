@@ -22,6 +22,11 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 	// useEffect(() => {
 	// 	console.log(router)
 	// }, [])
+	useEffect(() => {
+		setTimeout(() => {
+			setNotication(false)
+		}, 10000)
+	}, [notication])
 
 	const handelSubmit = async () => {
 		setLoading(true)
