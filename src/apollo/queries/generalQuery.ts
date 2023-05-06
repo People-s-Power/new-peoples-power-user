@@ -425,3 +425,108 @@ mutation unhide($authorId: ID!, $itemId: ID!){
 // `mutation like($authorId: ID!, $itemId: ID!){
 //   like(authorId: $authorId, itemId: $itemId)
 // }`
+
+
+export const UPDATES = gql`
+	query getUpdate($id: ID!) {
+		getUpdate(id: $id) {
+			body
+				_id
+				petition {
+					_id
+					title
+					image
+					excerpt
+					aim
+					target
+					body
+					slug
+					status
+					createdAt
+					updatedAt
+					comments {
+						_id
+						content
+						date
+						likes
+						author {
+							_id
+							name
+							email
+							image
+						}
+					}
+					addedFrom
+					numberOfPaidViewsCount
+					numberOfPaidEndorsementCount
+					endorsements {
+						id
+						body
+						author {
+							id
+							name
+							email
+							image
+						}
+					}
+					likes {
+						_id
+						name
+						email
+						image
+					}
+					promoted
+					views
+					comments {
+						_id
+						content
+						date
+						likes
+						author {
+							_id
+							name
+							email
+							image
+						}
+					}
+
+					category
+					region
+					author {
+						_id
+						name
+						email
+						image
+					}
+				}
+				image
+				comments {
+					_id
+					content
+					date
+					likes
+					author {
+						_id
+						name
+						email
+						image
+					}
+				}
+				likes {
+					_id
+					name
+					email
+					image
+				}
+				shares
+				author {
+					_id
+					name
+					description
+					email
+					image
+				}
+				__typename
+		}
+	}
+`

@@ -7,6 +7,7 @@ import axios from "axios"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { UPDATE_POST } from "apollo/queries/postQuery"
+import NotificationCard from "components/NotificationCard"
 
 const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; handelClick(): void; petition: any; update: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -18,6 +19,10 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 	})
 	const [body, setBody] = useState(update?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
+
+	const [notication, setNotication] = useState(false)
+	const [msg, setMsg] = useState("")
+	const [link, setLink] = useState("")
 
 	useEffect(() => {
 		// console.log(update)
@@ -55,15 +60,18 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 		}
 		setLoading(true)
 		try {
-			await axios.post("petition/update", {
+			const { data } = await axios.post("petition/update", {
 				petitionId: petition._id,
 				body: body,
 				image: [image.file],
 				authorId: author.id,
 			})
-			toast.success("Updates added successfulluy")
+			// toast.success("Updates added successfulluy")
 			setLoading(false)
 			handelClick()
+			setLink(`/Update?page=${data.id}`)
+			setMsg("Updates added  Successfully!")
+			setNotication(true)
 		} catch (err) {
 			console.log(err)
 			toast.warn("Oops an error occured")
@@ -73,7 +81,7 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 	const handleUpdate = async () => {
 		setLoading(true)
 		try {
-			await axios.put("petition/update", {
+			const { data } = await axios.put("petition/update", {
 				updateId: update._id,
 				body: body,
 				image: [...image.file],
@@ -82,6 +90,9 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 			toast.success("Updates edited successfulluy")
 			setLoading(false)
 			handelClick()
+			setLink(`/Update?page=${data.id}`)
+			setMsg("Updates edited  Successfully!")
+			setNotication(true)
 		} catch (err) {
 			console.log(err)
 			toast.warn("Oops an error occured")
@@ -150,6 +161,9 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 				</Modal.Footer>
 			</Modal>
 			<ToastContainer />
+			{
+				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
+			}
 		</>
 	)
 }

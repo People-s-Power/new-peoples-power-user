@@ -14,6 +14,7 @@ import { VICTORY } from 'apollo/queries/victories';
 import { GET_POST } from 'apollo/queries/postQuery';
 import { EVENT } from 'apollo/queries/eventQuery';
 import { print } from "graphql"
+import { UPDATES } from 'apollo/queries/generalQuery';
 
 const Single = () => {
   const router = useRouter();
@@ -79,9 +80,23 @@ const Single = () => {
       console.log(e.response)
     }
   }
-
+  const fetchUpdate = async () => {
+    try {
+      const { data } = await axios.post(SERVER_URL + "/graphql", {
+        query: print(UPDATES),
+        variables: {
+          id: router.query.page,
+        },
+      })
+      console.log(data)
+      setData(data.data.getUpdate)
+    } catch (e) {
+      console.log(e.response)
+    }
+  }
 
   useEffect(() => {
+    // console.log(router.query)
     if (router.query.slug === "Advert") {
       fetchAdvert()
     } else if (router.query.slug === "Victory") {
@@ -91,6 +106,9 @@ const Single = () => {
     }
     else if (router.query.slug === "Event") {
       fetchEvent()
+    }
+    else if (router.query.slug === "Update") {
+      fetchUpdate()
     }
   }, [])
 
@@ -126,15 +144,15 @@ const Single = () => {
             case "Post":
               return (
                 <div>
-                  {single !== null ? <CampComp post={single} /> : null}
+                  {single && <CampComp post={single} />}
                 </div>
               )
-            // case "Update":
-            //   return (
-            //     <div>
-            //       <Updates updates={single} />
-            //     </div>
-            //   )
+            case "Update":
+              return (
+                <div>
+                  {single && <Updates updates={single} />}
+                </div>
+              )
           }
         })()}
       </div>

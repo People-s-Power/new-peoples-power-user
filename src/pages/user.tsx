@@ -99,7 +99,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: author?.id },
 		onCompleted: (data) => {
-			console.log(data)
+			// console.log(data)
 			setCampaigns(data.myPetition)
 		},
 		onError: (err) => {
@@ -190,7 +190,7 @@ const user = () => {
 	useEffect(() => {
 		getData()
 		getSingle()
-	}, [adverts, author, posts, events])
+	}, [adverts, author, posts, events, campaigns, victories])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
