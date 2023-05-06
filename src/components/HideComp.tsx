@@ -14,7 +14,7 @@ const HideComp = ({ id }: { id: string }) => {
   useEffect(() => {
     setTimeout(() => {
       setShow(false)
-    }, 10000);
+    }, 20000);
   }, [])
 
   const hide = async () => {

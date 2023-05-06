@@ -179,6 +179,7 @@ export const SINGLE_PETITION_ID = gql`
     aim
     body
     target
+		__typename
     slug
 		createdAt
     comments{

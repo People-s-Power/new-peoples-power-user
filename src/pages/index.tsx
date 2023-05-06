@@ -75,7 +75,7 @@ const HomePage = () => {
 			setOrgs([...orgs, data.getOrganzation])
 		},
 		onError: (err) => {
-			console.log(err.message)
+			// console.log(err.message)
 		},
 	})
 
