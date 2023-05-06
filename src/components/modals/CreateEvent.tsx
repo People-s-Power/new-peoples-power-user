@@ -49,7 +49,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			}
 		}
 	}
-	
+
 	useEffect(() => {
 		setActive(author)
 	}, [author !== null])
@@ -72,8 +72,6 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				},
 			})
 			console.log(data)
-			handelClick()
-
 			// setBody("")
 			setLink(`/${data.data.createEvent.__typename}?page=${data.data.createEvent._id}`)
 			setMsg("Event Created Successfully!")
@@ -84,6 +82,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				file: "",
 				name: "",
 			})
+			handelClick()
 		} catch (error) {
 			console.log(error.response)
 			setLoading(false)
@@ -110,7 +109,6 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				},
 			})
 			console.log(data)
-			handelClick()
 			// setBody("")
 			setLoading(false)
 			setLink(`/${data.data.updateEvent.__typename}?page=${data.data.updateEvent._id}`)
@@ -121,6 +119,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				file: "",
 				name: "",
 			})
+			handelClick()
 		} catch (error) {
 			console.log(error)
 			setLoading(false)
@@ -236,7 +235,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				</Modal.Footer>
 			</Modal>
 			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)}  />
+				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
 			}
 		</>
 	)

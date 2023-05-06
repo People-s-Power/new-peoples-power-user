@@ -83,7 +83,7 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 						</div>
 						<div className="text-base">Shared this victory/testimony</div>
 					</div>
-					<HideComp id={post.id} />
+					<HideComp id={post._id} />
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>
