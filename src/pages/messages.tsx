@@ -202,8 +202,8 @@ const messages = () => {
 				userId: active.id || active._id,
 			}, (response) => {
 				console.log('read_message:', response),
-				getDm()
-				}
+					getDm()
+			}
 			);
 		}
 	}
@@ -261,6 +261,17 @@ const messages = () => {
 			})
 		}
 	}
+	// item.users[0]._id === active.id ? item.users[1].name : item.users[0].name
+	const search = (value) => {
+		if (value === "") return getDm()
+		const matchingStrings = []
+		for (const string of messages) {
+			if (string.users[0]._id === active.id || active._id ? string.users[1].name.toLowerCase().includes(value) : string.users[0].name.toLowerCase().includes(value)) {
+				matchingStrings.push(string);
+			}
+		}
+		setMessages(matchingStrings)
+	}
 
 	const speaker = (
 		<Popover>
@@ -307,6 +318,7 @@ const messages = () => {
 							</Whisper>
 						</div>
 					)}
+					<input type="text" className="p-2 rounded-md w-full" onChange={(e) => search(e.target.value)} placeholder="Search Messages" />
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} className={item.unread === true || item.messages[item.messages.length - 1].to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
