@@ -12,15 +12,15 @@ interface IProps {
 	open?: any;
 	post: any;
 	openPetition?: any;
+	timeLine?: boolean;
 }
 
-const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.Element => {
+const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [more, setMore] = useState(post.body.length > 250 ? true : false)
 
-
 	return (
-		<div className="p-3 border rounded-md mb-3">
+		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
@@ -32,7 +32,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.E
 							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
 						</div>
 					</div>
-					<HideComp id={post._id} />
+					{timeLine ? null : <HideComp id={post._id} />}
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>

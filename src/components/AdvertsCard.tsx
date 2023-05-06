@@ -9,7 +9,12 @@ import { UserAtom } from "atoms/UserAtom"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
 
-const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
+interface IProps {
+	advert: any;
+	timeLine?: boolean;
+}
+
+const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const share = async () => {
 		try {
@@ -25,7 +30,7 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 		}
 	}
 	return (
-		<div className="p-3 border mb-3">
+		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className=" border-b border-gray-200 pb-3">
 				{/* <div className="flex justify-between"> */}
 				<div className="flex">
@@ -38,7 +43,7 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 							<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
 						</div>
 					</div>
-					<HideComp id={advert._id} />
+					{timeLine ? null : <HideComp id={advert._id} />}
 				</div>
 				{/* </div> */}
 				<div>sponsored</div>

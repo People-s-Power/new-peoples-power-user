@@ -14,7 +14,12 @@ import { print } from "graphql"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
 
-const Victory = ({ post }: { post: any }): JSX.Element => {
+interface IProps {
+	post: any;
+	timeLine?: boolean;
+}
+
+const Victory = ({ post, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
@@ -73,8 +78,8 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 	// }
 
 	return (
-		<div className="p-3 border mb-3">
-			<div className=" border-b border-gray-200 pb-3">
+		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
+			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
 					<div className="ml-2">
@@ -83,7 +88,7 @@ const Victory = ({ post }: { post: any }): JSX.Element => {
 						</div>
 						<div className="text-base">Shared this victory/testimony</div>
 					</div>
-					<HideComp id={post._id} />
+					{timeLine ? null : <HideComp id={post._id} />}
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>

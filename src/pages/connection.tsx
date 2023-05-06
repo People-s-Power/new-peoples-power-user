@@ -9,7 +9,7 @@ import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { useRouter } from "next/router"
-import { FOLLOW, FOLLOWERS, FOLLOWING } from "apollo/queries/generalQuery"
+import { FOLLOW, UNFOLLOW, FOLLOWERS, FOLLOWING } from "apollo/queries/generalQuery"
 import Link from "next/link"
 
 const connection = () => {
@@ -86,6 +86,23 @@ const connection = () => {
 			console.log(error)
 		}
 	}
+	const unfollow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UNFOLLOW),
+				variables: {
+					followerId: author.id,
+					unfollowId: id,
+				},
+			})
+			console.log(data)
+			getUsers()
+			getFollowers()
+			getFollowing()
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	return (
 		<FrontLayout>
@@ -136,8 +153,8 @@ const connection = () => {
 										<div className="text-xl py-2">{user.name} </div>
 										<div className="w-16 h-[1px] bg-gray-200"></div>
 										<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-										<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
-											Unollow
+										<div className="text-xs text-gray-900 my-6" onClick={() => unfollow(user.id)}>
+											Unfollow
 										</div>
 										<Link href={`/messages?page=${user._id}`}>
 											<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>

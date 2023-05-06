@@ -12,6 +12,7 @@ import CampComp from "./CampComp"
 import Victory from "./VictoryCard"
 import PetitionComp from "./PetitionCard"
 import { SINGLE_PETITION_ID } from "apollo/queries/petitionQuery"
+import HideComp from "./HideComp"
 
 const Timeline = ({ item }: { item: any }) => {
   const [data, setData] = useState(null)
@@ -111,57 +112,62 @@ const Timeline = ({ item }: { item: any }) => {
           switch (item.event) {
             case "Created-Advert":
               return <div>
-                {data && <div>
-                  <div className="flex p-3 border">
-                    <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                {data && <div className="border rounded-md  mb-3">
+                  <div className="flex m-3 pb-3 border-b border-gray-200">
+                    <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
                     <div className="my-auto text-sm">{item.message}</div>
+                    <HideComp id={item.id} />
                   </div>
-                  <AdvertsComp advert={data} />
+                  <AdvertsComp advert={data} timeLine={true} />
                 </div>}
               </div>
             case "Created-Victory":
               return (
                 <div>
-                  {data && <div>
-                    <div className="flex p-3 border">
-                      <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                  {data && <div className="border rounded-md  mb-3">
+                    <div className="flex m-3 pb-3 border-b border-gray-200">
+                      <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
                       <div className="my-auto text-sm">{item.message}</div>
+                      <HideComp id={item.id} />
                     </div>
-                    <Victory post={data} />
+                    <Victory post={data} timeLine={true} />
                   </div>}
                 </div>
               )
             case "Created-Petition":
               return <div>
-                {data && <div>
-                  <div className="flex p-3 border">
-                    <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                {data && <div className="border rounded-md mb-3">
+                  <div className="flex m-3 pb-3 border-b border-gray-200">
+                    <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
                     <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented") ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message}</div>
+                    <HideComp id={item.id} />
                   </div>
-                  <PetitionComp petition={data} />
+                  <PetitionComp petition={data} timeLine={true} />
                 </div>}
               </div>
             case "Created-Post":
               return <div>
                 {
-                  data && <div>
-                    <div className="flex p-3 border">
-                      <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                  data && <div className="border rounded-md mb-3">
+                    <div className="flex m-3 pb-3 border-b border-gray-200">
+                      <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
                       <div className="my-auto text-sm">{item.message}</div>
+                      <HideComp id={item.id} />
                     </div>
-                    <CampComp post={data} />
+                    <CampComp post={data} timeLine={true} />
                   </div>
                 }
               </div>
             case "Created-Event":
               return (
                 <div>
-                  {data && <div>
-                    <div className="flex p-3 border">
-                      <img className="rounded-full w-10 h-10 mr-4" src={item.authorImage} alt="" />
+                  {data && <div className="border rounded-md  mb-3">
+                    <div className="flex m-3 pb-3 border-b border-gray-200">
+                      <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
                       <div className="my-auto text-sm">{item.message}</div>
+                      <HideComp id={item.id} />
                     </div>
-                    <EventsCard event={data} />
+                    <EventsCard event={data} timeLine={true} />
                   </div>}
                 </div>
               )

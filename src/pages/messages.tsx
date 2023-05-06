@@ -328,7 +328,7 @@ const messages = () => {
 									{
 										item.type === "consumer-to-consumer" ? <img src={item.users[0]._id === active.id ? item.users[1].image : item.users[0].image
 										} className="w-10 h-10 rounded-full" alt="" /> :
-											<img src={item.users[0]._id === active._id ? item.users[1].image : item.users[0].image
+											<img src={item.users[0]._id === active._id || active.id ? item.users[1].image : item.users[0].image
 											} className="w-10 h-10 rounded-full my-auto" alt="" />
 									}
 
@@ -338,9 +338,9 @@ const messages = () => {
 									<div className="w-[80%] ml-4">
 										{
 											item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
-												: <div className="text-base font-bold">{item.users[0]._id === active._id ? item.users[1].name : item.users[0].name}</div>
+												: <div className="text-base font-bold">{item.users[0]._id === active._id || active.id ? item.users[1].name : item.users[0].name}</div>
 										}
-										<div className="text-sm"> <strong>{item.type === "support-to-consumer" ? "Expert Needed" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
+										<div className="text-sm"> <strong>{item.messages[item.messages.length - 1].type === "sponsored" ? "Expert Needed" : item.messages[item.messages.length - 1].type === "advert" ? "Promoted" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 										<ReactTimeAgo date={new Date(item.updatedAt)} />
 									</div>
 									{/* <div className="w-32 text-xs ml-auto">

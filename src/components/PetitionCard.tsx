@@ -18,7 +18,12 @@ import ShareModal from "./modals/ShareModal"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
 
-const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
+interface IProps {
+	petition: any;
+	timeLine?: boolean;
+}
+
+const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [open, setOpen] = useState(false)
 	const handelPetition = () => setOpenPetition(!openPetition)
@@ -67,7 +72,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 	}
 
 	return (
-		<div className="p-3 border mb-3">
+		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200">
 				<Link href={`/user?page=${petition.authorId}`}>
 					<div className="flex">
@@ -80,7 +85,7 @@ const PetitionComp = ({ petition }: { petition: any }): JSX.Element => {
 								<ReactTimeAgo date={new Date(petition.createdAt)} />
 							</div>
 						</div>
-						<HideComp id={petition._id} />
+						{timeLine ? null : <HideComp id={petition._id} />}
 					</div>
 				</Link>
 				<div className="text-sm my-1">{petition.author.description}</div>

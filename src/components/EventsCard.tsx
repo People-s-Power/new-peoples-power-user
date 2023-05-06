@@ -13,7 +13,13 @@ import { apollo } from "apollo"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
 
-const EventsCard = ({ event }: { event: any }) => {
+
+interface IProps {
+	event: any;
+	timeLine?: boolean;
+}
+
+const EventsCard = ({ event, timeLine }: IProps) => {
 	const [open, setOpen] = useState(false)
 	const handelClick = () => setOpen(!open)
 	const author = useRecoilValue(UserAtom)
@@ -54,8 +60,8 @@ const EventsCard = ({ event }: { event: any }) => {
 		}
 	}
 	return (
-		<div className="rounded-md border mb-3 p-3">
-			<div className="border-b border-gray-200 my-3">
+		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
+			<div className="border-b border-gray-200">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
 					<div className="ml-2 w-full">
@@ -64,7 +70,7 @@ const EventsCard = ({ event }: { event: any }) => {
 						</div>
 						<div className="text-xs">{event.author.name} created this as an event</div>
 					</div>
-					<HideComp id={event._id} />
+					{timeLine ? null : <HideComp id={event._id} />}
 				</div>
 				<div className="text-sm my-1">{event.author.description}</div>
 			</div>
