@@ -40,6 +40,7 @@ export const CREATE_VICTORIES = gql`
 		createVictory(authorId: $authorId, body: $body, imageFile: $imageFile) {
 			_id
 			body
+			__typename
 		}
 	}
 `
@@ -49,6 +50,7 @@ export const UPDATE_VICTORIES = gql`
 		updateVictory(authorId: $authorId, body: $body, imageFile: $imageFile, victoryId: $victoryId) {
 			_id
 			body
+			__typename
 		}
 	}
 `

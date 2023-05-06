@@ -8,12 +8,16 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { CREATE_VICTORIES, UPDATE_VICTORIES } from "apollo/queries/victories"
 import { useRouter } from "next/router"
+import NotificationCard from "components/NotificationCard"
 
 const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handelClick(): void; victory: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
 	const [body, setBody] = useState(victory?.body || "")
 	const router = useRouter()
+	const [notication, setNotication] = useState(false)
+	const [msg, setMsg] = useState("")
+	const [link, setLink] = useState("")
 
 	// useEffect(() => {
 	// 	console.log(router)
@@ -32,6 +36,9 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 			})
 			console.log(data)
 			setLoading(false)
+			setLink(`/${data.data.createVictory.__typename}?page=${data.data.createVictory._id}`)
+			setMsg("Victory Created Successfully!")
+			setNotication(true)
 			handelClick()
 		} catch (err) {
 			console.log(err)
@@ -52,6 +59,9 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 			})
 			console.log(data)
 			setLoading(false)
+			setLink(`/${data.data.updateVictory.__typename}?page=${data.data.updateVictory._id}`)
+			setMsg("Victory Edited Successfully!")
+			setNotication(true)
 			handelClick()
 		} catch (err) {
 			console.log(err)
@@ -96,6 +106,9 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 					</div>
 				</Modal.Footer>
 			</Modal>
+			{
+				notication && <NotificationCard hide={notication} msg={msg} link={link} />
+			}
 		</>
 	)
 }
