@@ -86,6 +86,7 @@ const connection = () => {
 			console.log(error)
 		}
 	}
+
 	const unfollow = async (id) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {

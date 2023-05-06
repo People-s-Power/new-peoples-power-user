@@ -74,8 +74,8 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	return (
 		<div className="p-3 border mb-3">
 			<div>
-				<div className="flex justify-between border-b border-gray-200 pb-3">
-					<div className="flex">
+				{/* <div className="flex justify-between border-b border-gray-200 pb-3"> */}
+					<div className="flex border-b border-gray-200 w-full pb-3">
 						<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
 						<div className="ml-2 w-full">
 							<div className="text-base capitalize">
@@ -87,7 +87,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 						</div>
 						<HideComp id={updates.id} />
 					</div>
-				</div>
+				{/* </div> */}
 				<div className="text-sm my-1">{updates.author.description}</div>
 			</div>
 			<div className="text-sm p-2 leading-loose">{updates.petition?.title}</div>
