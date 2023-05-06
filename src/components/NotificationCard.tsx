@@ -18,12 +18,12 @@ const NotificationCard = ({ hide, msg, link, close }: { hide: boolean, msg: stri
             <Modal.Body>
               <div className='text-center'>
                 <img src="/images/success.png" className='mx-auto w-32 my-4' alt="" />
-                <div>You have just removed an item from your timeline. <Link href={link}><span className='text-warning cursor-pointer'>View</span></Link></div>
+                <div>{msg} <Link href={link}><span className='text-warning cursor-pointer'>View</span></Link></div>
               </div>
             </Modal.Body>
           </Modal> :
           <div className="flex px-6 w-1/2 mx-auto justify-between items-center bg-white shadow-lg rounded-lg py-3">
-            <div>{msg}</div>
+            <div>You have just removed an item from your timeline.</div>
             <button className='p-2 bg-warning text-white' onClick={() => undo()}>Undo</button>
           </div>
         )
