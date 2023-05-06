@@ -24,7 +24,7 @@ const AdvertsComp = ({ advert }: { advert: any }): JSX.Element => {
 		}
 	}
 	return (
-		<div className="p-3 border-b border-gray-400 my-3">
+		<div className="p-3 border mb-3">
 			<div className=" border-b border-gray-200 pb-3">
 				<div className="flex justify-between">
 					<div className="flex">

@@ -219,7 +219,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	}
 
 	return (
-		<div>
+		<div className="border-t border-gray-200">
 			<div className="pt-3 flex justify-between" onMouseEnter={() => view(post._id || post.id)}>
 				{liked ? (
 					<div className="flex  cursor-pointer" onClick={() => { like() }}>

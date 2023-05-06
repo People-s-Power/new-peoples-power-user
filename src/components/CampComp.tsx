@@ -16,7 +16,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.E
 	const [more, setMore] = useState(post.body.length > 250 ? true : false)
 
 	return (
-		<div className="p-3 border-b border-gray-400 my-3">
+		<div className="p-3 border rounded-md mb-3">
 			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
@@ -28,6 +28,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition }: IProps): JSX.E
 							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
 						</div>
 					</div>
+					<img src="/images/close.png" className="cursor-pointer w-3 h-3 ml-auto my-auto" alt="" />
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>

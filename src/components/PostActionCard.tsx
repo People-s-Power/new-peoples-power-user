@@ -12,7 +12,7 @@ const PostActionCardProp = {
 }
 
 export default function PostActionCard({ authorImage, handelClick, handelEventClick, handelPetition, handelOpenFindExpart, count, refresh }: InferProps<typeof PostActionCardProp>): JSX.Element {
-    return <div className="border-b border-gray-200">
+    return <div className="border-b border-gray-300">
         <div className="flex justify-center">
             <img src={authorImage ? authorImage : ''} className="w-14 h-14 mx-4 rounded-full" alt="" />
             <div onClick={() => handelClick()} className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm cursor-pointer">

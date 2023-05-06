@@ -257,7 +257,7 @@ const HomePage = () => {
 						</div>
 					</div>
 				</aside>
-				<section className="w-full shadow-sm lg:w-[50%] mx-auto">
+				<section className="w-full lg:w-[50%] mx-auto">
 					<PostActionCard
 						authorImage={author?.image}
 						handelOpenFindExpart={handelOpenFindExpart}
@@ -272,7 +272,7 @@ const HomePage = () => {
 							<Loader size="md" center />
 						</div> : null
 					}
-					<div>
+					<div className="mt-3">
 						{all.map((single: any, index: number) => {
 							// setType(single.__typename)
 							switch (single.__typename) {

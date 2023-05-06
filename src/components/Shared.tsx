@@ -9,7 +9,7 @@ const Shared = ({ shared }: { shared: any }) => {
 	const [more, setMore] = useState(shared.itemBody.length > 250 ? true : false)
 
 	return (
-		<div className="p-3 border-b border-gray-400 my-3">
+		<div className="p-3 border my-3">
 			<div className="flex justify-between border-b border-gray-200 pb-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={shared.author?.image} alt="" />

@@ -53,8 +53,8 @@ const EventsCard = ({ event }: { event: any }) => {
 		}
 	}
 	return (
-		<div className="rounded-md shadow-sm p-3">
-			<div className=" my-3">
+		<div className="rounded-md border mb-3 p-3">
+			<div className="border-b border-gray-200 my-3">
 				<div className="flex">
 					<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
 					<div className="ml-2">
