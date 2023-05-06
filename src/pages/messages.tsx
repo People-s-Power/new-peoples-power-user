@@ -266,7 +266,7 @@ const messages = () => {
 		if (value === "") return getDm()
 		const matchingStrings = []
 		for (const string of messages) {
-			if (string.users[0]._id === active.id || active._id ? string.users[1].name.toLowerCase().includes(value) : string.users[0].name.toLowerCase().includes(value)) {
+			if (string.users[0]._id === active.id ? string.users[1].name.toLowerCase().includes(value) : string.users[0].name.toLowerCase().includes(value)) {
 				matchingStrings.push(string);
 			}
 		}
