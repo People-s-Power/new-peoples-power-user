@@ -180,6 +180,7 @@ export const SINGLE_PETITION_ID = gql`
     body
     target
     slug
+		createdAt
     comments{
       _id
       content
