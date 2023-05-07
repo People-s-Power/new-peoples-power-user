@@ -158,6 +158,19 @@ const messages = () => {
 			})
 		}
 	}
+
+	const checkOnline = (id) => {
+		let online = false;
+		if (socket.connected) {
+			socket.emit('get_online_status', id, response => {
+				console.log('get_online_status:', response)
+				online = response
+			}
+			);
+		}
+		return online
+	}
+
 	useEffect(() => {
 		getDm()
 	}, [show, active])
@@ -321,19 +334,20 @@ const messages = () => {
 					<input type="text" className="p-2 rounded-md w-full" onChange={(e) => search(e.target.value)} placeholder="Search Messages" />
 					{messages &&
 						messages.map((item, index) => (
-							<div key={index} className={item.unread === true || item.messages[item.messages.length - 1]?.to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
+							<div key={index} className={item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id || active._id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
+								{checkOnline(item.users[0]._id === active._id || active.id ? item.users[1]._id : item.users[0]._id) ? <div className="mx-1 bg-green-500 w-2 h-2 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-2 h-2 my-auto rounded-full"></div>}
 								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
 									className={"w-full flex"}
 								>
 									{
 										item.type === "consumer-to-consumer" ? <img src={item.users[0]._id === active.id ? item.users[1].image : item.users[0].image
-										} className="w-10 h-10 rounded-full" alt="" /> :
+										} className="w-10 h-10 rounded-full my-auto" alt="" /> :
 											<img src={item.users[0]._id === active._id || active.id ? item.users[1].image : item.users[0].image
 											} className="w-10 h-10 rounded-full my-auto" alt="" />
 									}
 
 									<div className="w-6 my-auto mx-auto">
-										{item.unread === true || item.messages[item.messages.length - 1]?.to === active.id || active._id && item.messages[item.messages.length - 1].received === false ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
+										{item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id || active._id ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
 									</div>
 									<div className="w-[80%] ml-4">
 										{
