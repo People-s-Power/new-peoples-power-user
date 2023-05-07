@@ -12,6 +12,7 @@ import { UserAtom } from "atoms/UserAtom"
 import { apollo } from "apollo"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
+import { FOLLOW } from "apollo/queries/generalQuery"
 
 
 interface IProps {
@@ -23,7 +24,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 	const [open, setOpen] = useState(false)
 	const handelClick = () => setOpen(!open)
 	const author = useRecoilValue(UserAtom)
-
+	const [following, setFollowing] = useState(false)
 	const interested = async (event: any) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -59,6 +60,32 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 			console.log(err)
 		}
 	}
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: id,
+				},
+			})
+			console.log(data)
+			setFollowing(true)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	function searchForValue(id) {
+		let matchingStrings = false;
+		for (const string of author.following) {
+			if (string.includes(id)) {
+				matchingStrings = true
+			}
+		}
+		return matchingStrings;
+	}
+
 	return (
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200">
@@ -70,7 +97,9 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 						</div>
 						<div className="text-xs">{event.author.name} created this as an event</div>
 					</div>
-					{timeLine ? null : <HideComp id={event._id} />}
+					{timeLine ? searchForValue(event.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
+						{following ? <span>Followed</span> : <span onClick={() => follow(event.author._id)} className="cursor-pointer">+ Follow</span>}
+					</div> : <HideComp id={event._id} />}
 				</div>
 				<div className="text-sm my-1">{event.author.description}</div>
 			</div>

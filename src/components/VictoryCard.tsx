@@ -7,7 +7,7 @@ import { UserAtom } from "atoms/UserAtom"
 import Link from "next/link"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { SHARE, LIKE, COMMENT } from "apollo/queries/generalQuery"
+import { SHARE, LIKE, COMMENT, FOLLOW } from "apollo/queries/generalQuery"
 import axios from "axios"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
@@ -24,58 +24,34 @@ const Victory = ({ post, timeLine }: IProps): JSX.Element => {
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
 	const [content, setContent] = useState("")
+	const [following, setFollowing] = useState(false)
 
-	// const share = async () => {
-	// 	try {
-	// 		const { data } = await axios.post("share", {
-	// 			body: "share",
-	// 			author: author.id,
-	// 			itemId: post._id,
-	// 		})
-	// 		console.log(data)
-	// 		toast.success("Victory has been shared")
-	// 	} catch (err) {
-	// 		console.log(err)
-	// 	}
-	// }
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: id,
+				},
+			})
+			console.log(data)
+			setFollowing(true)
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
-	// const like = async () => {
-	// 	try {
-	// 		const { data } = await axios.post(SERVER_URL + "/graphql", {
-	// 			query: print(LIKE),
-	// 			variables: {
-	// 				authorId: author.id,
-	// 				itemId: post._id,
-	// 			},
-	// 		})
-	// 		toast.success("Victory liked successfully")
-	// 		console.log(data)
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 		toast.warn("Oops! Something went wrong")
-	// 	}
-	// }
-	// function liked(id, array) {
-	// 	return array.some((obj) => obj._id === id)
-	// }
-	// const comment = async (id) => {
-	// 	if (content.length === 0) return
-	// 	try {
-	// 		const { data } = await axios.post(SERVER_URL + "/graphql", {
-	// 			query: print(COMMENT),
-	// 			variables: {
-	// 				authorId: author.id,
-	// 				itemId: id,
-	// 				content: content,
-	// 			},
-	// 		})
-	// 		toast.success("Comment sent")
-	// 		console.log(data)
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 		toast.warn("Oops! Something went wrong")
-	// 	}
-	// }
+	function searchForValue(id) {
+		let matchingStrings = false;
+		for (const string of author.following) {
+			if (string.includes(id)) {
+				matchingStrings = true
+			}
+		}
+		return matchingStrings;
+	}
+
 
 	return (
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
@@ -88,7 +64,9 @@ const Victory = ({ post, timeLine }: IProps): JSX.Element => {
 						</div>
 						<div className="text-base">Shared this victory/testimony</div>
 					</div>
-					{timeLine ? null : <HideComp id={post._id} />}
+					{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto">
+						{following ? <span>Followed</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
+					</div> : <HideComp id={post._id} />}
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>

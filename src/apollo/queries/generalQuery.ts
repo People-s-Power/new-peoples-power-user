@@ -368,8 +368,8 @@ export const FOLLOW = gql`
 `
 
 export const UNFOLLOW = gql`
-	mutation follow($followerId: ID!, $unfollowId: ID!) {
-		follow(followerId: $followerId, unfollowId: $unfollowId)
+	mutation unfollow($followerId: ID!, $unfollowId: ID!) {
+		unfollow(followerId: $followerId, unfollowId: $unfollowId)
 	}
 `
 

@@ -154,7 +154,7 @@ const connection = () => {
 										<div className="text-xl py-2">{user.name} </div>
 										<div className="w-16 h-[1px] bg-gray-200"></div>
 										<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-										<div className="text-xs text-gray-900 my-6" onClick={() => unfollow(user.id)}>
+										<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => unfollow(user._id)}>
 											Unfollow
 										</div>
 										<Link href={`/messages?page=${user._id}`}>

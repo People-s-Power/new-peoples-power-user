@@ -6,6 +6,10 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
+import { SERVER_URL } from "utils/constants"
+import { FOLLOW } from "apollo/queries/generalQuery"
+import axios from "axios"
+import { print } from "graphql"
 
 
 interface IProps {
@@ -18,6 +22,33 @@ interface IProps {
 const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [more, setMore] = useState(post.body.length > 250 ? true : false)
+	const [following, setFollowing] = useState(false)
+
+	function searchForValue(id) {
+		let matchingStrings = false;
+		for (const string of author.following) {
+			if (string.includes(id)) {
+				matchingStrings = true
+			}
+		}
+		return matchingStrings;
+	}
+
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: id,
+				},
+			})
+			console.log(data)
+			setFollowing(true)
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	return (
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
@@ -32,7 +63,9 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
 						</div>
 					</div>
-					{timeLine ? null : <HideComp id={post._id} />}
+					{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
+						{following ? <span>Followed</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
+					</div> : <HideComp id={post._id} />}
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
 			</div>

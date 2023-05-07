@@ -17,6 +17,9 @@ import axios from "axios"
 import ShareModal from "./modals/ShareModal"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
+import { SERVER_URL } from "utils/constants"
+import { FOLLOW } from "apollo/queries/generalQuery"
+import { print } from "graphql"
 
 interface IProps {
 	petition: any;
@@ -33,7 +36,8 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 	const handelUpdates = () => setOpenUpdates(!openUpdates)
 	const [openUpdates, setOpenUpdates] = useState(false)
 	const [orgs, setOrgs] = useState<IOrg[]>([])
-
+	const [following, setFollowing] = useState(false)
+	
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
 		client: apollo,
@@ -71,6 +75,32 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 		// })
 	}
 
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: id,
+				},
+			})
+			console.log(data)
+			setFollowing(true)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	function searchForValue(id) {
+		let matchingStrings = false;
+		for (const string of author.following) {
+			if (string.includes(id)) {
+				matchingStrings = true
+			}
+		}
+		return matchingStrings;
+	}
+
 	return (
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200">
@@ -85,7 +115,9 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 								<ReactTimeAgo date={new Date(petition.createdAt)} />
 							</div>
 						</div>
-						{timeLine ? null : <HideComp id={petition._id} />}
+						{timeLine ? searchForValue(petition.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
+							{following ? <span>Followed</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
+						</div> : <HideComp id={petition._id} />}
 					</div>
 				</Link>
 				<div className="text-sm my-1">{petition.author.description}</div>

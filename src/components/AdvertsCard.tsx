@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Dropdown } from "rsuite"
 import ReactTimeAgo from "react-time-ago"
 import axios from "axios"
@@ -8,6 +8,9 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
+import { SERVER_URL } from "utils/constants"
+import { FOLLOW } from "apollo/queries/generalQuery"
+import { print } from "graphql"
 
 interface IProps {
 	advert: any;
@@ -16,19 +19,34 @@ interface IProps {
 
 const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
-	const share = async () => {
+	const [following, setFollowing] = useState(false)
+
+	const follow = async (id) => {
 		try {
-			const { data } = await axios.post("share", {
-				body: "share",
-				author: author.id,
-				itemId: advert._id,
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: id,
+				},
 			})
 			console.log(data)
-			toast.success("Advert has been shared")
-		} catch (err) {
-			console.log(err)
+			setFollowing(true)
+		} catch (error) {
+			console.log(error)
 		}
 	}
+
+	function searchForValue(id) {
+		let matchingStrings = false;
+		for (const string of author.following) {
+			if (string.includes(id)) {
+				matchingStrings = true
+			}
+		}
+		return matchingStrings;
+	}
+
 	return (
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className=" border-b border-gray-200 pb-3">
@@ -43,7 +61,9 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 							<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
 						</div>
 					</div>
-					{timeLine ? null : <HideComp id={advert._id} />}
+					{timeLine ? searchForValue(advert.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
+						{following ? <span>Followed</span> : <span onClick={() => follow(advert.author._id)} className="cursor-pointer">+ Follow</span>}
+					</div> : <HideComp id={advert._id} />}
 				</div>
 				{/* </div> */}
 				<div>sponsored</div>
