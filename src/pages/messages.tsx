@@ -286,6 +286,28 @@ const messages = () => {
 		setMessages(matchingStrings)
 	}
 
+	const sendTyping = (id) => {
+		if (socket.connected) {
+			socket.emit('typing', {
+				to: id,
+				userName: active.name
+			}, response =>
+				console.log('typing:', response),
+			);
+		}
+	}
+
+	const setTyping = () => {
+		let typing = ""
+		if (socket.connected) {
+			socket.on('typing', function (data) {
+				console.log('typing', data);
+				typing = data
+			});
+		}
+		return typing
+	}
+
 	const speaker = (
 		<Popover>
 			<div onClick={() => setActive(user)} className="flex m-1 cursor-pointer">
@@ -359,8 +381,11 @@ const messages = () => {
 											item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
 												: <div className="text-base font-bold">{item.users[0]._id === active._id || active.id ? item.users[1].name : item.users[0].name}</div>
 										}
-										<div className="text-sm"> <strong>{item.messages[item.messages.length - 1].type === "sponsored" ? "Expert Needed" : item.messages[item.messages.length - 1].type === "advert" ? "Promoted" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
-										<ReactTimeAgo date={new Date(item.updatedAt)} />
+										{setTyping() ? setTyping() : <div>
+											<div className="text-sm"> <strong>{item.messages[item.messages.length - 1].type === "sponsored" ? "Expert Needed" : item.messages[item.messages.length - 1].type === "advert" ? "Promoted" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
+											<ReactTimeAgo date={new Date(item.updatedAt)} />
+										</div>}
+
 									</div>
 									{/* <div className="w-32 text-xs ml-auto">
 									</div> */}
@@ -449,6 +474,7 @@ const messages = () => {
 											className="w-full h-32 text-sm p-2 border border-white"
 											placeholder="Write a message"
 											value={message}
+											onFocus={() => sendTyping(show.users[1]._id === active.id || active._id ? show.users[0]?.socketId : show.users[1]?.socketId)}
 										></textarea>
 										<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 											{show?.type === "customer-org" && (
