@@ -148,7 +148,7 @@ const messages = () => {
 	useEffect(() => {
 		setActive(user)
 		getSingle()
-	}, [user])
+	}, [user, socket])
 
 	const getDm = () => {
 		if (socket.connected) {
@@ -159,17 +159,12 @@ const messages = () => {
 		}
 	}
 
-	const checkOnline = (id) => {
-		let online = false;
-		if (socket.connected) {
-			socket.emit('get_online_status', id, response => {
-				// console.log('get_online_status:', response)
-				online = response
-			}
-			);
-		}
-		return online
-	}
+	// const checkOnline = async (id) => {
+	// 	let online;
+	// 	await socket.emit('get_online_status', id, response => online = response);
+	// 	return online
+	// }
+	// // console.log(checkOnline("63e2b2b32af42c659ec0165f"))
 
 	useEffect(() => {
 		getDm()
@@ -359,7 +354,8 @@ const messages = () => {
 							<div key={index} className={
 								item.type === "consumer-to-consumer" ? item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer" : item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active._id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
 
-								{checkOnline(item.users[0]._id === active._id || active.id ? item.users[1]._id : item.users[0]._id) ? <div className="mx-1 bg-green-500 w-2 h-2 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-2 h-2 my-auto rounded-full"></div>}
+								{item.online ? <div className="mx-1 bg-green-500 w-2 h-2 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-2 h-2 my-auto rounded-full"></div>}
+
 								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
 									className={"w-full flex"}
 								>

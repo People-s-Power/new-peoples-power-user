@@ -265,7 +265,7 @@ const addadmin = () => {
 					{admin === true && admins === true ? (
 						operators?.length >= 1 ? (
 							operators.map((org, i) => (
-								<div key={i} className="w-full flex justify-between px-2 py-1 w-[80%] mx-auto bg-gray-200 my-2">
+								<div key={i} className="flex justify-between px-2 py-1 w-[80%] mx-auto bg-gray-200 my-2">
 									<img src={org.image} className="w-12 rounded-full h-12 " alt="" />
 									<div className="text-base capitalize ml-4 w-44 my-auto">
 										{org?.firstName} {org.lastName}
@@ -394,7 +394,7 @@ const addadmin = () => {
 									<div>
 										<img src="/images/logo.svg" className="w-16 my-2 h-16 mx-auto" alt="" />
 										<div className="font-bold text-lg text-center my-2">
-											Evans G, what plan will you like to use? <br />
+											{author.name}, what plan will you like to use? <br />
 											We’ll recommend the right plan for you.
 										</div>
 										<div className="text-base my-2">
