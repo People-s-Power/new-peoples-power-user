@@ -40,6 +40,7 @@ const addadmin = () => {
 	const [step, setStep] = useState(0)
 	const router = useRouter()
 	const [professionals, setProfessionals] = useState<any>([])
+	const [trained, setTrained] = useState([])
 
 	const hireProfessonal = () => {
 		if (role === "") {
@@ -62,6 +63,7 @@ const addadmin = () => {
 	})
 
 	useEffect(() => {
+		getRep()
 		axios
 			.get(`/user`)
 			.then(function (response) {
@@ -158,18 +160,38 @@ const addadmin = () => {
 	}
 
 	const search = (e: any) => {
-		setSearched([])
-		users.map((user) => {
-			const list = []
-			// console.log(typeof user.firstName)
-			if (user?.firstName?.toLowerCase() === e.target.value.toLowerCase()) {
-				list.push(user)
-				// setSearched([...searched, user])
-				// console.log(user)
-				setSearched(list)
+		const matchingStrings = []
+		for (const string of users) {
+			if (string.firstName.toLowerCase().includes(e.target.value)) {
+				matchingStrings.push(string);
 			}
-		})
+		}
+		setSearched(matchingStrings)
 	}
+	const searchProf = (value) => {
+		if (value === "") return getRep()
+		const matchingStrings = []
+		for (const string of trained) {
+			if (string.name.toLowerCase().includes(value.target.value)) {
+				matchingStrings.push(string);
+			}
+		}
+		setProfessionals(matchingStrings)
+	}
+
+	const getRep = () => {
+		try {
+			axios.get("https://teamapp-6jfl6.ondigitalocean.app/api/get-reps")
+				.then((response) => {
+					console.log(response.data.data)
+					setTrained(response.data.data)
+				})
+		}
+		catch (e) {
+			console.log(e)
+		}
+	}
+
 	const adminTooltip = <Tooltip>This person makes, edits, create and promote, posts, petitons, events, update, organization and profile.</Tooltip>
 	const editorTooltip = <Tooltip>This person edits posts, petitons, events, update and products.</Tooltip>
 
@@ -400,7 +422,7 @@ const addadmin = () => {
 										type="text"
 										className="p-3 rounded-md border border-gray w-full"
 										onChange={(e) => {
-											search(e)
+											searchProf(e)
 										}}
 										placeholder="Type here to search for a user to assign role"
 									/>
@@ -414,10 +436,10 @@ const addadmin = () => {
 														: "" + "p-3 bg-gray-100 cursor-pointer hover:bg-gray-200 text-base mb-1"
 												}
 												onClick={() => {
-													setId(search.id), setClicked(true)
+													setId(search._id), setClicked(true)
 												}}
 											>
-												{search.firstName} {search.lastName}
+												{search.name}
 											</div>
 										))}
 									</div>

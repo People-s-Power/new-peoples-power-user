@@ -358,6 +358,7 @@ const messages = () => {
 						messages.map((item, index) => (
 							<div key={index} className={
 								item.type === "consumer-to-consumer" ? item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer" : item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active._id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
+
 								{checkOnline(item.users[0]._id === active._id || active.id ? item.users[1]._id : item.users[0]._id) ? <div className="mx-1 bg-green-500 w-2 h-2 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-2 h-2 my-auto rounded-full"></div>}
 								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
 									className={"w-full flex"}
