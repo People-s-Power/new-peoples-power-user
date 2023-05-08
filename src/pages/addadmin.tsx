@@ -14,7 +14,10 @@ import { Tooltip, Whisper, Button, ButtonToolbar } from "rsuite"
 import { Modal } from "rsuite"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-// import user from "./user"
+import { PaystackButton, usePaystackPayment } from "react-paystack"
+import { useRecoilValue, useSetRecoilState } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
+import { PaystackProps } from "react-paystack/dist/types"
 
 export interface Operator {
 	userId: string
@@ -22,6 +25,7 @@ export interface Operator {
 }
 
 const addadmin = () => {
+	const author = useRecoilValue(UserAtom)
 	const [admins, setAdmins] = useState(true)
 	const [admin, setAdmin] = useState(true)
 	const [users, setUsers] = useState<IUser[]>([])
@@ -42,16 +46,40 @@ const addadmin = () => {
 	const [professionals, setProfessionals] = useState<any>([])
 	const [trained, setTrained] = useState([])
 
+
+	const paystack_config: PaystackProps = {
+		reference: new Date().getTime().toString(),
+		email: author?.email as string,
+		amount: role === "editor" ? 1500000 : 3500000,
+		firstname: author?.firstName,
+		lastname: author?.lastName,
+		currency: "NGN",
+		publicKey: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28"
+	}
+
+	const initializePayment = usePaystackPayment(paystack_config)
+
+	const onSuccess = async () => {
+		console.log(paystack_config)
+		setStep(1)
+		return
+	}
+	const onClose = () => {
+		console.log("")
+	}
+
+
 	const hireProfessonal = () => {
 		if (role === "") {
-			toast.warn("Please select a role")
+			toast.warn("Please select a role to proceed")
 			return
 		}
 		if (step === 0) {
-			setStep(1)
+			initializePayment(onSuccess, onClose)
 			return
 		}
 	}
+
 	useQuery(GET_ORGANIZATION, {
 		variables: { ID: query.page },
 		client: apollo,
