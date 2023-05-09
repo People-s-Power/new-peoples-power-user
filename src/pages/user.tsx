@@ -156,6 +156,7 @@ const user = () => {
 				},
 			})
 			console.log(data)
+			setFollow(true)
 		} catch (error) {
 			console.log(error)
 		}
@@ -170,6 +171,7 @@ const user = () => {
 				},
 			})
 			console.log(data)
+			setFollow(false)
 		} catch (error) {
 			console.log(error)
 		}
@@ -297,9 +299,9 @@ const user = () => {
 										</div>
 									</div>
 									{
-										author?.id !== query.page && <div>
+										following === false ? author?.id !== query.page && <div>
 											{searchForValue(query.page) ? <span onClick={() => unfollow(query.page)} className="cursor-pointer text-warning">Unfollow</span> : <span onClick={() => follow(query.page)} className="cursor-pointer text-warning">+ Follow</span>}
-										</div>
+										</div> : <div className="text-sm text-warning">Following</div>
 									}
 								</div>
 								{

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from "pages/_app"
 
-const online = ({ id }: { id: any }) => {
+const Online = ({ id }: { id: any }) => {
   const [online, setOnline] = useState(false)
 
   useEffect(() => {
@@ -14,11 +14,11 @@ const online = ({ id }: { id: any }) => {
     <>
       <div className='my-auto h-3'>
         {
-          online ? <div className="mx-1 bg-green-500 w-3 h-3 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-3 h-3 my-auto rounded-full"></div>
+          online ? <div className="mr-1 bg-green-500 w-3 h-3 my-auto rounded-full"></div> : <div className="mr-1 bg-gray-500 w-3 h-3 my-auto rounded-full"></div>
         }
       </div>
     </>
   );
 };
 
-export default online;
+export default Online;

@@ -297,7 +297,7 @@ const messages = () => {
 		}
 		return typing
 	}
-
+	
 	const speaker = (
 		<Popover>
 			<div onClick={() => setActive(user)} className="flex m-1 cursor-pointer">
