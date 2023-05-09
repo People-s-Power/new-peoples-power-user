@@ -120,7 +120,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 					</Link>
 
 					{timeLine ? searchForValue(petition.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
-						{following ? <span>Followed</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
+						{following ? <span>Following</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={petition._id} />}
 				</div>
 				<div className="text-sm my-1">{petition.author.description}</div>

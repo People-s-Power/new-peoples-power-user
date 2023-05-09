@@ -103,7 +103,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 						</div>
 					</Link>
 					{timeLine ? searchForValue(event.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
-						{following ? <span>Followed</span> : <span onClick={() => follow(event.author._id)} className="cursor-pointer">+ Follow</span>}
+						{following ? <span>Following</span> : <span onClick={() => follow(event.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={event._id} />}
 				</div>
 				<div className="text-sm my-1">{event.author.description}</div>

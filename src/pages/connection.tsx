@@ -11,6 +11,7 @@ import { UserAtom } from "atoms/UserAtom"
 import { useRouter } from "next/router"
 import { FOLLOW, UNFOLLOW, FOLLOWERS, FOLLOWING } from "apollo/queries/generalQuery"
 import Link from "next/link"
+import FollowCard from "components/FollowCard"
 
 const connection = () => {
 	const { query } = useRouter()
@@ -69,24 +70,6 @@ const connection = () => {
 		getFollowing()
 	}, [author, active])
 
-	const follow = async (id) => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(FOLLOW),
-				variables: {
-					followerId: author.id,
-					followId: id,
-				},
-			})
-			console.log(data)
-			getUsers()
-			getFollowers()
-			getFollowing()
-		} catch (error) {
-			console.log(error)
-		}
-	}
-
 	const unfollow = async (id) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -120,23 +103,16 @@ const connection = () => {
 						Following
 					</div>
 				</div>
+				<div className="my-4">
+					{
+						active === "followers" ? <p className="text-sm">You have {followers.length} followers who share their activities with you</p> : active === "following" ? <p className="text-sm">You are following {following.length} users who you share your activities with </p> : null
+					}
+				</div>
 				<div className="flex flex-wrap">
 					{active === "connect"
 						? users.map((user, index) =>
 							user._id !== author.id ? (
-								<div key={index} className="w-[25%] p-6">
-									<Link href={`user?page=${user._id}`}>
-										<div className="cursor-pointer">
-											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-											<div className="text-xl py-2">{user.name} </div>
-										</div>
-									</Link>
-									<div className="w-16 h-[1px] bg-gray-200"></div>
-									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-									<div className="text-xs text-gray-900 my-6 cursor-pointer" onClick={() => follow(user._id)}>
-										+ Follow
-									</div>
-								</div>
+								<FollowCard user={user} />
 							) : null
 						)
 						: active === "followers"

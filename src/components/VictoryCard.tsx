@@ -69,7 +69,7 @@ const Victory = ({ post, timeLine }: IProps): JSX.Element => {
 						</div>
 					</Link>
 					{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto">
-						{following ? <span>Followed</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
+						{following ? <span>Following</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={post._id} />}
 				</div>
 				<div className="text-sm my-1">{post.author.description}</div>
