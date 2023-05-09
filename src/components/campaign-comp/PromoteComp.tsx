@@ -54,10 +54,10 @@ const PromoteComp = (): JSX.Element => {
 	const { error, data } = useQuery(SINGLE_PETITION, {
 		client: apollo,
 		variables: { slug: query.slug },
-		// onCompleted: (data) => {
-		// 	setCampaign(data.getCampaign)
-		// },
-		// onError: (err) => console.log(err),
+		onCompleted: (data) => {
+			setCampaign(data.getCampaign)
+		},
+		onError: (err) => console.log(err),
 	})
 
 	let view = useMemo(() => {
@@ -109,7 +109,7 @@ const PromoteComp = (): JSX.Element => {
 	// 	</div>
 	// );
 	// if (!view && !endorse) {
-		
+
 	return (
 		<div>
 			{/* <PromoteForm campaign={query.slug} /> */}
@@ -152,11 +152,11 @@ const PromoteComp = (): JSX.Element => {
 									<div>
 										{transactions && transactions?.length > 1
 											? transactions.slice(0, 6).map((item: any, i) => (
-													<div key={i} className="mx-auto bg-gray-50 text-center my-2 p-2">
-														{item?.message + " "}
-														<ReactTimeAgo date={item?.paid_at} locale="en-US" />
-													</div>
-											  ))
+												<div key={i} className="mx-auto bg-gray-50 text-center my-2 p-2">
+													{item?.message + " "}
+													<ReactTimeAgo date={item?.paid_at} locale="en-US" />
+												</div>
+											))
 											: null}
 									</div>
 									<div className="my-5 text-center promote-btn ">
@@ -299,7 +299,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 					</div>
 					<div className="text-center mt-3">
 						Wow <span className="fw-bold">{user?.firstName}</span>…you are just one step away from reaching our Community of Supporters who will help you
-						achieve your campaign goal. Spare in some cash to win your supporters.
+						achieve your goal. Spare in some cash to win your supporters.
 					</div>
 					<p className="my-4 text-center fw-bold">How do you want to promote your campaign views?</p>
 

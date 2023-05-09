@@ -31,7 +31,7 @@ const PromoteModalComp = ({show,onHide}:{show:boolean,onHide():void}): JSX.Eleme
                 >
                 Promote Views
               </Button>
-              <Button
+              {/* <Button
                 className='btn btn-warning mr-3'
                 onClick={() =>
                   router.push(`/promote?slug=${query?.slug}&message=true`)
@@ -39,7 +39,7 @@ const PromoteModalComp = ({show,onHide}:{show:boolean,onHide():void}): JSX.Eleme
                 
                 >
                 Promote to Inbox
-              </Button>
+              </Button> */}
               <Button
                 className='btn btn-warning'
                 onClick={() =>
