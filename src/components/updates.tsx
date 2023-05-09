@@ -77,7 +77,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 				{/* <div className="flex justify-between border-b border-gray-200 pb-3"> */}
 				<div className="flex border-b border-gray-200 w-full pb-3">
 					<Link href={`user?page=${updates.author._id}`}>
-						<div className="flex">
+						<div className="flex cursor-pointer">
 							<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
 							<div className="ml-2 w-full">
 								<div className="text-base capitalize">

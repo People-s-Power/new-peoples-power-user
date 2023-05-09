@@ -106,7 +106,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 			<div className="border-b border-gray-200">
 				<div className="flex">
 					<Link href={`/user?page=${petition.authorId}`}>
-						<div className="flex">
+						<div className="flex cursor-pointer">
 							<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
 							<div className="ml-2 w-full">
 								<div className="text-base capitalize">

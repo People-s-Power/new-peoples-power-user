@@ -92,7 +92,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 			<div className="border-b border-gray-200">
 				<div className="flex">
 					<Link href={`user?page=${event.author._id}`}>
-						<div className="flex">
+						<div className="flex cursor-pointer">
 							<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
 							<div className="ml-2 w-full">
 								<div className="text-base">

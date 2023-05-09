@@ -54,7 +54,7 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 				{/* <div className="flex justify-between"> */}
 				<div className="flex">
 					<Link href={`user?page=${advert.author._id}`}>
-						<div className="flex">
+						<div className="flex cursor-pointer">
 							<img className="w-12 h-12 rounded-full" src={advert.author.image} alt="" />
 							<div className="ml-2 w-full">
 								<div className="text-base capitalize">

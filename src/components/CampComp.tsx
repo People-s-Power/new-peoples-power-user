@@ -56,7 +56,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
 					<Link href={`user?page=${post.author._id}`}>
-						<div className="flex">
+						<div className="flex cursor-pointer">
 							<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
 							<div className="ml-2 w-full">
 								<div className="text-base font-bold capitalize">

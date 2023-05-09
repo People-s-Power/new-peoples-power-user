@@ -126,7 +126,7 @@ const connection = () => {
 							user._id !== author.id ? (
 								<div key={index} className="w-[25%] p-6">
 									<Link href={`user?page=${user._id}`}>
-										<div>
+										<div className="cursor-pointer">
 											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 											<div className="text-xl py-2">{user.name} </div>
 										</div>
@@ -143,7 +143,7 @@ const connection = () => {
 							? followers.map((user, index) => (
 								<div key={index} className="w-[25%] p-6">
 									<Link href={`user?page=${user._id}`}>
-										<div>
+										<div className="cursor-pointer">
 											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 											<div className="text-xl py-2">{user.name} </div>
 										</div>
@@ -159,7 +159,7 @@ const connection = () => {
 								? following.map((user, index) => (
 									<div key={index} className="w-[25%] p-6">
 										<Link href={`user?page=${user._id}`}>
-											<div>
+											<div className="cursor-pointer">
 												<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 												<div className="text-xl py-2">{user.name} </div>
 											</div>
