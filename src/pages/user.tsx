@@ -27,7 +27,7 @@ import { MY_ADVERTS } from "apollo/queries/advertsQuery"
 import { GET_USER_POSTS } from "apollo/queries/postQuery"
 import { MY_VICTORIES } from "apollo/queries/victories"
 import { MY_EVENT } from "apollo/queries/eventQuery"
-import { FOLLOW } from "apollo/queries/generalQuery"
+import { FOLLOW, UNFOLLOW } from "apollo/queries/generalQuery"
 import CreatePost from "../components/modals/CreatePost"
 import CreateAdvert from "../components/modals/CreateAdvert"
 import CreateEvent from "../components/modals/CreateEvent"
@@ -146,6 +146,44 @@ const user = () => {
 			return false
 		}
 	}
+	const follow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(FOLLOW),
+				variables: {
+					followerId: author.id,
+					followId: id,
+				},
+			})
+			console.log(data)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+	const unfollow = async (id) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UNFOLLOW),
+				variables: {
+					followerId: author.id,
+					unfollowId: id,
+				},
+			})
+			console.log(data)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	function searchForValue(id) {
+		let matchingStrings = false;
+		for (const string of author?.following) {
+			if (string.includes(id)) {
+				matchingStrings = true
+			}
+		}
+		return matchingStrings;
+	}
 	async function getData() {
 		try {
 			const general = [...campaigns, ...posts, ...adverts, ...victories, ...events]
@@ -168,6 +206,9 @@ const user = () => {
 	}
 
 	const getSingle = () => {
+		if (query.page === undefined) {
+			router.push("/")
+		}
 		try {
 			axios
 				.get(`/user/single/${query.page}`)
@@ -238,7 +279,6 @@ const user = () => {
 								<div className="flex flex-column justify-center">
 									<div className="flex">
 										{author && <Online id={query.page} />}
-										{/* {isOnline && <div className="w-2 h-2 rounded-full bg-green-500"></div>} */}
 										<div className="text-xl font-bold ">{user?.name}</div>
 										<div className="flex cursor-pointer my-auto ml-6">
 											<Link href="/connection?page=followers">
@@ -256,6 +296,11 @@ const user = () => {
 											{user?.city}, {user?.country}
 										</div>
 									</div>
+									{
+										author?.id !== query.page && <div>
+											{searchForValue(query.page) ? <span onClick={() => unfollow(query.page)} className="cursor-pointer text-warning">Unfollow</span> : <span onClick={() => follow(query.page)} className="cursor-pointer text-warning">+ Follow</span>}
+										</div>
+									}
 								</div>
 								{
 									author?.id === query.page ? <div className="font-black text-lg">

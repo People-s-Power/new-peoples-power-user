@@ -12,9 +12,9 @@ const online = ({ id }: { id: any }) => {
   }, [])
   return (
     <>
-      <div className='my-auto h-2'>
+      <div className='my-auto h-3'>
         {
-          online ? <div className="mx-1 bg-green-500 w-2 h-2 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-2 h-2 my-auto rounded-full"></div>
+          online ? <div className="mx-1 bg-green-500 w-3 h-3 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-3 h-3 my-auto rounded-full"></div>
         }
       </div>
     </>

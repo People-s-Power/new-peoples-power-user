@@ -382,11 +382,11 @@ function Follow(user, getUsers) {
 	}
 	return (
 		<div className="flex justify-between my-4">
-			<Link href={`user?page=${user._id}`}>
+			<Link href={`user?page=${user.user._id}`}>
 				<img src={user.user.image} className="w-12 mx-2 my-auto h-12 cursor-pointer rounded-full" alt="" />
 			</Link>
 			<div className="w-[80%]">
-				<Link href={`user?page=${user._id}`}>
+				<Link href={`user?page=${user.user._id}`}>
 					<div className="cursor-pointer">
 						<div className="text-base font-light">{user.user.name} </div>
 						<div className="text-xs">{user.user.description.substring(0, 30)}</div>
