@@ -38,7 +38,7 @@ const PromoteModalComp = ({show,onHide}:{show:boolean,onHide():void}): JSX.Eleme
                 }
                 
                 >
-                Promote Messages
+                Promote to Inbox
               </Button>
               <Button
                 className='btn btn-warning'

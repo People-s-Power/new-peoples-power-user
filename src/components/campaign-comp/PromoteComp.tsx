@@ -109,6 +109,7 @@ const PromoteComp = (): JSX.Element => {
 	// 	</div>
 	// );
 	// if (!view && !endorse) {
+		
 	return (
 		<div>
 			{/* <PromoteForm campaign={query.slug} /> */}

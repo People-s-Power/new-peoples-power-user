@@ -73,10 +73,12 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 				{/* </div> */}
 				<div>sponsored</div>
 			</div>
+			<div className="text-sm p-2 leading-loose">{advert.message}</div>
+
 			<div className="p-2">
 				<img className="w-full h-80  object-cover rounded-md" src={advert.image} alt="" />
 			</div>
-			<div className="text-sm p-2 leading-loose">{advert.message}</div>
+			<div className="text-sm p-2 leading-loose">{advert.caption}</div>
 			<div className="pt-3 flex justify-between">
 				<div className="w-2/3">{advert.link}</div>
 				<div>

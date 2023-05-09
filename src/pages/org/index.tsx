@@ -257,7 +257,7 @@ const org = () => {
 	}
 
 	return (
-		<FrontLayout showFooter={true}>
+		<FrontLayout showFooter={false}>
 			<>
 				<Head>
 					<title>

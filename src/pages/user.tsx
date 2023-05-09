@@ -257,7 +257,7 @@ const user = () => {
 
 
 	return (
-		<FrontLayout showFooter={true}>
+		<FrontLayout showFooter={false}>
 			<>
 				<Head>
 					<title>
