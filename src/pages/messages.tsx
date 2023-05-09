@@ -17,6 +17,7 @@ import { useQuery } from "@apollo/client"
 import axios from "axios"
 import { socket } from "pages/_app"
 import CreateVictories from "components/modals/CreateVictories"
+import Online from "components/online"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
@@ -348,7 +349,7 @@ const messages = () => {
 							<div key={index} className={
 								item.type === "consumer-to-consumer" ? item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer" : item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active._id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
 
-								{item.online ? <div className="mx-1 bg-green-500 w-2 h-2 my-auto rounded-full"></div> : <div className="mx-1 bg-gray-500 w-2 h-2 my-auto rounded-full"></div>}
+								<Online id={item.users[0]._id === active.id || active._id ? item.users[1]._id : item.users[0]._id} />
 
 								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
 									className={"w-full flex"}
@@ -376,11 +377,7 @@ const messages = () => {
 											<div className="text-sm"> <strong>{item.messages[item.messages.length - 1].type === "sponsored" ? "Expert Needed" : item.messages[item.messages.length - 1].type === "advert" ? "Promoted" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 											<ReactTimeAgo date={new Date(item.updatedAt)} />
 										</div>}
-
 									</div>
-									{/* <div className="w-32 text-xs ml-auto">
-									</div> */}
-
 								</div>
 								<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 									<Dropdown.Item>

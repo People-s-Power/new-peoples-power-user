@@ -87,7 +87,7 @@ const user = () => {
 	})
 
 	const checkOnline = async () => {
-		await socket.emit('get_online_status', author.id, response => {
+		await socket.emit('get_online_status', author?.id, response => {
 			setIsOnline(response)
 		});
 	}
