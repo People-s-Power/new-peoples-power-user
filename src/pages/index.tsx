@@ -220,13 +220,15 @@ const HomePage = () => {
 						<div className="text-xs px-3">{author?.description?.substring(0, 100) + "..."}</div>
 					</div>
 					<div className="border-b border-gray-200 px-3">
-						<div className="flex justify-between my-2">
-							<div className="text-sm my-auto">Petitions</div>
-							<div onClick={() => handelPetition()} className="text-center cursor-pointer">
-								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-								<span className="text-xs text-center">create</span>
+						<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+							<div className="flex justify-between my-2">
+								<div className="text-sm my-auto">Become Virtual Assistant</div>
+								<div className="text-center cursor-pointer">
+									<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+									<span className="text-xs text-center">start</span>
+								</div>
 							</div>
-						</div>
+						</a>
 						<div className="flex justify-between my-2">
 							<div className="text-sm my-auto">Event</div>
 							<div onClick={() => handelEventClick()} className="text-center cursor-pointer">

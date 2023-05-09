@@ -159,12 +159,6 @@ const messages = () => {
 		}
 	}
 
-	// const checkOnline = async (id) => {
-	// 	let online;
-	// 	await socket.emit('get_online_status', id, response => online = response);
-	// 	return online
-	// }
-	// // console.log(checkOnline("63e2b2b32af42c659ec0165f"))
 
 	useEffect(() => {
 		getDm()
