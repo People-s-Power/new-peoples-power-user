@@ -44,7 +44,7 @@ import Updates from "components/updates"
 import FollowSlides from "components/camp-slider/FollowSlides"
 import { MY_PETITION } from "apollo/queries/petitionQuery"
 import { socket } from "pages/_app"
-import Online from "components/online"
+import Online from "components/Online"
 
 const user = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -88,7 +88,7 @@ const user = () => {
 
 	useQuery(MY_ADVERTS, {
 		client: apollo,
-		variables: { authorId: author?.id },
+		variables: { authorId: query.page },
 		onCompleted: (data) => {
 			// console.log(data)
 			setAdverts(data.myAdverts)
@@ -98,7 +98,7 @@ const user = () => {
 
 	useQuery(MY_PETITION, {
 		client: apollo,
-		variables: { authorId: author?.id },
+		variables: { authorId: query.page },
 		onCompleted: (data) => {
 			// console.log(data)
 			setCampaigns(data.myPetition)
@@ -110,7 +110,7 @@ const user = () => {
 
 	useQuery(MY_VICTORIES, {
 		client: apollo,
-		variables: { authorId: author?.id },
+		variables: { authorId: query.page },
 		onCompleted: (data) => {
 			// console.log(data)
 			setVictories(data.myVictories)
@@ -120,7 +120,7 @@ const user = () => {
 
 	useQuery(MY_EVENT, {
 		client: apollo,
-		variables: { authorId: author?.id },
+		variables: { authorId: query.page },
 		onCompleted: (data) => {
 			// console.log(data)
 			setEvents(data.authorEvents)
@@ -130,7 +130,7 @@ const user = () => {
 
 	useQuery(GET_USER_POSTS, {
 		client: apollo,
-		variables: { authorId: author?.id },
+		variables: { authorId: query.page },
 		onCompleted: (data) => {
 			// console.log(data)
 			setPosts(data.myPosts)
@@ -209,21 +209,6 @@ const user = () => {
 		router.push(`/org?page=${id}`)
 	}
 
-	const follow = async (id) => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(FOLLOW),
-				variables: {
-					followerId: user.id,
-					followId: id,
-				},
-			})
-			console.log(data)
-			// getUsers()
-		} catch (error) {
-			console.log(error)
-		}
-	}
 
 	return (
 		<FrontLayout showFooter={true}>
@@ -249,7 +234,7 @@ const user = () => {
 							<div className="flex justify-between">
 								<div className="flex flex-column justify-center">
 									<div className="flex">
-										{author && <Online id={author?.id} />}
+										{author && <Online id={query.page} />}
 										{/* {isOnline && <div className="w-2 h-2 rounded-full bg-green-500"></div>} */}
 										<div className="text-xl font-bold ">{user?.name}</div>
 										<div className="flex cursor-pointer my-auto ml-6">

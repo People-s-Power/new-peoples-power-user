@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from "pages/_app"
 
-const online = ({ id }: { id: string }) => {
+const online = ({ id }: { id: any }) => {
   const [online, setOnline] = useState(false)
 
   useEffect(() => {

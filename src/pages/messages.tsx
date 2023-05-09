@@ -17,7 +17,7 @@ import { useQuery } from "@apollo/client"
 import axios from "axios"
 import { socket } from "pages/_app"
 import CreateVictories from "components/modals/CreateVictories"
-import Online from "components/online"
+import Online from "components/Online"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
