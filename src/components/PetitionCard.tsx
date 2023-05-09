@@ -37,7 +37,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 	const [openUpdates, setOpenUpdates] = useState(false)
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [following, setFollowing] = useState(false)
-	
+
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
 		client: apollo,
@@ -104,22 +104,25 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 	return (
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200">
-				<Link href={`/user?page=${petition.authorId}`}>
-					<div className="flex">
-						<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
-						<div className="ml-2 w-full">
-							<div className="text-base capitalize">
-								{petition.author.name} <span className="text-xs">{author?.id === petition.author._id ? ". You" : ""}</span>
-							</div>
-							<div className="text-xs">
-								<ReactTimeAgo date={new Date(petition.createdAt)} />
+				<div className="flex">
+					<Link href={`/user?page=${petition.authorId}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
+							<div className="ml-2 w-full">
+								<div className="text-base capitalize">
+									{petition.author.name} <span className="text-xs">{author?.id === petition.author._id ? ". You" : ""}</span>
+								</div>
+								<div className="text-xs">
+									<ReactTimeAgo date={new Date(petition.createdAt)} />
+								</div>
 							</div>
 						</div>
-						{timeLine ? searchForValue(petition.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
-							{following ? <span>Followed</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
-						</div> : <HideComp id={petition._id} />}
-					</div>
-				</Link>
+					</Link>
+
+					{timeLine ? searchForValue(petition.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
+						{following ? <span>Followed</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
+					</div> : <HideComp id={petition._id} />}
+				</div>
 				<div className="text-sm my-1">{petition.author.description}</div>
 			</div>
 			<div className="p-2">
@@ -170,7 +173,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />
 			<ToastContainer />
 			<ShareModal open={open} handelClick={() => setOpen(!open)} single={petition} orgs={orgs} />
-		</div>
+		</div >
 	)
 }
 

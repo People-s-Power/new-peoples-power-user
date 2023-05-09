@@ -57,13 +57,17 @@ const Victory = ({ post, timeLine }: IProps): JSX.Element => {
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
-					<div className="ml-2">
-						<div className="text-base font-bold capitalize">
-							{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
+					<Link href={`user?page=${post.author._id}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
+							<div className="ml-2">
+								<div className="text-base font-bold capitalize">
+									{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
+								</div>
+								<div className="text-base">Shared this victory/testimony</div>
+							</div>
 						</div>
-						<div className="text-base">Shared this victory/testimony</div>
-					</div>
+					</Link>
 					{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto">
 						{following ? <span>Followed</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={post._id} />}

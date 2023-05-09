@@ -181,6 +181,9 @@ const user = () => {
 					})
 				})
 				.catch(function (error) {
+					if (error?.response.data.statusCode === 404) {
+						router.push(`org?page=${query.page}`)
+					}
 					console.log(error.response)
 				})
 		} catch (error) {
@@ -254,13 +257,22 @@ const user = () => {
 										</div>
 									</div>
 								</div>
-								<div className="font-black text-lg">
-									<Link href={`/mycamp/profile`}>
-										<button className="bg-transparent p-2 text-warning">
-											<span>&#x270E;</span> Edit
-										</button>
-									</Link>
-								</div>
+								{
+									author?.id === query.page ? <div className="font-black text-lg">
+										<Link href={`/mycamp/profile`}>
+											<button className="bg-transparent p-2 text-warning">
+												<span>&#x270E;</span> Edit
+											</button>
+										</Link>
+									</div> : <div className="font-black text-lg">
+										<Link href={`/messages?page=${query.page}`}>
+											<button className="bg-transparent border border-warning rounded-full px-10 py-2 text-warning">
+												Send Message
+											</button>
+										</Link>
+									</div>
+								}
+
 							</div>
 						</div>
 					</div>

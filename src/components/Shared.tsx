@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
+import Link from "next/link"
 
 const Shared = ({ shared }: { shared: any }) => {
 	const author = useRecoilValue(UserAtom)
@@ -13,12 +14,16 @@ const Shared = ({ shared }: { shared: any }) => {
 		<div className="p-3 border my-3">
 			<div className="flex justify-between border-b border-gray-200 pb-3">
 				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={shared.author?.image} alt="" />
-					<div className="ml-2 w-full">
-						<div className="text-base font-bold capitalize">
-							{shared.author?.name} <span className="text-xs">{author?.id === shared.author?._id ? ". You" : ""}</span>
+					<Link href={`user?page=${shared.author._id}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={shared.author?.image} alt="" />
+							<div className="ml-2 w-full">
+								<div className="text-base font-bold capitalize">
+									{shared.author?.name} <span className="text-xs">{author?.id === shared.author?._id ? ". You" : ""}</span>
+								</div>
+							</div>
 						</div>
-					</div>
+					</Link>
 					<HideComp id={shared._id} />
 				</div>
 			</div>

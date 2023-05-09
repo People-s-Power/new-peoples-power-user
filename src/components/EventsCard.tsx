@@ -13,6 +13,7 @@ import { apollo } from "apollo"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
 import { FOLLOW } from "apollo/queries/generalQuery"
+import Link from "next/link"
 
 
 interface IProps {
@@ -90,13 +91,17 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200">
 				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
-					<div className="ml-2 w-full">
-						<div className="text-base">
-							{event.author.name} <span className="text-xs"></span>
+					<Link href={`user?page=${event.author._id}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={event.author.image} alt="" />
+							<div className="ml-2 w-full">
+								<div className="text-base">
+									{event.author.name} <span className="text-xs"></span>
+								</div>
+								<div className="text-xs">{event.author.name} created this as an event</div>
+							</div>
 						</div>
-						<div className="text-xs">{event.author.name} created this as an event</div>
-					</div>
+					</Link>
 					{timeLine ? searchForValue(event.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
 						{following ? <span>Followed</span> : <span onClick={() => follow(event.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={event._id} />}

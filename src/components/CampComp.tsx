@@ -10,6 +10,7 @@ import { SERVER_URL } from "utils/constants"
 import { FOLLOW } from "apollo/queries/generalQuery"
 import axios from "axios"
 import { print } from "graphql"
+import Link from "next/link"
 
 
 interface IProps {
@@ -54,15 +55,20 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200 pb-3">
 				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
-					<div className="ml-2 w-full">
-						<div className="text-base font-bold capitalize">
-							{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
+					<Link href={`user?page=${post.author._id}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
+							<div className="ml-2 w-full">
+								<div className="text-base font-bold capitalize">
+									{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
+								</div>
+								<div className="text-base">
+									{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
+								</div>
+							</div>
 						</div>
-						<div className="text-base">
-							{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
-						</div>
-					</div>
+					</Link>
+
 					{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
 						{following ? <span>Followed</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={post._id} />}

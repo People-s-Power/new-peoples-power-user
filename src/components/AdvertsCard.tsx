@@ -11,6 +11,7 @@ import HideComp from "./HideComp"
 import { SERVER_URL } from "utils/constants"
 import { FOLLOW } from "apollo/queries/generalQuery"
 import { print } from "graphql"
+import Link from "next/link"
 
 interface IProps {
 	advert: any;
@@ -52,15 +53,19 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 			<div className=" border-b border-gray-200 pb-3">
 				{/* <div className="flex justify-between"> */}
 				<div className="flex">
-					<img className="w-12 h-12 rounded-full" src={advert.author.image} alt="" />
-					<div className="ml-2 w-full">
-						<div className="text-base capitalize">
-							{advert.author.name} <span className="text-xs">{author?.id === advert.author._id ? ". You" : ""}</span>
+					<Link href={`user?page=${advert.author._id}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={advert.author.image} alt="" />
+							<div className="ml-2 w-full">
+								<div className="text-base capitalize">
+									{advert.author.name} <span className="text-xs">{author?.id === advert.author._id ? ". You" : ""}</span>
+								</div>
+								<div className="text-xs">
+									<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
+								</div>
+							</div>
 						</div>
-						<div className="text-xs">
-							<ReactTimeAgo date={new Date(advert.createdAt)} locale="en-US" />
-						</div>
-					</div>
+					</Link>
 					{timeLine ? searchForValue(advert.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
 						{following ? <span>Followed</span> : <span onClick={() => follow(advert.author._id)} className="cursor-pointer">+ Follow</span>}
 					</div> : <HideComp id={advert._id} />}

@@ -125,8 +125,12 @@ const connection = () => {
 						? users.map((user, index) =>
 							user._id !== author.id ? (
 								<div key={index} className="w-[25%] p-6">
-									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-									<div className="text-xl py-2">{user.name} </div>
+									<Link href={`user?page=${user._id}`}>
+										<div>
+											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+											<div className="text-xl py-2">{user.name} </div>
+										</div>
+									</Link>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
 									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 									<div className="text-xs text-gray-900 my-6 cursor-pointer" onClick={() => follow(user._id)}>
@@ -138,8 +142,12 @@ const connection = () => {
 						: active === "followers"
 							? followers.map((user, index) => (
 								<div key={index} className="w-[25%] p-6">
-									<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-									<div className="text-xl py-2">{user.name} </div>
+									<Link href={`user?page=${user._id}`}>
+										<div>
+											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+											<div className="text-xl py-2">{user.name} </div>
+										</div>
+									</Link>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
 									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 									<Link href={`/messages?page=${user._id}`}>
@@ -150,8 +158,12 @@ const connection = () => {
 							: active === "following"
 								? following.map((user, index) => (
 									<div key={index} className="w-[25%] p-6">
-										<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-										<div className="text-xl py-2">{user.name} </div>
+										<Link href={`user?page=${user._id}`}>
+											<div>
+												<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+												<div className="text-xl py-2">{user.name} </div>
+											</div>
+										</Link>
 										<div className="w-16 h-[1px] bg-gray-200"></div>
 										<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 										<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => unfollow(user._id)}>

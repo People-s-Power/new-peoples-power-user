@@ -75,18 +75,23 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 		<div className="p-3 border mb-3">
 			<div>
 				{/* <div className="flex justify-between border-b border-gray-200 pb-3"> */}
-					<div className="flex border-b border-gray-200 w-full pb-3">
-						<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
-						<div className="ml-2 w-full">
-							<div className="text-base capitalize">
-								{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
+				<div className="flex border-b border-gray-200 w-full pb-3">
+					<Link href={`user?page=${updates.author._id}`}>
+						<div className="flex">
+							<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
+							<div className="ml-2 w-full">
+								<div className="text-base capitalize">
+									{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
+								</div>
+								<div className="text-xs">
+									Added a Petition Update
+									{/* <ReactTimeAgo date={new Date(updates.createdAt)} /> */}
+								</div>
 							</div>
-							{/* <div className="text-xs">
-								<ReactTimeAgo date={new Date(updates.createdAt)} />
-							</div> */}
 						</div>
-						<HideComp id={updates.id} />
-					</div>
+					</Link>
+					<HideComp id={updates.id} />
+				</div>
 				{/* </div> */}
 				<div className="text-sm my-1">{updates.author.description}</div>
 			</div>
