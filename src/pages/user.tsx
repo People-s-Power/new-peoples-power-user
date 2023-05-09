@@ -272,7 +272,6 @@ const user = () => {
 										</Link>
 									</div>
 								}
-
 							</div>
 						</div>
 					</div>
