@@ -72,10 +72,10 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"></meta>
 				<meta name="keywords" content="human right, activist, campaign, Nigeria" />
-				<title>{`CITIZEN PLAINT`}</title>
+				<title>{`THE PLAINT`}</title>
 				<meta
 					name="description"
-					content="CITIZEN PLAINT, is a non-governmental organization formed in 2015 with the sole aim of addressing the causes of criminality and advancing the cause of human rights, the Foundation has between June 2017 till date defended over 500 Fundamental Right Matters of people whose fundamental right has been."
+					content="THE PLAINT, is a non-governmental organization formed in 2015 with the sole aim of addressing the causes of criminality and advancing the cause of human rights, the Foundation has between June 2017 till date defended over 500 Fundamental Right Matters of people whose fundamental right has been."
 				/>
 				<Script src="../scripts/wisernotify.js"></Script>
 			</Head>

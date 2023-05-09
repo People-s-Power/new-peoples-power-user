@@ -261,7 +261,7 @@ const user = () => {
 			<>
 				<Head>
 					<title>
-						{`CITIZEN PLAINT`} || {user?.name}{" "}
+						{`THE PLAINT`} || {user?.name}{" "}
 					</title>
 				</Head>
 				<div className="lg:mx-40">
