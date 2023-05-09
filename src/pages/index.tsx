@@ -137,7 +137,7 @@ const HomePage = () => {
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,
 			]
-			console.log(general)
+			// console.log(general)
 			// const date = new Date()
 			// countObjectsWithMatchingDate(general, date.toISOString())
 
@@ -162,30 +162,11 @@ const HomePage = () => {
 		}
 	}
 
-	// function countObjectsWithMatchingDate(array, date) {
-	// 	let num = 0;
-	// 	for (let i = 0; i < array.length; i++) {
-	// 		const date1 = new Date(array[i].createdAt)
-	// 		const date2 = new Date(date)
-	// 		if (
-	// 			date1.getDate() === date2.getDate() &&
-	// 			date1.getMonth() === date2.getMonth() &&
-	// 			date1.getFullYear() === date2.getFullYear()
-	// 		) {
-	// 			num++;
-	// 		}
-	// 	}
-	// 	setCount(num)
-	// }
-
 	const refresh = () => {
 		setAll([])
 		getData()
 		setCount(0)
 	}
-	// useEffect(() => {
-	// 	getData()
-	// }, [all])
 
 	useEffect(() => {
 		getSingle()

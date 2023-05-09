@@ -13,6 +13,7 @@ import Victory from "./VictoryCard"
 import PetitionComp from "./PetitionCard"
 import { SINGLE_PETITION_ID } from "apollo/queries/petitionQuery"
 import HideComp from "./HideComp"
+import Link from "next/link"
 
 const Timeline = ({ item }: { item: any }) => {
   const [data, setData] = useState(null)
@@ -114,8 +115,12 @@ const Timeline = ({ item }: { item: any }) => {
               return <div>
                 {data && <div className="border rounded-md  mb-3">
                   <div className="flex m-3 pb-3 border-b border-gray-200">
-                    <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
-                    <div className="my-auto text-sm">{item.message}</div>
+                    <Link href={`user?page=${item.authorId}`}>
+                      <div className="flex">
+                        <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
+                        <div className="my-auto text-sm">{item.message}</div>
+                      </div>
+                    </Link>
                     <HideComp id={item.id} />
                   </div>
                   <AdvertsComp advert={data} timeLine={true} />
@@ -126,8 +131,12 @@ const Timeline = ({ item }: { item: any }) => {
                 <div>
                   {data && <div className="border rounded-md  mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
-                      <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
-                      <div className="my-auto text-sm">{item.message}</div>
+                      <Link href={`user?page=${item.authorId}`}>
+                        <div className="flex">
+                          <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
+                          <div className="my-auto text-sm">{item.message}</div>
+                        </div>
+                      </Link>
                       <HideComp id={item.id} />
                     </div>
                     <Victory post={data} timeLine={true} />
@@ -138,8 +147,12 @@ const Timeline = ({ item }: { item: any }) => {
               return <div>
                 {data && <div className="border rounded-md mb-3">
                   <div className="flex m-3 pb-3 border-b border-gray-200">
-                    <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
-                    <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented") ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message}</div>
+                    <Link href={`user?page=${item.authorId}`}>
+                      <div className="flex">
+                        <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
+                        <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented") ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message}</div>
+                      </div>
+                    </Link>
                     <HideComp id={item.id} />
                   </div>
                   <PetitionComp petition={data} timeLine={true} />
@@ -150,8 +163,12 @@ const Timeline = ({ item }: { item: any }) => {
                 {
                   data && <div className="border rounded-md mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
-                      <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
-                      <div className="my-auto text-sm">{item.message}</div>
+                      <Link href={`user?page=${item.authorId}`}>
+                        <div className="flex">
+                          <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
+                          <div className="my-auto text-sm">{item.message}</div>
+                        </div>
+                      </Link>
                       <HideComp id={item.id} />
                     </div>
                     <CampComp post={data} timeLine={true} />
@@ -163,8 +180,12 @@ const Timeline = ({ item }: { item: any }) => {
                 <div>
                   {data && <div className="border rounded-md  mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
-                      <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
-                      <div className="my-auto text-sm">{item.message}</div>
+                      <Link href={`user?page=${item.authorId}`}>
+                        <div className="flex">
+                          <img className="rounded-full w-8 h-8 mr-4" src={item.authorImage} alt="" />
+                          <div className="my-auto text-sm">{item.message}</div>
+                        </div>
+                      </Link>
                       <HideComp id={item.id} />
                     </div>
                     <EventsCard event={data} timeLine={true} />
