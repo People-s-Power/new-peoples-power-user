@@ -78,7 +78,7 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 			</div>
 			<div className="text-sm p-2 leading-loose">{advert.message}</div>
 			<div className="pt-3 flex justify-between">
-				<div className="w-2/3">{advert.email}</div>
+				<div className="w-2/3">{advert.link}</div>
 				<div>
 					<a href={advert.link}>
 						<button className="p-2 bg-warning text-white">{advert.action}</button>

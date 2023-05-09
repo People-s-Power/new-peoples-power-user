@@ -359,6 +359,7 @@ const messages = () => {
 											<img src={item.users[0]._id === active._id || active.id ? item.users[1].image : item.users[0].image
 											} className="w-10 h-10 rounded-full my-auto" alt="" />
 									}
+									
 									{
 										item.type === "consumer-to-consumer" ? <div className="w-6 my-auto mx-auto">
 											{item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}

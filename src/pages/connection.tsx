@@ -87,12 +87,28 @@ const connection = () => {
 			console.log(error)
 		}
 	}
+	const search = (value) => {
+		if (value === "") {
+			getUsers()
+			getFollowers()
+			getFollowing()
+			return
+		}
+		const matchingStrings = []
+		for (const string of active === "connect" ? users : active === "followers" ? followers : active === "following" ? following : null) {
+			if (string.name.toLowerCase().includes(value)) {
+				matchingStrings.push(string);
+			}
+		}
+		active === "connect" ? setUsers(matchingStrings) : active === "followers" ? setFollowers(matchingStrings) : active === "following" ? setFollowing(matchingStrings) : null
+		// setMessages(matchingStrings)
+	}
 
 	return (
 		<FrontLayout>
 			<div className="mx-32 shadow-sm p-6">
 				<div className="flex">
-					<input type="text" className="p-3 w-96 rounded-full pl-10 text-sm" placeholder="Search" />
+					<input type="text" onChange={(e) => search(e.target.value)} className="p-3 w-96 rounded-full pl-10 text-sm" placeholder="Search" />
 					<div onClick={() => setActive("connect")} className={active === "connect" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
 						People You may Know
 					</div>

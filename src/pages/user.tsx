@@ -90,7 +90,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			// console.log(data)
+			console.log(data)
 			setAdverts(data.myAdverts)
 		},
 		onError: (err) => console.log(err),
@@ -398,25 +398,9 @@ const user = () => {
 									<div className="my-auto text-sm">Create Product</div>
 								</div>
 								<div>
-									{adverts.map((advert: any) => (
-										<div key={advert.caption} className="p-3 border-b border-gray-400 my-3">
-											<div>{advert.caption}</div>
-											<div className="py-2">
-												<img className="w-full h-80 object-cover rounded-md" src={advert.image} alt="" />
-											</div>
-											<div className="text-sm py-2 leading-loose">{advert.message}</div>
-											<div className="pt-3 flex justify-between">
-												<div className="w-2/3">{advert.email}</div>
-												<div>
-													<button className="p-2 bg-warning ">{advert.action}</button>
-												</div>
-												<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
-													<Link href={`/promote?slug=${advert._id}`}>
-														<Dropdown.Item>Advertise</Dropdown.Item>
-													</Link>
-													<Dropdown.Item>Edit</Dropdown.Item>
-												</Dropdown>
-											</div>
+									{adverts.map((advert: any, index) => (
+										<div key={index}>
+											<AdvertsComp advert={advert} />
 										</div>
 									))}
 								</div>
