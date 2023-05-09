@@ -44,6 +44,7 @@ import Updates from "components/updates"
 import FollowSlides from "components/camp-slider/FollowSlides"
 import { MY_PETITION } from "apollo/queries/petitionQuery"
 import { socket } from "pages/_app"
+import Online from "components/online"
 
 const user = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -71,7 +72,6 @@ const user = () => {
 	const [victories, setVictories] = useState<any>([])
 	const [events, setEvents] = useState<any>([])
 	const [openFindExpart, setOpenFindExpart] = useState(false)
-	const [isOnline, setIsOnline] = useState(false)
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 
 	useQuery(GET_ORGANIZATIONS, {
@@ -85,12 +85,6 @@ const user = () => {
 			// console.log(err)
 		},
 	})
-
-	const checkOnline = async () => {
-		await socket.emit('get_online_status', author?.id, response => {
-			setIsOnline(response)
-		});
-	}
 
 	useQuery(MY_ADVERTS, {
 		client: apollo,
@@ -195,7 +189,6 @@ const user = () => {
 	}
 
 	useEffect(() => {
-		checkOnline()
 		getData()
 		getSingle()
 	}, [adverts, author, posts, events, campaigns, victories])
@@ -249,7 +242,6 @@ const user = () => {
 							<div className="absolute top-32 left-10 rounded-circle pro-img mx-auto bg-white p-1">
 								<div className="relative w-44 h-44">
 									<img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
-									{isOnline && <div className="w-2 h-2 rounded-full bg-green-500 absolute right-2"></div>}
 								</div>
 							</div>
 						</div>
@@ -257,6 +249,8 @@ const user = () => {
 							<div className="flex justify-between">
 								<div className="flex flex-column justify-center">
 									<div className="flex">
+										{author && <Online id={author?.id} />}
+										{/* {isOnline && <div className="w-2 h-2 rounded-full bg-green-500"></div>} */}
 										<div className="text-xl font-bold ">{user?.name}</div>
 										<div className="flex cursor-pointer my-auto ml-6">
 											<Link href="/connection?page=followers">

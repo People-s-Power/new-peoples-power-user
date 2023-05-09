@@ -349,7 +349,6 @@ const messages = () => {
 							<div key={index} className={
 								item.type === "consumer-to-consumer" ? item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer" : item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active._id ? "flex p-3 bg-gray-100 cursor-pointer" : "flex p-3 hover:bg-gray-100 w-full cursor-pointer"}>
 
-								<Online id={item.users[0]._id === active.id || active._id ? item.users[1]._id : item.users[0]._id} />
 
 								<div onClick={() => { setShow(item); readMessage(item.id, item.messages[item.messages.length - 1]._id); markRead(item.id, item.messages[item.messages.length - 1]._id) }}
 									className={"w-full flex"}
@@ -369,10 +368,13 @@ const messages = () => {
 									}
 
 									<div className="w-[80%] ml-4">
-										{
-											item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
-												: <div className="text-base font-bold">{item.users[0]._id === active._id || active.id ? item.users[1].name : item.users[0].name}</div>
-										}
+										<div className="flex">
+											<Online id={item.users[0]._id === active.id || active._id ? item.users[1]._id : item.users[0]._id} />
+											{
+												item.type === "consumer-to-consumer" ? <div className="text-base font-bold">{item.users[0]._id === active.id ? item.users[1].name : item.users[0].name}</div>
+													: <div className="text-base font-bold">{item.users[0]._id === active._id || active.id ? item.users[1].name : item.users[0].name}</div>
+											}
+										</div>
 										{setTyping() ? setTyping() : <div>
 											<div className="text-sm"> <strong>{item.messages[item.messages.length - 1].type === "sponsored" ? "Expert Needed" : item.messages[item.messages.length - 1].type === "advert" ? "Promoted" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 											<ReactTimeAgo date={new Date(item.updatedAt)} />
