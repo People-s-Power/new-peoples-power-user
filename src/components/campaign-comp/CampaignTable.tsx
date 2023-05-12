@@ -86,17 +86,17 @@ const SingleRow = ({ camp }: { camp: ICampaign }) => {
 			<td> {camp?.views?.length} </td>
 			<td> {Number(camp?.endorsements?.length) + 1} </td>
 			<td>
-				<Link href={`/promote?slug=${camp?.slug}`}>
+				<Link href={`/promote?slug=${camp?._id}&views`}>
 					<a className="btn p-0">{camp?.promoted ? "Upgrade" : "Promote"}</a>
 				</Link>
 
-				<Link href={`/editcamp?page=${camp?.slug}`}>
+				{/* <Link href={`/editcamp?page=${camp?.slug}`}>
 					<a className="btn pl-2">Edit</a>
 				</Link>
 
 				<Link href={`/updates?page=${camp?.id}?slug=${camp?.slug}`}>
 					<a className="btn pl-2">Add Updates</a>
-				</Link>
+				</Link> */}
 			</td>
 
 			<td>

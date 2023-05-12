@@ -55,6 +55,7 @@ export interface IUser extends Document {
 	following: string[]
 	orgOperating: string[]
 	author: string
+	interests: string[]
 }
 
 export interface IOrg extends Document {

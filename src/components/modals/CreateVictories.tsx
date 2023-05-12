@@ -13,7 +13,7 @@ import NotificationCard from "components/NotificationCard"
 const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handelClick(): void; victory: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
-	const [body, setBody] = useState(victory?.body || "Congratulations to all who supported our petition ‘Stop the Criminality’ to achieve its campaign goal and getting a massive victory. Our petition has just won. Let’s keep making the change that we need.")
+	const [body, setBody] = useState(victory?.body || "Congratulations to all who supported our petition ‘’ to achieve its campaign goal and getting a massive victory. Our petition has just won. Let’s keep making the change that we need.")
 	const router = useRouter()
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")

@@ -56,6 +56,8 @@ const HomePage = () => {
 	const [count, setCount] = useState(0)
 	const [loading, setLoading] = useState(false)
 
+	// console.log(author)
+
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
 		client: apollo,
@@ -240,6 +242,7 @@ const HomePage = () => {
 								</div>
 							))}
 						</div>
+						{author?.interests.map((interst, i) => <div key={i} className="my-2">{interst}</div>)}
 					</div>
 				</aside>
 				<section className="w-full lg:w-[50%] mx-auto">

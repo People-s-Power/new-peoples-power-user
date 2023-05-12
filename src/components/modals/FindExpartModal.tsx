@@ -37,9 +37,7 @@ const FindExpartModal = ({ author, open, handelClose, orgs }: InferProps<typeof 
 	const [message, setMessage] = React.useState(`
 Hello!
 I'd like to invite you to take a look at my complaint below and submit a proposal if you're available and interested:
-Start your Complaint…
-	
-	${active.name}`)
+Start your Complaint…`)
 
 	useEffect(() => {
 		setActive(author)

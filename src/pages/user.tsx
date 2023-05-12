@@ -440,6 +440,7 @@ const user = () => {
 											</div>
 										))}
 									</div>
+									{author?.interests.map((interst, i) => <div key={i} className="my-2">{interst}</div>)}
 								</div>
 							) : (
 								<div></div>
