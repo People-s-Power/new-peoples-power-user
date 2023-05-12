@@ -222,7 +222,7 @@ const HomePage = () => {
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
-				<aside className="w-[20%] sm:hidden text-center fixed bg-white left-20">
+				<aside className="w-[20%] overflow-y-auto sm:hidden text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
 						<Whisper placement="bottom" trigger="click" speaker={speaker}>

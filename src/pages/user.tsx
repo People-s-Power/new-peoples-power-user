@@ -255,7 +255,7 @@ const user = () => {
 				.then(function (response) {
 					setUser(response.data.user)
 					// setCampaigns(response.data.Petitions)
-					// console.log(response.data)
+					console.log(response.data)
 					response.data.user.orgOperating.map((operating: any) => {
 						setOrgId(operating)
 						refetch()
@@ -380,7 +380,6 @@ const user = () => {
 						</div>
 					</div>
 					<Slider />
-
 					<div className="lg:flex mt-3">
 						<div className="lg:w-1/3 mt-3 lg:mr-4 rounded-md">
 							{author?.id === query.page ? (
@@ -441,14 +440,17 @@ const user = () => {
 										))}
 									</div>
 									<div className="text-left">
-										<Dropdown title="My Interests">
+										<Dropdown title="User Interests">
 											{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
 										</Dropdown>
 									</div>
 								</div>
 							) : (
-								<div></div>
-							)}
+								<div className="text-left">
+									<Dropdown title="My Interests">
+										{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+									</Dropdown>
+								</div>)}
 						</div>
 						{product ? (
 							<div className="w-full rounded-md mt-3">
