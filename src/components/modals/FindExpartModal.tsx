@@ -126,7 +126,7 @@ const FindExpartModal = ({ author, open, handelClose, orgs }: InferProps<typeof 
 				<div className="text-sm my-auto">{author?.name}</div>
 			</div>
 			{
-				orgs.map((org: any, index: number) => (
+				orgs?.map((org: any, index: number) => (
 					<div
 						onClick={() => {
 							setActive(org)

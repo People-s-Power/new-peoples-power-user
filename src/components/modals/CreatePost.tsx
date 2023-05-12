@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import NotificationCard from "components/NotificationCard"
 import notifications from "pages/notifications"
+import FindExpartModal from "./FindExpartModal"
 
 const CreatePost = ({
 	open,
@@ -34,6 +35,7 @@ const CreatePost = ({
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
+	const [openFindExpart, setOpenFindExpart] = useState(false)
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
@@ -210,7 +212,10 @@ const CreatePost = ({
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
 							</div>
 						</div>
-						<div className="text-sm my-auto">Find Expert</div>
+						<div className="text-sm my-auto" onClick={() => {
+							handelClick()
+							setOpenFindExpart(true)
+						}}>Find Expert</div>
 						<div
 							className="text-sm my-auto cursor-pointer"
 							onClick={() => {
@@ -234,6 +239,8 @@ const CreatePost = ({
 			{
 				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
 			}
+			<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
+
 		</>
 	)
 }
