@@ -50,7 +50,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 		},
 	})
 
-	author.orgOperating.map((org) => {
+	author?.orgOperating.map((org) => {
 		useQuery(GET_ORGANIZATION, {
 			variables: { ID: org },
 			client: apollo,
@@ -105,7 +105,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 			<div className="border-b border-gray-200">
 				<div className="flex">
-					<Link href={`/user?page=${petition.authorId}`}>
+					<Link href={`/user?page=${petition?.author._id}`}>
 						<div className="flex cursor-pointer">
 							<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
 							<div className="ml-2 w-full">

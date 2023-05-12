@@ -61,12 +61,16 @@ const NotificationComp = ({ item }: { item: any }) => {
 				}
 			</div>
 			<div className="ml-6 my-auto">
-				<div className="text-base w-[80%]">{item.message}</div>
+				<div className="text-base w-[100%]">{item.message}</div>
 				<div>
 					{(() => {
 						switch (item.event) {
 							case "Created-Advert":
-								return <button className="btn text-warning border border-warning p-2 px-20 my-2">Share Advert</button>
+								return (
+									<Link href={`Advert?page=${item.itemId}`}>
+										<button className="btn text-warning border border-warning p-2 px-20 my-2">View Advert</button>
+									</Link>
+								)
 							case "Created-Victory":
 								return (
 									<Link href={`/messages?page=${item.authorId}`}>
@@ -74,14 +78,30 @@ const NotificationComp = ({ item }: { item: any }) => {
 									</Link>
 								)
 							case "Created-Petition":
-								return <button className="btn text-warning border border-warning p-2 px-20 my-2">Share Petition</button>
+								return (
+									<Link href={`Petition?page=${item.itemId}`}>
+										<button className="btn text-warning border border-warning p-2 px-20 my-2">View Petition</button>
+									</Link>
+								)
 							case "Created-Post":
-								return <button className="btn text-warning border border-warning p-2 px-20 my-2">Share Post</button>
+								return (
+									<Link href={`Post?page=${item.itemId}`}>
+										<button className="btn text-warning border border-warning p-2 px-20 my-2">View Post</button>
+									</Link>
+								)
 							case "Created-Event":
 								return (
-									<button onClick={() => interested(item)} className="btn text-warning border border-warning p-2 px-20 my-2">
-										Attend Event
-									</button>
+									<Link href={`Event?page=${item.itemId}`}>
+										<button className="btn text-warning border border-warning p-2 px-20 my-2">
+											Attend Event
+										</button>
+									</Link>
+								)
+							case "Created-Follow":
+								return (
+									<Link href={`user?page=${item.itemId}`}>
+										<button className="btn text-warning border border-warning p-2 px-20 my-2">View Profile</button>
+									</Link>
 								)
 						}
 					})()}
