@@ -414,12 +414,12 @@ const messages = () => {
 				<div className="w-[45%] shadow-md fixed right-32 h-full">
 					{show === null && query.page !== undefined ? (
 						<div className="text-center text-sm">
-							<div className="flex justify-center mb-3">
+							{sigUser && <div className="flex justify-center mb-3">
 								<img src={sigUser.image} className="w-12 h-12 rounded-full" alt="" />
 								<div className="ml-4 my-auto">
 									<div className="text-sm">{sigUser.name}</div>
 								</div>
-							</div>
+							</div>}
 						</div>
 					) : (
 						show &&
