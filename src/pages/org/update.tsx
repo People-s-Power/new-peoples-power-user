@@ -13,6 +13,7 @@ import { apollo } from "apollo";
 import { useQuery } from "@apollo/client";
 import { UPDATE_ORG, GET_ORGANIZATION } from "apollo/queries/orgQuery";
 import { print } from 'graphql';
+import Select from "react-select"
 
 const update = () => {
     const router = useRouter();
@@ -30,6 +31,29 @@ const update = () => {
     const [orgFacebook, setOrgFacebook] = useState('')
     const [orgCity, setOrgCity] = useState('')
     const { query } = useRouter();
+    const [categoryValue, setCategoryValue] = useState("")
+    const [subCategoryValue, setSubCategoryValue] = useState("")
+
+    const category = [
+        { value: "NGO", label: "Non-Governmental Organization (NGO)" },
+        { value: "coaching and mentoring", label: "Coaching and mentoring" },
+        { value: "health", label: "Health" },
+        { value: "leadership development", label: "Leadership development" },
+        { value: "law", label: "Law" },
+        { value: "information technology", label: "Information technology" },
+        { value: "others", label: "Others" },
+    ]
+    const subCategory = [
+        { value: "human right awareness", label: "Human right awareness" },
+        { value: "social policy", label: "Social Policy" },
+        { value: "criminal justice", label: "Criminal Justice" },
+        { value: "human right action", label: "Human Right Action" },
+        { value: "environment", label: "Environment" },
+        { value: "health", label: "Health" },
+        { value: "disability", label: "Disability" },
+        { value: "equality", label: "Equality" },
+        { value: "others", label: "Others" },
+    ]
 
     const [loading, setLoading] = useState(false)
 
@@ -74,6 +98,8 @@ const update = () => {
                         country: orgCountry,
                         city: orgCity,
                         state: orgState,
+                        category: [categoryValue],
+                        // subCategory: [subCategoryValue]
                     }
                 }
             })
@@ -125,6 +151,28 @@ const update = () => {
                     <div className='my-2'>
                         <input type="text" required className="p-3 w-full" value={orgCity} placeholder="Enter Organizations City" onChange={(e) => setOrgCity(e.target.value)} />
                     </div>
+                    <Select
+                        className="mb-4"
+                        classNamePrefix="select"
+                        placeholder="Select Category of Service Provider"
+                        onChange={(val: any) => setCategoryValue(val.value)}
+                        isClearable={true}
+                        isSearchable={true}
+                        name="color"
+                        options={category}
+                    />
+                    {categoryValue === "NGO" ? (
+                        <Select
+                            className="mb-4"
+                            classNamePrefix="select"
+                            onChange={(val: any) => setSubCategoryValue(val.value)}
+                            placeholder="Select Sub-Category of Service Provider"
+                            isClearable={true}
+                            isSearchable={true}
+                            name="color"
+                            options={subCategory}
+                        />
+                    ) : null}
                     {/* <div className="my-2">
                         <textarea required className="h-20 w-full" value={orgDes} placeholder="Enter a Short Description" onChange={(e) => setOrgDes(e.target.value)} ></textarea>
                     </div> */}
