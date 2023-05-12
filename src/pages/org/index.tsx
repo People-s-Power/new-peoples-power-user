@@ -40,6 +40,7 @@ import FollowSlides from "components/camp-slider/FollowSlides"
 import VictoryCard from "components/VictoryCard"
 import Updates from "components/updates"
 import { MY_PETITION } from "apollo/queries/petitionQuery"
+import FindExpartModal from "components/modals/FindExpartModal"
 
 const org = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -467,6 +468,7 @@ const org = () => {
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
+				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 				<ToastContainer />
 			</>
 		</FrontLayout>

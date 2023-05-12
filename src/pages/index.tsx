@@ -343,8 +343,8 @@ const HomePage = () => {
 					</div>
 				</aside>
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
-				<CreatePost open={openPost} handelClick={handelClick} handelPetition={handelPetition} post={null} orgs={orgs} />
-				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} />
+				<CreatePost open={openPost} handelClick={handelClick} orgs={orgs} handelPetition={handelPetition} post={null} />
+				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<ToastContainer />

@@ -44,6 +44,7 @@ import Updates from "components/updates"
 import FollowSlides from "components/camp-slider/FollowSlides"
 import { MY_PETITION } from "apollo/queries/petitionQuery"
 import Online from "components/Online"
+import FindExpartModal from "components/modals/FindExpartModal"
 
 const user = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
@@ -213,13 +214,15 @@ const user = () => {
 	}
 
 	function searchForValue(id) {
-		let matchingStrings = false;
-		for (const string of author?.following) {
-			if (string.includes(id)) {
-				matchingStrings = true
+		if (author) {
+			let matchingStrings = false;
+			for (const string of author?.following) {
+				if (string.includes(id)) {
+					matchingStrings = true
+				}
 			}
+			return matchingStrings;
 		}
-		return matchingStrings;
 	}
 	async function getData() {
 		try {
@@ -527,6 +530,7 @@ const user = () => {
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
 				<StartPetition open={openPetition} handelClick={handelPetition} data={null} orgs={orgs} />
+				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 				<ToastContainer />
 			</>
 		</FrontLayout>

@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import React, { useEffect } from "react"
-import { Modal } from "rsuite"
+import { Modal, Popover, Whisper } from "rsuite"
 import { useState, useRef } from "react"
 import { CREATE_POST, UPDATE_POST } from "apollo/queries/postQuery"
 import { Dropdown } from "rsuite"
@@ -20,9 +20,10 @@ const FindExpartModalProp = {
 	author: PropTypes.shape({ image: PropTypes.string, name: PropTypes.string }).isRequired,
 	open: PropTypes.bool.isRequired,
 	handelClose: PropTypes.func.isRequired,
+	orgs: PropTypes.any,
 }
 
-const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindExpartModalProp>): JSX.Element => {
+const FindExpartModal = ({ author, open, handelClose, orgs }: InferProps<typeof FindExpartModalProp>): JSX.Element => {
 	const [message, setMessage] = React.useState("")
 	const [screen, setScreen] = React.useState(1)
 	const [country, setCountry] = useState("")
@@ -33,6 +34,14 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 	const [city, setCity] = useState("")
 	const user = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
+	const [active, setActive] = useState<any>(author)
+
+	useEffect(() => {
+		setActive(author)
+	}, [author !== null])
+
+
+
 	useEffect(() => {
 		// Get countries
 		axios
@@ -96,7 +105,7 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 					subCategory: subCategoryValue,
 					country: country,
 					city: city,
-					userId: user.id,
+					userId: active.id || active._id,
 					message: message,
 				},
 				(response) => {
@@ -110,6 +119,29 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 			)
 		}
 	}
+	const speaker = (
+		<Popover>
+			<div onClick={() => setActive(author)} className="flex m-1 cursor-pointer">
+				<img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+				<div className="text-sm my-auto">{author?.name}</div>
+			</div>
+			{
+				orgs.map((org: any, index: number) => (
+					<div
+						onClick={() => {
+							setActive(org)
+						}}
+						key={index}
+						className="flex m-1 cursor-pointer"
+					>
+						<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+						<div className="text-sm my-auto">{org?.name}</div>
+					</div>
+				))
+			}
+		</Popover>
+	)
+
 	return (
 		<>
 			<Modal open={open} onClose={handelClose}>
@@ -119,10 +151,27 @@ const FindExpartModal = ({ author, open, handelClose }: InferProps<typeof FindEx
 					</div>
 				</Modal.Header>
 				<Modal.Body>
-					<div className="flex mb-4">
+					{orgs !== null ? (
+						<div className="my-2 p-2 w-full rounded-md">
+							<Whisper placement="bottom" trigger="click" speaker={speaker}>
+								<div className="flex justify-between ">
+									<div className="flex cursor-pointer">
+										<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+										<div className="text-sm my-auto">{active?.name}</div>
+									</div>
+									<div className="my-auto">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
+											<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+										</svg>
+									</div>
+								</div>
+							</Whisper>
+						</div>
+					) : null}
+					{/* <div className="flex mb-4">
 						<img src={author?.image || ""} className="w-10 h-10 rounded-full mr-4" alt="" />
 						<div className="text-sm">{author?.name || ""}</div>
-					</div>
+					</div> */}
 					{screen === 1 ? (
 						<div>
 							<div className="h-96">

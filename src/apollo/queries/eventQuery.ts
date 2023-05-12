@@ -102,7 +102,6 @@ export const UPDATE_EVENT = gql`
 export const CREATE_EVENT = gql`
 	mutation createEvent(
 		$author: ID!
-		$audience: String!
 		$name: String!
 		$description: String!
 		$endDate: String!
@@ -119,7 +118,6 @@ export const CREATE_EVENT = gql`
 			time: $time
 			type: $type
 			imageFile: $imageFile
-			audience: $audience
 			author: $author
 		) {
 			_id
