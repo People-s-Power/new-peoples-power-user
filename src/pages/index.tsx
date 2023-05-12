@@ -282,7 +282,7 @@ const HomePage = () => {
 								case "Victory":
 									return (
 										<div key={index}>
-											<VictoryCard post={single} />
+											<VictoryCard post={single} orgs={orgs} />
 										</div>
 									)
 								case "Post":

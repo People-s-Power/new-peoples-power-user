@@ -129,7 +129,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 				<div className="text-sm my-auto">{author?.name}</div>
 			</div>
 			{orgs !== null
-				? orgs.map((org: any, index: number) => (
+				? orgs?.map((org: any, index: number) => (
 					<div
 						onClick={() => {
 							setActive(org)

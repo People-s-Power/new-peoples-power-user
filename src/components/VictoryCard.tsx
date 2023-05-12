@@ -13,18 +13,26 @@ import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
 import Interaction from "./Interaction"
 import HideComp from "./HideComp"
+import StartPetition from "./modals/StartPetition"
+import FindExpartModal from "./modals/FindExpartModal"
 
 interface IProps {
 	post: any;
 	timeLine?: boolean;
+	orgs?: any
 }
 
-const Victory = ({ post, timeLine }: IProps): JSX.Element => {
+const Victory = ({ post, timeLine, orgs }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const handelClick = () => setOpenPost(!openPost)
 	const [openPost, setOpenPost] = useState(false)
 	const [content, setContent] = useState("")
 	const [following, setFollowing] = useState(false)
+	const [openPetition, setOpenPetition] = useState(false)
+	const handelPetition = () => setOpenPetition(!openPetition)
+	const [openFindExpart, setOpenFindExpart] = useState(false)
+	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
+
 
 	const follow = async (id) => {
 		try {
@@ -78,11 +86,18 @@ const Victory = ({ post, timeLine }: IProps): JSX.Element => {
 			<div className="p-2">
 				<img src={post?.image} className="w-full h-80 rounded-md object-cover" alt="" />
 			</div>
-			{/* <div className="text-sm leading-loose p-2">
-			</div> */}
+			<div className="text-sm leading-loose p-2">
+				Do you think you have a personal or social concern? Find an expert who will help you resolve it or start writing your own petition and share your victory or testimony later
+			</div>
+					<div className="flex justify-center mb-1">
+						<button className="border border-warning p-1 mt-1 mr-4 text-black rounded-md bg-white" onClick={() => handelOpenFindExpart()}>Find Expert</button>
+						<button className="border border-warning p-1 mt-1 text-black rounded-md bg-white" onClick={() => handelPetition()}>Start Petition</button>
+					</div>
 			<Interaction post={post} />
 
 			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
+			<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
+			<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 			<ToastContainer />
 		</div>
 	)

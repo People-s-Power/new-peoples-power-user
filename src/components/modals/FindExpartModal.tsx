@@ -24,7 +24,6 @@ const FindExpartModalProp = {
 }
 
 const FindExpartModal = ({ author, open, handelClose, orgs }: InferProps<typeof FindExpartModalProp>): JSX.Element => {
-	const [message, setMessage] = React.useState("")
 	const [screen, setScreen] = React.useState(1)
 	const [country, setCountry] = useState("")
 	const [countries, setCountries] = useState([])
@@ -35,6 +34,12 @@ const FindExpartModal = ({ author, open, handelClose, orgs }: InferProps<typeof 
 	const user = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
 	const [active, setActive] = useState<any>(author)
+	const [message, setMessage] = React.useState(`
+Hello!
+I'd like to invite you to take a look at my complaint below and submit a proposal if you're available and interested:
+Start your Complaint…
+	
+	${active.name}`)
 
 	useEffect(() => {
 		setActive(author)
@@ -229,9 +234,11 @@ const FindExpartModal = ({ author, open, handelClose, orgs }: InferProps<typeof 
 								<textarea
 									name=""
 									onChange={(e) => setMessage(e.target.value)}
+									value={message}
 									className="w-full h-32 border border-white bg-gray-100 text-sm"
 									placeholder="Start your complaint..."
 								></textarea>
+								<p className="font-bold">Example: For the past 3 weeks I have been very down with sickness with symptoms like voting, headache, fever and fatigue. Please I need your expert advice.</p>
 							</div>
 						</div>
 					) : (

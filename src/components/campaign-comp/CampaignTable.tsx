@@ -85,7 +85,6 @@ const SingleRow = ({ camp }: { camp: ICampaign }) => {
 			{/* <td className="text-center">{camp?.numberOfPaidViewsCount}</td> */}
 			<td> {camp?.views?.length} </td>
 			<td> {Number(camp?.endorsements?.length) + 1} </td>
-
 			<td>
 				<Link href={`/promote?slug=${camp?.slug}`}>
 					<a className="btn p-0">{camp?.promoted ? "Upgrade" : "Promote"}</a>
