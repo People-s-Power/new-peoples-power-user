@@ -92,6 +92,7 @@ export const MY_PETITION = gql`
 			aim
 			body
 			target
+			views
 			slug
 			createdAt
 			comments{

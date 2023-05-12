@@ -87,6 +87,7 @@ export const MY_ADVERTS = gql`
 			link
 			action
 			image
+			views
 			likes {
 				name
 			}

@@ -6,6 +6,7 @@ export const MY_VICTORIES = gql`
 			_id
 			body
 			image
+			views
 			likes {
 				name
 				_id

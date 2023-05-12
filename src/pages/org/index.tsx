@@ -44,7 +44,7 @@ import FindExpartModal from "components/modals/FindExpartModal"
 
 const org = () => {
 	const [campaigns, setCampaigns] = useState<ICampaign[]>([])
-	const [user, setUser] = useState<IUser>()
+	const [user, setUser] = useState<any>()
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const { query } = useRouter()
 	const author = useRecoilValue(UserAtom)
@@ -308,9 +308,11 @@ const org = () => {
 													<span>&#x270E;</span> Edit
 												</button>
 											</Link>
-											<button onClick={() => setOpen(!open)} className="bg-transparent p-2 text-red-600">
-												Delete
-											</button>
+											{
+												user?.author === author?.id && <button onClick={() => setOpen(!open)} className="bg-transparent p-2 text-red-600">
+													Delete
+												</button>
+											}
 										</div>
 									</div>
 								</div>

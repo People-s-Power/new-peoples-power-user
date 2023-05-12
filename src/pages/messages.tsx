@@ -191,9 +191,11 @@ const messages = () => {
 				"block_message",
 				{
 					messageId: id,
+					userId: active.id || active._id
 				},
 				(response) => {
 					console.log("block_message:", response)
+					setShow(null)
 					getDm()
 				}
 			)
@@ -206,8 +208,13 @@ const messages = () => {
 				"unblock_message",
 				{
 					messageId: id,
+					userId: active.id || active._id
 				},
-				(response) => console.log("unblock_message:", response)
+				(response) => {
+					console.log("unblock_message:", response)
+					setShow(null)
+					getDm()
+				}
 			)
 		}
 	}
@@ -616,10 +623,8 @@ const messages = () => {
 								<Link href={'/connection?page=followers'}>
 									<button className="bg-warning px-4 text-white p-2 my-4 rounded-sm">connections</button>
 								</Link>
-							</div>) : <div className="text-center text-gray-400">This user has been blocked </div>
-
+							</div>) : <div className="text-center text-gray-400">This user has been blocked {show.blockedBy === active.id || active._id ? <span className="text-warning" onClick={() => unblockUser(show?.id)}>Unblock</span> : null} </div>
 					}
-
 				</div>
 				<CreateVictories open={victory} handelClick={makeTestimony} victory={null} />
 			</div>

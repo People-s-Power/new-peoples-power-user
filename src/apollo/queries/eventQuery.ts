@@ -152,6 +152,7 @@ export const MY_EVENT = gql`
 		authorEvents(authorId: $authorId) {
 			_id
 			audience
+			views
 			author {
 				_id
 				name

@@ -20,17 +20,16 @@ const CampaignTable = ({ campaigns }: { campaigns: any }): JSX.Element => {
 		<div>
 			<div className="container">
 				<Table className="table table-striped">
-					<thead className="thead bg-secondary text-white">
+					<thead className="thead bg-warning text-white">
 						<tr className="table-row">
 							<th>All Campaigns</th>
 							<th>Date Created</th>
 							<th> Status </th>
-							<th> Promotion amount  </th>
-							<th> Promotion target  </th>
+							{/* <th> Promotion amount  </th> */}
+							{/* <th> Promotion target  </th> */}
 							<th> Views </th>
 							<th> Endorsements </th>
 							<th> Action </th>
-
 							<th></th>
 						</tr>
 					</thead>
@@ -73,7 +72,6 @@ const SingleRow = ({ camp }: { camp: ICampaign }) => {
 				</Link>
 			</td>
 			<td>{dayjs(camp?.createdAt).format("DD/MM/YYYY")}</td>
-
 			<td>
 				<i
 					className={`fas me-2 ${camp?.status === "Pending"
@@ -83,8 +81,8 @@ const SingleRow = ({ camp }: { camp: ICampaign }) => {
 				></i>
 				{/* {camp.status} */}
 			</td>
-			<td className="text-center"> 0 </td>
-			<td className="text-center"> 0 </td>
+			{/* <td className="text-center"> 0 </td> */}
+			{/* <td className="text-center">{camp?.numberOfPaidViewsCount}</td> */}
 			<td> {camp?.views?.length} </td>
 			<td> {Number(camp?.endorsements?.length) + 1} </td>
 

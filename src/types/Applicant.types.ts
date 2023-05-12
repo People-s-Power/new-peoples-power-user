@@ -201,6 +201,7 @@ export interface ICampaign extends Document {
 	authorId: string
 	authorImg: string
 	id: string
+	numberOfPaidViewsCount: any
 }
 
 export interface IViews {

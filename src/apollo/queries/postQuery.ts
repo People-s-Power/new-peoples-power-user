@@ -56,6 +56,7 @@ export const GET_USER_POSTS = gql`
 			_id
 			body
 			createdAt
+			views
 			image
 			likes {
 				_id
