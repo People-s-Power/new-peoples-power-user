@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
-import Select from "react-select"
 import NotificationCard from "components/NotificationCard"
 
 const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClick(): void; advert: any }): JSX.Element => {
@@ -29,38 +28,10 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 	const [action, setAction] = useState(advert?.action || "")
 	const [loading, setLoading] = useState(false)
 	const author = useRecoilValue(UserAtom)
-	const [country, setCountry] = useState("")
-	const [countries, setCountries] = useState([])
-	const [cities, setCities] = useState([])
-	const [city, setCity] = useState("")
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
 	const [link2, setLink2] = useState("")
 
-	useEffect(() => {
-		// Get countries
-		axios
-			.get(window.location.origin + "/api/getCountries")
-			.then((res) => {
-				const calculated = res.data.map((country: any) => ({ label: country, value: country }))
-				setCountries(calculated)
-			})
-			.catch((err) => console.log(err))
-	}, [])
-
-
-	useEffect(() => {
-		// Get countries
-		if (country) {
-			axios
-				.get(`${window.location.origin}/api/getState?country=${country}`)
-				.then((res) => {
-					const calculated = res.data.map((state: any) => ({ label: state, value: state }))
-					setCities(calculated)
-				})
-				.catch((err) => console.log(err))
-		}
-	}, [country])
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
@@ -204,25 +175,6 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 						<input value={duration} onChange={(e) => setDuration(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
 					</div>
 				</div>
-
-				{audience === "Location" ? (
-					<div className="lg:flex justify-between">
-						<div className="w-[45%] my-1">
-							<div className="text-sm">Country</div>
-							<div>
-								{/* <input onChange={(e) => setCountry(e.target.value)} type="text" className="rounded-sm" placeholder="Nigeria" /> */}
-								<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
-							</div>
-						</div>
-						<div className="w-[45%] my-1">
-							<div className="text-sm">City</div>
-							<div>
-								{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
-								<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
-							</div>
-						</div>
-					</div>
-				) : null}
 				<div className="flex justify-between mt-2">
 					<div className="w-[45%] text-sm">
 						<div className="text-sm my-1">Call to action</div>

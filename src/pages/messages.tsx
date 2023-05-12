@@ -422,6 +422,7 @@ const messages = () => {
 							</div>
 						</div>
 					) : (
+						show &&
 						<div className="h-[60%] overflow-y-auto">
 							<div className="p-2 text-center text-xs text-gray-400 border-b border-gray-200">
 								<ReactTimeAgo date={new Date(show?.createdAt)} />
@@ -429,7 +430,7 @@ const messages = () => {
 							<div className="p-3">
 								<div className="flex mb-3">
 									{
-										show.type === "consumer-to-consumer" ? <img src={show.users[0]._id === active.id ? show.users[1].image : show.users[0].image} className="w-12 h-12 rounded-full" alt="" /> :
+										show?.type === "consumer-to-consumer" ? <img src={show.users[0]._id === active.id ? show.users[1].image : show.users[0].image} className="w-12 h-12 rounded-full" alt="" /> :
 											<img src={show.users[0]._id === active._id ? show.users[1].image : show.users[0].image} className="w-12 h-12 rounded-full" alt="" />
 									}
 									<div className="ml-4 my-auto">

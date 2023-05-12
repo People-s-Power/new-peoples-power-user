@@ -20,6 +20,7 @@ import { apollo } from "apollo"
 import ReactTimeAgo from "react-time-ago"
 import { SINGLE_PETITION } from "apollo/queries/petitionQuery"
 import { Modal } from "rsuite"
+import Select from "react-select"
 
 export const GET_CAMPAIGN = gql`
 	query ($slug: String) {
@@ -229,6 +230,38 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const [audience, setAudience] = useState("")
 	const [open, setOpen] = useState(true)
 	const [location, setLocation] = useState("")
+	const [country, setCountry] = useState("")
+	const [countries, setCountries] = useState([])
+	const [cities, setCities] = useState([])
+	const [city, setCity] = useState("")
+
+
+	useEffect(() => {
+		// Get countries
+		axios
+			.get(window.location.origin + "/api/getCountries")
+			.then((res) => {
+				const calculated = res.data.map((country: any) => ({ label: country, value: country }))
+				setCountries(calculated)
+			})
+			.catch((err) => console.log(err))
+	}, [])
+
+
+	useEffect(() => {
+		// Get countries
+		if (country) {
+			axios
+				.get(`${window.location.origin}/api/getState?country=${country}`)
+				.then((res) => {
+					const calculated = res.data.map((state: any) => ({ label: state, value: state }))
+					setCities(calculated)
+				})
+				.catch((err) => console.log(err))
+		}
+	}, [country])
+
+
 	const paystack_config: PaystackProps = {
 		reference: new Date().getTime().toString(),
 		email: user?.email as string,
@@ -341,6 +374,24 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 									<option value="Location">Location</option>
 								</select>
 							</div>
+							{audience === "Location" ? (
+								<div className="lg:flex justify-between">
+									<div className="w-[45%] my-1">
+										<div className="text-sm">Country</div>
+										<div>
+											{/* <input onChange={(e) => setCountry(e.target.value)} type="text" className="rounded-sm" placeholder="Nigeria" /> */}
+											<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
+										</div>
+									</div>
+									<div className="w-[45%] my-1">
+										<div className="text-sm">City</div>
+										<div>
+											{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
+											<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
+										</div>
+									</div>
+								</div>
+							) : null}
 						</div>
 					</Modal.Body>
 					<Modal.Footer>

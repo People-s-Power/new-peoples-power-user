@@ -72,6 +72,42 @@ const user = () => {
 	const [events, setEvents] = useState<any>([])
 	const [openFindExpart, setOpenFindExpart] = useState(false)
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
+	const uploadRef = useRef<HTMLInputElement>(null);
+	const [loading, setLoading] = useState(false);
+	const [img, setImg] = useState("");
+
+	const handleImg = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		// const { files } = e.target;
+		// setImg(URL.createObjectURL(files?.[0] as any));
+		const files = e.target.files;
+		const reader = new FileReader();
+		if (files && files.length > 0) {
+			reader.readAsDataURL(files[0]);
+			reader.onloadend = () => {
+				if (reader.result) {
+					setImg(reader.result as any);
+				}
+			};
+		}
+	};
+
+	const uploadFileToServer = async () => {
+		if (!img) {
+			uploadRef.current?.click();
+		} else {
+			try {
+				setLoading(true);
+				const { data } = await axios.post("/user/upload", { image: img });
+				toast("Image uploaded successfully");
+				// setUser({ ...user, image: data });
+				setImg("");
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
+		}
+	};
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -269,13 +305,32 @@ const user = () => {
 							<div>
 								<img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
 							</div>
-							<div className="absolute top-32 left-10 rounded-circle pro-img mx-auto bg-white p-1">
-								<div className="relative w-44 h-44">
-									<img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
+							{
+								author?.id === query.page ? <div className="edit-sec relative left-10 -top-20">
+									<div className="py-3 mb-4 d-flex">
+										<div className="pro-img-wrap rounded-circle position-relative">
+											<input type="file" ref={uploadRef} onChange={handleImg} />
+											<button className="btn p-0 z-50" onClick={uploadFileToServer}>
+												<i
+													className={`fas fs-5 d-flex align-items-center justify-content-center  rounded-circle  text-secondary ${img ? "fa-save" : "fa-pencil-alt"
+														}`}
+												></i>
+											</button>
+
+											<div className="pro-img position-relative rounded-circle">
+												<img src={img || user?.image || "/images/user.png"} alt="" className="position-absolute" />
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
+									: <div className="relative -top-20 left-10 rounded-circle w-44 h-44 pro-img  bg-white p-1">
+										<div className="relative w-44 h-44">
+											<img className="rounded-circle w-44 h-44" src={user?.image} alt="" />
+										</div>
+									</div>
+							}
 						</div>
-						<div className="mt-20 py-8 px-10">
+						<div className="-mt-28 py-8 px-10">
 							<div className="flex justify-between">
 								<div className="flex flex-column justify-center">
 									<div className="flex">
