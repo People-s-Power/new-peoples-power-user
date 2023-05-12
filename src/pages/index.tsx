@@ -31,7 +31,7 @@ import VictoryCard from "components/VictoryCard"
 import Shared from "components/Shared"
 import { socket } from "pages/_app"
 import Timeline from "components/Timeline"
-import { Dropdown, Loader } from "rsuite"
+import { Dropdown, Loader, Popover, Whisper } from "rsuite"
 import NotificationCard from "components/NotificationCard"
 
 const HomePage = () => {
@@ -55,6 +55,7 @@ const HomePage = () => {
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 	const [count, setCount] = useState(0)
 	const [loading, setLoading] = useState(false)
+	const [active, setActive] = useState<any>(null)
 
 	// console.log(author)
 
@@ -69,6 +70,9 @@ const HomePage = () => {
 			// console.log(err)
 		},
 	})
+	useEffect(() => {
+		setActive(author)
+	}, [author !== null])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
@@ -112,11 +116,11 @@ const HomePage = () => {
 			setLoading(true)
 			let feed
 			let notification
-			await axios.get(`share/feed/${author?.id}`).then(function (response) {
+			await axios.get(`share/feed/${active?.id || active._id}`).then(function (response) {
 				feed = response.data
 			})
 			if (socket.connected) {
-				socket.emit("notifications", author?.id, (response) => {
+				socket.emit("notifications", active.id || active._id, (response) => {
 					notification = response.notications
 					// setCount(response.unReadCount)
 					// console.log(response)
@@ -125,10 +129,10 @@ const HomePage = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {
-					authorId: author?.id,
+					authorId: active?.id || active._id,
 				},
 			})
-			// console.log(data.data.timeline)
+			console.log(data.data.timeline)
 			const general = [
 				...feed,
 				...notification,
@@ -174,7 +178,7 @@ const HomePage = () => {
 		getSingle()
 		getUsers()
 		getData()
-	}, [author])
+	}, [active])
 
 
 	const getUsers = async () => {
@@ -192,15 +196,47 @@ const HomePage = () => {
 		}
 	}
 
+	const speaker = (
+		<Popover>
+			<div onClick={() => setActive(author)} className="flex m-1 cursor-pointer">
+				<img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+				<div className="text-sm my-auto">{author?.name}</div>
+			</div>
+			{orgs !== null
+				? orgs?.map((org: any, index: number) => (
+					<div
+						onClick={() => {
+							setActive(org)
+						}}
+						key={index}
+						className="flex m-1 cursor-pointer"
+					>
+						<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+						<div className="text-sm my-auto">{org?.name}</div>
+					</div>
+				))
+				: null}
+		</Popover>
+	)
+
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
 				<aside className="w-[20%] sm:hidden text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
-						<img src={author?.image} className="w-[80px] mx-auto left-0 right-0 rounded-full h-[80px] " alt="" />
-						<div className="text-base font-light">{author?.name}</div>
-						<div className="text-xs px-3">{author?.description?.substring(0, 100) + "..."}</div>
+						<Whisper placement="bottom" trigger="click" speaker={speaker}>
+							<div className="flex justify-center">
+								<img src={active?.image} className="w-[80px] left-0 right-0 rounded-full h-[80px] " alt="" />
+								<div className="my-auto ml-2">
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
+										<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+									</svg>
+								</div>
+							</div>
+						</Whisper>
+						<div className="text-base font-light">{active?.name}</div>
+						<div className="text-xs px-3">{active?.description?.substring(0, 100) + "..."}</div>
 					</div>
 					<div className="border-b border-gray-200 px-3">
 						{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
