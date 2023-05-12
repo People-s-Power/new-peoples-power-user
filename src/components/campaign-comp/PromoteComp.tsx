@@ -290,7 +290,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const router = useRouter()
 	const onSuccess = async () => {
 		console.log(paystack_config)
-		router.push(`/user?page=${user.id}`)
+		router.push(`/mycamp`)
 	}
 	const onClose = () => {
 		console.log("")

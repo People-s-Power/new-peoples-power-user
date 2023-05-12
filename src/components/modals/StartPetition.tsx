@@ -155,9 +155,9 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 				</Modal.Header>
 				<Modal.Body>
 					{orgs !== null ? (
-						<div className="my-2 p-2 w-full rounded-md">
+						<div className="p-2 w-full rounded-md">
 							<Whisper placement="bottom" trigger="click" speaker={speaker}>
-								<div className="flex justify-between ">
+								<div className="flex ">
 									<div className="flex cursor-pointer">
 										<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
 										<div className="text-sm my-auto">{active?.name}</div>

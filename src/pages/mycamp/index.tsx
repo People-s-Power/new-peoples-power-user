@@ -23,6 +23,7 @@ import axios from "axios"
 
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
+import { MY_VICTORIES } from "apollo/queries/victories"
 dayjs.extend(relativeTime)
 
 const MyCamp: NextPage = (): JSX.Element => {
@@ -33,10 +34,11 @@ const MyCamp: NextPage = (): JSX.Element => {
 	const [adverts, setAdverts] = useState([])
 	const { query } = useRouter()
 	const [campaigns, setCampaigns] = useState([])
+	const [victories, setVictories] = useState([])
 
 	// const loading = true;
 	const getGeneral = () => {
-		let general = [...petition, ...post, ...adverts, ...events]
+		let general = [...petition, ...post, ...adverts, ...events, ...victories]
 		const randomize = (values: any) => {
 			let index = values.length,
 				randomIndex
@@ -52,54 +54,62 @@ const MyCamp: NextPage = (): JSX.Element => {
 		// console.log(all)
 	}
 
-	useQuery(MY_PETITION, {
-		client: apollo,
-		onCompleted: (data) => {
-			setPetition(data.myPetition)
-			console.log(data)
-			getGeneral()
-		},
-		onError: (e) => console.log(e),
-	})
 	useQuery(MY_ADVERTS, {
 		client: apollo,
 		variables: { authorId: author?.id },
 		onCompleted: (data) => {
 			console.log(data)
 			setAdverts(data.myAdverts)
-			getGeneral()
 		},
-		onError: (err) => {},
+		onError: (err) => console.log(err),
 	})
+
+	useQuery(MY_PETITION, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			// console.log(data)
+			setCampaigns(data.myPetition)
+		},
+		onError: (err) => {
+			console.log(err)
+		},
+	})
+
+	useQuery(MY_VICTORIES, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			// console.log(data)
+			setVictories(data.myVictories)
+		},
+		onError: (err) => console.log(err),
+	})
+
+	useQuery(MY_EVENT, {
+		client: apollo,
+		variables: { authorId: author?.id },
+		onCompleted: (data) => {
+			// console.log(data)
+			setEvents(data.authorEvents)
+		},
+		onError: (err) => console.log(err),
+	})
+
 	useQuery(GET_USER_POSTS, {
 		client: apollo,
+		variables: { authorId: author?.id },
 		onCompleted: (data) => {
 			// console.log(data)
 			setPost(data.myPosts)
-			getGeneral()
 		},
-		onError: (err) => {},
+		onError: (err) => console.log(err),
 	})
 
-	const getEvent = async () => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(MY_EVENT),
-				variables: {
-					authorId: author?.id,
-					page: 1,
-				},
-			})
-			console.log(data)
-			setEvents(data.myEvents)
-		} catch (error) {
-			console.log(error)
-		}
-	}
 	useEffect(() => {
-		getEvent()
 		getGeneral()
-	}, [adverts, petition, post, events, author])
+	}, [adverts, petition, post, events, author, victories])
+	
 	return (
 		<FrontLayout showFooter={false}>
 			<>
