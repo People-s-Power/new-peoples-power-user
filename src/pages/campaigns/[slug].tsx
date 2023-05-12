@@ -148,8 +148,8 @@ const SingleCampaignPage = (): JSX.Element => {
 								<aside className="sec-2 align-items-center flex-column d-flex right">
 									<div>
 										<p className="mt-0 font-bold text-xl">
-											{Number(endorsements?.length) + 1} {Number(endorsements?.length) + 1 <= 1 ? "has" : "have"} endorsed this campaign, Lets get it to{" "}
-											{Number(endorsements?.length) >= target ? " " + target + 100 : target}
+											{Number(camp.likes?.length) + 1} {Number(camp.likes?.length) + 1 <= 1 ? "has" : "have"} endorsed this campaign, Lets get it to{" "}
+											{Number(camp.likes?.length) >= target ? " " + target + 100 : target}
 										</p>
 										<div className="h-4 mt-2 relative max-w-xl rounded-full overflow-hidden w-full">
 											<div className="w-full h-full bg-gray-200 absolute"></div>
@@ -157,13 +157,13 @@ const SingleCampaignPage = (): JSX.Element => {
 												id="bar"
 												className={"h-full bg-warning relative w-4"}
 												style={{
-													width: Number(endorsements?.length) < 150 ? +10 + "px" : Number(endorsements?.length) >= 300 ? +500 + "px" : +50 + "px",
+													width: Number(camp.likes?.length) < 150 ? +10 + "px" : Number(camp.likes?.length) >= 300 ? +500 + "px" : +50 + "px",
 												}}
 											></div>
 										</div>
 									</div>
 
-									{endorsements?.length ? (
+									{camp.likes?.length ? (
 										<p className="mb-4 bg-sky ps-1 py-2 fs-5 text-center rounded text-muted w-100 fw-bold">Endorsements</p>
 									) : camp?.author?._id === user?.id ? null : (
 										<div className="px-3">

@@ -161,7 +161,7 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 
 
 
-					<section id="career" className="my-8">
+					<section id="career" className="mb-8 mt-20">
 						<div className="what-we-do-txt bg-light h-100 px-4 py-3 my-2 lg:mx-32">
 							<div className=" text-secondary fw-bold text-4xl my-2">Join our team</div>
 							<div className="text-base">If you’re passionate and ready to dive in, we’d love to meet you.</div>
@@ -182,11 +182,15 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 											Apply to work with us as content writer.
 										</h4>
 										<p className="mb-4">
-											lorem
+											Our virtual assistants (journalists, content writers, designers and social skilled workers) handles the hassle of writing, designing, editing and organizing campaigns and other administrations for the different service providers and other users on a remuneration while allowing the organization to focus on other physical activities that will grow their company.
+
+											As a virtual Assistant, you are also to help organizations grow their followers and supporters through active campaigns and digital marketing.
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -204,14 +208,18 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as Journalist.
 										</h4>
 										<p className="mb-4">
-											lorem
+											Our virtual assistants (journalists, content writers, designers and social skilled workers) handles the hassle of writing, designing, editing and organizing campaigns and other administrations for the different service providers and other users on a remuneration while allowing the organization to focus on other physical activities that will grow their company.
+
+											As a virtual Assistant, you are also to help organizations grow their followers and supporters through active campaigns and digital marketing.
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -229,14 +237,18 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as Designer.
 										</h4>
 										<p className="mb-4">
-											lorem
+											Our virtual assistants (journalists, content writers, designers and social skilled workers) handles the hassle of writing, designing, editing and organizing campaigns and other administrations for the different service providers and other users on a remuneration while allowing the organization to focus on other physical activities that will grow their company.
+
+											As a virtual Assistant, you are also to help organizations grow their followers and supporters through active campaigns and digital marketing.
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -254,14 +266,18 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as News Editor.
 										</h4>
 										<p className="mb-4">
-											lorem
+											Our virtual assistants (journalists, content writers, designers and social skilled workers) handles the hassle of writing, designing, editing and organizing campaigns and other administrations for the different service providers and other users on a remuneration while allowing the organization to focus on other physical activities that will grow their company.
+
+											As a virtual Assistant, you are also to help organizations grow their followers and supporters through active campaigns and digital marketing.
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -279,14 +295,18 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as a Rep.
 										</h4>
 										<p className="mb-4">
-											lorem
+											Our virtual assistants (journalists, content writers, designers and social skilled workers) handles the hassle of writing, designing, editing and organizing campaigns and other administrations for the different service providers and other users on a remuneration while allowing the organization to focus on other physical activities that will grow their company.
+
+											As a virtual Assistant, you are also to help organizations grow their followers and supporters through active campaigns and digital marketing.
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -304,14 +324,16 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as a Rights Advocate.
 										</h4>
 										<p className="mb-4">
 											lorem
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -329,14 +351,16 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as a Lawyers.
 										</h4>
 										<p className="mb-4">
 											lorem
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -354,14 +378,18 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 								<div className="container">
 									<div className="w-75">
 										<h4 className="mb-3 p-0 text-muted fw-bold">
-											Apply to work with us as content writer.
+											Apply to work with us as a Volunteer.
 										</h4>
 										<p className="mb-4">
-											lorem
+											Our virtual assistants (journalists, content writers, designers and social skilled workers) handles the hassle of writing, designing, editing and organizing campaigns and other administrations for the different service providers and other users on a remuneration while allowing the organization to focus on other physical activities that will grow their company.
+
+											As a virtual Assistant, you are also to help organizations grow their followers and supporters through active campaigns and digital marketing.
 										</p>
-										<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
-											Apply Now
-										</button>
+										<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+											<button className="btn btn-warning text-white px-4 py-2 rounded-pill fw-bold">
+												Apply Now
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>

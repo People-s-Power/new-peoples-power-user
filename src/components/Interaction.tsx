@@ -237,7 +237,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					</div>
 				)}
 
-				<div className="flex  cursor-pointer" onClick={() => setComments(!comments)}>
+				<div className="flex  cursor-pointer" onClick={() => { post.__typename === "Petition" ? null : setComments(!comments) }}>
 					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{allComment?.length} {post.__typename === "Petition" ? "Reasons" : "Comments"} </div>
 				</div>

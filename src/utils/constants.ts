@@ -6,7 +6,7 @@ export const SERVER_URL = "https://apiv5-xacq2.ondigitalocean.app"
 // process.env.NODE_ENV === "production"
 // 	? "https://edfhr.org"
 // 	: "http://localhost:8000";
-export const HTTP_URI = `${SERVER_URL}/api/v3`
+export const HTTP_URI = `${SERVER_URL}/api/v5`
 export const BASEURL = process.env.BASE_URL || "https://www.peoplespow.com"
 // export const STRAPI_URI = "https://cms.edfhr.org"
 

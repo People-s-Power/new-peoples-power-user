@@ -93,7 +93,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 	const updatePetition = async () => {
 		try {
 			setLoading(true)
-			const { data } = await axios.put("https://apiv5-xacq2.ondigitalocean.app/api/v3/petition", {
+			const { data } = await axios.put("https://apiv5-xacq2.ondigitalocean.app/api/v5/petition", {
 				title: title,
 				category: category,
 				image: [...image.file],

@@ -201,7 +201,8 @@ const HomePage = () => {
 						<div className="text-xs px-3">{author?.description?.substring(0, 100) + "..."}</div>
 					</div>
 					<div className="border-b border-gray-200 px-3">
-						<a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank">
+						{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
+						<Link href={"/about#career"}>
 							<div className="flex justify-between my-2">
 								<div className="text-sm my-auto">Become Virtual Assistant</div>
 								<div className="text-center cursor-pointer">
@@ -209,7 +210,8 @@ const HomePage = () => {
 									<span className="text-xs text-center">start</span>
 								</div>
 							</div>
-						</a>
+						</Link>
+						{/* </a> */}
 						<div className="flex justify-between my-2">
 							<div className="text-sm my-auto">Event</div>
 							<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
