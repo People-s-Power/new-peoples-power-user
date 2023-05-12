@@ -109,12 +109,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		router.push(`/promote?slug=${slug}&view=true`)
 	}
 
-	const promoteAd = (slug) => {
-		router.push(`/promote?slug=${slug}&message=true`)
-	}
-	const promotePetition = (slug) => {
-		router.push(`/promote?slug=${slug}`)
-	}
 	const comment = async (e, id) => {
 		if (content.length === 0) return
 		if (e.key !== "Enter") return
@@ -264,7 +258,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelAdClick}>Edit</Dropdown.Item> : null}
 										{isOwner(post.author._id) ? (
 											<Dropdown.Item>
-												<span onClick={() => promoteAd(post._id)}>Promote</span>
+												<span onClick={() => promote(post._id)}>Promote</span>
 											</Dropdown.Item>
 										) : null}
 									</div>
@@ -308,11 +302,9 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										<Link href={`/report?page=${post?.slug}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
-										{isOwner(post.author._id) ? (
-											<Dropdown.Item>
-												<span onClick={() => promotePetition(post.slug)}>Promote</span>
-											</Dropdown.Item>
-										) : null}
+										<Dropdown.Item>
+											<span onClick={() => promote(post._id)}>Promote</span>
+										</Dropdown.Item>
 										{isOwner(post.author._id) ? <Dropdown.Item onClick={handelPetition}>Edit</Dropdown.Item> : null}
 									</div>
 								)

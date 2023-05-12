@@ -16,7 +16,6 @@ export const formateMoney = (
 export const checkFX = async (currency: CurrencyListEnum): Promise<number> => {
 	try {
 		const { data } = await axios.post(`/convert`, { currency });
-
 		return Number(Object.values(data).toString());
 	} catch (error) {
 		console.log(error);

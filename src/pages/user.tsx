@@ -43,7 +43,6 @@ import VictoryCard from "components/VictoryCard"
 import Updates from "components/updates"
 import FollowSlides from "components/camp-slider/FollowSlides"
 import { MY_PETITION } from "apollo/queries/petitionQuery"
-import { socket } from "pages/_app"
 import Online from "components/Online"
 
 const user = () => {

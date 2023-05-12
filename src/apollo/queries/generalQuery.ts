@@ -11,7 +11,6 @@ export const GET_ALL = gql`
 				duration
 				link
 				action
-				audience
 				image
 				likes {
 					name

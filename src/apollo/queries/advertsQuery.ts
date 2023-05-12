@@ -6,7 +6,6 @@ export const UPDATE_ADVERT = gql`
 		$caption: String!
 		$message: String!
 		$action: String!
-		$audience: String!
 		$duration: String!
 		$email: String!
 		$link: String!
@@ -19,7 +18,6 @@ export const UPDATE_ADVERT = gql`
 			imageFile: $imageFile
 			message: $message
 			action: $action
-			audience: $audience
 			duration: $duration
 			email: $email
 			link: $link
@@ -47,7 +45,6 @@ export const CREATE_ADVERT = gql`
 		$caption: String!
 		$message: String!
 		$action: String!
-		$audience: String!
 		$duration: String!
 		$email: String!
 		$link: String!
@@ -59,7 +56,6 @@ export const CREATE_ADVERT = gql`
 			imageFile: $imageFile
 			message: $message
 			action: $action
-			audience: $audience
 			duration: $duration
 			email: $email
 			link: $link
@@ -90,7 +86,6 @@ export const MY_ADVERTS = gql`
 			duration
 			link
 			action
-			audience
 			image
 			likes {
 				name
@@ -117,7 +112,6 @@ export const ADVERT = gql`
 			duration
 			link
 			action
-			audience
 			image
 			likes {
 				name

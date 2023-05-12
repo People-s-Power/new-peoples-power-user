@@ -19,6 +19,7 @@ import axios from "axios"
 import { apollo } from "apollo"
 import ReactTimeAgo from "react-time-ago"
 import { SINGLE_PETITION } from "apollo/queries/petitionQuery"
+import { Modal } from "rsuite"
 
 export const GET_CAMPAIGN = gql`
 	query ($slug: String) {
@@ -31,6 +32,12 @@ export const GET_CAMPAIGN = gql`
 		}
 	}
 `
+
+export enum AudienceEnum {
+	EVERYONE = 'EVERYONE',
+	INTEREST = 'INTEREST',
+	LOCATION = 'LOCATION'
+}
 
 export enum CurrencyListEnum {
 	NGN = "NGN",
@@ -94,22 +101,6 @@ const PromoteComp = (): JSX.Element => {
 			})
 	}, [data, error])
 
-	// if (loading) return (
-	// 	<div className="my-10 w-full text-center">
-	// 		<Image className="mx-auto" src="/images/logo.svg" alt="" />
-	// 		<div className="my-4">
-	// 			<div className="text-xl">Hold on while we Process your request</div>
-	// 			<div className="text-base">Ensure your internet is stable</div>
-	// 		</div>
-	// 		<Link href="/">
-	// 			<button className="px-12 bg-warning p-2 my-3 rounded-md">
-	// 				Go back
-	// 			</button>
-	// 		</Link>
-	// 	</div>
-	// );
-	// if (!view && !endorse) {
-
 	return (
 		<div>
 			{/* <PromoteForm campaign={query.slug} /> */}
@@ -143,11 +134,6 @@ const PromoteComp = (): JSX.Element => {
 										<li className="nav-item mb-2 ms-3">
 											Our community of supporters can also help you promote this campaign and spare in some cash if this campaign is promoted to them.
 										</li>
-
-										{/* <li className="nav-item mb-2 ms-3">
-												Hit the promote button below to reach our Community of
-												Supporters who are interested in supporting this Campaign.
-											</li>  */}
 									</ul>
 									<div>
 										{transactions && transactions?.length > 1
@@ -240,7 +226,9 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const [loadingPrice, setLoadingPrice] = useState(false)
 	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
 	const { query } = useRouter()
-
+	const [audience, setAudience] = useState("")
+	const [open, setOpen] = useState(true)
+	const [location, setLocation] = useState("")
 	const paystack_config: PaystackProps = {
 		reference: new Date().getTime().toString(),
 		email: user?.email as string,
@@ -250,10 +238,11 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		currency,
 		publicKey: process.env.NODE_ENV === "production" ? (Cookies.get(IEnvironments.PAYSTACK_PK) as string) : "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
 		metadata: {
-			purpose: view === true ? PaymentPurposeEnum.VIEWS : endorse === true ? PaymentPurposeEnum.ENDORSE : PaymentPurposeEnum.MESSAGE,
+			purpose: view === true ? PaymentPurposeEnum.VIEWS : location === "inbox" ? PaymentPurposeEnum.MESSAGE : null,
 			key: query.slug,
 			numberOfViews: views,
-			name: user.name,
+			name: user?.name,
+			audience: audience === "Everyone" ? AudienceEnum.EVERYONE : audience === "Interest" ? AudienceEnum.INTEREST : audience === "Location" ? AudienceEnum.LOCATION : null,
 			custom_fields: [
 				{
 					display_name: view === true ? PaymentPurposeEnum.VIEWS : endorse === true ? PaymentPurposeEnum.ENDORSE : PaymentPurposeEnum.MESSAGE,
@@ -268,7 +257,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const router = useRouter()
 	const onSuccess = async () => {
 		console.log(paystack_config)
-		router.push("/mycamp")
+		router.push(`/user?page=${user.id}`)
 	}
 	const onClose = () => {
 		console.log("")
@@ -291,60 +280,20 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		convert()
 	}, [currency, views])
 
+	const continuePayment = () => {
+		if (audience === "") return
+		setOpen(false)
+	}
+
 	return (
-		<FrontLayout>
+		<FrontLayout showFooter={false} >
 			<Wrapper className="container">
 				<div className="md:w-[506px] m-auto">
 					<div className="cursor-pointer text-sm text-blue-700" onClick={() => window.history.back()}>
 						Go back
 					</div>
-					<div className="text-center mt-3">
-						Wow <span className="fw-bold">{user?.firstName}</span>…you are just one step away from reaching our Community of Supporters who will help you
-						achieve your goal. Spare in some cash to win your supporters.
-					</div>
-					<p className="my-4 text-center fw-bold">How do you want to promote your campaign views?</p>
+					<p className="my-4 text-center fw-bold">How do you want to promote your campaign?</p>
 
-					<h5 className="fw-bold">Bulk Option</h5>
-					<div className="bulk">
-						{bulkOptions.map((option, i) => (
-							<div key={i} className="row w-100 bulk-option align-items-center justify-content-between cursor-pointer">
-								<p className="m-0 col-4">
-									<i className="fas fa-eye"></i> {option.views} Views
-								</p>
-								<p className="m-0 col-4">=</p>
-								<PaystackButton
-									reference={new Date().getTime().toString()}
-									email={user?.email as string}
-									amount={option.price * 100}
-									firstname={user?.firstName}
-									lastname={user?.lastName}
-									onSuccess={onSuccess}
-									publicKey={
-										process.env.NODE_ENV === "production"
-											? (Cookies.get(IEnvironments.PAYSTACK_PK) as string)
-											: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28"
-									}
-									metadata={{
-										purpose: PaymentPurposeEnum.VIEWS,
-										key: query.slug,
-										numberOfViews: option.views,
-										name: user.name,
-										custom_fields: [
-											{
-												display_name: PaymentPurposeEnum.VIEWS,
-												value: campaign?.title,
-												variable_name: "title",
-											},
-										],
-									}}
-									text={`N${option.price}`}
-									className="btn text-primary col-4"
-								/>
-							</div>
-						))}
-					</div>
-
-					<h5 className="fw-bold my-3">Customize</h5>
 					<form>
 						<div className="form-group text-center">
 							<label className="">
@@ -367,6 +316,37 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 						</button>
 					</div>
 				</div>
+				<Modal open={open}>
+					<Modal.Header>
+						<div className="border-b border-gray-200 p-3 w-full">
+							<Modal.Title>Promote</Modal.Title>
+						</div>
+					</Modal.Header>
+					<Modal.Body>
+						<div className="w-full mx-auto my-10 text-sm">
+							<div className="my-4">
+								<p className="text-base text-center my-2">Your campaign is being promoted to your timeline. Tick below if you also want this to be promoted to user inbox:</p>
+								<div className="flex justify-evenly">
+									{/* <div className="border py-2 rounded-md text-sm px-8 cursor-pointer">Promote to Timeline</div> */}
+									<div onClick={() => setLocation("inbox")} className={location === "inbox" ? "border border-warning py-2 text-warning rounded-md text-sm px-8 cursor-pointer" : "border py-2 rounded-md text-sm px-8 cursor-pointer"}> <input type="radio" className="mx-2" /> Promote to Inbox</div>
+								</div>
+							</div>
+							<div className="my-4">
+								<div className="text-base my-1">Select your Target audience</div>
+								<select onChange={(e) => setAudience(e.target.value)} name="" id="" className="w-full border border-gray-700 text-sm">
+									<option value="">Select your target audience</option>
+									<option value="Everyone">Everyone</option>
+									{/* <option value="Followers">Followers</option> */}
+									<option value="Interest">Interest</option>
+									<option value="Location">Location</option>
+								</select>
+							</div>
+						</div>
+					</Modal.Body>
+					<Modal.Footer>
+						<button className="p-2 bg-warning text-white rounded-md" onClick={() => continuePayment()}>Continue</button>
+					</Modal.Footer>
+				</Modal>
 			</Wrapper>
 		</FrontLayout>
 	)

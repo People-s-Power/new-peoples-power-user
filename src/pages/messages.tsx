@@ -37,7 +37,7 @@ const messages = () => {
 	const bottomRef = useRef(null);
 	const [victory, setVictory] = useState<any>(false)
 	const makeTestimony = () => setVictory(!victory)
-	const [sigUser, setUser] = useState<IUser>([])
+	const [sigUser, setUser] = useState<IUser>()
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {

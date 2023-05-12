@@ -47,7 +47,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			})
 			.catch((err) => console.log(err))
 	}, [])
-	
+
 
 	useEffect(() => {
 		// Get countries
@@ -90,7 +90,6 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					author: author.id,
 					message: message,
 					caption: caption,
-					audience: audience,
 					action: action,
 					link: link,
 					duration: duration,
@@ -130,7 +129,6 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					authorId: author.id,
 					message: message,
 					caption: caption,
-					audience: audience,
 					action: action,
 					link: link,
 					duration: duration,
@@ -206,27 +204,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 						<input value={duration} onChange={(e) => setDuration(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
 					</div>
 				</div>
-				<div className="flex justify-between mt-2">
-					<div className="w-[45%] text-sm">
-						<div className="text-sm my-1">Target audience</div>
-						<select onChange={(e) => setAudience(e.target.value)} name="" id="" className="w-full border border-gray-700 text-sm">
-							<option value="Everyone">Everyone</option>
-							<option value="Followers">Followers</option>
-							<option value="Interest">Interest</option>
-							<option value="Location">Location</option>
-						</select>
-					</div>
-					<div className="w-[45%] text-sm">
-						<div className="text-sm my-1">Call to action</div>
-						<select onChange={(e) => setAction(e.target.value)} name="" id="" className="w-full border border-gray-700 text-sm">
-							<option value="Book now">Book now</option>
-							<option value="Call us">Call us</option>
-							<option value="Learn More">Learn More</option>
-							<option value="Email us">Email us</option>
-							<option value="Apply Now">Apply Now</option>
-						</select>
-					</div>
-				</div>
+
 				{audience === "Location" ? (
 					<div className="lg:flex justify-between">
 						<div className="w-[45%] my-1">
@@ -245,6 +223,18 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 						</div>
 					</div>
 				) : null}
+				<div className="flex justify-between mt-2">
+					<div className="w-[45%] text-sm">
+						<div className="text-sm my-1">Call to action</div>
+						<select onChange={(e) => setAction(e.target.value)} name="" id="" className="w-full border border-gray-700 text-sm">
+							<option value="Book now">Book now</option>
+							<option value="Call us">Call us</option>
+							<option value="Learn More">Learn More</option>
+							<option value="Email us">Email us</option>
+							<option value="Apply Now">Apply Now</option>
+						</select>
+					</div>
+				</div>
 				{/* </Modal.Body> */}
 				<Modal.Footer>
 					{advert === null ? (
@@ -260,7 +250,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			</Modal>
 			<ToastContainer />
 			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link2} close={() => setNotication(!notication)}  />
+				notication && <NotificationCard hide={notication} msg={msg} link={link2} close={() => setNotication(!notication)} />
 			}
 		</>
 	)
