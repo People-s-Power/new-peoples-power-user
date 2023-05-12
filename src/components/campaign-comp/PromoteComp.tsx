@@ -239,6 +239,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const [amount, setAmount] = useState(20)
 	const [loadingPrice, setLoadingPrice] = useState(false)
 	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
+	const { query } = useRouter()
 
 	const paystack_config: PaystackProps = {
 		reference: new Date().getTime().toString(),
@@ -250,7 +251,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		publicKey: process.env.NODE_ENV === "production" ? (Cookies.get(IEnvironments.PAYSTACK_PK) as string) : "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
 		metadata: {
 			purpose: view === true ? PaymentPurposeEnum.VIEWS : endorse === true ? PaymentPurposeEnum.ENDORSE : PaymentPurposeEnum.MESSAGE,
-			key: campaign,
+			key: query.slug,
 			numberOfViews: views,
 			name: user.name,
 			custom_fields: [
@@ -325,7 +326,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 									}
 									metadata={{
 										purpose: PaymentPurposeEnum.VIEWS,
-										key: campaign?.id,
+										key: query.slug,
 										numberOfViews: option.views,
 										name: user.name,
 										custom_fields: [

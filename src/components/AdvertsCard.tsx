@@ -21,6 +21,7 @@ interface IProps {
 const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [following, setFollowing] = useState(false)
+	const [more, setMore] = useState(advert.message.length > 250 ? true : false)
 
 	const follow = async (id) => {
 		try {
@@ -73,8 +74,24 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 				{/* </div> */}
 				<div>sponsored</div>
 			</div>
-			<div className="text-sm p-2 leading-loose">{advert.message}</div>
-
+			{more ? (
+				<div className="text-sm p-2 leading-loose">
+					{advert.message.slice(0, 250)}{" "}
+					<span className="text-warning underline" onClick={() => setMore(!more)}>
+						..see more
+					</span>
+				</div>
+			) : (
+				<div className="text-sm p-2 leading-loose">
+					{advert.message}
+					{advert.message.length > 250 ? (
+						<span className="text-warning underline" onClick={() => setMore(!more)}>
+							see less
+						</span>
+					) : null}
+				</div>
+			)}
+			{/* <div className="text-sm p-2 leading-loose">{advert.message}</div> */}
 			<div className="p-2">
 				<img className="w-full h-80  object-cover rounded-md" src={advert.image} alt="" />
 			</div>

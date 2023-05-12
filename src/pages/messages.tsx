@@ -18,6 +18,7 @@ import axios from "axios"
 import { socket } from "pages/_app"
 import CreateVictories from "components/modals/CreateVictories"
 import Online from "components/Online"
+import { IUser } from "types/Applicant.types"
 
 const messages = () => {
 	const user = useRecoilValue(UserAtom)
@@ -36,6 +37,7 @@ const messages = () => {
 	const bottomRef = useRef(null);
 	const [victory, setVictory] = useState<any>(false)
 	const makeTestimony = () => setVictory(!victory)
+	const [sigUser, setUser] = useState<IUser>([])
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {
@@ -160,6 +162,19 @@ const messages = () => {
 		}
 	}
 
+	useEffect(() => {
+		if (query.page) {
+			try {
+				axios
+					.get(`/user/single/${query.page}`)
+					.then(function (response) {
+						setUser(response.data.user)
+					})
+			} catch (error) {
+				console.log(error)
+			}
+		}
+	}, [])
 
 	useEffect(() => {
 		getDm()
@@ -297,7 +312,7 @@ const messages = () => {
 		}
 		return typing
 	}
-	
+
 	const speaker = (
 		<Popover>
 			<div onClick={() => setActive(user)} className="flex m-1 cursor-pointer">
@@ -359,7 +374,7 @@ const messages = () => {
 											<img src={item.users[0]._id === active._id || active.id ? item.users[1].image : item.users[0].image
 											} className="w-10 h-10 rounded-full my-auto" alt="" />
 									}
-									
+
 									{
 										item.type === "consumer-to-consumer" ? <div className="w-6 my-auto mx-auto">
 											{item.unread === true || item.messages[item.messages.length - 1].received === false && item.messages[item.messages.length - 1]?.to === active.id ? <div className="bg-warning mx-auto w-2 h-2 my-auto rounded-full"></div> : null}
@@ -397,8 +412,15 @@ const messages = () => {
 						))}
 				</div>
 				<div className="w-[45%] shadow-md fixed right-32 h-full">
-					{show === null ? (
-						<div className="text-center text-sm"></div>
+					{show === null && query.page !== undefined ? (
+						<div className="text-center text-sm">
+							<div className="flex justify-center mb-3">
+								<img src={sigUser.image} className="w-12 h-12 rounded-full" alt="" />
+								<div className="ml-4 my-auto">
+									<div className="text-sm">{sigUser.name}</div>
+								</div>
+							</div>
+						</div>
 					) : (
 						<div className="h-[60%] overflow-y-auto">
 							<div className="p-2 text-center text-xs text-gray-400 border-b border-gray-200">

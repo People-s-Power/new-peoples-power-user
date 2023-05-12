@@ -16,7 +16,7 @@ import NotificationCard from "components/NotificationCard"
 const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClick(): void; advert: any }): JSX.Element => {
 	const [image, setFilePreview] = useState({
 		type: "",
-		file: "",
+		file: advert?.image[0] || "",
 		name: "",
 	})
 	const uploadRef = useRef<HTMLInputElement>(null)
@@ -158,7 +158,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 				name: "",
 			})
 		} catch (error) {
-			console.log(error.response)
+			console.log(error)
 			toast.warn("Oops something happened")
 		}
 	}

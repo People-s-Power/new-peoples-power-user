@@ -173,45 +173,50 @@ export const SINGLE_PETITION = gql`
 export const SINGLE_PETITION_ID = gql`
 	query getPetitionByID($id: ID!) {
 		getPetitionByID(id: $id) {
-			_id
-    title
-    image
-    aim
-    body
-    target
-		__typename
-    slug
-		createdAt
-    comments{
-      _id
-      content
-      author{
-        _id
-        name
-        email
-        image
-      }
-      date
-    }
-    likes{
-      _id
-      name
-    }
-    promoted
-    views
-    category
-    region
-    author{
-       _id
-        name
-        email
-        image
-    }
-    updates{
-      body
-      image
-      createdAt
-    }
+			aim
+				addedFrom
+				author {
+					_id
+					name
+					email
+					description
+					image
+				}
+				body
+				category
+				createdAt
+				__typename
+				endorsements {
+					body
+				}
+				excerpt
+				_id
+				image
+				likes {
+					_id
+					name
+					email
+					image
+				}
+				comments {
+					_id
+					content
+					author {
+						_id
+						name
+						image
+					}
+					date
+				}
+				numberOfPaidEndorsementCount
+				numberOfPaidViewsCount
+				promoted
+				slug
+				status
+				target
+				title
+				updatedAt
+				views
 		}
 	}
 `

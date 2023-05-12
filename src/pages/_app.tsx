@@ -131,12 +131,13 @@ const Layout = ({ children }: { children: React.ReactChild }) => {
 		}
 	}, [])
 
-	useEffect(() => {
-		async function setIp() {
-			const ip = await getIP()
-			cookie.set("ed_LOCAL", ip as string)
-		}
-		setIp()
-	}, [])
+	// useEffect(() => {
+	// 	async function setIp() {
+	// 		const ip = await getIP()
+	// 		cookie.set("ed_LOCAL", ip as string)
+	// 	}
+	// 	setIp()
+	// }, [])
+	
 	return <Fragment>{children}</Fragment>
 }
