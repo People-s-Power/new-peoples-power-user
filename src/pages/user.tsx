@@ -440,7 +440,11 @@ const user = () => {
 											</div>
 										))}
 									</div>
-									{author?.interests.map((interst, i) => <div key={i} className="my-2">{interst}</div>)}
+									<div className="text-left">
+										<Dropdown title="My Interests">
+											{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+										</Dropdown>
+									</div>
 								</div>
 							) : (
 								<div></div>

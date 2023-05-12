@@ -302,18 +302,19 @@ const org = () => {
 												{user?.city}, {user?.country}
 											</div>
 										</div>
-										<div className="font-black text-lg mr-32">
-											<Link href={`/org/update?page=${user?._id}`}>
-												<button className="bg-transparent p-2 text-warning">
-													<span>&#x270E;</span> Edit
-												</button>
-											</Link>
-											{
-												user?.author === author?.id && <button onClick={() => setOpen(!open)} className="bg-transparent p-2 text-red-600">
+										{
+											user?.author === author?.id &&
+											<div className="font-black text-lg mr-32">
+												<Link href={`/org/update?page=${user?._id}`}>
+													<button className="bg-transparent p-2 text-warning">
+														<span>&#x270E;</span> Edit
+													</button>
+												</Link>
+												<button onClick={() => setOpen(!open)} className="bg-transparent p-2 text-red-600">
 													Delete
 												</button>
-											}
-										</div>
+											</div>
+										}
 									</div>
 								</div>
 							</div>

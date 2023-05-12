@@ -31,7 +31,7 @@ import VictoryCard from "components/VictoryCard"
 import Shared from "components/Shared"
 import { socket } from "pages/_app"
 import Timeline from "components/Timeline"
-import { Loader } from "rsuite"
+import { Dropdown, Loader } from "rsuite"
 import NotificationCard from "components/NotificationCard"
 
 const HomePage = () => {
@@ -242,7 +242,11 @@ const HomePage = () => {
 								</div>
 							))}
 						</div>
-						{author?.interests.map((interst, i) => <div key={i} className="my-2">{interst}</div>)}
+						<div className="text-left">
+							<Dropdown title="My Interests">
+								{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+							</Dropdown>
+						</div>
 					</div>
 				</aside>
 				<section className="w-full lg:w-[50%] mx-auto">
