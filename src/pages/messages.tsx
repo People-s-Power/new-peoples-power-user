@@ -495,7 +495,7 @@ const messages = () => {
 											className="w-full h-32 text-sm p-2 border border-white"
 											placeholder="Write a message"
 											value={message}
-											onFocus={() => sendTyping(show.users[1]._id === active.id || active._id ? show.users[0]?.socketId : show.users[1]?.socketId)}
+											onFocus={() => sendTyping(show.users[1]._id === active.id || active._id ? show.users[0]?._id : show.users[1]?._id)}
 										></textarea>
 										<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 											{show?.type === "customer-org" && (

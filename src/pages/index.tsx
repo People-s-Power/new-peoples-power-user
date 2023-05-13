@@ -132,7 +132,7 @@ const HomePage = () => {
 					authorId: active?.id || active._id,
 				},
 			})
-			console.log(data.data.timeline)
+			// console.log(data.data.timeline)
 			const general = [
 				...feed,
 				...notification,
@@ -159,7 +159,7 @@ const HomePage = () => {
 					})
 				}
 			}
-			// console.log(newArray)
+			console.log(newArray)
 			setAll(newArray)
 			setLoading(false)
 		} catch (err) {
@@ -222,13 +222,13 @@ const HomePage = () => {
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
-				<aside className="w-[20%] overflow-y-auto sm:hidden text-center fixed bg-white left-20">
+				<aside className="w-[20%] h-[85%] overflow-y-scroll sm:hidden text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
 						<Whisper placement="bottom" trigger="click" speaker={speaker}>
 							<div className="flex justify-center">
 								<img src={active?.image} className="w-[80px] left-0 right-0 rounded-full h-[80px] " alt="" />
-								<div className="my-auto ml-2">
+								<div className="ml-2">
 									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
 										<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
 									</svg>
@@ -278,11 +278,11 @@ const HomePage = () => {
 								</div>
 							))}
 						</div>
-						<div className="text-left">
-							<Dropdown title="My Interests">
-								{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
-							</Dropdown>
-						</div>
+					</div>
+					<div className="text-left">
+						<Dropdown title="My Interests">
+							{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+						</Dropdown>
 					</div>
 				</aside>
 				<section className="w-full lg:w-[50%] mx-auto">

@@ -357,8 +357,8 @@ const user = () => {
 									</div>
 									{
 										following === false ? author?.id !== query.page && <div>
-											{searchForValue(query.page) ? <span onClick={() => unfollow(query.page)} className="cursor-pointer text-warning">Unfollow</span> : <span onClick={() => follow(query.page)} className="cursor-pointer text-warning">+ Follow</span>}
-										</div> : <div className="text-sm text-warning">Following</div>
+											{searchForValue(query.page) ? <span onClick={() => unfollow(query.page)} className="cursor-pointer text-warning">Unfollow</span> : <span onClick={() => follow(query.page)} className="cursor-pointer text-warning mt-2">+ Follow</span>}
+										</div> : <div className="text-sm text-warning mt-2">Following</div>
 									}
 								</div>
 								{
@@ -369,8 +369,8 @@ const user = () => {
 											</button>
 										</Link>
 									</div> : <div className="font-black text-lg">
-										<Link href={`/messages?page=${query.page}`}>
-											<button className="bg-transparent border border-warning rounded-full px-10 py-2 text-warning">
+										<Link href={`messages?page=${user?.id}`}>
+											<button className="bg-transparent border border-warning rounded-full px-6 py-1 text-warning">
 												Send Message
 											</button>
 										</Link>
@@ -440,15 +440,15 @@ const user = () => {
 										))}
 									</div>
 									<div className="text-left">
-										<Dropdown title="User Interests">
+										<Dropdown title="My Interests">
 											{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
 										</Dropdown>
 									</div>
 								</div>
 							) : (
 								<div className="text-left">
-									<Dropdown title="My Interests">
-										{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+									<Dropdown title="User Interests">
+										{user?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
 									</Dropdown>
 								</div>)}
 						</div>

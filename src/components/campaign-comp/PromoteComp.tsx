@@ -225,7 +225,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const [views, setViews] = useState(10)
 	const [amount, setAmount] = useState(20)
 	const [loadingPrice, setLoadingPrice] = useState(false)
-	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
+	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.USD)
 	const { query } = useRouter()
 	const [audience, setAudience] = useState("")
 	const [open, setOpen] = useState(true)
@@ -402,21 +402,3 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		</FrontLayout>
 	)
 }
-
-const bulkOptions = [
-	{ views: 100, price: 1000 },
-	{ views: 200, price: 1500 },
-	{ views: 400, price: 2500 },
-	{ views: 1000, price: 5000 },
-	{ views: 2000, price: 8000 },
-	{ views: 3000, price: 10000 },
-]
-
-const bulkOptionsEndorse = [
-	{ endorsements: 100, price: 800 },
-	{ endorsements: 200, price: 1200 },
-	{ endorsements: 400, price: 2200 },
-	{ endorsements: 1000, price: 4800 },
-	{ endorsements: 2000, price: 7800 },
-	{ endorsements: 3000, price: 9800 },
-]
