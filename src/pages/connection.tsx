@@ -70,21 +70,7 @@ const connection = () => {
 		getFollowing()
 	}, [author, active])
 
-	const unfollow = async (id) => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(UNFOLLOW),
-				variables: {
-					followerId: author.id,
-					unfollowId: id,
-				},
-			})
-			console.log(data)
-			getFollowing()
-		} catch (error) {
-			console.log(error)
-		}
-	}
+
 	const search = (value) => {
 		if (value === "") {
 			getUsers()
@@ -147,21 +133,8 @@ const connection = () => {
 							))
 							: active === "following"
 								? following.map((user, index) => (
-									<div key={index} className="w-[25%] p-6">
-										<Link href={`user?page=${user._id}`}>
-											<div className="cursor-pointer">
-												<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-												<div className="text-xl py-2">{user.name} </div>
-											</div>
-										</Link>
-										<div className="w-16 h-[1px] bg-gray-200"></div>
-										<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-										<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => unfollow(user._id)}>
-											Unfollow
-										</div>
-										<Link href={`/messages?page=${user._id}`}>
-											<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>
-										</Link>
+									<div key={index} className="w-[25%] ">
+										<Following user={user} getFollowing={() => getFollowing()} />
 									</div>
 								))
 								: null}
@@ -172,3 +145,43 @@ const connection = () => {
 }
 
 export default connection
+
+function Following({ user, getFollowing }) {
+	const author = useRecoilValue(UserAtom)
+	const [loading, setLoading] = useState(false)
+	const unfollow = async (id) => {
+		setLoading(true)
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(UNFOLLOW),
+				variables: {
+					followerId: author.id,
+					unfollowId: id,
+				},
+			})
+			console.log(data)
+			setLoading(false)
+			getFollowing()
+		} catch (error) {
+			console.log(error)
+		}
+	}
+	return (
+		<div className="p-6">
+			<Link href={`user?page=${user._id}`}>
+				<div className="cursor-pointer">
+					<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+					<div className="text-xl py-2">{user.name} </div>
+				</div>
+			</Link>
+			<div className="w-16 h-[1px] bg-gray-200"></div>
+			<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
+			{loading ? <p className="text-xs text-gray-900">loading...</p> : <div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => unfollow(user._id)}>
+				Unfollow
+			</div>}
+			<Link href={`/messages?page=${user._id}`}>
+				<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>
+			</Link>
+		</div>
+	)
+}

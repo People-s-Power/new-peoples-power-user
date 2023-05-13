@@ -20,7 +20,11 @@ const notifications = () => {
 		// console.log(socket)
 		// socket.on("connect", function () {
 		if (socket.connected) {
-			socket.emit("notifications", user?.id, (response) => {
+			socket.emit("notifications", {
+				userId: user?.id,
+				page: 1,
+				limit: 80
+			}, (response) => {
 				setNotifications(response.notifications)
 				console.log(response)
 			})

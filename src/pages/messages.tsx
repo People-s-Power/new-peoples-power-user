@@ -38,6 +38,7 @@ const messages = () => {
 	const [victory, setVictory] = useState<any>(false)
 	const makeTestimony = () => setVictory(!victory)
 	const [sigUser, setUser] = useState<IUser>()
+	const [typing, setTypingData] = useState("")
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (filesPreview.length < 1) {
@@ -310,15 +311,17 @@ const messages = () => {
 	}
 
 	const setTyping = () => {
-		let typing = ""
 		if (socket.connected) {
 			socket.on('typing', function (data) {
 				console.log('typing', data);
-				typing = data
+				setTypingData(data)
 			});
 		}
-		return typing
 	}
+
+	useEffect(() => {
+		setTyping()
+	})
 
 	const speaker = (
 		<Popover>
@@ -366,6 +369,7 @@ const messages = () => {
 						</div>
 					)}
 					<input type="text" className="p-2 rounded-md w-full" onChange={(e) => search(e.target.value)} placeholder="Search Messages" />
+					<p className="text-sm text-center py-1">{typing}</p>
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} className={
@@ -398,10 +402,10 @@ const messages = () => {
 													: <div className="text-base font-bold">{item.users[0]._id === active._id || active.id ? item.users[1].name : item.users[0].name}</div>
 											}
 										</div>
-										{setTyping() ? setTyping() : <div>
+										<div>
 											<div className="text-sm"> <strong>{item.messages[item.messages.length - 1].type === "sponsored" ? "Expert Needed" : item.messages[item.messages.length - 1].type === "advert" ? "Promoted" : null} </strong> {item.messages[item.messages.length - 1].text?.substring(0, 50)} {item.messages[item.messages.length - 1].file ? "file" : ""}</div>
 											<ReactTimeAgo date={new Date(item.updatedAt)} />
-										</div>}
+										</div>
 									</div>
 								</div>
 								<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
