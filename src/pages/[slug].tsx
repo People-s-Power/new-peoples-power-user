@@ -130,7 +130,8 @@ const Single = () => {
   }, [])
 
   return (
-    <FrontLayout>
+    		<FrontLayout showFooter={false}>
+
       <div className='w-1/2 mx-auto'>
         {(() => {
           switch (router.query.slug) {

@@ -3,7 +3,8 @@ import React, { useState } from "react";
 
 const finallaunch = () => {
   return (
-    <FrontLayout>
+    		<FrontLayout showFooter={false}>
+
       <>
         <div className="finalsec-wrap py-5">
           <div className="container">

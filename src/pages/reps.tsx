@@ -14,7 +14,8 @@ const RepsPage = ({ users }: { users: Strapi_Lawyer[] }): JSX.Element => {
 			<Head>
 				<title>Our State Reps</title>
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<Wrapper className="mt-4 reps">
 					<div className="container">
 						<h1 className="text-center fw-bold mb-3 ">State Reps</h1>

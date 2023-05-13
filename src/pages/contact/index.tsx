@@ -55,7 +55,8 @@ const ContactPage = () => {
 			<Head>
 				<title>Contact Us</title>
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<div>
 					{/* <Div className="d-flex container flex-column-reverse flex-sm-row py-3">
 						<div className="left d-flex flex-column justify-content-end">

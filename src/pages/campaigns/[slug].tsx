@@ -89,7 +89,8 @@ const SingleCampaignPage = (): JSX.Element => {
 				<title>Petition || {camp?.title}</title>
 				<meta name="description" content={camp?.body} />
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<Wrapper className="single-camp py-4 ">
 					<LoginModal show={showLogin} onHide={() => setShowLogin(false)} />
 					<div className="container inner py-2">

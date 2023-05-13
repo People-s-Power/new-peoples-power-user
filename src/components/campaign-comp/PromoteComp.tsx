@@ -108,7 +108,8 @@ const PromoteComp = (): JSX.Element => {
 			{view || endorse || message ? (
 				<PromoteForm campaign={campaign} view={view} endorse={endorse} message={message} />
 			) : (
-				<FrontLayout>
+						<FrontLayout showFooter={false}>
+
 					<Wrapper className="container">
 						<PromoteModalComp show={showModalClose} onHide={() => setShowModalClose(false)} />
 						<ChoosePromotion show={showModal} onHide={() => setShowModal(false)} />

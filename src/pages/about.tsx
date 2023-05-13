@@ -16,7 +16,8 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 			<Head>
 				<title>About</title>
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<div className="about-wrap">
 					<div className="who-we-are py-5">
 						<div className="container _who-we-are mb-4">

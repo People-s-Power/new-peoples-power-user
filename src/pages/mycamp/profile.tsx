@@ -5,7 +5,8 @@ import FrontLayout from "layout/FrontLayout";
 
 const ProfilePage = (): JSX.Element => {
   return (
-    <FrontLayout>
+    		<FrontLayout showFooter={false}>
+
       <div className="container">
         <div>
           <ProfileComp />

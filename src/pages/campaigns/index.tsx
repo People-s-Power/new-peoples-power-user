@@ -98,7 +98,8 @@ const CampaignPage: () => JSX.Element = () => {
 		setQueryCampaigns(results)
 	}
 	return (
-		<FrontLayout>
+				<FrontLayout showFooter={false}>
+
 			<Wrapper>
 				<div className="explore py-5 animate__animated animate__fadeIn">
 					<div className="container">

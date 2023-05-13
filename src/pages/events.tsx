@@ -17,7 +17,8 @@ const events = () => {
     });
 
     return (
-        <FrontLayout>
+        		<FrontLayout showFooter={false}>
+
             <div className="mx-20">
                 <div className="flex">
                     <div className='text-lg my-auto'>Discover Events</div>

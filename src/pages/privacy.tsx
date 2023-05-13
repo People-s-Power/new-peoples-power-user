@@ -13,7 +13,8 @@ const PrivacyPage = () => {
 			<Head>
 				<title>Privacy</title>
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<Wrapper className="privacy-policy py-5">
 					<div className="container">
 						<iframe width="100%" height="3500" src="https://docs.google.com/document/d/e/2PACX-1vS9WeduCRmpPm5qsOAe_5cmr51I2nP1UJj7eHa9DjH9oyGBKjsPMrxrhkv2gSbESphBR6e-BllV0Vx8/pub?embedded=true"></iframe>

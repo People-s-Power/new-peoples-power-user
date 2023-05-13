@@ -46,7 +46,8 @@ const StartCampPage = (): JSX.Element => {
 			<Head>
 				<title>Start Campaign</title>
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<Wrapper>
 					{
 						// account === "" ? (

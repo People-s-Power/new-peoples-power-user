@@ -224,7 +224,8 @@ const addadmin = () => {
 	const editorTooltip = <Tooltip>This person edits posts, petitons, events, update and products.</Tooltip>
 
 	return (
-		<FrontLayout>
+				<FrontLayout showFooter={false}>
+
 			<>
 				<Head>
 					<title>{`THE PLAINT`} || Add Admin </title>

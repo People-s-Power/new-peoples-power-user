@@ -224,7 +224,7 @@ const HomePage = () => {
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
-				<aside className="w-[20%] h-[85%] overflow-y-scroll sm:hidden text-center fixed bg-white left-20">
+				<aside className="w-[20%] sm:hidden text-center fixed bg-white left-20">
 					<div className="bg-warning w-full h-10"></div>
 					<div className="p-2 relative -top-6 border-b border-gray-200">
 						<Whisper placement="bottom" trigger="click" speaker={speaker}>
@@ -281,11 +281,11 @@ const HomePage = () => {
 							))}
 						</div>
 					</div>
-					<div className="text-left">
+					{/* <div className="text-left">
 						<Dropdown title="My Interests">
 							{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
 						</Dropdown>
-					</div>
+					</div> */}
 				</aside>
 				<section className="w-full lg:w-[50%] mx-auto">
 					<PostActionCard

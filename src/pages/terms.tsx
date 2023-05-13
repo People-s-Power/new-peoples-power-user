@@ -18,7 +18,8 @@ const TermsAndConditionPage = () => {
 			<Head>
 				<title>Terms And Conditions</title>
 			</Head>
-			<FrontLayout>
+					<FrontLayout showFooter={false}>
+
 				<div className="text-center py-4">
 					{/* <ReactMarkdown>{terms?.body}</ReactMarkdown> */}
 					<iframe width="100%" height="3500" src="https://docs.google.com/document/d/e/2PACX-1vSZxnjx1NPklNew0-ytqATLRRZBl97ei6RQ_QgopAERLYPDAPABdJrm50U0hePA7F5T7vJ5PJdqlyNZ/pub?embedded=true"></iframe>
