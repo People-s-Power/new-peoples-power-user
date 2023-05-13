@@ -6,7 +6,13 @@ import { print } from "graphql"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 
-const HideComp = ({ id, toggle }: { id: string, toggle: any }) => {
+interface IProps {
+  id: string;
+  toggle?: any
+}
+
+
+const HideComp = ({ id, toggle }: IProps) => {
   const author = useRecoilValue(UserAtom)
 
   const hide = async () => {

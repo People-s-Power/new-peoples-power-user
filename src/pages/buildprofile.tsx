@@ -7,7 +7,7 @@ import { IUser } from "types/Applicant.types"
 import { useRouter } from "next/router"
 import { UserAtom } from "atoms/UserAtom"
 import { useRecoilValue } from "recoil"
-import { GET_ALL_USERS } from "apollo/queries/generalQuery"
+import { CONNECTIONS } from "apollo/queries/generalQuery"
 import Select from "react-select"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
@@ -34,8 +34,25 @@ function Buildprofile(): React.ReactElement {
 	const [myInterest, setMyInterest] = useState<string[]>([])
 	const user = useRecoilValue(UserAtom)
 
+
+	const getUsers = async () => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(CONNECTIONS),
+				variables: {
+					authorId: user?.id,
+				},
+			})
+			console.log(data)
+			setUsers(data.data.connections)
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
 	useEffect(() => {
 		// Get countries
+		getUsers()
 		axios
 			.get(window.location.origin + "/api/getCountries")
 			.then((res) => {
@@ -88,6 +105,7 @@ function Buildprofile(): React.ReactElement {
 			}
 		}
 	}
+
 	const follow = async (id) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -98,11 +116,12 @@ function Buildprofile(): React.ReactElement {
 				},
 			})
 			console.log(data)
-			// getUsers()
+			getUsers()
 		} catch (error) {
 			console.log(error)
 		}
 	}
+
 	const uploadFileToServer = async () => {
 		if (!img) {
 			uploadRef.current?.click()
@@ -136,14 +155,7 @@ function Buildprofile(): React.ReactElement {
 		}
 	}
 
-	useQuery(GET_ALL_USERS, {
-		client: apollo,
-		onCompleted: (data) => {
-			console.log(data)
-			setUsers(data.getUsers)
-		},
-		onError: (err) => console.log(err),
-	})
+
 
 	const locationNext = () => {
 		city && country !== "" ? onNext() : null
@@ -292,7 +304,7 @@ function Buildprofile(): React.ReactElement {
 														<div className="text-xl py-2">{user.name} </div>
 														<div className="w-16 h-[1px] bg-gray-200"></div>
 														<div className="text-xs text-gray-700 my-3">500 Followers</div>
-														<div className="text-xs text-gray-900 my-6" onClick={() => follow(user.id)}>
+														<div className="text-xs text-gray-900 my-6" onClick={() => follow(user._id)}>
 															+ Follow
 														</div>
 													</div>
