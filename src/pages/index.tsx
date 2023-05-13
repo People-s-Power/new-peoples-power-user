@@ -117,7 +117,7 @@ const HomePage = () => {
 			let feed = []
 			let notification = []
 			await socket.emit("notifications", active.id || active._id, (response) => {
-				notification = response.notications
+				notification = response.notifications
 				// setCount(response.unReadCount)
 				console.log(response)
 			})

@@ -333,7 +333,7 @@ const user = () => {
 									</div>
 							}
 						</div>
-						<div className="-mt-28 py-8 px-10">
+						<div className="-mt-28 py-8 px-10 z-10">
 							<div className="flex justify-between">
 								<div className="flex flex-column justify-center">
 									<div className="flex">
@@ -361,21 +361,23 @@ const user = () => {
 										</div> : <div className="text-sm text-warning mt-2">Following</div>
 									}
 								</div>
-								{
-									author?.id === query.page ? <div className="font-black text-lg">
-										<Link href={`/mycamp/profile`}>
-											<button className="bg-transparent p-2 text-warning">
-												<span>&#x270E;</span> Edit
-											</button>
-										</Link>
-									</div> : <div className="font-black text-lg">
-										<Link href={`messages?page=${user?.id}`}>
-											<button className="bg-transparent border border-warning rounded-full px-6 py-1 text-warning">
-												Send Message
-											</button>
-										</Link>
-									</div>
-								}
+								<div className="mt-auto z-10">
+									{
+										author?.id === query.page ? <div className="font-black text-lg">
+											<Link href={`/mycamp/profile`}>
+												<button className="bg-transparent p-2 text-warning">
+													<span>&#x270E;</span> Edit
+												</button>
+											</Link>
+										</div> : <div className="font-black text-lg">
+											<Link href={`messages?page=${user?.id}`}>
+												<button className="bg-transparent border border-warning rounded-full px-6 py-1 text-warning">
+													Send Message
+												</button>
+											</Link>
+										</div>
+									}
+								</div>
 							</div>
 						</div>
 					</div>

@@ -118,7 +118,7 @@ const Timeline = ({ item }: { item: any }) => {
           switch (item.event) {
             case "Created-Advert":
               return <div>
-                {data || show === false && <div className="border rounded-md  mb-3">
+                {data && show === false && <div className="border rounded-md  mb-3">
                   <div className="flex m-3 pb-3 border-b border-gray-200">
                     <Link href={`user?page=${item.authorId}`}>
                       <div className="flex cursor-pointer">
@@ -136,7 +136,7 @@ const Timeline = ({ item }: { item: any }) => {
             case "Created-Victory":
               return (
                 <div>
-                  {data || show === false && <div className="border rounded-md  mb-3">
+                  {data && show === false && <div className="border rounded-md  mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
                       <Link href={`user?page=${item.authorId}`}>
                         <div className="flex cursor-pointer">
@@ -153,7 +153,7 @@ const Timeline = ({ item }: { item: any }) => {
               )
             case "Created-Petition":
               return <div>
-                {data || show === false && <div className="border rounded-md mb-3">
+                {data && show === false && <div className="border rounded-md mb-3">
                   <div className="flex m-3 pb-3 border-b border-gray-200">
                     <Link href={`user?page=${item.authorId}`}>
                       <div className="flex cursor-pointer">
@@ -170,7 +170,7 @@ const Timeline = ({ item }: { item: any }) => {
             case "Created-Post":
               return <div>
                 {
-                  data || show === false && <div className="border rounded-md mb-3">
+                  data && show === false && <div className="border rounded-md mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
                       <Link href={`user?page=${item.authorId}`}>
                         <div className="flex cursor-pointer">
@@ -188,7 +188,7 @@ const Timeline = ({ item }: { item: any }) => {
             case "Created-Event":
               return (
                 <div>
-                  {data || show === false && <div className="border rounded-md  mb-3">
+                  {data && show === false && <div className="border rounded-md  mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
                       <Link href={`user?page=${item.authorId}`}>
                         <div className="flex cursor-pointer">

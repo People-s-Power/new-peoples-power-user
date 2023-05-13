@@ -23,7 +23,7 @@ interface IProps {
 
 const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IProps): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
-	const [more, setMore] = useState(post.body.length > 250 ? true : false)
+	const [more, setMore] = useState(post.body?.length > 250 ? true : false)
 	const [following, setFollowing] = useState(false)
 	const [show, setShow] = useState(false)
 

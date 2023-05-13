@@ -21,7 +21,7 @@ const notifications = () => {
 		// socket.on("connect", function () {
 		if (socket.connected) {
 			socket.emit("notifications", user?.id, (response) => {
-				setNotifications(response.notications)
+				setNotifications(response.notifications)
 				console.log(response)
 			})
 		}
@@ -30,7 +30,7 @@ const notifications = () => {
 
 
 	return (
-		<FrontLayout>
+		<FrontLayout showFooter={false}>
 			<div className="lg:mx-32">
 				<div className="p-3 pl-8 border-b border-gray-200 text-lg">Notifications</div>
 				{notification &&

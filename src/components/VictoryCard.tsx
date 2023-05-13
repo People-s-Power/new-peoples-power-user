@@ -72,7 +72,7 @@ const Victory = ({ post, timeLine, orgs }: IProps): JSX.Element => {
 			{show === false && <div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
 				<div className="border-b border-gray-200 pb-3">
 					<div className="flex">
-						<Link href={`user?page=${post.author._id}`}>
+						<Link href={`user?page=${post.author?._id}`}>
 							<div className="flex cursor-pointer">
 								<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
 								<div className="ml-2">

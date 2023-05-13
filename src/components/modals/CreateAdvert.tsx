@@ -156,24 +156,25 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					<textarea value={message} onChange={(e) => setMessage(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
 				</div>
 				<div className="flex justify-between mt-2">
-					<div className="w-[45%]">
+					{/* <div className="w-[45%]">
 						<div className="text-sm my-1">Email</div>
 						<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full border border-gray-700 text-sm" />
-					</div>
+					</div> */}
 					<div className="w-[45%] text-sm">
-						<div className="text-sm my-1">Website link</div>
+						<div className="text-sm my-1">Link</div>
 						<input value={link} onChange={(e) => setLink(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
-					</div>
-				</div>
-				<div className="flex justify-between mt-2">
-					<div className="w-[45%]">
-						<div className="text-sm my-1">Phone number</div>
-						<input type="number" className="w-full border border-gray-700 text-sm" />
 					</div>
 					<div className="w-[45%] text-sm">
 						<div className="text-sm my-1">Duration</div>
 						<input value={duration} onChange={(e) => setDuration(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
 					</div>
+				</div>
+				<div className="flex justify-between mt-2">
+					{/* <div className="w-[45%]">
+						<div className="text-sm my-1">Phone number</div>
+						<input type="number" className="w-full border border-gray-700 text-sm" />
+					</div> */}
+
 				</div>
 				<div className="flex justify-between mt-2">
 					<div className="w-[45%] text-sm">
