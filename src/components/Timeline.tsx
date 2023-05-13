@@ -14,10 +14,15 @@ import PetitionComp from "./PetitionCard"
 import { SINGLE_PETITION_ID } from "apollo/queries/petitionQuery"
 import HideComp from "./HideComp"
 import Link from "next/link"
+import UnHideComp from "./UnHideComp"
 
 const Timeline = ({ item }: { item: any }) => {
   const [data, setData] = useState(null)
+  const [show, setShow] = useState(false)
 
+  const toggle = val => {
+    setShow(val)
+  }
   const fetchAdvert = async () => {
     try {
       const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -113,7 +118,7 @@ const Timeline = ({ item }: { item: any }) => {
           switch (item.event) {
             case "Created-Advert":
               return <div>
-                {data && <div className="border rounded-md  mb-3">
+                {data || show === false && <div className="border rounded-md  mb-3">
                   <div className="flex m-3 pb-3 border-b border-gray-200">
                     <Link href={`user?page=${item.authorId}`}>
                       <div className="flex cursor-pointer">
@@ -121,15 +126,17 @@ const Timeline = ({ item }: { item: any }) => {
                         <div className="my-auto text-sm">{item.message}</div>
                       </div>
                     </Link>
-                    <HideComp id={item.id} />
+                    <HideComp id={item.id} toggle={toggle} />
                   </div>
                   <AdvertsComp advert={data} timeLine={true} />
                 </div>}
+                {show && <UnHideComp toggle={toggle} id={item.id} />}
+
               </div>
             case "Created-Victory":
               return (
                 <div>
-                  {data && <div className="border rounded-md  mb-3">
+                  {data || show === false && <div className="border rounded-md  mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
                       <Link href={`user?page=${item.authorId}`}>
                         <div className="flex cursor-pointer">
@@ -137,15 +144,16 @@ const Timeline = ({ item }: { item: any }) => {
                           <div className="my-auto text-sm">{item.message}</div>
                         </div>
                       </Link>
-                      <HideComp id={item.id} />
+                      <HideComp id={item.id} toggle={toggle} />
                     </div>
                     <Victory post={data} timeLine={true} />
                   </div>}
+                  {show && <UnHideComp toggle={toggle} id={item.id} />}
                 </div>
               )
             case "Created-Petition":
               return <div>
-                {data && <div className="border rounded-md mb-3">
+                {data || show === false && <div className="border rounded-md mb-3">
                   <div className="flex m-3 pb-3 border-b border-gray-200">
                     <Link href={`user?page=${item.authorId}`}>
                       <div className="flex cursor-pointer">
@@ -153,15 +161,16 @@ const Timeline = ({ item }: { item: any }) => {
                         <div className="my-auto text-sm">{item.message.includes("Liked") ? `${item.authorName} Endorsed this Petition` : item.message.includes("Commented") ? `${item.authorName} Added a Reason for endorsing this Petition` : item.message}</div>
                       </div>
                     </Link>
-                    <HideComp id={item.id} />
+                    <HideComp id={item.id} toggle={toggle} />
                   </div>
                   <PetitionComp petition={data} timeLine={true} />
                 </div>}
+                {show && <UnHideComp toggle={toggle} id={item.id} />}
               </div>
             case "Created-Post":
               return <div>
                 {
-                  data && <div className="border rounded-md mb-3">
+                  data || show === false && <div className="border rounded-md mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
                       <Link href={`user?page=${item.authorId}`}>
                         <div className="flex cursor-pointer">
@@ -169,16 +178,17 @@ const Timeline = ({ item }: { item: any }) => {
                           <div className="my-auto text-sm">{item.message}</div>
                         </div>
                       </Link>
-                      <HideComp id={item.id} />
+                      <HideComp id={item.id} toggle={toggle} />
                     </div>
                     <CampComp post={data} timeLine={true} />
                   </div>
                 }
+                {show && <UnHideComp toggle={toggle} id={item.id} />}
               </div>
             case "Created-Event":
               return (
                 <div>
-                  {data && <div className="border rounded-md  mb-3">
+                  {data || show === false && <div className="border rounded-md  mb-3">
                     <div className="flex m-3 pb-3 border-b border-gray-200">
                       <Link href={`user?page=${item.authorId}`}>
                         <div className="flex cursor-pointer">
@@ -186,10 +196,11 @@ const Timeline = ({ item }: { item: any }) => {
                           <div className="my-auto text-sm">{item.message}</div>
                         </div>
                       </Link>
-                      <HideComp id={item.id} />
+                      <HideComp id={item.id} toggle={toggle} />
                     </div>
                     <EventsCard event={data} timeLine={true} />
                   </div>}
+                  {show && <UnHideComp toggle={toggle} id={item.id} />}
                 </div>
               )
           }

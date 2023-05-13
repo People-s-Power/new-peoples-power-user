@@ -15,6 +15,7 @@ import Interaction from "./Interaction"
 import HideComp from "./HideComp"
 import StartPetition from "./modals/StartPetition"
 import FindExpartModal from "./modals/FindExpartModal"
+import UnHideComp from "./UnHideComp"
 
 interface IProps {
 	post: any;
@@ -33,6 +34,11 @@ const Victory = ({ post, timeLine, orgs }: IProps): JSX.Element => {
 	const [openFindExpart, setOpenFindExpart] = useState(false)
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 
+	const [show, setShow] = useState(false)
+
+	const toggle = val => {
+		setShow(val)
+	}
 
 	const follow = async (id) => {
 		try {
@@ -62,43 +68,48 @@ const Victory = ({ post, timeLine, orgs }: IProps): JSX.Element => {
 
 
 	return (
-		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
-			<div className="border-b border-gray-200 pb-3">
-				<div className="flex">
-					<Link href={`user?page=${post.author._id}`}>
-						<div className="flex cursor-pointer">
-							<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
-							<div className="ml-2">
-								<div className="text-base font-bold capitalize">
-									{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
+		<div>
+			{show === false && <div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
+				<div className="border-b border-gray-200 pb-3">
+					<div className="flex">
+						<Link href={`user?page=${post.author._id}`}>
+							<div className="flex cursor-pointer">
+								<img className="w-12 h-12 rounded-full" src={post.author?.image} alt="" />
+								<div className="ml-2">
+									<div className="text-base font-bold capitalize">
+										{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
+									</div>
+									<div className="text-base">Shared this victory/testimony</div>
 								</div>
-								<div className="text-base">Shared this victory/testimony</div>
 							</div>
-						</div>
-					</Link>
-					{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto">
-						{following ? <span>Following</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
-					</div> : <HideComp id={post._id} />}
-				</div>
-				<div className="text-sm my-1">{post.author.description}</div>
-			</div>
-			<div className="text-sm p-2 leading-loose">{post.body}</div>
-			<div className="p-2">
-				<img src={post?.image} className="w-full h-80 rounded-md object-cover" alt="" />
-			</div>
-			<div className="text-sm leading-loose p-2">
-				Do you think you have a personal or social concern? Find an expert who will help you resolve it or start writing your own petition and share your victory or testimony later
-			</div>
-					<div className="flex justify-center mb-1">
-						<button className="border border-warning p-1 mt-1 mr-4 text-black rounded-md bg-white" onClick={() => handelOpenFindExpart()}>Find Expert</button>
-						<button className="border border-warning p-1 mt-1 text-black rounded-md bg-white" onClick={() => handelPetition()}>Start Petition</button>
+						</Link>
+						{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto">
+							{following ? <span>Following</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
+						</div> : <HideComp id={post._id} />}
 					</div>
-			<Interaction post={post} />
+					<div className="text-sm my-1">{post.author.description}</div>
+				</div>
+				<div className="text-sm p-2 leading-loose">{post.body}</div>
+				<div className="p-2">
+					<img src={post?.image} className="w-full h-80 rounded-md object-cover" alt="" />
+				</div>
+				<div className="text-sm leading-loose p-2">
+					Do you think you have a personal or social concern? Find an expert who will help you resolve it or start writing your own petition and share your victory or testimony later
+				</div>
+				<div className="flex justify-center mb-1">
+					<button className="border border-warning p-1 mt-1 mr-4 text-black rounded-md bg-white" onClick={() => handelOpenFindExpart()}>Find Expert</button>
+					<button className="border border-warning p-1 mt-1 text-black rounded-md bg-white" onClick={() => handelPetition()}>Start Petition</button>
+				</div>
+				<Interaction post={post} />
 
-			<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
-			<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
-			<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
-			<ToastContainer />
+				<CreatePost open={openPost} handelClick={handelClick} post={post} handelPetition={handelClick} orgs={null} />
+				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
+				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
+				<ToastContainer />
+			</div>}
+
+			{show && <UnHideComp toggle={toggle} id={post._id} />}
+
 		</div>
 	)
 }

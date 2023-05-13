@@ -20,6 +20,7 @@ import HideComp from "./HideComp"
 import { SERVER_URL } from "utils/constants"
 import { FOLLOW } from "apollo/queries/generalQuery"
 import { print } from "graphql"
+import UnHideComp from "./UnHideComp"
 
 interface IProps {
 	petition: any;
@@ -37,6 +38,12 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 	const [openUpdates, setOpenUpdates] = useState(false)
 	const [orgs, setOrgs] = useState<IOrg[]>([])
 	const [following, setFollowing] = useState(false)
+
+	const [show, setShow] = useState(false)
+
+	const toggle = val => {
+		setShow(val)
+	}
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -102,42 +109,43 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 	}
 
 	return (
-		<div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
-			<div className="border-b border-gray-200">
-				<div className="flex">
-					<Link href={`/user?page=${petition?.author._id}`}>
-						<div className="flex cursor-pointer">
-							<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
-							<div className="ml-2 w-full">
-								<div className="text-base capitalize">
-									{petition.author.name} <span className="text-xs">{author?.id === petition.author._id ? ". You" : ""}</span>
-								</div>
-								<div className="text-xs">
-									<ReactTimeAgo date={new Date(petition.createdAt)} />
+		<div>
+			{show === false && <div className={timeLine ? "p-3 mb-3" : "p-3 border rounded-md mb-3"}>
+				<div className="border-b border-gray-200">
+					<div className="flex">
+						<Link href={`/user?page=${petition?.author._id}`}>
+							<div className="flex cursor-pointer">
+								<img className="w-12 h-12 rounded-full" src={petition.author.image} alt="" />
+								<div className="ml-2 w-full">
+									<div className="text-base capitalize">
+										{petition.author.name} <span className="text-xs">{author?.id === petition.author._id ? ". You" : ""}</span>
+									</div>
+									<div className="text-xs">
+										<ReactTimeAgo date={new Date(petition.createdAt)} />
+									</div>
 								</div>
 							</div>
-						</div>
-					</Link>
+						</Link>
 
-					{timeLine ? searchForValue(petition.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
-						{following ? <span>Following</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
-					</div> : <HideComp id={petition._id} />}
+						{timeLine ? searchForValue(petition.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
+							{following ? <span>Following</span> : <span onClick={() => follow(petition.author._id)} className="cursor-pointer">+ Follow</span>}
+						</div> : <HideComp id={petition._id} toggle={toggle} />}
+					</div>
+					<div className="text-sm my-1">{petition.author.description}</div>
 				</div>
-				<div className="text-sm my-1">{petition.author.description}</div>
-			</div>
-			<div className="p-2">
-				<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
-				<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
-				<div className="my-3 flex justify-end">
-					<Link href={`/campaigns/${petition?.slug}`}>
-						<button className="p-2 ml-auto w-40 bg-warning text-white">View Full Petiton</button>
-					</Link>
+				<div className="p-2">
+					<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
+					<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
+					<div className="my-3 flex justify-end">
+						<Link href={`/campaigns/${petition?.slug}`}>
+							<button className="p-2 ml-auto w-40 bg-warning text-white">View Full Petiton</button>
+						</Link>
+					</div>
 				</div>
-			</div>
-			<div>
-				<Interaction post={petition} />
-			</div>
-			{/* <div className="pt-3 flex justify-between">
+				<div>
+					<Interaction post={petition} />
+				</div>
+				{/* <div className="pt-3 flex justify-between">
 				<Link href={`/campaigns/${petition?.slug}`}>
 					<div className="flex cursor-pointer">
 						<img className="w-8 h-8 my-auto" src="/images/home/icons/ion_finger-print-sharp.png" alt="" />
@@ -168,12 +176,14 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 					) : null}
 				</Dropdown>
 			</div> */}
-			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={petition} update={null} />
-			<StartPetition open={openPetition} handelClick={handelPetition} data={petition} orgs={null} />
-			<CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />
-			<ToastContainer />
-			<ShareModal open={open} handelClick={() => setOpen(!open)} single={petition} orgs={orgs} />
-		</div >
+				<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={petition} update={null} />
+				<StartPetition open={openPetition} handelClick={handelPetition} data={petition} orgs={null} />
+				<CreateVictories open={openVictory} handelClick={handelVictory} victory={petition} />
+				<ToastContainer />
+				<ShareModal open={open} handelClick={() => setOpen(!open)} single={petition} orgs={orgs} />
+			</div >}
+			{show && <UnHideComp toggle={toggle} id={petition._id} />}
+		</div>
 	)
 }
 

@@ -80,8 +80,6 @@ const connection = () => {
 				},
 			})
 			console.log(data)
-			getUsers()
-			getFollowers()
 			getFollowing()
 		} catch (error) {
 			console.log(error)

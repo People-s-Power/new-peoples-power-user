@@ -55,7 +55,7 @@ const HomePage = () => {
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 	const [count, setCount] = useState(0)
 	const [loading, setLoading] = useState(false)
-	const [active, setActive] = useState<any>(null)
+	const [active, setActive] = useState<any>(author)
 
 	// console.log(author)
 
@@ -114,36 +114,36 @@ const HomePage = () => {
 	async function getData() {
 		try {
 			setLoading(true)
-			let feed
-			let notification
-			await axios.get(`share/feed/${active?.id || active._id}`).then(function (response) {
+			let feed = []
+			let notification = []
+			await axios.get(`share/feed/${active.id || active._id}`).then(function (response) {
 				feed = response.data
+				// console.log(response.data)
 			})
-			if (socket.connected) {
-				socket.emit("notifications", active.id || active._id, (response) => {
-					notification = response.notications
-					// setCount(response.unReadCount)
-					// console.log(response)
-				})
-			}
+			await socket.emit("notifications", active.id || active._id, (response) => {
+				notification = response.notications
+				// setCount(response.unReadCount)
+				console.log(response)
+			})
+
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(GET_ALL),
 				variables: {
-					authorId: active?.id || active._id,
+					authorId: active.id || active._id,
 				},
 			})
-			// console.log(data.data.timeline)
+			console.log(data.data.timeline)
 			const general = [
 				...feed,
 				...notification,
 				...data.data.timeline.adverts,
 				...data.data.timeline.updates,
-				// ...data.data.timeline.events,
+				...data.data.timeline.events,
 				...data.data.timeline.petitions,
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,
 			]
-			// console.log(general)
+			console.log(general)
 			// const date = new Date()
 			// countObjectsWithMatchingDate(general, date.toISOString())
 

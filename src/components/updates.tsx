@@ -13,11 +13,17 @@ import { useRouter } from "next/router"
 import Interaction from "./Interaction"
 import ReactTimeAgo from "react-time-ago"
 import HideComp from "./HideComp"
+import UnHideComp from "./UnHideComp"
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const router = useRouter()
 	const [content, setContent] = useState("")
+	const [show, setShow] = useState(false)
+
+	const toggle = val => {
+		setShow(val)
+	}
 
 	const share = async () => {
 		try {
@@ -72,44 +78,49 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 		}
 	}
 	return (
-		<div className="p-3 border mb-3">
-			<div>
-				{/* <div className="flex justify-between border-b border-gray-200 pb-3"> */}
-				<div className="flex border-b border-gray-200 w-full pb-3">
-					<Link href={`user?page=${updates.author._id}`}>
-						<div className="flex cursor-pointer">
-							<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
-							<div className="ml-2 w-full">
-								<div className="text-base capitalize">
-									{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
-								</div>
-								<div className="text-xs">
-									Added a Petition Update
-									{/* <ReactTimeAgo date={new Date(updates.createdAt)} /> */}
+		<div>
+			{show === false && <div className="p-3 border mb-3">
+				<div>
+					{/* <div className="flex justify-between border-b border-gray-200 pb-3"> */}
+					<div className="flex border-b border-gray-200 w-full pb-3">
+						<Link href={`user?page=${updates.author._id}`}>
+							<div className="flex cursor-pointer">
+								<img className="w-12 h-12 rounded-full" src={updates.author.image} alt="" />
+								<div className="ml-2 w-full">
+									<div className="text-base capitalize">
+										{updates.author.name} <span className="text-xs">{author?.id === updates.author._id ? ". You" : ""}</span>
+									</div>
+									<div className="text-xs">
+										Added a Petition Update
+										{/* <ReactTimeAgo date={new Date(updates.createdAt)} /> */}
+									</div>
 								</div>
 							</div>
-						</div>
-					</Link>
-					<HideComp id={updates.id} />
+						</Link>
+						<HideComp id={updates.id} toggle={toggle} />
+					</div>
+					{/* </div> */}
+					<div className="text-sm my-1">{updates.author.description}</div>
 				</div>
-				{/* </div> */}
-				<div className="text-sm my-1">{updates.author.description}</div>
-			</div>
-			<div className="text-sm p-2 leading-loose">{updates.petition?.title}</div>
-			<div className="p-2">
-				<img className="w-full h-80 rounded-md  object-cover" src={updates.image} alt="" />
-			</div>
-			<div className="font-bold text-lg">Petition Update</div>
-			<div className="text-sm p-2 leading-loose">{updates.body}</div>
-			<div className="w-full relative">
-				<Link href={`/campaigns/${updates?.petition.slug}`}>
-					<button className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
-						View More
-					</button>
-				</Link>
-			</div>
-			<Interaction post={updates} />
-			<ToastContainer />
+				<div className="text-sm p-2 leading-loose">{updates.petition?.title}</div>
+				<div className="p-2">
+					<img className="w-full h-80 rounded-md  object-cover" src={updates.image} alt="" />
+				</div>
+				<div className="font-bold text-lg">Petition Update</div>
+				<div className="text-sm p-2 leading-loose">{updates.body}</div>
+				<div className="w-full relative">
+					<Link href={`/campaigns/${updates?.petition.slug}`}>
+						<button className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
+							View More
+						</button>
+					</Link>
+				</div>
+				<Interaction post={updates} />
+				<ToastContainer />
+			</div>}
+
+			{show && <UnHideComp toggle={toggle} id={updates._id} />}
+
 		</div>
 	)
 }
