@@ -456,12 +456,13 @@ const messages = () => {
 												{item.text}
 												<img src={item?.file} alt="" />
 												{
-													item.delivered ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2" viewBox="0 0 16 16">
+													item.delivered === true && item.received === false ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2" viewBox="0 0 16 16">
 														<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-													</svg> : item.received ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2-all" viewBox="0 0 16 16">
-														<path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
-														<path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
-													</svg> : null
+													</svg> : item.delivered === true && item.received === true ?
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F7A607" className="bi bi-check2-all" viewBox="0 0 16 16">
+															<path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
+															<path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
+														</svg> : null
 												}
 											</div>
 											<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
@@ -495,7 +496,7 @@ const messages = () => {
 											className="w-full h-32 text-sm p-2 border border-white"
 											placeholder="Write a message"
 											value={message}
-											onFocus={() => sendTyping(show.users[1]._id === active.id || active._id ? show.users[0]?._id : show.users[1]?._id)}
+											onFocus={() => sendTyping(show?.users[1]._id === active.id || active._id ? show.users[0]?._id : show?.users[1]?._id)}
 										></textarea>
 										<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 											{show?.type === "customer-org" && (

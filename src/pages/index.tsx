@@ -116,14 +116,15 @@ const HomePage = () => {
 			setLoading(true)
 			let feed = []
 			let notification = []
-			await axios.get(`share/feed/${active.id || active._id}`).then(function (response) {
-				feed = response.data
-				// console.log(response.data)
-			})
 			await socket.emit("notifications", active.id || active._id, (response) => {
 				notification = response.notications
 				// setCount(response.unReadCount)
 				console.log(response)
+			})
+
+			await axios.get(`share/feed/${active.id || active._id}`).then(function (response) {
+				feed = response.data
+				// console.log(response.data)
 			})
 
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -132,7 +133,7 @@ const HomePage = () => {
 					authorId: active.id || active._id,
 				},
 			})
-			console.log(data.data.timeline)
+
 			const general = [
 				...feed,
 				...notification,
@@ -143,9 +144,6 @@ const HomePage = () => {
 				...data.data.timeline.posts,
 				...data.data.timeline.victories,
 			]
-			console.log(general)
-			// const date = new Date()
-			// countObjectsWithMatchingDate(general, date.toISOString())
 
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
 			const sortedItems = randomizedItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())

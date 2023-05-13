@@ -103,7 +103,7 @@ const connection = () => {
 	}
 
 	return (
-		<FrontLayout>
+		<FrontLayout showFooter={false}>
 			<div className="mx-32 shadow-sm p-6">
 				<div className="flex">
 					<input type="text" onChange={(e) => search(e.target.value)} className="p-3 w-96 rounded-full pl-10 text-sm" placeholder="Search" />
