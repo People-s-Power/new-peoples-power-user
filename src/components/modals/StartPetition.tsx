@@ -172,12 +172,23 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 						</div>
 					) : null}
 					<div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
-						{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />}
+						{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />}
+						{image?.type === "video" && (
+							<video
+								src={image.file}
+								width="500"
+								controls={true}
+								className="embed-responsive-item absolute top-0 w-full object-cover left-0 h-52"
+							>
+								<source src={image.file} type="video/mp4" />
+							</video>
+						)}
 						<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
 						<img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 cursor-pointer h-20 mx-auto" alt="" />
 						<div className="text-base my-3">Upload Petition Cover Image</div>
 						<div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
 					</div>
+
 					<div className="my-3 text-sm">
 						<input
 							value={title}
@@ -249,7 +260,18 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 					<div>
 						<div className="my-2 text-lg">{title}</div>
 						<div className="my-2 w-full">
-							<img src={image.file} alt="" />
+							{image?.type === "image" && <img src={image.file} className="h-52 object-cover w-full " />}
+							{image?.type === "video" && (
+								<video
+									src={image.file}
+									width="500"
+									controls={true}
+									className="embed-responsive-item h-52 w-full object-cover"
+								>
+									<source src={image.file} type="video/mp4" />
+								</video>
+							)}
+							{/* <img src={image.file} alt="" /> */}
 						</div>
 						<div className="text-sm my-2">{body}</div>
 						<div className="text-sm my-2">Category: {category}</div>

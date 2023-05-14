@@ -141,7 +141,17 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 				</Modal.Header>
 				{/* <Modal.Body> */}
 				<div className="bg-gray-200 w-full p-4 text-center relative">
-					{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 absolute top-0" />}
+					{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />}
+					{image?.type === "video" && (
+						<video
+							src={image.file}
+							width="500"
+							controls={true}
+							className="embed-responsive-item absolute top-0 w-full object-cover left-0 h-52"
+						>
+							<source src={image.file} type="video/mp4" />
+						</video>
+					)}
 					<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
 					<img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
 					<div className="text-base my-3">Upload Product Cover Image</div>
@@ -161,7 +171,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 						<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full border border-gray-700 text-sm" />
 					</div> */}
 					<div className="w-[45%] text-sm">
-						<div className="text-sm my-1">Link</div>
+						<div className="text-sm my-1">Website/Email/ Phone No</div>
 						<input value={link} onChange={(e) => setLink(e.target.value)} type="text" className="w-full border border-gray-700 text-sm" />
 					</div>
 					<div className="w-[45%] text-sm">

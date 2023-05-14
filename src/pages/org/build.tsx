@@ -7,7 +7,7 @@ import { IUser, IOrg } from "types/Applicant.types"
 import { useRouter } from "next/router"
 import { UserAtom } from "atoms/UserAtom"
 import { useRecoilValue } from "recoil"
-import { GET_ALL_USERS } from "apollo/queries/generalQuery"
+import { CONNECTIONS, GET_ALL_USERS } from "apollo/queries/generalQuery"
 import Select from "react-select"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
@@ -19,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 function Buildprofile(): React.ReactElement {
+	const user = useRecoilValue(UserAtom)
 	const [countries, setCountries] = useState([])
 	const [cities, setCities] = useState([])
 	const [step, setStep] = React.useState(0)
@@ -32,10 +33,11 @@ function Buildprofile(): React.ReactElement {
 	const [city, setCity] = useState("")
 	const [description, setDescription] = useState("")
 	const [myInterest, setMyInterest] = useState<string[]>([])
-	// const user = useRecoilValue(UserAtom)
 	const { query } = useRouter()
 	const [org, setOrg] = useState<IOrg>()
+
 	useEffect(() => {
+		getUsers()
 		// Get countries
 		axios
 			.get(window.location.origin + "/api/getCountries")
@@ -57,6 +59,7 @@ function Buildprofile(): React.ReactElement {
 	})
 
 	useEffect(() => {
+		getUsers()
 		// Get countries
 		if (country) {
 			axios
@@ -104,7 +107,7 @@ function Buildprofile(): React.ReactElement {
 				query: print(FOLLOW),
 				variables: {
 					followerId: query.page,
-					followId: user.id,
+					followId: user._id,
 				},
 			})
 			console.log(data)
@@ -161,14 +164,21 @@ function Buildprofile(): React.ReactElement {
 			toast.warn("Oops and error occoured")
 		}
 	}
-	useQuery(GET_ALL_USERS, {
-		client: apollo,
-		onCompleted: (data) => {
+
+	const getUsers = async () => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(CONNECTIONS),
+				variables: {
+					authorId: user.id,
+				},
+			})
 			console.log(data)
-			setUsers(data.getUsers)
-		},
-		onError: (err) => console.log(err),
-	})
+			setUsers(data.data.connections)
+		} catch (e) {
+			console.log(e)
+		}
+	}
 
 	const locationNext = () => {
 		city && country !== "" ? onNext() : null

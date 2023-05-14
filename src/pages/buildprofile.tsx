@@ -64,6 +64,7 @@ function Buildprofile(): React.ReactElement {
 
 	useEffect(() => {
 		// Get countries
+		getUsers()
 		if (country) {
 			axios
 				.get(`${window.location.origin}/api/getState?country=${country}`)
