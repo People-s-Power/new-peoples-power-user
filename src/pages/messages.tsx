@@ -369,7 +369,6 @@ const messages = () => {
 						</div>
 					)}
 					<input type="text" className="p-2 rounded-md w-full" onChange={(e) => search(e.target.value)} placeholder="Search Messages" />
-					<p className="text-sm text-center py-1">{typing}</p>
 					{messages &&
 						messages.map((item, index) => (
 							<div key={index} className={
@@ -431,6 +430,7 @@ const messages = () => {
 									<div className="text-sm">{sigUser.name}</div>
 								</div>
 							</div>}
+							<p className="text-sm text-center py-1">{typing}</p>
 						</div>
 					) : (
 						show &&
@@ -448,6 +448,7 @@ const messages = () => {
 										{
 											show.type === "consumer-to-consumer" ? <div className="text-sm">{show.users[0]._id === active.id ? show.users[1].name : show.users[0].name}</div> : <div className="text-sm">{show.users[0]._id === active._id ? show.users[1].name : show.users[0].name}</div>
 										}
+										<p className="text-sm text-center py-1">{typing}</p>
 										<div className="text-xs">
 											<ReactTimeAgo date={new Date(show.updatedAt)} />
 										</div>
