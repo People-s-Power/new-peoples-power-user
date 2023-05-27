@@ -163,7 +163,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 						image: author.image,
 					},
 					content: content,
-					date: new Date(),
+					createdAt: new Date(),
 				},
 				...allComment,
 			])

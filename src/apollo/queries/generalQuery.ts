@@ -422,10 +422,6 @@ export const COMMENT = gql`
 		comment(authorId: $authorId, itemId: $itemId, content: $content) {
 			_id
 			content
-			author {
-				_id
-			}
-			date
 		}
 	}
 `
