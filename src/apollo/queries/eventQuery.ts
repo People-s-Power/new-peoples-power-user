@@ -12,18 +12,26 @@ export const GET_EVENTS = gql`
 				image
 				description
 			}
-			comments {
-				content
-				_id
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			shares
 			description
 			startDate
@@ -109,6 +117,7 @@ export const CREATE_EVENT = gql`
 		$time: String!
 		$type: String!
 		$imageFile: [String!]!
+		$audience: String!
 	) {
 		createEvent(
 			name: $name
@@ -119,6 +128,7 @@ export const CREATE_EVENT = gql`
 			type: $type
 			imageFile: $imageFile
 			author: $author
+			audience: $audience
 		) {
 			_id
 			audience
@@ -170,6 +180,25 @@ export const MY_EVENT = gql`
 			likes {
 				name
 			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			interested{
 				_id
 				image
@@ -194,18 +223,7 @@ export const INTERESTED = gql`
 			type
 			audience
 			startDate
-			comments {
-				_id
-				content
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
+			
 			endDate
 			interested{
 				_id
@@ -252,6 +270,26 @@ export const EVENT = gql`
 			time
 			image
 			name
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			likes {
 				name
 			}

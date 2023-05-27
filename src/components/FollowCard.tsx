@@ -28,11 +28,11 @@ const FollowCard = ({ user }: { user: any }) => {
     }
   }
   return (
-    <div className="w-[25%] p-6">
+    <div className="lg:w-[25%] w-1/2 p-6">
       <Link href={`user?page=${user._id}`}>
         <div className="cursor-pointer">
           <img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-          <div className="text-xl py-2">{user.name} </div>
+          <div className="lg:text-xl text-lg py-2">{user.name} </div>
         </div>
       </Link>
       <div className="w-16 h-[1px] bg-gray-200"></div>

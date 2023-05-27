@@ -130,9 +130,8 @@ const Single = () => {
   }, [])
 
   return (
-    		<FrontLayout showFooter={false}>
-
-      <div className='w-1/2 mx-auto'>
+    <FrontLayout showFooter={false}>
+      <div className='lg:w-1/2 sm:p-6 mx-auto'>
         {(() => {
           switch (router.query.slug) {
             case "Advert":

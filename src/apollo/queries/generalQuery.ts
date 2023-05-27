@@ -15,17 +15,25 @@ export const GET_ALL = gql`
 				likes {
 					name
 				}
-				comments {
-					content
+				comments{
 					_id
-					author {
-						_id
-						name
-						email
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
+						 _id
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
 					}
-					date
 					likes
+					createdAt
 				}
 				__typename
 				shares
@@ -59,17 +67,25 @@ export const GET_ALL = gql`
 					description
 					name
 				}
-				comments {
-					content
+				comments{
 					_id
-					author {
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						email
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
-					date
 					likes
+					createdAt
 				}
 			}
 
@@ -99,15 +115,25 @@ export const GET_ALL = gql`
 					email
 					image
 				}
-				comments {
+				comments{
 					_id
 					content
-					author {
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
-					date
+					likes
+					createdAt
 				}
 				numberOfPaidEndorsementCount
 				numberOfPaidViewsCount
@@ -140,17 +166,25 @@ export const GET_ALL = gql`
 					_id
 					description
 				}
-				comments {
-					content
+				comments{
 					_id
-					author {
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						email
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
-					date
 					likes
+					createdAt
 				}
 				isPetition
 			}
@@ -170,17 +204,25 @@ export const GET_ALL = gql`
 					status
 					createdAt
 					updatedAt
-					comments {
+					comments{
 						_id
 						content
-						date
-						likes
-						author {
+						authorName
+						authorId
+						authorImage
+						authorEmail
+						
+						replies{
 							_id
-							name
-							email
-							image
+						content
+						authorName
+						authorId
+						authorImage
+						authorEmail
+						createdAt
 						}
+						likes
+						createdAt
 					}
 					addedFrom
 					numberOfPaidViewsCount
@@ -203,19 +245,26 @@ export const GET_ALL = gql`
 					}
 					promoted
 					views
-					comments {
+					comments{
 						_id
 						content
-						date
-						likes
-						author {
+						authorName
+						authorId
+						authorImage
+						authorEmail
+						
+						replies{
 							_id
-							name
-							email
-							image
+						content
+						authorName
+						authorId
+						authorImage
+						authorEmail
+						createdAt
 						}
+						likes
+						createdAt
 					}
-
 					category
 					region
 					author {
@@ -226,17 +275,25 @@ export const GET_ALL = gql`
 					}
 				}
 				image
-				comments {
+				comments{
 					_id
 					content
-					date
-					likes
-					author {
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						email
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
+					likes
+					createdAt
 				}
 				likes {
 					_id
@@ -265,17 +322,32 @@ export const GET_ALL = gql`
 					image
 					description
 				}
-				comments {
-					content
+				interested{
 					_id
-					author {
+					image
+					email
+					name
+					__typename
+				}
+				comments{
+					_id
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						email
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
-					date
 					likes
+					createdAt
 				}
 				shares
 				description
@@ -290,8 +362,6 @@ export const GET_ALL = gql`
 				likes {
 					name
 				}
-				
-				
 				type
 			}
 		}
@@ -443,17 +513,26 @@ export const UPDATES = gql`
 					status
 					createdAt
 					updatedAt
-					comments {
+					comments{
 						_id
 						content
+						authorName
+						authorId
+						authorImage
+						authorEmail
 						date
-						likes
-						author {
+						replies{
 							_id
-							name
-							email
-							image
+							 _id
+						content
+						authorName
+						authorId
+						authorImage
+						authorEmail
+						date
 						}
+						likes
+						createdAt
 					}
 					addedFrom
 					numberOfPaidViewsCount
@@ -499,17 +578,26 @@ export const UPDATES = gql`
 					}
 				}
 				image
-				comments {
+				comments{
 					_id
 					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
 					date
-					likes
-					author {
+					replies{
 						_id
-						name
-						email
-						image
+						 _id
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					date
 					}
+					likes
+					createdAt
 				}
 				likes {
 					_id

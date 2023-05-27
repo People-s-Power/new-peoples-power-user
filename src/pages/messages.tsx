@@ -348,8 +348,8 @@ const messages = () => {
 
 	return (
 		<FrontLayout showFooter={false}>
-			<div className="flex px-32">
-				<div className="w-[40%] overflow-y-auto h-full">
+			<div className="lg:flex lg:px-32 sm:p-6">
+				<div className="lg:w-[40%] overflow-y-auto h-full">
 					<div className="text-lg p-3">Messages</div>
 					{orgs && (
 						<div className="my-2 bg-warning p-2 rounded-md">
@@ -421,7 +421,7 @@ const messages = () => {
 							</div>
 						))}
 				</div>
-				<div className="w-[45%] shadow-md fixed right-32 h-full">
+				<div className="lg:w-[45%] shadow-md lg:fixed lg:right-32 h-full sm:mt-4">
 					{show === null && query.page !== undefined ? (
 						<div className="text-center text-sm">
 							{sigUser && <div className="flex justify-center mb-3">

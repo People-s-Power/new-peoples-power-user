@@ -17,15 +17,14 @@ const events = () => {
     });
 
     return (
-        		<FrontLayout showFooter={false}>
-
-            <div className="mx-20">
-                <div className="flex">
+        <FrontLayout showFooter={false}>
+            <div className="lg:mx-20 sm:mx-6">
+                <div className="flex sm:flex-wrap">
                     <div className='text-lg my-auto'>Discover Events</div>
                     <div className='mx-6'>
                         <input type="date" placeholder='Date' className='rounded-md' />
                     </div>
-                    <div className="flex my-auto justify-between w-32">
+                    <div className="flex my-auto justify-between lg:w-32 sm:mt-3 sm:w-1/2">
                         <div className='border-b-2 cursor-pointer border-warning'>Top</div>
                         <div className='cursor-pointer'>Recent</div>
                     </div>

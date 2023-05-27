@@ -119,7 +119,7 @@ const CampaignPage: () => JSX.Element = () => {
 											setSearchTerm(event.target.value);
 										}}
 									/>
-									<div className="flex">
+									<div className="flex sm:hidden">
 										{categories.map((item, index) => {
 											return <div onClick={changeCategory} className="p-2 m-2 rounded-lg  cursor-pointer text-sm" key={index}>{item.title} <span className="hidden">{item.cate}</span></div>
 										})}
@@ -148,7 +148,7 @@ const CampaignPage: () => JSX.Element = () => {
 						</div>
 
 						<div
-							className='px-20 w-1/2 text-center py-3 rounded-xl mt-5 text-black m-auto bg-gray-200 cursor-pointer'
+							className='px-20 lg:w-1/2 text-center py-3 rounded-xl mt-5 text-black m-auto bg-gray-200 cursor-pointer'
 						>
 							Do you think you have a social concern? <br />
 							Start writing your own Campaign...  <span>&#x270E;</span>

@@ -90,16 +90,16 @@ const connection = () => {
 
 	return (
 		<FrontLayout showFooter={false}>
-			<div className="mx-32 shadow-sm p-6">
-				<div className="flex">
+			<div className="lg:mx-32 shadow-sm p-6">
+				<div className="flex sm:flex-wrap sm:justify-between">
 					<input type="text" onChange={(e) => search(e.target.value)} className="p-3 w-96 rounded-full pl-10 text-sm" placeholder="Search" />
-					<div onClick={() => setActive("connect")} className={active === "connect" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
+					<div onClick={() => setActive("connect")} className={active === "connect" ? "border-b border-warning lg:my-auto lg:mx-4 sm:my-2 cursor-pointer" : " lg:my-auto lg:mx-4 sm:my-2 cursor-pointer"}>
 						People You may Know
 					</div>
-					<div onClick={() => setActive("followers")} className={active === "followers" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
+					<div onClick={() => setActive("followers")} className={active === "followers" ? "border-b border-warning lg:my-auto lg:mx-4 sm:my-2 cursor-pointer" : " lg:my-auto lg:mx-4 sm:my-2 cursor-pointer"}>
 						Followers
 					</div>
-					<div onClick={() => setActive("following")} className={active === "following" ? "border-b border-warning my-auto mx-4 cursor-pointer" : " my-auto mx-4 cursor-pointer"}>
+					<div onClick={() => setActive("following")} className={active === "following" ? "border-b border-warning lg:my-auto lg:mx-4 sm:my-2 cursor-pointer" : " lg:my-auto lg:mx-4 sm:my-2 cursor-pointer"}>
 						Following
 					</div>
 				</div>
@@ -112,16 +112,16 @@ const connection = () => {
 					{active === "connect"
 						? users.map((user, index) =>
 							user._id !== author.id ? (
-								<FollowCard user={user} />
+								<FollowCard key={index} user={user} />
 							) : null
 						)
 						: active === "followers"
 							? followers.map((user, index) => (
-								<div key={index} className="w-[25%] p-6">
+								<div key={index} className="lg:w-[25%] w-1/2 p-6">
 									<Link href={`user?page=${user._id}`}>
 										<div className="cursor-pointer">
 											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-											<div className="text-xl py-2">{user.name} </div>
+											<div className="lg:text-xl text-lg py-2">{user.name} </div>
 										</div>
 									</Link>
 									<div className="w-16 h-[1px] bg-gray-200"></div>
@@ -133,7 +133,7 @@ const connection = () => {
 							))
 							: active === "following"
 								? following.map((user, index) => (
-									<div key={index} className="w-[25%] ">
+									<div key={index} className="lg:w-[25%]  w-1/2">
 										<Following user={user} getFollowing={() => getFollowing()} />
 									</div>
 								))
@@ -171,7 +171,7 @@ function Following({ user, getFollowing }) {
 			<Link href={`user?page=${user._id}`}>
 				<div className="cursor-pointer">
 					<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-					<div className="text-xl py-2">{user.name} </div>
+					<div className="lg:text-xl text-lg py-2">{user.name} </div>
 				</div>
 			</Link>
 			<div className="w-16 h-[1px] bg-gray-200"></div>

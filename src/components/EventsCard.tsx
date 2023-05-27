@@ -124,7 +124,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					</div>
 					<div className="text-xl my-3">{event.description}</div>
 					<div className="text-sm">{event.type}</div>
-					{event.interested === undefined ? null : (
+					{event.interested?.length === 0 ? null : (
 						<div className="flex my-6">
 							<div className="flex">
 								<img src={event?.interested[0]?.image} className="rounded-full w-10 h-10" alt="" />
@@ -135,7 +135,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 							</div>
 						</div>
 					)}
-					<div className="flex ">
+					<div className="flex sm:mb-2">
 						<button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
 							Interested
 						</button>

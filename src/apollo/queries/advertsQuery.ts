@@ -91,6 +91,27 @@ export const MY_ADVERTS = gql`
 			likes {
 				name
 			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        date
+        replies{
+          _id
+           _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        date
+        }
+        likes
+        createdAt
+      }
 			__typename
 			author {
 				_id
@@ -124,6 +145,25 @@ export const ADVERT = gql`
 				image
 				name
 			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			createdAt
 			updatedAt
 		}

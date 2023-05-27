@@ -167,7 +167,7 @@ function Buildprofile(): React.ReactElement {
 	return (
 		<div>
 			<FrontLayout showFooter={false} showHeader={false}>
-				<main className="w-2/3 mx-auto">
+				<main className="lg:w-2/3 mx-auto sm:px-6">
 					<Steps current={step}>
 						<Steps.Item title="Photo" />
 						<Steps.Item title="Location" />
@@ -300,12 +300,12 @@ function Buildprofile(): React.ReactElement {
 										<div className="flex flex-wrap">
 											{users.slice(0, 12).map((user, index) =>
 												user._id !== user.id ? (
-													<div key={index} className="w-[25%] p-6">
+													<div key={index} className="lg:w-[25%] sm:w-1/2 p-6">
 														<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 														<div className="text-xl py-2">{user.name} </div>
 														<div className="w-16 h-[1px] bg-gray-200"></div>
 														<div className="text-xs text-gray-700 my-3">500 Followers</div>
-														<div className="text-xs text-gray-900 my-6" onClick={() => follow(user._id)}>
+														<div className="text-xs text-gray-900 my-6 cursor-pointer" onClick={() => follow(user._id)}>
 															+ Follow
 														</div>
 													</div>

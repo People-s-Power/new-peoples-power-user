@@ -46,7 +46,7 @@ const create = () => {
     };
     return (
         <FrontLayout showFooter={false}>
-            <div className="lg:w-2/3 mx-auto text-center py-10">
+            <div className="lg:w-2/3 sm:p-6 mx-auto text-center lg:py-10">
                 <div className='text-3xl font-black my-8'>Create a New Organization</div>
                 <div>
                     <div className="my-2">

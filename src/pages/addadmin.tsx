@@ -224,13 +224,12 @@ const addadmin = () => {
 	const editorTooltip = <Tooltip>This person edits posts, petitons, events, update and products.</Tooltip>
 
 	return (
-				<FrontLayout showFooter={false}>
-
+		<FrontLayout showFooter={false}>
 			<>
 				<Head>
 					<title>{`THE PLAINT`} || Add Admin </title>
 				</Head>
-				<div>
+				<div className="sm:px-6">
 					<div onClick={() => router.back()} className="cursor-pointer lg:ml-20">
 						Back
 					</div>
@@ -241,8 +240,8 @@ const addadmin = () => {
 							}}
 							className="cursor-pointer "
 						>
-							<div className="text-3xl font-bold underline">Admins</div>
-							<p>Veiw all Admins</p>
+							<div className="lg:text-3xl text-sm font-bold underline">Admins</div>
+							<p className="sm:hidden">Veiw all Admins</p>
 						</div>
 						<div
 							onClick={() => {
@@ -250,8 +249,8 @@ const addadmin = () => {
 							}}
 							className="cursor-pointer"
 						>
-							<div className={"text-xl font-bold underline"}>Add an Admin</div>
-							<p>Manage your campaign</p>
+							<div className={"lg:text-xl text-sm font-bold underline"}>Add an Admin</div>
+							<p className="sm:hidden">Manage your campaign</p>
 						</div>
 						<div
 							onClick={() => {
@@ -259,8 +258,8 @@ const addadmin = () => {
 							}}
 							className="cursor-pointer"
 						>
-							<div className="text-xl font-bold underline">Hire a trained professionals</div>
-							<p>To draft, edit, promote and manage your campaigns with little cost.</p>
+							<div className="lg:text-xl text-sm font-bold underline">Hire a trained professionals</div>
+							<p className="sm:hidden">To draft, edit, promote and manage your campaigns with little cost.</p>
 						</div>
 					</div>
 					{admin === true && admins === true ? (
@@ -307,7 +306,7 @@ const addadmin = () => {
 						)
 					) : null}
 					{admin === true && admins === false ? (
-						<div className="mt-20 w-2/3 mx-auto">
+						<div className="mt-20 lg:w-2/3 mx-auto">
 							<div className="text-center text-3xl font-bold">Add an Admin</div>
 							<div className="text-lg my-1">Add Page admin</div>
 							<input
@@ -385,7 +384,7 @@ const addadmin = () => {
 					) : admin === false && admins === false ? (
 						<div>
 							{step === 0 ? (
-								<div className="mt-20 w-2/3 mx-auto">
+								<div className="mt-20 lg:w-2/3 mx-auto">
 									<div className="text-center text-3xl font-bold">Hire a trained professionals</div>
 									<div className="text-lg my-1">Leave the complexity of writing, designing and editing your campaigns and other administration to us.</div>
 									<div className="text-lg mt-4">

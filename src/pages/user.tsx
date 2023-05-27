@@ -126,7 +126,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			console.log(data)
+			// console.log(data)
 			setAdverts(data.myAdverts)
 		},
 		onError: (err) => console.log(err),
@@ -136,7 +136,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			// console.log(data)
+			console.log(data)
 			setCampaigns(data.myPetition)
 		},
 		onError: (err) => {
@@ -158,7 +158,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			// console.log(data)
+			console.log(data)
 			setEvents(data.authorEvents)
 		},
 		onError: (err) => console.log(err),
@@ -246,16 +246,16 @@ const user = () => {
 	}
 
 	const getSingle = () => {
-		if (query.page === undefined) {
-			router.push("/")
-		}
+		// if (query.page === undefined) {
+		// 	router.push("/")
+		// }
 		try {
 			axios
 				.get(`/user/single/${query.page}`)
 				.then(function (response) {
 					setUser(response.data.user)
 					// setCampaigns(response.data.Petitions)
-					console.log(response.data)
+					// console.log(response.data)
 					response.data.user.orgOperating.map((operating: any) => {
 						setOrgId(operating)
 						refetch()
@@ -309,7 +309,7 @@ const user = () => {
 								<img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
 							</div>
 							{
-								author?.id === query.page ? <div className="edit-sec relative left-10 -top-20">
+								author?.id === query.page ? <div className="edit-sec relative sm:w-[90%] lg:left-10 sm:left-2 -top-20">
 									<div className="py-3 mb-4 d-flex">
 										<div className="pro-img-wrap rounded-circle position-relative">
 											<input type="file" ref={uploadRef} onChange={handleImg} />
@@ -333,8 +333,8 @@ const user = () => {
 									</div>
 							}
 						</div>
-						<div className="-mt-28 py-8 px-10 z-10">
-							<div className="flex justify-between">
+						<div className="-mt-28 py-8 lg:px-10 px-2 z-10">
+							<div className="lg:flex justify-between">
 								<div className="flex flex-column justify-center">
 									<div className="flex">
 										{author && <Online id={query.page} />}

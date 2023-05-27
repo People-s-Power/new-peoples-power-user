@@ -89,14 +89,13 @@ const SingleCampaignPage = (): JSX.Element => {
 				<title>Petition || {camp?.title}</title>
 				<meta name="description" content={camp?.body} />
 			</Head>
-					<FrontLayout showFooter={false}>
-
+			<FrontLayout showFooter={false}>
 				<Wrapper className="single-camp py-4 ">
 					<LoginModal show={showLogin} onHide={() => setShowLogin(false)} />
 					<div className="container inner py-2">
 						<div className="">
 							<main className="single-camp-wrap px-2 d-flex flex-column flex-md-row align-items-sm-start justify-content-sm-between">
-								<div className="sec-1 pl-5 mb-5 left w-[50%]">
+								<div className="sec-1 lg:pl-5 mb-5 left lg:w-[50%]">
 									<div className="top">
 										<h1 className="m-0 p-0 text-warning fw-bold mb-3 fs-4">Explore Petition</h1>
 										<img src={camp?.image} alt={camp?.title} loading="lazy" className="camp-image mb-0" />

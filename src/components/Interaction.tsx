@@ -223,14 +223,14 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			<div className="pt-3 flex justify-between" onMouseEnter={() => view(post._id || post.id)}>
 				{liked ? (
 					<div className="flex  cursor-pointer" onClick={() => { like() }}>
-						<img className="w-8 h-8" src="/images/home/icons/liked.svg" alt="" />
+						<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/liked.svg" alt="" />
 						<div className={"text-warning text-sm my-auto ml-2"}>
 							{likes} {post.__typename === "Petition" ? "endorsed" : "likes"}
 						</div>
 					</div>
 				) : (
 					<div className="flex  cursor-pointer" onClick={() => { like(); post.__typename === "Petition" ? setComments(true) : null }}>
-						<img className="w-8 h-8" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
+						<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/ant-design_like-outlined.svg" alt="" />
 						<div className={"text-sm my-auto ml-2"}>
 							{likes} {post.__typename === "Petition" ? "endorsed" : "likes"}
 						</div>
@@ -238,12 +238,12 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				)}
 
 				<div className="flex  cursor-pointer" onClick={() => { post.__typename === "Petition" ? null : setComments(!comments) }}>
-					<img className="w-8 h-8" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
+					<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/akar-icons_chat-bubble.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{allComment?.length} {post.__typename === "Petition" ? "Reasons" : "Comments"} </div>
 				</div>
 
 				<div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
-					<img className="w-8 h-8" src="/images/home/icons/clarity_share-line.svg" alt="" />
+					<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
 				</div>
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>

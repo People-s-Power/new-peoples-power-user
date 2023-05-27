@@ -21,18 +21,26 @@ export const MY_VICTORIES = gql`
 				image
 				name
 			}
-			comments {
-				content
-				_id
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 		}
 	}
 `
@@ -83,18 +91,25 @@ export const VICTORY = gql`
 				image
 				name
 			}
-			comments {
-				content
-				_id
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 		}
 	}
 `

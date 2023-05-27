@@ -72,18 +72,25 @@ export const GET_USER_POSTS = gql`
 				image
 				_id
 			}
-			comments {
-				content
-				_id
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			isPetition
 		}
 	}
@@ -118,18 +125,26 @@ export const GET_POST = gql`
 				image
 				_id
 			}
-			comments {
-				content
-				_id
-				author {
-					_id
-					name
-					email
-					image
-				}
-				date
-				likes
-			}
+			comments{
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			isPetition
 		}
 	}

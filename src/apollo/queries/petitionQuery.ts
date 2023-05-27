@@ -28,15 +28,25 @@ export const GET_PETITION = gql`
 					email
 					image
 				}
-				comments {
+				comments{
 					_id
 					content
-					author {
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
-					date
+					likes
+					createdAt
 				}
 				numberOfPaidEndorsementCount
 				numberOfPaidViewsCount
@@ -96,16 +106,24 @@ export const MY_PETITION = gql`
 			slug
 			createdAt
 			comments{
-				_id
-				content
-				author{
-					_id
-					name
-					email
-					image
-				}
-				date
-			}
+        _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        replies{
+          _id
+        content
+        authorName
+        authorId
+        authorImage
+        authorEmail
+        createdAt
+        }
+        likes
+        createdAt
+      }
 			likes{
 				_id
 				name
@@ -139,16 +157,25 @@ export const SINGLE_PETITION = gql`
     target
     slug
     comments{
-      _id
-      content
-      author{
-        _id
-        name
-        email
-        image
-      }
-      date
-    }
+			_id
+			content
+			authorName
+			authorId
+			authorImage
+			authorEmail
+			
+			replies{
+				_id
+			content
+			authorName
+			authorId
+			authorImage
+			authorEmail
+			createdAt
+			}
+			likes
+			createdAt
+		}
     likes{
       _id
       name
@@ -199,15 +226,25 @@ export const SINGLE_PETITION_ID = gql`
 					email
 					image
 				}
-				comments {
+				comments{
 					_id
 					content
-					author {
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					
+					replies{
 						_id
-						name
-						image
+					content
+					authorName
+					authorId
+					authorImage
+					authorEmail
+					createdAt
 					}
-					date
+					likes
+					createdAt
 				}
 				numberOfPaidEndorsementCount
 				numberOfPaidViewsCount
