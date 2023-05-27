@@ -13,7 +13,7 @@ import { print } from "graphql"
 import { Loader } from "rsuite"
 import { DELETE_POST } from "apollo/queries/postQuery"
 import { GET_ORGANIZATIONS, GET_ORGANIZATION } from "apollo/queries/orgQuery"
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import { apollo } from "apollo"
 import { IOrg } from "types/Applicant.types"
 import ShareModal from "./modals/ShareModal"
@@ -25,6 +25,7 @@ import StartPetition from "./modals/StartPetition"
 import CreateVictories from "./modals/CreateVictories"
 import { useRouter } from "next/router"
 import { DELETE_VICTORIES } from "apollo/queries/victories"
+import { LIKE_COMMENT, LIKE_REPLY, REPLY_COMMENT } from "apollo/queries/commentsQuery"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const router = useRouter()
@@ -33,7 +34,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const [openAd, setOpenAd] = useState(false)
 	const [openEvent, setOpenEvent] = useState(false)
 	const [openPetition, setOpenPetition] = useState(false)
-
+	const [reply, setReply] = useState("")
+	const [loading2, setLoading2] = useState(false)
 	const handelVictory = () => setOpenVictory(!openVictory)
 	const [openVictory, setOpenVictory] = useState(false)
 	const handelUpdates = () => setOpenUpdates(!openUpdates)
@@ -45,6 +47,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const handelEventClick = () => setOpenEvent(!openEvent)
 
 	const [comments, setComments] = useState(false)
+	const [replies, setReplies] = useState(false)
 	const [liked, setLiked] = useState(false)
 	const [likes, setLikes] = useState(post.likes.length)
 	const [content, setContent] = useState("")
@@ -172,6 +175,26 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			setLoading(false)
 		}
 	}
+	const replyBtn = async (comment) => {
+		try {
+			setLoading2(true)
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(REPLY_COMMENT),
+				variables: {
+					authorId: author.id,
+					commentId: comment._id,
+					content: reply,
+				},
+			})
+			setContent(" ")
+			setLoading2(false)
+			console.log(data)
+		} catch (error) {
+			console.log(error)
+			setLoading2(false)
+		}
+	}
+
 	const deleteVictory = async (id) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -215,6 +238,38 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			// console.log(data)
 		} catch (err) {
 			console.log(err.response)
+		}
+	}
+
+	const likeComment = async (comment) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(LIKE_COMMENT),
+				variables: {
+					authorId: author.id,
+					commentId: comment._id,
+				},
+			})
+			console.log(data)
+		}
+		catch (err) {
+			console.log(err)
+		}
+	}
+	const likeReply = async (comment, index) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(LIKE_REPLY),
+				variables: {
+					authorId: author.id,
+					commentId: comment._id,
+					replyId: comment.reply[index]._id,
+				},
+			})
+			console.log(data)
+		}
+		catch (err) {
+			console.log(err)
 		}
 	}
 
@@ -376,7 +431,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 						<input
 							type="text"
 							value={content}
-							onKeyPress={(e) => comment(e, post._id)}
+							// onKeyPress={(e) => comment(e, post._id)}
 							onChange={(e) => setContent(e.target.value)}
 							className="p-2 w-full border border-black text-sm"
 							placeholder={post.__typename === "Petition" ? "What is your reason for endorsing this Petition?" : "Write a comment"}
@@ -388,7 +443,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					{allComment?.length > 0
 						? allComment?.slice(0, qty).map((comment, index) => (
 							<div key={index} className="flex p-2">
-								<img src={comment.authorImage} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
+								<img src={comment.authorImage} className="w-10 h-10 mr-3 rounded-full " alt="" />
 								<div className="w-full">
 									<div className=" bg-gray-100 p-2 flex justify-between">
 										<div className="">
@@ -400,12 +455,50 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										</div>
 									</div>
 									<div className="flex my-1 text-sm">
-										<div><span className="mr-1">{comment.replies?.length}</span> Reply</div>
-										<div className="mx-4"><span className="mx-1">{comment.likes?.length}</span> Likes</div>
+										<div onClick={() => setReplies(!replies)}><span className="mr-1">{comment.replies?.length}</span> Reply</div>
+										<div onClick={(e) => likeComment(comment)} className="mx-4"><span className="mx-1">{comment.likes?.length}</span> Likes</div>
 									</div>
+									{replies === true ? (
+										<div>
+											<div className="flex border-t border-gray-200 p-2 relative">
+												<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
+												<input
+													type="text"
+													value={reply}
+													onChange={(e) => setReply(e.target.value)}
+													className="p-2 w-full border border-black text-sm"
+													placeholder={"Reply comment"}
+												/>
+												<div className="absolute top-4 right-6">
+													{loading2 ? <Loader /> : <img src="./images/send.png" onClick={(e) => replyBtn(comment)} className="w-6 h-6 cursor-pointer" alt="" />}
+												</div>
+											</div>
+											{comment.replies?.length > 0 ?
+												comment.replies?.map((reply, index) => (
+													<div key={index} className="flex">
+														<img src={reply.authorImage} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
+														<div className="w-full">
+															<div className=" bg-gray-100 p-2 flex justify-between">
+																<div className="">
+																	<div className="font-bold text-sm mt-1">{reply.authorName}</div>
+																	<div className="text-xs mt-1">{reply?.content}</div>
+																</div>
+																<div className="text-sm">
+																	<ReactTimeAgo date={new Date(reply.createdAt)} />{" "}
+																</div>
+															</div>
+															<div className="flex my-1 text-sm">
+																{/* <div onClick={() => setReplies(!replies)}><span className="mr-1">{comment.replies?.length}</span> Reply</div> */}
+																<div onClick={(e) => likeReply(comment, index)} className=""><span className="mx-1">{comment.likes?.length}</span> Likes</div>
+															</div>
+														</div>
+													</div>
+												)
+												) : null}
+										</div>
+									) : null}
 								</div>
 							</div>
-
 						))
 						: null}
 					{allComment.length > 4 ? (

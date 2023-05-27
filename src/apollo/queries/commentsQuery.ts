@@ -12,7 +12,9 @@ export const REMOVE_COMMENT = gql`
 `
 export const REPLY_COMMENT = gql`
   mutation replyComment($authorId: ID!, $commentId: ID!, $content: String!){
-    replyComment(authorId: $authorId, commentId: $commentId, content: $content)
+    replyComment(authorId: $authorId, commentId: $commentId, content: $content){
+      _id
+    }
   }
 `
 export const REMOVE_REPLY = gql`

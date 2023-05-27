@@ -108,7 +108,7 @@ const PromoteComp = (): JSX.Element => {
 			{view || endorse || message ? (
 				<PromoteForm campaign={campaign} view={view} endorse={endorse} message={message} />
 			) : (
-						<FrontLayout showFooter={false}>
+				<FrontLayout showFooter={false}>
 
 					<Wrapper className="container">
 						<PromoteModalComp show={showModalClose} onHide={() => setShowModalClose(false)} />
@@ -223,10 +223,10 @@ const Wrapper = styled.div`
 
 const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view: boolean; endorse: boolean; message: boolean }) => {
 	const user = useRecoilValue(UserAtom)
-	const [views, setViews] = useState(10)
-	const [amount, setAmount] = useState(20)
+	const [views, setViews] = useState<any>(10)
+	const [amount, setAmount] = useState<any>(20)
 	const [loadingPrice, setLoadingPrice] = useState(false)
-	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.USD)
+	const [currency, setCurrency] = useState<CurrencyListEnum>(CurrencyListEnum.NGN)
 	const { query } = useRouter()
 	const [audience, setAudience] = useState("")
 	const [open, setOpen] = useState(true)
@@ -265,8 +265,8 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 
 	const paystack_config: PaystackProps = {
 		reference: new Date().getTime().toString(),
-		email: user?.email as string,
-		amount: parseFloat(amount.toFixed(2)) * 100,
+		email: user?.email,
+		amount: amount.toFixed(2) * 100,
 		firstname: user?.firstName,
 		lastname: user?.lastName,
 		currency,
@@ -298,20 +298,23 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	}
 
 	useEffect(() => {
-		const convert = async () => {
-			try {
-				setLoadingPrice(true)
-				const unit = await checkFX(currency)
-				const result = unit * 20
+		// const convert = async () => {
+		// 	try {
+		// 		setLoadingPrice(true)
+		// 		const unit = await checkFX(currency)
+		// 		console.log(unit)
+		// 		const result = unit * 20
 
-				setAmount(views * result)
-			} catch (error) {
-				console.log(error)
-			} finally {
-				setLoadingPrice(false)
-			}
-		}
-		convert()
+		// 		setAmount(parseInt(views) * result)
+		// 	} catch (error) {
+		// 		console.log(error)
+		// 	} finally {
+		// 		setLoadingPrice(false)
+		// 	}
+		// }
+		// convert()
+
+		setAmount(parseInt(views) * 20)
 	}, [currency, views])
 
 	const continuePayment = () => {
@@ -333,7 +336,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 							<label className="">
 								<i className="fas fa-eye"></i> Views
 							</label>
-							<input type="number" value={views} onChange={(e) => setViews(+e.target.value)} style={{ width: "4rem", appearance: "none" }} />
+							<input type="number" value={views} onChange={(e) => setViews(e.target.value)} style={{ width: "4rem", appearance: "none" }} />
 							<i className="fas fa-exchange-alt"></i>
 							<input type="text" value={loadingPrice ? "calculating..." : formateMoney(amount, currency)} disabled />
 							<select className="" onChange={(e) => setCurrency(e.target.value as CurrencyListEnum)}>

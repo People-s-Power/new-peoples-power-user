@@ -137,7 +137,7 @@ const HomePage = () => {
 					authorId: active.id || active._id,
 				},
 			})
-			console.log(data)
+			// console.log(data)
 
 			const general = [
 				...feed,
