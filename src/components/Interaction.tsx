@@ -158,11 +158,10 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			})
 			setAllComment([
 				{
-					author: {
-						name: author.name,
-						image: author.image,
-					},
+					authorName: author.name,
+					authorImage: author.image,
 					content: content,
+					_id: data.data.comment._id,
 					createdAt: new Date(),
 				},
 				...allComment,
