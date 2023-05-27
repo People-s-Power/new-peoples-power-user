@@ -170,7 +170,7 @@ function Buildprofile(): React.ReactElement {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(CONNECTIONS),
 				variables: {
-					authorId: user.id,
+					authorId: query.page,
 				},
 			})
 			console.log(data)
@@ -190,7 +190,7 @@ function Buildprofile(): React.ReactElement {
 	return (
 		<div>
 			<FrontLayout showFooter={false} showHeader={false}>
-				<main className="w-2/3 mx-auto">
+				<main className="lg:w-2/3 sm:px-5 mx-auto">
 					<Steps current={step}>
 						<Steps.Item title="Logo" />
 						<Steps.Item title="Service Location" />
@@ -322,12 +322,12 @@ function Buildprofile(): React.ReactElement {
 										</div>
 										<div className="flex flex-wrap">
 											{users.slice(0, 12).map((user, index) => (
-												<div key={index} className="w-[25%] p-6">
+												<div key={index} className="lg:w-[25%] sm:w-1/2 p-6">
 													<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 													<div className="text-xl py-2">{user.name} </div>
 													<div className="w-16 h-[1px] bg-gray-200"></div>
 													<div className="text-xs text-gray-700 my-3">500 Followers</div>
-													<div className="text-xs text-gray-900 my-6" onClick={() => follow(user)}>
+													<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => follow(user)}>
 														+ Follow
 													</div>
 												</div>

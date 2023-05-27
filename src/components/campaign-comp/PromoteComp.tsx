@@ -270,7 +270,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		firstname: user?.firstName,
 		lastname: user?.lastName,
 		currency,
-		publicKey: process.env.NODE_ENV === "production" ? (Cookies.get(IEnvironments.PAYSTACK_PK) as string) : "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
+		publicKey: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
 		metadata: {
 			purpose: location === "inbox" ? PaymentPurposeEnum.MESSAGE : null,
 			key: query.slug,

@@ -271,7 +271,7 @@ const org = () => {
 							<div>
 								<img className="w-full h-52" src="https://source.unsplash.com/random/800x400?nature" alt="" />
 							</div>
-							<div className="edit-sec relative left-10 -top-20">
+							<div className="edit-sec relative sm:w-[90%] lg:left-10 left-2 -top-20">
 								<div className="py-3 mb-4 d-flex">
 									<div className="pro-img-wrap rounded-circle position-relative">
 										<input type="file" ref={uploadRef} onChange={handleImg} />
@@ -288,7 +288,7 @@ const org = () => {
 									</div>
 								</div>
 								<div className="">
-									<div className="flex justify-between">
+									<div className="lg:flex justify-between">
 										<div className="flex flex-column justify-center">
 											<div className="flex">
 												<div className="text-xl font-bold ">{user?.name}</div>

@@ -388,17 +388,24 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					{allComment?.length > 0
 						? allComment?.slice(0, qty).map((comment, index) => (
 							<div key={index} className="flex p-2">
-								<img src={comment.author.image} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
-								<div className="w-full bg-gray-100 p-2 flex justify-between">
-									<div className="">
-										<div className="font-bold text-sm mt-1">{comment.author.name}</div>
-										<div className="text-xs mt-1">{comment?.content}</div>
+								<img src={comment.authorImage} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
+								<div className="w-full">
+									<div className=" bg-gray-100 p-2 flex justify-between">
+										<div className="">
+											<div className="font-bold text-sm mt-1">{comment.authorName}</div>
+											<div className="text-xs mt-1">{comment?.content}</div>
+										</div>
+										<div className="text-sm">
+											<ReactTimeAgo date={new Date(comment.createdAt)} />{" "}
+										</div>
 									</div>
-									<div className="text-sm">
-										<ReactTimeAgo date={new Date(comment.date)} />{" "}
+									<div className="flex my-1 text-sm">
+										<div><span className="mr-1">{comment.replies?.length}</span> Reply</div>
+										<div className="mx-4"><span className="mx-1">{comment.likes?.length}</span> Likes</div>
 									</div>
 								</div>
 							</div>
+
 						))
 						: null}
 					{allComment.length > 4 ? (
