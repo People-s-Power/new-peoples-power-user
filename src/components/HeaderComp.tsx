@@ -8,6 +8,8 @@ import { Dropdown } from 'rsuite';
 // import { SERVER_URL } from "utils/constants"
 // import { io } from "socket.io-client"
 import { socket } from "pages/_app"
+import { TOKEN_NAME } from "utils/constants"
+import cookie from "js-cookie"
 
 const Header = (): JSX.Element => {
 	const user = useRecoilValue(UserAtom);
@@ -18,14 +20,13 @@ const Header = (): JSX.Element => {
 	// 		user_id: user?.id,
 	// 	},
 	// })
+	const token = cookie.get(TOKEN_NAME)
+
 
 	useEffect(() => {
-		// console.log(user)
-		setTimeout(() => {
-			if (user === null) {
-				window.location.href = `/home`
-			}
-		}, 8000)
+		if (token === undefined) {
+			window.location.href = `/home`
+		}
 	}, [])
 
 	useEffect(() => {

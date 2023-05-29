@@ -39,6 +39,7 @@ const CreatePost = ({
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
 	const [openFindExpart, setOpenFindExpart] = useState(false)
+	const [type, setType] = useState("image")
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
@@ -48,7 +49,9 @@ const CreatePost = ({
 			reader.readAsDataURL(files[0])
 			reader.onloadend = () => {
 				if (reader.result) {
+					const type = files[0].name.substr(files[0].name.length - 3)
 					setFilePreview([...filesPreview, reader.result as string])
+					setType(type === "mp4" ? "video" : "image")
 				}
 			}
 		}
@@ -199,14 +202,22 @@ const CreatePost = ({
 					<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
 					<div className="flex">
 						{filesPreview.map((file, index) => (
-							<div key={index} className="relative w-20 h-20 mx-1">
+							type === "image" ? <div key={index} className="relative w-20 h-20 mx-1">
 								<img src={file} className="w-20 h-20" alt="" />
 								<div className="absolute top-1 cursor-pointer right-1 w-4 h-4 rounded-full bg-danger text-sm text-center text-white">
 									<div className="mx-auto text-xs my-auto text-white" onClick={() => clearFile(index)}>
 										x
 									</div>
 								</div>
-							</div>
+							</div> : <video
+								src={file}
+								width="500"
+								controls={true}
+								className="w-full object-cover h-52"
+							>
+								<source src={file} type="video/mp4" />
+							</video>
+
 						))}
 					</div>
 

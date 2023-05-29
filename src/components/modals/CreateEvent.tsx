@@ -186,7 +186,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 							>
 								<source src={image.file} type="video/mp4" />
 							</video>
-						)}						<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
+						)}
+						<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
 						<img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
 						<div className="text-base my-3">Upload Event Cover Image</div>
 						<div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
