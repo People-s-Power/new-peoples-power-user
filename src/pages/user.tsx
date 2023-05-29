@@ -398,7 +398,7 @@ const user = () => {
 									</div>
 									<div
 										// href={"/org/create"}
-										className="cursor-pointer"
+										className="cursor-pointer sm:hidden"
 										onClick={() => {
 											const url = new URL("https://teamapp-6jfl6.ondigitalocean.app/home")
 											url.searchParams.set("u_refer", Cookies.get("__ed_KEY") as string)
@@ -414,7 +414,7 @@ const user = () => {
 										</div>
 									</div>
 									<Link href={"/org/create"}>
-										<div className="bg-transparent my-2 flex justify-between">
+										<div className="bg-transparent my-2 flex sm:hidden justify-between">
 											<div className="my-auto w-1/2">Organization</div>
 											<div className="text-center cursor-pointer">
 												<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
@@ -429,7 +429,7 @@ const user = () => {
                                             <div className="text-xs">  create </div>
                                         </div>
                                     </div> */}
-									<div>
+									<div className="sm:hidden">
 										{orgs.map((org, i) => (
 											<div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
 												{isValidUrl(org?.image) ? (

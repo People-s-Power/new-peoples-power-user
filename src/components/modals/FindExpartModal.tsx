@@ -250,7 +250,7 @@ Start your Complaint…`)
 
 				<Modal.Footer>
 					<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm ">
-						{screen === 1 ? "Next" : loading ? "Loading..." : "SendMessage"}
+						{screen === 1 ? "Next" : loading ? "Loading..." : "Send Message"}
 					</button>
 				</Modal.Footer>
 			</Modal>

@@ -72,14 +72,14 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 											{post.author?.name} <span className="text-xs">{author?.id === post.author?._id ? ". You" : ""}</span>
 										</div>
 										<div className="text-base">
-											{post.author.name} created this post <ReactTimeAgo date={new Date(post.createdAt)} />
+											created this post <ReactTimeAgo date={new Date(post.createdAt)} />
 										</div>
 									</div>
 								</div>
 							</Link>
 
 							{timeLine ? searchForValue(post.author._id) ? null : <div className="w-[15%] ml-auto text-sm">
-								{following ? <span>Following</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+ Follow</span>}
+								{following ? <span>Following</span> : <span onClick={() => follow(post.author._id)} className="cursor-pointer">+Follow</span>}
 							</div> : <HideComp id={post._id} toggle={toggle} />}
 						</div>
 						<div className="text-sm my-1">{post.author.description}</div>

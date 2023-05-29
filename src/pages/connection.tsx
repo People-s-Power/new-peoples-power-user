@@ -127,7 +127,7 @@ const connection = () => {
 									<div className="w-16 h-[1px] bg-gray-200"></div>
 									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 									<Link href={`/messages?page=${user._id}`}>
-										<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
+										<div className="text-sm border border-warning lg:p-3 p-2 sm:text-xs text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
 									</Link>
 								</div>
 							))
@@ -180,7 +180,7 @@ function Following({ user, getFollowing }) {
 				Unfollow
 			</div>}
 			<Link href={`/messages?page=${user._id}`}>
-				<div className="text-sm border border-warning p-3 text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>
+				<div className="lg:text-sm border border-warning lg:p-3 p-2 text-xs text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>
 			</Link>
 		</div>
 	)

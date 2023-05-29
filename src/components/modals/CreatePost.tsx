@@ -11,6 +11,7 @@ import { UserAtom } from "atoms/UserAtom"
 import NotificationCard from "components/NotificationCard"
 import notifications from "pages/notifications"
 import FindExpartModal from "./FindExpartModal"
+import CreateEvent from "./CreateEvent"
 
 const CreatePost = ({
 	open,
@@ -27,6 +28,8 @@ const CreatePost = ({
 }): JSX.Element => {
 	const [filesPreview, setFilePreview] = useState<any>(post?.image || [])
 	const author = useRecoilValue(UserAtom)
+	const [openEvent, setOpenEvent] = useState(false)
+	const handelEventClick = () => setOpenEvent(!openEvent)
 	const [active, setActive] = useState<any>(author)
 	const [loading, setLoading] = useState(false)
 	const [body, setBody] = useState(post?.body || "")
@@ -133,8 +136,18 @@ const CreatePost = ({
 		<>
 			<Modal open={open} onClose={handelClick}>
 				<Modal.Header>
-					<div className="border-b border-gray-200 p-3 w-full">
-						<Modal.Title>Make a post</Modal.Title>
+					<div className="border-b border-gray-200 p-3 w-full flex justify-between">
+						{/* <Modal.Title>Make a post</Modal.Title> */}
+						<div></div>
+						{post === null ? (
+							<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
+								{loading ? "Loading..." : "Post"}
+							</button>
+						) : (
+							<button onClick={handleUpdate} className="p-1 bg-warning text-white rounded-sm w-20">
+								{loading ? "Loading..." : "Update"}
+							</button>
+						)}
 					</div>
 				</Modal.Header>
 				<Modal.Body>
@@ -197,42 +210,45 @@ const CreatePost = ({
 						))}
 					</div>
 
-					<div className="flex justify-between text-gray-500">
-						<div className="w-24 flex justify-between my-auto">
+					<div className="flex sm:flex-wrap justify-between text-gray-500">
+						<div className="w-10 flex justify-between my-auto">
 							<div onClick={() => uploadRef.current?.click()} className="cursor-pointer">
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
 							</div>
 							<div className="cursor-pointer">
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
 							</div>
-							<div className="cursor-pointer">
+							{/* <div className="cursor-pointer">
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
-							</div>
-							<div className="cursor-pointer">
-								<img className="w-4 h-4 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
-							</div>
+							</div> */}
+
 						</div>
-						<div className="text-sm my-auto" onClick={() => {
+						<div className="text-sm flex my-auto" onClick={() => {
 							handelClick()
 							setOpenFindExpart(true)
-						}}>Find Expert</div>
+						}}>
+							<img className="w-4 h-4 my-auto" src="/images/home/icons/experts.svg" alt="" />
+							<div className="my-auto text-sm ml-3">Find Expert</div>
+						</div>
 						<div
-							className="text-sm my-auto cursor-pointer"
+							className="text-sm my-auto flex cursor-pointer"
 							onClick={() => {
 								handelClick(), handelPetition()
 							}}
 						>
-							Make petition
+							<div className="cursor-pointer">
+								<img className="w-4 h-4 my-auto" src="/images/home/icons/tabler_article.svg" alt="" />
+							</div>
+							<div className="my-auto text-sm ml-3">Make petition</div>
 						</div>
-						{post === null ? (
-							<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
-								{loading ? "Loading..." : "Post"}
-							</button>
-						) : (
-							<button onClick={handleUpdate} className="p-1 bg-warning text-white rounded-sm w-20">
-								{loading ? "Loading..." : "Update"}
-							</button>
-						)}
+
+						<div className="flex  cursor-pointer " onClick={() => {
+							handelClick()
+							handelEventClick()
+						}} >
+							<img className="w-4 h-4 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
+							<div className="my-auto text-sm ml-3">Events</div>
+						</div>
 					</div>
 				</Modal.Footer>
 			</Modal>
@@ -240,6 +256,7 @@ const CreatePost = ({
 				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
 			}
 			<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
+			<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 
 		</>
 	)

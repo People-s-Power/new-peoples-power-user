@@ -239,12 +239,12 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<div className="flex justify-evenly w-1/2 mx-auto">
+					<div className="flex lg:justify-evenly justify-between lg:w-1/2 mx-auto">
 						<button onClick={handelClick} className="p-1 text-warning border border-warning rounded-md w-20 my-4">
 							Save
 						</button>
 						<button onClick={handelPreview} className="p-1 bg-warning text-white rounded-md w-44 my-4">
-							{loading ? "Loading..." : "Preview and launch"}
+							{loading ? "Loading..." : "Launch"}
 						</button>
 					</div>
 				</Modal.Footer>
@@ -280,7 +280,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<div className="flex justify-evenly w-1/2 mx-auto">
+					<div className="flex lg:justify-evenly justify-between lg:w-1/2 mx-auto">
 						<button
 							onClick={() => {
 								handelPreview()

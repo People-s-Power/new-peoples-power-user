@@ -623,13 +623,14 @@ const messages = () => {
 									) : null}
 								</div>
 							) : <div className="p-4 text-center">
-								<img className="w-40 mx-auto h-40" src="/images/lolo.jpeg" alt="" />
-								<h5 className="my-4">Chat with your connections.</h5>
-								<p>Go to My Connections and followers or following to send message.</p>
+								<img className="w-40 mx-auto h-40 sm:hidden" src="/images/lolo.jpeg" alt="" />
+								<h5 className="my-4 sm:hidden">Chat with your connections.</h5>
+								<p className="sm:hidden">Go to My Connections and followers or following to send message.</p>
 								<Link href={'/connection?page=followers'}>
-									<button className="bg-warning px-4 text-white p-2 my-4 rounded-sm">connections</button>
+									<button className="bg-warning px-4 text-white p-2 my-4 rounded-sm">chat with connections</button>
 								</Link>
-							</div>) : <div className="text-center text-gray-400">This user has been blocked {show.blockedBy === active.id || active._id ? <span className="text-warning" onClick={() => unblockUser(show?.id)}>Unblock</span> : null} </div>
+							</div>) :
+								<div className="text-center text-gray-400">This user has been blocked {show.blockedBy === active.id || active._id ? <span className="text-warning" onClick={() => unblockUser(show?.id)}>Unblock</span> : null} </div>
 					}
 				</div>
 				<CreateVictories open={victory} handelClick={makeTestimony} victory={null} />

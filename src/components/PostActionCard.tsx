@@ -11,6 +11,7 @@ const PostActionCardProp = {
     refresh: PropTypes.func
 }
 
+
 export default function PostActionCard({ authorImage, handelClick, handelEventClick, handelPetition, handelOpenFindExpart, count, refresh }: InferProps<typeof PostActionCardProp>): JSX.Element {
     return <div className="border-b border-gray-300">
         <div className="flex justify-center">
@@ -20,7 +21,7 @@ export default function PostActionCard({ authorImage, handelClick, handelEventCl
             </div>
         </div>
         <div className="flex justify-evenly my-4">
-            <div className="flex w-16 justify-between">
+            <div className="flex w-16 justify-between sm:hidden">
                 <div onClick={() => handelClick()} className="w-6 cursor-pointer">
                     <img className="w-6 h-6 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
                 </div>
@@ -34,7 +35,7 @@ export default function PostActionCard({ authorImage, handelClick, handelEventCl
                     Find Expert
                 </div>
             </div>
-            <div className="flex  cursor-pointer" onClick={() => handelEventClick()} >
+            <div className="flex  cursor-pointer sm:hidden" onClick={() => handelEventClick()} >
                 <img className="w-6 h-6 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
                 <div className="my-auto text-sm ml-3">Events</div>
             </div>
