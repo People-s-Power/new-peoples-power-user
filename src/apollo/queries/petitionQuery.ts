@@ -44,6 +44,7 @@ export const GET_PETITION = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt
@@ -242,6 +243,7 @@ export const SINGLE_PETITION_ID = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt

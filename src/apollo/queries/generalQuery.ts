@@ -83,6 +83,7 @@ export const GET_ALL = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt
@@ -122,7 +123,6 @@ export const GET_ALL = gql`
 					authorId
 					authorImage
 					authorEmail
-					
 					replies{
 						_id
 					content
@@ -131,6 +131,7 @@ export const GET_ALL = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt
@@ -182,6 +183,7 @@ export const GET_ALL = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt
@@ -291,6 +293,7 @@ export const GET_ALL = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt
@@ -345,6 +348,7 @@ export const GET_ALL = gql`
 					authorImage
 					authorEmail
 					createdAt
+					likes
 					}
 					likes
 					createdAt

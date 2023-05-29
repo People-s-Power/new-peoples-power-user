@@ -45,7 +45,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const handelEventClick = () => setOpenEvent(!openEvent)
 
 	const [comments, setComments] = useState(false)
-	const [replies, setReplies] = useState(false)
 	const [liked, setLiked] = useState(false)
 	const [likes, setLikes] = useState(post.likes.length)
 	const [content, setContent] = useState("")
@@ -131,7 +130,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 						image: author.image,
 					},
 					content: content,
-					date: new Date(),
+					createdAt: new Date(),
 				},
 				...allComment,
 			])
@@ -219,21 +218,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		}
 	}
 
-	const likeComment = async (comment) => {
-		try {
-			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(LIKE_COMMENT),
-				variables: {
-					authorId: author.id,
-					commentId: comment._id,
-				},
-			})
-			console.log(data)
-		}
-		catch (err) {
-			console.log(err)
-		}
-	}
+
 
 	const deleteComment = async (index) => {
 		try {
@@ -433,19 +418,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 											<ReactTimeAgo date={new Date(comment.createdAt)} />{" "}
 										</div>
 									</div>
-									<div className="flex my-1 text-sm">
-										<div className="cursor-pointer" onClick={() => setReplies(!replies)}><span className="mr-1">{comment.replies?.length}</span> Reply</div>
-										<div onClick={(e) => likeComment(comment)} className="mx-4 cursor-pointer"><span className="mx-1">{comment.likes?.length}</span> Likes</div>
-										{
-											author.id === comment.authorId ? <div onClick={() => deleteComment(index)} className="cursor-pointer text-red-500">
-												Delete
-											</div> : null
-										}
-									</div>
-									<RepliesComp comment={comment} replies={replies} />
-									{/* {replies === true 
-									? (
-									) : null} */}
+									<RepliesComp comment={comment} deleteComment={() => deleteComment(index)} />
+
 								</div>
 							</div>
 						))
@@ -473,10 +447,13 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 export default CampComp
 
-export function RepliesComp({ comment, replies }) {
+export function RepliesComp({ comment, deleteComment }) {
 	const [reply, setReply] = useState("")
 	const [loading2, setLoading2] = useState(false)
 	const author = useRecoilValue(UserAtom)
+	const [replies, setReplies] = useState(false)
+	const [commentLikes, setCommentLikes] = useState(comment.likes.length)
+	const [commmentReplies, setCommentReplies] = useState(comment.replies)
 
 	const replyBtn = async (comment) => {
 		try {
@@ -489,6 +466,12 @@ export function RepliesComp({ comment, replies }) {
 					content: reply,
 				},
 			})
+			setCommentReplies([{
+				authorName: author.name,
+				authorImage: author.image,
+				content: reply,
+				createdAt: new Date(),
+			}, ...commmentReplies])
 			setReply(" ")
 			setLoading2(false)
 			console.log(data)
@@ -514,6 +497,22 @@ export function RepliesComp({ comment, replies }) {
 	// 		console.log(err)
 	// 	}
 	// }
+	const likeComment = async (comment) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(LIKE_COMMENT),
+				variables: {
+					authorId: author.id,
+					commentId: comment._id,
+				},
+			})
+			console.log(data)
+			setCommentLikes(commentLikes + 1)
+		}
+		catch (err) {
+			console.log(err)
+		}
+	}
 
 	const likeReply = async (comment, index) => {
 		try {
@@ -533,43 +532,57 @@ export function RepliesComp({ comment, replies }) {
 	}
 
 	return (
-		replies &&
 		<div>
-			<div className="flex border-t border-gray-200 p-2 relative">
-				<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
-				<input
-					type="text"
-					value={reply}
-					onChange={(e) => setReply(e.target.value)}
-					className="p-2 w-full border border-black text-sm"
-					placeholder={"Reply comment"}
-				/>
-				<div className="absolute top-4 right-6">
-					{loading2 ? <Loader /> : <img src="./images/send.png" onClick={(e) => replyBtn(comment)} className="w-6 h-6 cursor-pointer" alt="" />}
-				</div>
+			<div className="flex my-1 text-sm">
+				<div className="cursor-pointer" onClick={() => setReplies(!replies)}><span className="mr-1">{commmentReplies.length}</span> Reply</div>
+				<div onClick={(e) => likeComment(comment)} className="mx-4 cursor-pointer"><span className="mx-1">{commentLikes}</span> Likes</div>
+				{
+					author.id === comment.authorId ? <div onClick={() => deleteComment()} className="cursor-pointer text-red-500">
+						Delete
+					</div> : null
+				}
 			</div>
-			{comment.replies?.length > 0 ?
-				comment.replies?.map((reply, index) => (
-					<div key={index} className="flex">
-						<img src={reply.authorImage} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
-						<div className="w-full">
-							<div className=" bg-gray-100 p-2 flex justify-between">
-								<div className="">
-									<div className="font-bold text-sm mt-1">{reply.authorName}</div>
-									<div className="text-xs mt-1">{reply?.content}</div>
-								</div>
-								<div className="text-sm">
-									<ReactTimeAgo date={new Date(reply.createdAt)} />{" "}
-								</div>
-							</div>
-							<div className="flex my-1 text-sm">
-								{/* <div onClick={() => setReplies(!replies)}><span className="mr-1">{comment.replies?.length}</span> Reply</div> */}
-								<div onClick={(e) => likeReply(comment, index)} className="cursor-pointer"><span className="mx-1">{comment.likes?.length}</span> Likes</div>
-							</div>
+
+			{
+				replies &&
+				<div>
+					<div className="flex border-t border-gray-200 p-2 relative">
+						<img src={author.image} className="w-10 h-10 mr-3 rounded-full my-auto" alt="" />
+						<input
+							type="text"
+							value={reply}
+							onChange={(e) => setReply(e.target.value)}
+							className="p-2 w-full border border-black text-sm"
+							placeholder={"Reply comment"}
+						/>
+						<div className="absolute top-4 right-6">
+							{loading2 ? <Loader /> : <img src="./images/send.png" onClick={(e) => replyBtn(comment)} className="w-6 h-6 cursor-pointer" alt="" />}
 						</div>
 					</div>
-				)
-				) : null}
+					{commmentReplies?.length > 0 ?
+						commmentReplies?.map((reply, index) => (
+							<div key={index} className="flex">
+								<img src={reply.authorImage} className="w-10 h-10 mr-3 my-auto rounded-full" alt="" />
+								<div className="w-full">
+									<div className=" bg-gray-100 p-2 flex justify-between">
+										<div className="">
+											<div className="font-bold text-sm mt-1">{reply.authorName}</div>
+											<div className="text-xs mt-1">{reply?.content}</div>
+										</div>
+										<div className="text-sm">
+											<ReactTimeAgo date={new Date(reply.createdAt)} />{" "}
+										</div>
+									</div>
+									<div className="flex my-1 text-sm">
+										{/* <div onClick={() => setReplies(!replies)}><span className="mr-1">{comment.replies?.length}</span> Reply</div> */}
+										<div onClick={(e) => likeReply(comment, index)} className="cursor-pointer"><span className="mx-1">{reply.likes?.length}</span> Likes</div>
+									</div>
+								</div>
+							</div>
+						)
+						) : null}
+				</div>
+			}
 		</div>
 	);
 }
