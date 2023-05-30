@@ -56,8 +56,14 @@ const HomePage = () => {
 	const [count, setCount] = useState(0)
 	const [loading, setLoading] = useState(false)
 	const [active, setActive] = useState<any>(author)
-
+	const [toggle, setToggle] = useState(true)
 	// console.log(author)
+
+	useEffect(() => {
+		if (window.innerWidth < 768) {
+			setToggle(false)
+		}
+	}, [])
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -225,69 +231,73 @@ const HomePage = () => {
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
-				<aside className="w-[20%] sm:hidden text-center fixed bg-white left-20">
-					<div className="bg-warning w-full h-10"></div>
-					<div className="p-2 relative -top-6 border-b border-gray-200">
-						<Whisper placement="bottom" trigger="click" speaker={speaker}>
-							<div className="flex justify-center">
-								<img src={active?.image} className="w-[80px] left-0 right-0 rounded-full h-[80px] " alt="" />
-								<div className="ml-2">
-									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
-										<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-									</svg>
+
+				{
+					toggle && <aside className="lg:w-[20%] w-[80%] text-center fixed bg-white sm:z-20 lg:left-20">
+						<div className="bg-warning w-full h-10"></div>
+						<div className="p-2 relative -top-6 border-b border-gray-200">
+							<Whisper placement="bottom" trigger="click" speaker={speaker}>
+								<div className="flex justify-center">
+									<img src={active?.image} className="w-[80px] left-0 right-0 rounded-full h-[80px] " alt="" />
+									<div className="ml-2">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
+											<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+										</svg>
+									</div>
 								</div>
-							</div>
-						</Whisper>
-						<div className="text-base font-light">{active?.name}</div>
-						<div className="text-xs px-3">{active?.description?.substring(0, 100) + "..."}</div>
-					</div>
-					<div className="border-b border-gray-200 px-3">
-						{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
-						<Link href={"/about#career"}>
-							<div className="flex justify-between my-2">
-								<div className="text-sm my-auto">Become Virtual Assistant</div>
-								<div className="text-center cursor-pointer">
-									<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-									<span className="text-xs text-center">start</span>
-								</div>
-							</div>
-						</Link>
-						{/* </a> */}
-						<div className="flex justify-between my-2">
-							<div className="text-sm my-auto">Event</div>
-							<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
-								<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-								<span className="text-xs text-center">create</span>
-							</div>
+							</Whisper>
+							<div className="text-base font-light">{active?.name}</div>
+							<div className="text-xs px-3">{active?.description?.substring(0, 100) + "..."}</div>
 						</div>
-						<div className="flex justify-between my-2">
-							<div className="text-sm my-auto">Organization</div>
-							<Link href={"/org/create"}>
-								<div className="text-center cursor-pointer">
+						<div className="border-b border-gray-200 px-3">
+							{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
+							<Link href={"/about#career"}>
+								<div className="flex justify-between my-2">
+									<div className="text-sm my-auto">Become Virtual Assistant</div>
+									<div className="text-center cursor-pointer">
+										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+										<span className="text-xs text-center">start</span>
+									</div>
+								</div>
+							</Link>
+							{/* </a> */}
+							<div className="flex justify-between my-2">
+								<div className="text-sm my-auto">Event</div>
+								<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
 									<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
 									<span className="text-xs text-center">create</span>
 								</div>
-							</Link>
+							</div>
+							<div className="flex justify-between my-2">
+								<div className="text-sm my-auto">Organization</div>
+								<Link href={"/org/create"}>
+									<div className="text-center cursor-pointer">
+										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+										<span className="text-xs text-center">create</span>
+									</div>
+								</Link>
+							</div>
+							<div>
+								{orgs.map((org, i) => (
+									<div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
+										{isValidUrl(org?.image) ? (
+											<img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
+										) : (
+											<img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
+										)}
+										<p className="pl-2 mt-2 text-sm">{org?.name}</p>
+									</div>
+								))}
+							</div>
 						</div>
-						<div>
-							{orgs.map((org, i) => (
-								<div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
-									{isValidUrl(org?.image) ? (
-										<img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
-									) : (
-										<img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-									)}
-									<p className="pl-2 mt-2 text-sm">{org?.name}</p>
-								</div>
-							))}
-						</div>
-					</div>
-					{/* <div className="text-left">
+						{/* <div className="text-left">
 						<Dropdown title="My Interests">
 							{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
 						</Dropdown>
 					</div> */}
-				</aside>
+					</aside>
+				}
+
 				<section className="w-full lg:w-[50%] mx-auto">
 					<PostActionCard
 						authorImage={author?.image}
@@ -388,6 +398,16 @@ const HomePage = () => {
 						<div className="my-3 text-sm">You can reach a larger audience by allowing others to follow your activity and read what you are sharing</div>
 					</div>
 				</aside>
+				{
+					toggle && <div onClick={() => setToggle(false)} className="bg-black opacity-50 lg:hidden block w-full fixed top-0 left-0 h-screen z-10"></div>
+				}
+				<button onClick={() => setToggle(!toggle)} className="p-2 lg:hidden  rounded-full bg-warning z-20 fixed bottom-10 left-10">
+					{toggle ? <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-x" viewBox="0 0 16 16">
+						<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+					</svg> : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-plus" viewBox="0 0 16 16">
+						<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+					</svg>}
+				</button>
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
 				<CreatePost open={openPost} handelClick={handelClick} orgs={orgs} handelPetition={handelPetition} post={null} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
