@@ -64,7 +64,7 @@ const FollowSlides = () => {
 		slidesToScroll: 1,
 		initialSlide: 0,
 		autoplay: false,
-		arrows: true,
+		arrows: false,
 		responsive: [
 			{
 				breakpoint: 1024,
@@ -108,7 +108,7 @@ const FollowSlides = () => {
 					<SliderTwo {...settings}>
 						{users.map((user, i) =>
 							user._id !== author?.id ? (
-								<div key={i} className="my-4 w-1/2 text-center border p-1">
+								<div key={i} className="my-4 w-1/2 text-center border px-1 py-3">
 									<img src={user.image} className="w-12 mx-auto h-12 rounded-full" alt="" />
 									<div className="">
 										<div className="text-base font-light">{user.name} </div>
@@ -131,7 +131,7 @@ const FollowSlides = () => {
 							</div>
 						</div>
 					</SliderTwo>
-					<div className="text-sm text-center ">
+					<div className="text-sm text-center mb-3">
 						<Link href="/connection">
 							<div className="text-warning cursor-pointer text-sm">view more connections</div>
 						</Link>
