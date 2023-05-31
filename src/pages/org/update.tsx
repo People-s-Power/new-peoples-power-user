@@ -115,7 +115,7 @@ const update = () => {
     };
     return (
         <FrontLayout showFooter={false}>
-            <div className="lg:w-2/3 mx-auto text-center py-10">
+            <div className="lg:w-2/3 mx-auto text-center sm:p-6 py-10">
                 <div className='text-3xl font-black my-8'>Update Your Organization</div>
                 <div>
                     <div className="my-2">

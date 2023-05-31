@@ -400,8 +400,8 @@ const addadmin = () => {
 										<div className="text-base my-2">
 											Start your free 1-month trial today. Cancel anytime. We'll send you a reminder 7 days before your trial ends.
 										</div>
-										<div className="flex my-1 justify-between">
-											<div className="my-auto mx-3">
+										<div className="lg:flex my-1 justify-between">
+											<div className="my-auto lg:mx-3">
 												<input
 													onChange={() => {
 														setRole("admin")
@@ -411,7 +411,7 @@ const addadmin = () => {
 													className="p-4"
 												/>
 											</div>
-											<div className="my-auto w-2/3">
+											<div className="my-auto lg:w-2/3">
 												<div className="text-lg font-bold">Admin</div>
 												<p>
 													Event coverage, Writing and posting of campaigns, Editing of profile and campaigns,
@@ -420,8 +420,8 @@ const addadmin = () => {
 											</div>
 											<button className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
 										</div>
-										<div className="flex my-3 justify-between">
-											<div className="my-auto mx-3">
+										<div className="lg:flex my-3 justify-between">
+											<div className="my-auto lg:mx-3">
 												<input
 													onChange={() => {
 														setRole("editor")
@@ -431,7 +431,7 @@ const addadmin = () => {
 													className="p-4"
 												/>
 											</div>
-											<div className="my-auto w-2/3">
+											<div className="my-auto lg:w-2/3">
 												<div className="text-lg font-bold">Editor</div>
 												<p>Edit profile, Edit campaigns and designs</p>
 											</div>

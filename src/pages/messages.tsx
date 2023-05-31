@@ -421,7 +421,7 @@ const messages = () => {
 							</div>
 						))}
 				</div>
-				<div className="lg:w-[45%] shadow-md lg:fixed lg:right-32 h-full sm:mt-4">
+				<div className="lg:w-[45%] shadow-md lg:fixed lg:right-32 h-full sm:overflow-auto sm:mt-4">
 					{show === null && query.page !== undefined ? (
 						<div className="text-center text-sm">
 							{sigUser && <div className="flex justify-center mb-3">
@@ -434,8 +434,8 @@ const messages = () => {
 						</div>
 					) : (
 						show &&
-						<div className="h-[60%] overflow-y-auto">
-							<div className="p-2 text-center text-xs text-gray-400 border-b border-gray-200">
+						<div className="lg:h-[60%] overflow-y-auto">
+							<div className="p-2 sm:hidden text-center text-xs text-gray-400 border-b border-gray-200">
 								<ReactTimeAgo date={new Date(show?.createdAt)} />
 							</div>
 							<div className="p-3">
@@ -494,7 +494,7 @@ const messages = () => {
 							</a>
 						</div> :
 							show?.blocked !== true ? (show !== null || query.page !== undefined ? (
-								<div className="fixed bottom-0 w-[45%] bg-white ">
+								<div className="fixed bottom-0 lg:w-[45%] sm:left-0 w-full bg-white ">
 									<div className="flex relative">
 										<textarea
 											onChange={(e) => setMessage(e.target.value)}

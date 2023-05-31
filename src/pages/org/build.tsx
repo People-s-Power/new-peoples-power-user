@@ -322,7 +322,7 @@ function Buildprofile(): React.ReactElement {
 										</div>
 										<div className="flex flex-wrap">
 											{users.slice(0, 12).map((user, index) => (
-												<div key={index} className="lg:w-[25%] sm:w-1/2 p-6">
+												<div key={index} className="lg:w-[25%] sm:w-1/2 lg:p-6 p-2">
 													<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 													<div className="text-xl py-2">{user.name} </div>
 													<div className="w-16 h-[1px] bg-gray-200"></div>
