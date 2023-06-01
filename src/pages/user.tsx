@@ -136,7 +136,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			console.log(data)
+			// console.log(data)
 			setCampaigns(data.myPetition)
 		},
 		onError: (err) => {
@@ -158,7 +158,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			console.log(data)
+			// console.log(data)
 			setEvents(data.authorEvents)
 		},
 		onError: (err) => console.log(err),

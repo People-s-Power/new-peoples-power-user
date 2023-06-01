@@ -123,7 +123,8 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 						{event.author.name} created event for {event.startDate} AT {event.time}
 					</div>
 					<div className="text-xl my-3">{event.description}</div>
-					<div className="text-sm">{event.type}</div>
+					<div className="text-sm mb-2">{event.type}</div>
+
 					{event.interested?.length >= 2 ? <div className="flex my-6">
 						<div className="flex">
 							{event.interested.splice(2).map((item, index) => (
@@ -136,15 +137,13 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 						</div>
 					</div> : null}
 					<div className="flex sm:mb-2">
-						<button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
-							Interested
-						</button>
-						{/* <Dropdown title={<img className="" src="/images/edit.svg" alt="" />} noCaret>
-						<Dropdown.Item>
-							<span onClick={() => share()}> Share Event </span>
-						</Dropdown.Item>
-						{event.author.id === author?.id ? <Dropdown.Item>Edit Event</Dropdown.Item> : null}
-					</Dropdown> */}
+						{
+							event.author._id === author.id ? <Link href={`/interested?page=${event._id}`}>
+								<button className="bg-transparent text-sm flex justify-between w-44 my-4">View all attendees <img className="my-auto w-6 h-2" src="/images/btn-arrow.png" alt="" /></button></Link> : <button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
+								Interested
+							</button>
+						}
+
 					</div>
 					<Interaction post={event} />
 				</div>
