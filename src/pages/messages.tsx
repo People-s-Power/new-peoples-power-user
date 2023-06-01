@@ -169,7 +169,7 @@ const messages = () => {
 				axios
 					.get(`/user/single/${query.page}`)
 					.then(function (response) {
-						console.log(response.data.user)
+						// console.log(response.data.user)
 						setUser(response.data.user)
 					})
 			} catch (error) {

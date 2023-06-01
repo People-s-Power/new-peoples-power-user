@@ -25,7 +25,7 @@ const UserMenu = (): JSX.Element => {
 					<img
 						src={user?.image}
 						alt=""
-						className="image rounded-circle border border-3 border-warning"
+						className="image rounded-circle mt-2 border border-3 border-warning"
 					/>
 				</a>
 				<ul className="dropdown-menu dropdown-menu-dark bg-primary dropdown-menu-start">
@@ -78,8 +78,8 @@ const Wrapper = styled.div`
 	.dropdown {
 		.image {
 			/* width: 100%; */
-			width: 3rem;
-			height: 3rem;
+			width: 2rem;
+			height: 2rem;
 		}
 	}
 `;

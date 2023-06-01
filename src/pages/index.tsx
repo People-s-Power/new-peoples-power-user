@@ -55,7 +55,7 @@ const HomePage = () => {
 	const handelOpenFindExpart = () => setOpenFindExpart(!openFindExpart)
 	const [count, setCount] = useState(0)
 	const [loading, setLoading] = useState(false)
-	const [active, setActive] = useState<any>(author)
+	const [active, setActive] = useState<any>(null)
 	const [toggle, setToggle] = useState(true)
 	// console.log(author)
 
@@ -78,7 +78,7 @@ const HomePage = () => {
 	})
 	useEffect(() => {
 		setActive(author)
-	}, [author !== null])
+	}, [author === null])
 
 	const { refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { ID: orgId },
@@ -117,7 +117,9 @@ const HomePage = () => {
 			console.log(error)
 		}
 	}
+
 	async function getData() {
+		console.log(active)
 		try {
 			setLoading(true)
 			let feed = []
@@ -183,11 +185,11 @@ const HomePage = () => {
 		setCount(0)
 	}
 
-	useEffect(() => {
-		getSingle()
-		getUsers()
-		getData()
-	}, [active])
+	// useEffect(() => {
+	// 	getSingle()
+	// 	getUsers()
+	// 	getData()
+	// }, [active])
 
 
 	const getUsers = async () => {
@@ -207,7 +209,11 @@ const HomePage = () => {
 
 	const speaker = (
 		<Popover>
-			<div onClick={() => setActive(author)} className="flex m-1 cursor-pointer">
+			<div onClick={() => {
+				setActive(author)
+				getData()
+			}
+			} className="flex m-1 cursor-pointer">
 				<img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
 				<div className="text-sm my-auto">{author?.name}</div>
 			</div>
@@ -216,6 +222,7 @@ const HomePage = () => {
 					<div
 						onClick={() => {
 							setActive(org)
+							getData()
 						}}
 						key={index}
 						className="flex m-1 cursor-pointer"
@@ -231,7 +238,6 @@ const HomePage = () => {
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
-
 				{
 					toggle && <aside className="lg:w-[20%] w-[80%] text-center fixed bg-white sm:z-20 lg:left-20">
 						<div className="bg-warning w-full h-10"></div>
@@ -290,17 +296,17 @@ const HomePage = () => {
 								))}
 							</div>
 						</div>
-						{/* <div className="text-left">
-						<Dropdown title="My Interests">
-							{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
-						</Dropdown>
-					</div> */}
+						<div className="text-left">
+							<Dropdown title="My Interests">
+								{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+							</Dropdown>
+						</div>
 					</aside>
 				}
 
 				<section className="w-full lg:w-[50%] mx-auto">
 					<PostActionCard
-						authorImage={author?.image}
+						authorImage={active?.image}
 						handelOpenFindExpart={handelOpenFindExpart}
 						handelClick={handelClick}
 						handelEventClick={handelEventClick}

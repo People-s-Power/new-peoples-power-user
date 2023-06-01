@@ -223,7 +223,6 @@ export const INTERESTED = gql`
 			type
 			audience
 			startDate
-			
 			endDate
 			interested{
 				_id

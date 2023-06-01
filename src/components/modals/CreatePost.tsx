@@ -213,7 +213,7 @@ const CreatePost = ({
 								src={file}
 								width="500"
 								controls={true}
-								className="w-full object-cover h-52"
+								className="w-full object-cover h-52 my-3"
 							>
 								<source src={file} type="video/mp4" />
 							</video>
@@ -226,7 +226,7 @@ const CreatePost = ({
 							<div onClick={() => uploadRef.current?.click()} className="cursor-pointer">
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/ic_outline-photo-camera.svg" alt="" />
 							</div>
-							<div className="cursor-pointer">
+							<div onClick={() => uploadRef.current?.click()} className="cursor-pointer">
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/charm_camera-video.svg" alt="" />
 							</div>
 							{/* <div className="cursor-pointer">

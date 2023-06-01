@@ -195,6 +195,7 @@ export const SINGLE_PETITION = gql`
       body
       image
       createdAt
+			_id
     }
 		}
 	}

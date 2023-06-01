@@ -102,6 +102,8 @@ const PromoteComp = (): JSX.Element => {
 			})
 	}, [data, error])
 
+
+
 	return (
 		<div>
 			{/* <PromoteForm campaign={query.slug} /> */}
@@ -235,7 +237,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 	const [countries, setCountries] = useState([])
 	const [cities, setCities] = useState([])
 	const [city, setCity] = useState("")
-
+	const [myInterest, setMyInterest] = useState<string[]>([])
 
 	useEffect(() => {
 		// Get countries
@@ -321,6 +323,17 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		if (audience === "") return
 		setOpen(false)
 	}
+	const interest = [
+		"human right awareness",
+		"social policy",
+		"criminal justice",
+		"environment justice",
+		"health",
+		"politics",
+		"discrimination",
+		"development",
+		"disability",
+	]
 
 	return (
 		<FrontLayout showFooter={false} >
@@ -378,6 +391,30 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 									<option value="Location">Location</option>
 								</select>
 							</div>
+							{audience === "Interest" ? (
+								interest.map((single, index) =>
+									<div key={index} className="flex my-3">
+										{/* <input onChange={(e) => setMyInterest([...myInterest, e.target.value])} type="checkbox" value={single} className="p-2 rounded-full" /> */}
+										<input
+											onChange={(e) => {
+												if (e.target.checked) {
+													setMyInterest([...myInterest, e.target.value])
+												} else {
+													const newInterests = [...myInterest]
+													const idx = newInterests.findIndex((x) => x === e.target.value)
+													newInterests.splice(idx, 1)
+													setMyInterest(newInterests)
+												}
+											}}
+											type="checkbox"
+											value={single}
+											name="interests_spec"
+											className="interests p-2 rounded-full"
+										/>
+										<div className="my-auto mx-4 capitalize">{single}</div>
+									</div>
+								)
+							) : null}
 							{audience === "Location" ? (
 								<div className="lg:flex justify-between">
 									<div className="w-[45%] my-1">

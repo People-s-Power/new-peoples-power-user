@@ -128,7 +128,7 @@ const SingleCampaignPage = (): JSX.Element => {
 										<div className="text-red-500 cursor-pointer">Report Abuse</div>
 									</Link>
 									{update.length >= 1 ? (
-										<div className="bg-gray-50 p-3 mt-5">
+										<div className="bg-gray-100 p-3 mt-5">
 											<div className="text-xl font-bold my-2">PETITION UPDATE</div>
 											{update.map((item, i) => (
 												<div key={i}>

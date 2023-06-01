@@ -555,17 +555,26 @@ export const UPDATES = gql`
 					}
 					promoted
 					views
-					comments {
+					comments{
 						_id
 						content
+						authorName
+						authorId
+						authorImage
+						authorEmail
 						date
-						likes
-						author {
+						replies{
 							_id
-							name
-							email
-							image
+							 _id
+						content
+						authorName
+						authorId
+						authorImage
+						authorEmail
+						date
 						}
+						likes
+						createdAt
 					}
 
 					category

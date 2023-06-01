@@ -95,6 +95,7 @@ const Single = () => {
       console.log(e.response)
     }
   }
+
   const petition = async () => {
     try {
       const { data } = await axios.post(SERVER_URL + "/graphql", {
