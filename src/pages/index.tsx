@@ -269,11 +269,11 @@ const HomePage = () => {
 								</div>
 							</div>
 							<div className="flex justify-between my-2">
-								<div className="text-sm my-auto">Organization</div>
+								<div className="text-sm my-auto">Become a Service Provider</div>
 								<Link href={"/org/create"}>
 									<div className="text-center cursor-pointer">
 										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-										<span className="text-xs text-center">create</span>
+										<span className="text-xs text-center">start</span>
 									</div>
 								</Link>
 							</div>
@@ -401,7 +401,7 @@ const HomePage = () => {
 				{
 					toggle && <div onClick={() => setToggle(false)} className="bg-black opacity-50 lg:hidden block w-full fixed top-0 left-0 h-screen z-10"></div>
 				}
-				<button onClick={() => setToggle(!toggle)} className="p-3 lg:hidden  rounded-full bg-warning z-20 fixed bottom-20 left-10">
+				<button onClick={() => setToggle(!toggle)} className="p-3 lg:hidden  rounded-full bg-warning z-20 fixed bottom-10 right-10">
 					{toggle ? <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-x" viewBox="0 0 16 16">
 						<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
 					</svg> : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-plus" viewBox="0 0 16 16">
