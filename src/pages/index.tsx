@@ -119,7 +119,7 @@ const HomePage = () => {
 	}
 
 	async function getData() {
-		console.log(active)
+		// console.log(active)
 		try {
 			setLoading(true)
 			let feed = []
@@ -185,11 +185,11 @@ const HomePage = () => {
 		setCount(0)
 	}
 
-	// useEffect(() => {
-	// 	getSingle()
-	// 	getUsers()
-	// 	getData()
-	// }, [active])
+	useEffect(() => {
+		getSingle()
+		getUsers()
+		getData()
+	}, [active])
 
 
 	const getUsers = async () => {

@@ -124,17 +124,17 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					</div>
 					<div className="text-xl my-3">{event.description}</div>
 					<div className="text-sm">{event.type}</div>
-					{event.interested?.length === 0 ? null : (
-						<div className="flex my-6">
-							<div className="flex">
-								<img src={event?.interested[0]?.image} className="rounded-full w-10 h-10" alt="" />
-								<img src={event?.interested[1]?.image} className="rounded-full w-10 h-10 -ml-1" alt="" />
-							</div>
-							<div className="text-sm ml-2">
-								{event.interested[0]?.name} and {event.interested?.length} others are attending
-							</div>
+					{event.interested?.length >= 2 ? <div className="flex my-6">
+						<div className="flex">
+							{event.interested.splice(2).map((item, index) => (
+								<img key={index} src={item.image} className="rounded-full w-10 h-10" alt="" />
+							))}
+							{/* <img src={event?.interested[1]?.image} className="rounded-full w-10 h-10 -ml-1" alt="" /> */}
 						</div>
-					)}
+						<div className="text-sm ml-2">
+							{event.interested[0]?.name} and {event.interested?.length} others are attending
+						</div>
+					</div> : null}
 					<div className="flex sm:mb-2">
 						<button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
 							Interested
