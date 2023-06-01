@@ -111,7 +111,8 @@ function Buildprofile(): React.ReactElement {
 				},
 			})
 			console.log(data)
-			// getUsers()
+			getUsers()
+			toast.success("Followed successfully")
 		} catch (error) {
 			console.log(error)
 		}
@@ -192,11 +193,11 @@ function Buildprofile(): React.ReactElement {
 			<FrontLayout showFooter={false} showHeader={false}>
 				<main className="lg:w-2/3 sm:px-5 mx-auto">
 					<Steps current={step}>
-						<Steps.Item title="Logo" />
-						<Steps.Item title="Service Location" />
-						<Steps.Item title="Business/Description" />
-						<Steps.Item title="Interests" />
-						<Steps.Item title="Followers" />
+						<Steps.Item title="" />
+						<Steps.Item title="" />
+						<Steps.Item title="" />
+						<Steps.Item title="" />
+						<Steps.Item title="" />
 					</Steps>
 					{(() => {
 						switch (step) {
@@ -244,10 +245,10 @@ function Buildprofile(): React.ReactElement {
 											</div>
 										</div>
 										<div className="text-center mx-auto my-8">
+											<Button onClick={onPrevious}>Previous</Button>
 											<button className="p-2 bg-warning text-white rounded-sm" onClick={locationNext}>
 												Next
 											</button>
-											<Button onClick={onPrevious}>Previous</Button>
 										</div>
 									</div>
 								)
@@ -264,10 +265,10 @@ function Buildprofile(): React.ReactElement {
 											</div>
 										</div>
 										<div className="text-center mx-auto my-8">
+											<Button onClick={onPrevious}>Previous</Button>
 											<button className="p-2 bg-warning text-white rounded-sm" onClick={descriptionNext}>
 												Next
 											</button>
-											<Button onClick={onPrevious}>Previous</Button>
 											<div className="my-1">
 												<Button onClick={onNext}>Skip</Button>
 											</div>
@@ -277,7 +278,7 @@ function Buildprofile(): React.ReactElement {
 							case 3:
 								return (
 									<div>
-										<div className="text-xl text-center py-14">Select an area of interest to help us recommend campaigns that will interest you</div>
+										<div className="text-xl text-center py-14">Select an area of interest to help us recommend contents that will interest you</div>
 										<div className="w-80 mx-auto">
 											{interest.map((single, index) => (
 												<div key={index} className="flex my-3">
@@ -303,10 +304,10 @@ function Buildprofile(): React.ReactElement {
 											))}
 										</div>
 										<div className="text-center mx-auto my-8">
+											<Button onClick={onPrevious}>Previous</Button>
 											<button className="p-2 bg-warning text-white rounded-sm" onClick={onNext}>
 												Next
 											</button>
-											<Button onClick={onPrevious}>Previous</Button>
 										</div>
 									</div>
 								)
@@ -326,7 +327,7 @@ function Buildprofile(): React.ReactElement {
 													<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
 													<div className="text-xl py-2">{user.name} </div>
 													<div className="w-16 h-[1px] bg-gray-200"></div>
-													<div className="text-xs text-gray-700 my-3">500 Followers</div>
+													<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
 													<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => follow(user)}>
 														+ Follow
 													</div>
@@ -334,10 +335,10 @@ function Buildprofile(): React.ReactElement {
 											))}
 										</div>
 										<div className="text-center mx-auto my-8">
+											<Button onClick={onPrevious}>Previous</Button>
 											<button className="p-2 bg-warning text-white rounded-sm" onClick={handleSubmit}>
 												Finish
 											</button>
-											<Button onClick={onPrevious}>Previous</Button>
 										</div>
 									</div>
 								)

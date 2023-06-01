@@ -134,6 +134,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 					<div className="text-sm my-1">{petition.author.description}</div>
 				</div>
 				<div className="p-2">
+					<p className="text-lg">{petition.title}</p>
 					<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
 					<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 					<div className="my-3 flex justify-end">

@@ -239,7 +239,7 @@ const HomePage = () => {
 							<Whisper placement="bottom" trigger="click" speaker={speaker}>
 								<div className="flex justify-center">
 									<img src={active?.image} className="w-[80px] left-0 right-0 rounded-full h-[80px] " alt="" />
-									<div className="ml-2">
+									<div className="ml-2 my-auto">
 										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
 											<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
 										</svg>

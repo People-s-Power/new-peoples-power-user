@@ -241,9 +241,10 @@ const messages = () => {
 				messageId: msg,
 				dmId: id,
 				userId: active.id || active._id,
-			}, response =>
+			}, response => {
 				console.log('delete_message:', response),
-			);
+				getDm()
+			});
 		}
 	}
 
@@ -513,7 +514,7 @@ const messages = () => {
 											value={message}
 											onFocus={() => sendTyping(show?.users[1]._id === active.id || active._id ? show.users[0]?._id : show?.users[1]?._id)}
 										></textarea>
-										<Dropdown placement="topStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
+										<Dropdown placement="topEnd" title={<img className="h-6 w-6 text-sm" src="/images/edit.svg" alt="" />} noCaret>
 											{show?.type === "customer-org" && (
 												<Dropdown.Item>
 													<span onClick={() => resolve(active.id || active._id)}>Resolve</span>
