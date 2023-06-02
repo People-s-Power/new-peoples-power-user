@@ -33,6 +33,8 @@ const Interested = () => {
     <FrontLayout showFooter={false}>
       <main className='lg:mx-20 mx-6'>
         <p className='text-xl font-bold my-4'>View list of all attendees </p>
+        <input type="text" onChange={(e) => {}} className="p-3 w-96 rounded-full pl-10 text-sm" placeholder="Search" />
+
         {
           interested.length > 0 ?
             interested.map((item, index) => (
