@@ -1,6 +1,6 @@
 import EventModal from "./modals/EventModal"
 import React, { useState } from "react"
-import { Dropdown } from "rsuite"
+import { Dropdown, Modal } from "rsuite"
 import { INTERESTED } from "apollo/queries/eventQuery"
 import { SERVER_URL } from "utils/constants"
 import { print } from "graphql"
@@ -28,6 +28,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 	const author = useRecoilValue(UserAtom)
 	const [following, setFollowing] = useState(false)
 	const [show, setShow] = useState(false)
+	const [interestedIn, setInterested] = useState(event.interested);
 
 	const toggle = val => {
 		setShow(val)
@@ -138,10 +139,10 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					</div> : null}
 					<div className="flex sm:mb-2">
 						{
-							event.author._id === author.id ? <Link href={`/interested?page=${event._id}`}>
-								<button className="bg-transparent text-sm flex justify-between w-44 my-4">View all attendees <img className="my-auto w-6 h-2" src="/images/btn-arrow.png" alt="" /></button></Link> : <button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
-								Interested
-							</button>
+							event.author._id === author.id ?
+								<button onClick={() => handelClick()} className="bg-transparent text-sm flex justify-between w-44 my-4">View all attendees <img className="my-auto w-6 h-2" src="/images/btn-arrow.png" alt="" /></button> : <button onClick={() => interested(event)} className="p-3 bg-warning text-white w-72 rounded-md mr-8">
+									Interested
+								</button>
 						}
 
 					</div>
@@ -153,6 +154,34 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 
 			{show && <UnHideComp toggle={toggle} id={event._id} />}
 
+			<Modal open={open} onClose={handelClick}>
+				<Modal.Header>
+					<Modal.Title>View list of all attendees </Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<div className="p-2">
+						<input type="text" onChange={(e) => { }} className="p-3 w-96 rounded-full  pl-10 mb-4 text-sm" placeholder="Search" />
+						{
+							interestedIn.length > 0 ?
+								interestedIn.map((item, index) => (
+									<div key={index} className='flex w-full my-3 justify-between'>
+										<div className="flex">
+											<img src={item.image} className='rounded-full w-20 h-20' alt="" />
+											<div className='my-auto ml-5'>
+												<p className='text-base'>{item.name}</p>
+												<p className='text-sm'>{item.email}</p>
+											</div>
+										</div>
+										<Link href={`/messages?page=${item._id}`}>
+											<button className='float-right p-2 rounded-full h-10 my-auto text-warning border border-warning w-44'>Send Invitation</button>
+										</Link>
+									</div>
+								))
+								: <p className='text-center p-4 text-base'>No one has shown interest in this event yet</p>
+						}
+					</div>
+				</Modal.Body>
+			</Modal>
 		</div>
 	)
 }
