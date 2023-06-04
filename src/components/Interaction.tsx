@@ -447,7 +447,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 export default CampComp
 
-export function RepliesComp({ comment, deleteComment }) {
+export function RepliesComp({ comment, deleteComment }: any) {
 	const [reply, setReply] = useState("")
 	const [loading2, setLoading2] = useState(false)
 	const author = useRecoilValue(UserAtom)

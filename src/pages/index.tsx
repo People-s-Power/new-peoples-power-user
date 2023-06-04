@@ -57,6 +57,7 @@ const HomePage = () => {
 	const [loading, setLoading] = useState(false)
 	const [active, setActive] = useState<any>(null)
 	const [toggle, setToggle] = useState(true)
+	const [hashtag, setHashtag] = useState("");
 	// console.log(author)
 
 	useEffect(() => {
@@ -118,21 +119,25 @@ const HomePage = () => {
 		}
 	}
 
-	async function getData() {
+	async function getData(hstag = "") {
 		// console.log(active)
 		try {
 			setLoading(true)
 			let feed = []
 			let notification = []
-			await socket.emit("notifications", {
-				userId: active.id || active._id,
-				page: 1,
-				limit: 80
-			}, (response) => {
-				notification = response.notifications
-				// setCount(response.unReadCount)
-				console.log(response)
-			})
+			await socket.emit(
+				"notifications",
+				{
+					userId: active.id || active._id,
+					page: 1,
+					limit: 80,
+				},
+				(response) => {
+					notification = response.notifications
+					// setCount(response.unReadCount)
+					console.log(response)
+				}
+			)
 
 			await axios.get(`share/feed/${active.id || active._id}`).then(function (response) {
 				feed = response.data
@@ -161,7 +166,7 @@ const HomePage = () => {
 			const randomizedItems = general.sort(() => Math.random() - 0.5)
 			const sortedItems = randomizedItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-			const newArray = []
+			let newArray = []
 			for (let i = 0; i < sortedItems.length; i++) {
 				newArray.push(sortedItems[i])
 				if ((i + 1) % 3 === 0) {
@@ -170,6 +175,15 @@ const HomePage = () => {
 					})
 				}
 			}
+			if(hstag) {
+				newArray = newArray.filter((feedItem) => {
+					if(Object.prototype.hasOwnProperty.call(feedItem, "category")) {
+						if(feedItem.category.toLowerCase() === hstag.toLowerCase()) return true;
+						return false;
+					}
+					return true;
+				})
+			}
 			console.log(newArray)
 			setAll(newArray)
 			setLoading(false)
@@ -177,6 +191,10 @@ const HomePage = () => {
 			console.log(err)
 			setLoading(false)
 		}
+	}
+
+	const filterItemsByInterest = (selectedHashtag: string) => {
+		setHashtag(selectedHashtag);
 	}
 
 	const refresh = () => {
@@ -188,9 +206,8 @@ const HomePage = () => {
 	useEffect(() => {
 		getSingle()
 		getUsers()
-		getData()
-	}, [active])
-
+		getData(hashtag)
+	}, [active, hashtag])
 
 	const getUsers = async () => {
 		try {
@@ -209,28 +226,30 @@ const HomePage = () => {
 
 	const speaker = (
 		<Popover>
-			<div onClick={() => {
-				setActive(author)
-				getData()
-			}
-			} className="flex m-1 cursor-pointer">
+			<div
+				onClick={() => {
+					setActive(author)
+					getData()
+				}}
+				className="flex m-1 cursor-pointer"
+			>
 				<img src={author?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
 				<div className="text-sm my-auto">{author?.name}</div>
 			</div>
 			{orgs !== null
 				? orgs?.map((org: any, index: number) => (
-					<div
-						onClick={() => {
-							setActive(org)
-							getData()
-						}}
-						key={index}
-						className="flex m-1 cursor-pointer"
-					>
-						<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
-						<div className="text-sm my-auto">{org?.name}</div>
-					</div>
-				))
+						<div
+							onClick={() => {
+								setActive(org)
+								getData()
+							}}
+							key={index}
+							className="flex m-1 cursor-pointer"
+						>
+							<img src={org?.image} className="w-8 h-8 rounded-full mr-4" alt="" />
+							<div className="text-sm my-auto">{org?.name}</div>
+						</div>
+		))
 				: null}
 		</Popover>
 	)
@@ -238,8 +257,8 @@ const HomePage = () => {
 	return (
 		<FrontLayout showFooter={false}>
 			<main className="flex lg:mx-20">
-				{
-					toggle && <aside className="lg:w-[20%] w-[80%] text-center fixed bg-white sm:z-20 lg:left-20">
+				{toggle && (
+					<aside className="lg:w-[20%] w-[80%] text-center fixed bg-white sm:z-20 lg:left-20">
 						<div className="bg-warning w-full h-10"></div>
 						<div className="p-2 relative -top-6 border-b border-gray-200">
 							<Whisper placement="bottom" trigger="click" speaker={speaker}>
@@ -298,11 +317,13 @@ const HomePage = () => {
 						</div>
 						<div className="text-left">
 							<Dropdown title="My Interests">
-								{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
+								{author?.interests.map((interst, i) => (
+									<Dropdown.Item key={i} onClick={() => filterItemsByInterest(interst)}>{interst}</Dropdown.Item>
+								))}
 							</Dropdown>
 						</div>
 					</aside>
-				}
+				)}
 
 				<section className="w-full lg:w-[50%] mx-auto">
 					<PostActionCard
@@ -312,13 +333,14 @@ const HomePage = () => {
 						handelEventClick={handelEventClick}
 						handelPetition={handelPetition}
 						count={count}
+						hashtag={hashtag}
 						refresh={refresh}
 					/>
-					{
-						loading ? <div className="w-full">
+					{loading ? (
+						<div className="w-full">
 							<Loader size="md" center />
-						</div> : null
-					}
+						</div>
+					) : null}
 					<div className="mt-3">
 						{all.map((single: any, index: number) => {
 							// setType(single.__typename)
@@ -404,18 +426,20 @@ const HomePage = () => {
 						<div className="my-3 text-sm">You can reach a larger audience by allowing others to follow your activity and read what you are sharing</div>
 					</div>
 				</aside>
-				{
-					toggle && <div onClick={() => setToggle(false)} className="bg-black opacity-50 lg:hidden block w-full fixed top-0 left-0 h-screen z-10"></div>
-				}
+				{toggle && <div onClick={() => setToggle(false)} className="bg-black opacity-50 lg:hidden block w-full fixed top-0 left-0 h-screen z-10"></div>}
 				<button onClick={() => setToggle(!toggle)} className="p-3 lg:hidden  rounded-full bg-warning z-20 fixed bottom-10 right-10">
-					{toggle ? <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-x" viewBox="0 0 16 16">
-						<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-					</svg> : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-plus" viewBox="0 0 16 16">
-						<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-					</svg>}
+					{toggle ? (
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-x" viewBox="0 0 16 16">
+							<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+						</svg>
+					) : (
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-plus" viewBox="0 0 16 16">
+							<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+						</svg>
+					)}
 				</button>
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
-				<CreatePost open={openPost} handelClick={handelClick} orgs={orgs} handelPetition={handelPetition} post={null} />
+				<CreatePost open={openPost} handelClick={handelClick} defaultCategory={hashtag} orgs={orgs} handelPetition={handelPetition} post={null} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
@@ -426,7 +450,6 @@ const HomePage = () => {
 }
 
 export default HomePage
-
 
 function Follow(user, getUsers) {
 	const [loading, setLoading] = useState(false)
@@ -466,20 +489,18 @@ function Follow(user, getUsers) {
 						<div className="text-xs">{user.user.description.substring(0, 30)}</div>
 					</div>
 				</Link>
-				{
-					loading ?
-						<div className="px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">
-							<div className="my-auto text-sm text-warning">
-								Following...
-							</div>
+				{loading ? (
+					<div className="px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">
+						<div className="my-auto text-sm text-warning">Following...</div>
+					</div>
+				) : (
+					<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">
+						<div className="text-lg">+</div>
+						<div className="my-auto text-sm" onClick={() => followUser(user.user)}>
+							Follow
 						</div>
-						: <div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-[70%] mt-2 rounded-md">
-							<div className="text-lg">+</div>
-							<div className="my-auto text-sm" onClick={() => followUser(user.user)}>
-								Follow
-							</div>
-						</div>
-				}
+					</div>
+				)}
 			</div>
 		</div>
 	)

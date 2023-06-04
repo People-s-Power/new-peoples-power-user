@@ -18,12 +18,14 @@ const CreatePost = ({
 	handelClick,
 	post,
 	handelPetition,
+	defaultCategory,
 	orgs,
 }: {
 	open: boolean
 	handelClick(): void
 	post: any
 	handelPetition(): void
+	defaultCategory?: string | undefined
 	orgs: any
 }): JSX.Element => {
 	const [filesPreview, setFilePreview] = useState<any>(post?.image || [])
@@ -34,7 +36,7 @@ const CreatePost = ({
 	const [loading, setLoading] = useState(false)
 	const [body, setBody] = useState(post?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
-	const [category, setCategory] = useState("Add Category")
+	const [category, setCategory] = useState(defaultCategory || "Add Category")
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
@@ -201,24 +203,22 @@ const CreatePost = ({
 				<Modal.Footer>
 					<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
 					<div className="flex">
-						{filesPreview.map((file, index) => (
-							type === "image" ? <div key={index} className="relative w-20 h-20 mx-1">
-								<img src={file} className="w-20 h-20" alt="" />
-								<div className="absolute top-1 cursor-pointer right-1 w-4 h-4 rounded-full bg-danger text-sm text-center text-white">
-									<div className="mx-auto text-xs my-auto text-white" onClick={() => clearFile(index)}>
-										x
+						{filesPreview.map((file, index) =>
+							type === "image" ? (
+								<div key={index} className="relative w-20 h-20 mx-1">
+									<img src={file} className="w-20 h-20" alt="" />
+									<div className="absolute top-1 cursor-pointer right-1 w-4 h-4 rounded-full bg-danger text-sm text-center text-white">
+										<div className="mx-auto text-xs my-auto text-white" onClick={() => clearFile(index)}>
+											x
+										</div>
 									</div>
 								</div>
-							</div> : <video
-								src={file}
-								width="500"
-								controls={true}
-								className="w-full object-cover h-52 my-3"
-							>
-								<source src={file} type="video/mp4" />
-							</video>
-
-						))}
+							) : (
+								<video key={index} src={file} width="500" controls={true} className="w-full object-cover h-52 my-3">
+									<source src={file} type="video/mp4" />
+								</video>
+							)
+						)}
 					</div>
 
 					<div className="flex sm:flex-wrap justify-between text-gray-500">
@@ -232,12 +232,14 @@ const CreatePost = ({
 							{/* <div className="cursor-pointer">
 								<img className="w-4 h-4 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
 							</div> */}
-
 						</div>
-						<div className="text-sm flex my-auto" onClick={() => {
-							handelClick()
-							setOpenFindExpart(true)
-						}}>
+						<div
+							className="text-sm flex my-auto"
+							onClick={() => {
+								handelClick()
+								setOpenFindExpart(true)
+							}}
+						>
 							<img className="w-4 h-4 my-auto" src="/images/home/icons/experts.svg" alt="" />
 							<div className="my-auto text-sm ml-3">Find Expert</div>
 						</div>
@@ -253,22 +255,22 @@ const CreatePost = ({
 							<div className="my-auto text-sm ml-3">Make petition</div>
 						</div>
 
-						<div className="flex  cursor-pointer " onClick={() => {
-							handelClick()
-							handelEventClick()
-						}} >
+						<div
+							className="flex  cursor-pointer "
+							onClick={() => {
+								handelClick()
+								handelEventClick()
+							}}
+						>
 							<img className="w-4 h-4 my-auto" src="/images/home/icons/fe_sitemap.svg" alt="" />
 							<div className="my-auto text-sm ml-3">Events</div>
 						</div>
 					</div>
 				</Modal.Footer>
 			</Modal>
-			{
-				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
-			}
+			{notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />}
 			<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 			<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
-
 		</>
 	)
 }
