@@ -25,7 +25,7 @@ const CreatePost = ({
 	handelClick(): void
 	post: any
 	handelPetition(): void
-	defaultCategory: string | undefined
+	defaultCategory?: string | undefined
 	orgs: any
 }): JSX.Element => {
 	const [filesPreview, setFilePreview] = useState<any>(post?.image || [])
