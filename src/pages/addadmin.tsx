@@ -233,14 +233,14 @@ const addadmin = () => {
 					<div onClick={() => router.back()} className="cursor-pointer lg:ml-20">
 						Back
 					</div>
-					<div className="flex justify-evenly text-center">
+					<div className="lg:flex justify-evenly text-center">
 						<div
 							onClick={() => {
 								setAdmin(true), setAdmins(true), allAdmins()
 							}}
 							className="cursor-pointer "
 						>
-							<div className="lg:text-3xl text-sm font-bold underline">Admins</div>
+							<div className="lg:text-3xl text-base font-black text-warning underline">Admins</div>
 							<p className="sm:hidden">Veiw all Admins</p>
 						</div>
 						<div
@@ -400,7 +400,7 @@ const addadmin = () => {
 										<div className="text-base my-2">
 											Start your free 1-month trial today. Cancel anytime. We'll send you a reminder 7 days before your trial ends.
 										</div>
-										<div className="lg:flex my-1 justify-between">
+										<div className="lg:flex lg:my-1 my-4 justify-between sm:text-center">
 											<div className="my-auto lg:mx-3">
 												<input
 													onChange={() => {
@@ -408,7 +408,7 @@ const addadmin = () => {
 													}}
 													type="checkbox"
 													checked={role === "admin"}
-													className="p-4"
+													className="p-4 mx-auto"
 												/>
 											</div>
 											<div className="my-auto lg:w-2/3">
@@ -420,7 +420,7 @@ const addadmin = () => {
 											</div>
 											<button className="p-2 border borger-warning w-44 mx-1">N35, 000/Monthly</button>
 										</div>
-										<div className="lg:flex my-3 justify-between">
+										<div className="lg:flex lg:my-3 my-4 justify-between sm:text-center">
 											<div className="my-auto lg:mx-3">
 												<input
 													onChange={() => {
@@ -428,7 +428,7 @@ const addadmin = () => {
 													}}
 													checked={role === "editor"}
 													type="checkbox"
-													className="p-4"
+													className="p-4 "
 												/>
 											</div>
 											<div className="my-auto lg:w-2/3">

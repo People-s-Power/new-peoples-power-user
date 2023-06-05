@@ -23,6 +23,10 @@ html {
 	}
 	color: #000;
 }
+
+aside::-webkit-scrollbar {
+  width: 2px;
+}
 body {
 	overflow-x: hidden;
 	&::-webkit-scrollbar {
