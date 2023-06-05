@@ -255,52 +255,58 @@ const HomePage = () => {
 							<div className="text-base font-light">{active?.name}</div>
 							<div className="text-xs px-3">{active?.description?.substring(0, 100) + "..."}</div>
 						</div>
-						<div className="border-b border-gray-200 px-3">
-							{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
-							<Link href={"/about#career"}>
-								<div className="flex justify-between my-2">
-									<div className="text-sm my-auto">Become Virtual Assistant</div>
-									<div className="text-center cursor-pointer">
-										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-										<span className="text-xs text-center">start</span>
-									</div>
-								</div>
-							</Link>
-							{/* </a> */}
-							<div className="flex justify-between my-2">
-								<div className="text-sm my-auto">Event</div>
-								<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
-									<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-									<span className="text-xs text-center">create</span>
-								</div>
-							</div>
-							<div className="flex justify-between my-2">
-								<div className="text-sm my-auto">Become a Service Provider</div>
-								<Link href={"/org/create"}>
-									<div className="text-center cursor-pointer">
-										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
-										<span className="text-xs text-center">start</span>
+						<div className="overflow-y-auto h-[500px]">
+							<div className="border-b border-gray-200 px-3">
+								{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
+								<Link href={"/about#career"}>
+									<div className="flex justify-between my-2">
+										<div className="text-sm my-auto">Become Virtual Assistant</div>
+										<div className="text-center cursor-pointer">
+											<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+											<span className="text-xs text-center">start</span>
+										</div>
 									</div>
 								</Link>
-							</div>
-							<div>
-								{orgs.map((org, i) => (
-									<div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
-										{isValidUrl(org?.image) ? (
-											<img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
-										) : (
-											<img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
-										)}
-										<p className="pl-2 mt-2 text-sm">{org?.name}</p>
+								{/* </a> */}
+								<div className="flex justify-between my-2">
+									<div className="text-sm my-auto">Event</div>
+									<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
+										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+										<span className="text-xs text-center">create</span>
 									</div>
-								))}
+								</div>
+								<div className="flex justify-between my-2">
+									<div className="text-sm my-auto">Become a Service Provider</div>
+									<Link href={"/org/create"}>
+										<div className="text-center cursor-pointer">
+											<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+											<span className="text-xs text-center">start</span>
+										</div>
+									</Link>
+								</div>
+								<div>
+									{orgs.map((org, i) => (
+										<div key={i} className="flex cursor-pointer my-2" onClick={() => singleOrg(org?._id)}>
+											{isValidUrl(org?.image) ? (
+												<img className="w-8 h-8 rounded-full" src={org?.image} alt="" />
+											) : (
+												<img className="w-8 h-8 opacity-20" src="/images/logo.svg" alt="" />
+											)}
+											<p className="pl-2 mt-2 text-sm">{org?.name}</p>
+										</div>
+									))}
+								</div>
+							</div>
+							<div className="text-left sm:p-3">
+								<p className="my-4">My Interests <Link href={"/mycamp/profile"}><span className="cursor-pointer float-right text-lg text-warning">&#x270E;</span></Link></p>
+								{author?.interests.map((interst, i) => <p className="text-sm my-3 capitalize" key={i}>{interst}</p>)}
 							</div>
 						</div>
-						<div className="text-left">
+						{/* <div className="text-left">
 							<Dropdown title="My Interests">
 								{author?.interests.map((interst, i) => <Dropdown.Item key={i}>{interst}</Dropdown.Item>)}
 							</Dropdown>
-						</div>
+						</div> */}
 					</aside>
 				}
 

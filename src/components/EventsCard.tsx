@@ -34,6 +34,8 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 		setShow(val)
 	}
 
+	// console.log(event)
+
 	const interested = async (event: any) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -126,17 +128,17 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					<div className="text-xl my-3">{event.description}</div>
 					<div className="text-sm mb-2">{event.type}</div>
 
-					{event.interested?.length >= 2 ? <div className="flex my-6">
+					{event.interested.length >= 2 ? <div className="flex my-6">
 						<div className="flex">
-							{event.interested.splice(2).map((item, index) => (
+							{event.interested.slice(0, 2).map((item, index) => (
 								<img key={index} src={item.image} className="rounded-full w-10 h-10" alt="" />
 							))}
-							{/* <img src={event?.interested[1]?.image} className="rounded-full w-10 h-10 -ml-1" alt="" /> */}
 						</div>
 						<div className="text-sm ml-2">
 							{event.interested[0]?.name} and {event.interested?.length} others are attending
 						</div>
 					</div> : null}
+					
 					<div className="flex sm:mb-2">
 						{
 							event.author._id === author.id ?
@@ -160,20 +162,20 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="p-2">
-						<input type="text" onChange={(e) => { }} className="p-3 w-96 rounded-full  pl-10 mb-4 text-sm" placeholder="Search" />
+						<input type="text" onChange={(e) => { }} className="p-3 lg:w-96 w-full rounded-full  pl-10 mb-4 text-sm" placeholder="Search" />
 						{
 							interestedIn.length > 0 ?
 								interestedIn.map((item, index) => (
-									<div key={index} className='flex w-full my-3 justify-between'>
+									<div key={index} className='lg:flex w-full my-3 justify-between'>
 										<div className="flex">
-											<img src={item.image} className='rounded-full w-20 h-20' alt="" />
+											<img src={item.image} className='rounded-full sm:my-auto w-20 h-20' alt="" />
 											<div className='my-auto ml-5'>
-												<p className='text-base'>{item.name}</p>
-												<p className='text-sm'>{item.email}</p>
+												<p className='lg:text-base text-sm'>{item.name}</p>
+												<p className='lg:text-sm text-xs'>{item.email}</p>
 											</div>
 										</div>
 										<Link href={`/messages?page=${item._id}`}>
-											<button className='float-right p-2 rounded-full h-10 my-auto text-warning border border-warning w-44'>Send Invitation</button>
+											<button className='lg:float-right p-2 sm:my-3 rounded-full h-10 lg:my-auto text-warning border border-warning w-44'>Send Reminder</button>
 										</Link>
 									</div>
 								))

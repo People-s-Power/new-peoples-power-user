@@ -20,6 +20,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	const router = useRouter()
 	const [content, setContent] = useState("")
 	const [show, setShow] = useState(false)
+	const [more, setMore] = useState(updates.body?.length > 250 ? true : false)
 
 	const toggle = val => {
 		setShow(val)
@@ -107,11 +108,29 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 					<img className="w-full h-80 rounded-md  object-cover" src={updates.image} alt="" />
 				</div>
 				<div className="font-bold text-lg">Petition Update</div>
-				<div className="text-sm p-2 leading-loose">{updates.body}</div>
+				
+				{more ? (
+					<div className="text-sm p-2 leading-loose">
+						{updates.body.slice(0, 250)}{" "}
+						<span className="text-warning underline" onClick={() => setMore(!more)}>
+							..see more
+						</span>
+					</div>
+				) : (
+					<div className="text-sm p-2 leading-loose">
+						{updates.body}
+						{updates.body.length > 250 ? (
+							<span className="text-warning underline" onClick={() => setMore(!more)}>
+								see less
+							</span>
+						) : null}
+					</div>
+				)}
+				{/* <div className="text-sm p-2 leading-loose">{updates.body}</div> */}
 				<div className="w-full relative">
 					<Link href={`/campaigns/${updates?.petition.slug}`}>
 						<button className="p-2 absolute bottom-0 right-0 text-sm text-white bg-warning">
-							View More
+							View Petition
 						</button>
 					</Link>
 				</div>
