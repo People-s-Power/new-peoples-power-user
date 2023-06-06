@@ -45,7 +45,6 @@ const addadmin = () => {
 	const [professionals, setProfessionals] = useState<any>([])
 	const [trained, setTrained] = useState([])
 
-
 	const paystack_config: PaystackProps = {
 		reference: new Date().getTime().toString(),
 		email: author?.email as string,
@@ -54,7 +53,7 @@ const addadmin = () => {
 		lastname: author?.lastName,
 		currency: "NGN",
 		publicKey: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
-		plan: role === "editor" ? "PLN_m7u41ii015j3tqb" : "PLAINT",
+		plan: role === "editor" ? "PLN_hyabaaqen17sez8" : "PLN_bpzuum9aliqlyrw",
 	}
 
 	const initializePayment = usePaystackPayment(paystack_config)
