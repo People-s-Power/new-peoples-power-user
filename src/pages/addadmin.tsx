@@ -35,7 +35,6 @@ const addadmin = () => {
 	const [adminTag, setAdminTag] = useState(false)
 	const [editor, setEditor] = useState(false)
 	const [loading, setLoading] = useState(false)
-	const [clicked, setClicked] = useState(false)
 	const [operator, setOperator] = useState<Operator[]>([])
 	const [operators, setOperators] = useState<IUser[]>([])
 	const [open, setOpen] = useState(false)
@@ -54,7 +53,8 @@ const addadmin = () => {
 		firstname: author?.firstName,
 		lastname: author?.lastName,
 		currency: "NGN",
-		publicKey: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28"
+		publicKey: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
+		plan: role === "editor" ? "PLN_m7u41ii015j3tqb" : "PLAINT",
 	}
 
 	const initializePayment = usePaystackPayment(paystack_config)
@@ -240,7 +240,7 @@ const addadmin = () => {
 							}}
 							className="cursor-pointer "
 						>
-							<div className="lg:text-3xl text-base font-black text-warning underline">Admins</div>
+							<div className="lg:text-xl text-base font-black underline">Admins</div>
 							<p className="sm:hidden">Veiw all Admins</p>
 						</div>
 						<div
@@ -322,12 +322,12 @@ const addadmin = () => {
 									<div
 										key={i}
 										className={
-											clicked
+											id === search.id
 												? "bg-gray-400 text-white p-3 text-base mb-1 cursor-pointer "
 												: "" + "p-3 bg-gray-100 cursor-pointer hover:bg-gray-200 text-base mb-1"
 										}
 										onClick={() => {
-											setId(search.id), setClicked(true)
+											setId(search.id)
 										}}
 									>
 										{search.firstName} {search.lastName}
@@ -413,7 +413,7 @@ const addadmin = () => {
 											</div>
 											<div className="my-auto lg:w-2/3">
 												<div className="text-lg font-bold">Admin</div>
-												<p>
+												<p className="sm:text-xs lg:text-base">
 													Event coverage, Writing and posting of campaigns, Editing of profile and campaigns,
 													<br /> Promote campaigns, create an organization, Make update.{" "}
 												</p>
@@ -433,7 +433,7 @@ const addadmin = () => {
 											</div>
 											<div className="my-auto lg:w-2/3">
 												<div className="text-lg font-bold">Editor</div>
-												<p>Edit profile, Edit campaigns and designs</p>
+												<p className="sm:text-xs lg:text-base">Edit profile, Edit campaigns and designs</p>
 											</div>
 											<button className="p-2 border borger-warning w-44 mx-1">N15, 000/Monthly</button>
 										</div>
@@ -459,12 +459,12 @@ const addadmin = () => {
 											<div
 												key={i}
 												className={
-													clicked
+													id === search._id
 														? "bg-gray-400 text-white p-3 text-base mb-1 cursor-pointer "
 														: "" + "p-3 bg-gray-100 cursor-pointer hover:bg-gray-200 text-base mb-1"
 												}
 												onClick={() => {
-													setId(search._id), setClicked(true)
+													setId(search._id)
 												}}
 											>
 												{search.name}
