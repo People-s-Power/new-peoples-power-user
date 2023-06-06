@@ -77,6 +77,9 @@ const addadmin = () => {
 			initializePayment(onSuccess, onClose)
 			return
 		}
+		if (step === 1) {
+			addAdmin()
+		}
 	}
 
 	useQuery(GET_ORGANIZATION, {
