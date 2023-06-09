@@ -18,15 +18,19 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 	const author = useRecoilValue(UserAtom)
 	const [active, setActive] = useState<any>(null)
 	const [id, setId] = useState(data?._id || "")
-	const [image, setFilePreview] = useState({
-		type: data === null ? "" : "image",
-		file: data?.image || "",
-		name: "",
-	})
+	const [previewImages, setFilePreview] = useState(data?.image || []);
 	const router = useRouter()
 	const [aim, setAim] = useState(data?.aim || "")
 	const [target, setTarget] = useState(data?.target || "")
 	const [body, setBody] = useState(data?.body || "")
+
+	const handleDelSelected = (index) => {
+		setFilePreview((prev) => {
+			const newPreviewImages = [...prev];
+			newPreviewImages.splice(index, 1);
+			return newPreviewImages;
+		});
+	};
 
 	useEffect(() => {
 		setActive(author)
@@ -37,25 +41,27 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 		handelClick()
 		setPreview(!preview)
 	}
+
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
-		const reader = new FileReader()
 
-		if (files && files.length > 0) {
-			reader.readAsDataURL(files[0])
-			reader.onloadend = () => {
-				if (reader.result) {
-					const type = files[0].name.substr(files[0].name.length - 3)
-					// console.log(type)
-					setFilePreview({
-						type: type === "mp4" ? "video" : "image",
-						file: reader.result as string,
-						name: files[0].name,
-					})
-				}
-			}
+		if (files && files.length <= 6) {
+			const fileArray = Array.from(files);
+
+			fileArray.forEach((file) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => {
+					setFilePreview((prev) => [...prev, reader.result]);
+				};
+			});
+		} else {
 		}
+		uploadRef.current.value = null;
+
 	}
+
+
 
 	const createPetition = async () => {
 		try {
@@ -63,7 +69,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			const { data } = await axios.post("/petition", {
 				title: title,
 				category: category,
-				image: [image.file],
+				image: previewImages,
 				aim: aim,
 				target: target,
 				body: body,
@@ -79,11 +85,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			setAim("")
 			setTarget("")
 			setBody("")
-			setFilePreview({
-				type: "",
-				file: "",
-				name: "",
-			})
+			setFilePreview([])
 		} catch (error) {
 			console.log(error.response)
 			toast.warn("Oops! Something went wrong")
@@ -96,7 +98,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			const { data } = await axios.put("https://apiv5-xacq2.ondigitalocean.app/api/v5/petition", {
 				title: title,
 				category: category,
-				image: [...image.file],
+				image: previewImages,
 				aim: aim,
 				target: target,
 				body: body,
@@ -111,11 +113,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 			setAim("")
 			setTarget("")
 			setBody("")
-			setFilePreview({
-				type: "",
-				file: "",
-				name: "",
-			})
+			setFilePreview([])
 		} catch (error) {
 			console.log(error)
 			setLoading(false)
@@ -172,8 +170,8 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 						</div>
 					) : null}
 					<div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
-						{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />}
-						{image?.type === "video" && (
+						{/* {image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />} */}
+						{/* {image?.type === "video" && (
 							<video
 								src={image.file}
 								width="500"
@@ -182,13 +180,32 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 							>
 								<source src={image.file} type="video/mp4" />
 							</video>
-						)}
-						<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
+						)} */}
+						<input type="file" ref={uploadRef} multiple={true}
+							className="d-none" onChange={handleImage} />
 						<img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 cursor-pointer h-20 mx-auto" alt="" />
 						<div className="text-base my-3">Upload Petition Cover Image</div>
 						<div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
 					</div>
-
+					{previewImages.length > 0 && (
+						<div className="flex flex-wrap my-4 w-full">
+							{previewImages.map((url, index) => (
+								<div className="w-[100px] h-[100px] m-[3px]" key={index}>
+									<img
+										src={url}
+										alt={`Preview ${index}`}
+										className=" object-cover w-full h-full"
+									/>
+									<div
+										className="flex  cursor-pointer text-[red] justify-center items-center"
+										onClick={() => handleDelSelected(index)}
+									>
+										Delete
+									</div>
+								</div>
+							))}
+						</div>
+					)}
 					<div className="my-3 text-sm">
 						<input
 							value={title}
@@ -259,19 +276,26 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 				<Modal.Body>
 					<div>
 						<div className="my-2 text-lg">{title}</div>
-						<div className="my-2 w-full">
-							{image?.type === "image" && <img src={image.file} className="h-52 object-cover w-full " />}
-							{image?.type === "video" && (
-								<video
-									src={image.file}
-									width="500"
-									controls={true}
-									className="embed-responsive-item h-52 w-full object-cover"
-								>
-									<source src={image.file} type="video/mp4" />
-								</video>
+						<div className="my-4 w-full">
+							{previewImages.length > 0 && (
+								<div className="flex flex-wrap my-2 w-full">
+									{previewImages.map((url, index) => (
+										<div className="w-[100px] h-[100px] m-[3px]" key={index}>
+											<img
+												src={url}
+												alt={`Preview ${index}`}
+												className=" object-cover w-full h-full"
+											/>
+											<div
+												className="flex  cursor-pointer text-[red] justify-center items-center"
+												onClick={() => handleDelSelected(index)}
+											>
+												Delete
+											</div>
+										</div>
+									))}
+								</div>
 							)}
-							{/* <img src={image.file} alt="" /> */}
 						</div>
 						<div className="text-sm my-2">{body}</div>
 						<div className="text-sm my-2">Category: {category}</div>

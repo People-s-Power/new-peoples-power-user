@@ -20,11 +20,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 	const [audience, setAudience] = useState(event?.audience || "")
 	const [loading, setLoading] = useState(false)
 	const uploadRef = useRef<HTMLInputElement>(null)
-	const [image, setFilePreview] = useState({
-		type: event === null ? "" : "image",
-		file: event?.image || "",
-		name: "",
-	})
+	const [previewImages, setFilePreview] = useState(event?.image || []);
+
 	const [active, setActive] = useState<any>(author)
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
@@ -32,22 +29,21 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
-		const reader = new FileReader()
 
-		if (files && files.length > 0) {
-			reader.readAsDataURL(files[0])
-			reader.onloadend = () => {
-				if (reader.result) {
-					const type = files[0].name.substr(files[0].name.length - 3)
-					// console.log(type)
-					setFilePreview({
-						type: type === "mp4" ? "video" : "image",
-						file: reader.result as string,
-						name: files[0].name,
-					})
-				}
-			}
+		if (files && files.length <= 6) {
+			const fileArray = Array.from(files);
+
+			fileArray.forEach((file) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => {
+					setFilePreview((prev) => [...prev, reader.result]);
+				};
+			});
+		} else {
 		}
+		uploadRef.current.value = null;
+
 	}
 
 	useEffect(() => {
@@ -67,7 +63,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					startDate: startDate,
 					time: time,
 					type: type,
-					imageFile: [image.file],
+					imageFile: previewImages,
 					audience: ""
 				},
 			})
@@ -77,11 +73,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			setMsg("Event Created Successfully!")
 			setNotication(true)
 			setLoading(false)
-			setFilePreview({
-				type: "",
-				file: "",
-				name: "",
-			})
+			setFilePreview([])
 			handelClick()
 		} catch (error) {
 			console.log(error)
@@ -104,7 +96,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					startDate: startDate,
 					time: time,
 					type: type,
-					imageFile: [...image.file],
+					imageFile: previewImages,
 					// audience: audience,
 				},
 			})
@@ -114,11 +106,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			setLink(`/${data.data.updateEvent.__typename}?page=${data.data.updateEvent._id}`)
 			setMsg("Event Edited Successfully!")
 			setNotication(true)
-			setFilePreview({
-				type: "",
-				file: "",
-				name: "",
-			})
+			setFilePreview([])
 			handelClick()
 		} catch (error) {
 			console.log(error)
@@ -148,7 +136,13 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 				: null}
 		</Popover>
 	)
-
+	const handleDelSelected = (index) => {
+		setFilePreview((prev) => {
+			const newPreviewImages = [...prev];
+			newPreviewImages.splice(index, 1);
+			return newPreviewImages;
+		});
+	};
 	return (
 		<>
 			<Modal open={open} onClose={handelClick}>
@@ -176,7 +170,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 						</div>
 					) : null}
 					<div className="bg-gray-200 w-full p-4 text-center relative cursor-pointer" onClick={() => uploadRef.current?.click()}>
-						{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />}
+						{/* {image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />}
 						{image?.type === "video" && (
 							<video
 								src={image.file}
@@ -186,12 +180,31 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 							>
 								<source src={image.file} type="video/mp4" />
 							</video>
-						)}
-						<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
+						)} */}
+						<input type="file" ref={uploadRef} multiple={true} className="d-none" onChange={handleImage} />
 						<img src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
 						<div className="text-base my-3">Upload Event Cover Image</div>
 						<div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
 					</div>
+					{previewImages.length > 0 && (
+						<div className="flex flex-wrap my-4 w-full">
+							{previewImages.map((url, index) => (
+								<div className="w-[100px] h-[100px] m-[3px]" key={index}>
+									<img
+										src={url}
+										alt={`Preview ${index}`}
+										className=" object-cover w-full h-full"
+									/>
+									<div
+										className="flex  cursor-pointer text-[red] justify-center items-center"
+										onClick={() => handleDelSelected(index)}
+									>
+										Delete
+									</div>
+								</div>
+							))}
+						</div>
+					)}
 					<div>
 						<div className="text-sm my-2 mt-4">Event type</div>
 						<div className="flex my-3">

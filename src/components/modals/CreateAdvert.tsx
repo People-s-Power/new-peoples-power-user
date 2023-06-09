@@ -13,11 +13,8 @@ import { UserAtom } from "atoms/UserAtom"
 import NotificationCard from "components/NotificationCard"
 
 const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClick(): void; advert: any }): JSX.Element => {
-	const [image, setFilePreview] = useState({
-		type: "",
-		file: advert?.image[0] || "",
-		name: "",
-	})
+	const [previewImages, setFilePreview] = useState(advert?.image || []);
+
 	const uploadRef = useRef<HTMLInputElement>(null)
 	const [caption, setCaption] = useState(advert?.caption || "")
 	const [link, setLink] = useState(advert?.link || "")
@@ -35,23 +32,23 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
-		const reader = new FileReader()
 
-		if (files && files.length > 0) {
-			reader.readAsDataURL(files[0])
-			reader.onloadend = () => {
-				if (reader.result) {
-					const type = files[0].name.substr(files[0].name.length - 3)
-					// console.log(type)
-					setFilePreview({
-						type: type === "mp4" ? "video" : "image",
-						file: reader.result as string,
-						name: files[0].name,
-					})
-				}
-			}
+		if (files && files.length <= 6) {
+			const fileArray = Array.from(files);
+
+			fileArray.forEach((file) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => {
+					setFilePreview((prev) => [...prev, reader.result]);
+				};
+			});
+		} else {
 		}
+		uploadRef.current.value = null;
+
 	}
+
 	const handleSubmit = async () => {
 		setLoading(true)
 		try {
@@ -65,7 +62,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					link: link,
 					duration: duration,
 					email: email,
-					imageFile: [image.file],
+					imageFile: previewImages,
 				},
 			})
 			setMsg("Advert Created Successfully!")
@@ -81,11 +78,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			setEmail("")
 			setDuration("")
 			setLoading(true)
-			setFilePreview({
-				type: "",
-				file: "",
-				name: "",
-			})
+			setFilePreview([])
 		} catch (error) {
 			console.log(error.response)
 			toast.warn("Oops something happened")
@@ -104,7 +97,7 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 					link: link,
 					duration: duration,
 					email: email,
-					imageFile: [image.file],
+					imageFile: previewImages,
 					advertId: advert._id,
 				},
 			})
@@ -121,16 +114,20 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 			setEmail("")
 			setDuration("")
 			setLoading(true)
-			setFilePreview({
-				type: "",
-				file: "",
-				name: "",
-			})
+			setFilePreview([])
 		} catch (error) {
 			console.log(error)
 			toast.warn("Oops something happened")
 		}
 	}
+	const handleDelSelected = (index) => {
+		setFilePreview((prev) => {
+			const newPreviewImages = [...prev];
+			newPreviewImages.splice(index, 1);
+			return newPreviewImages;
+		});
+	};
+
 	return (
 		<>
 			<Modal open={open} onClose={handelClick}>
@@ -141,22 +138,30 @@ const CreateAdvert = ({ open, handelClick, advert }: { open: boolean; handelClic
 				</Modal.Header>
 				{/* <Modal.Body> */}
 				<div className="bg-gray-200 w-full p-4 text-center relative">
-					{image?.type === "image" && <img onClick={() => uploadRef.current?.click()} src={image.file} width="500" className="h-52 left-0 object-cover w-full absolute top-0" />}
-					{image?.type === "video" && (
-						<video
-							src={image.file}
-							width="500"
-							controls={true}
-							className="embed-responsive-item absolute top-0 w-full object-cover left-0 h-52"
-						>
-							<source src={image.file} type="video/mp4" />
-						</video>
-					)}
-					<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
+					<input type="file" ref={uploadRef} multiple={true} className="d-none" onChange={handleImage} />
 					<img onClick={() => uploadRef.current?.click()} src="/images/home/icons/ant-design_camera-outlined.svg" className="w-20 h-20 mx-auto" alt="" />
 					<div className="text-base my-3">Upload Product Cover Image</div>
 					<div className="text-sm my-2 text-gray-800">Cover image should be minimum of 500pxl/width</div>
 				</div>
+				{previewImages.length > 0 && (
+					<div className="flex flex-wrap my-4 w-full">
+						{previewImages.map((url, index) => (
+							<div className="w-[100px] h-[100px] m-[3px]" key={index}>
+								<img
+									src={url}
+									alt={`Preview ${index}`}
+									className=" object-cover w-full h-full"
+								/>
+								<div
+									className="flex  cursor-pointer text-[red] justify-center items-center"
+									onClick={() => handleDelSelected(index)}
+								>
+									Delete
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 				<div className="mt-2">
 					<div className="text-sm my-1">Caption</div>
 					<input value={caption} type="text" onChange={(e) => setCaption(e.target.value)} className="p-1 border border-gray-700 w-full rounded-sm" />

@@ -19,7 +19,6 @@ const CreateVictories = ({ open, handelClick, victory }: { open: boolean; handel
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
 
-
 	const handelSubmit = async () => {
 		setLoading(true)
 		try {

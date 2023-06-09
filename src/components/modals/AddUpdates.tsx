@@ -12,11 +12,8 @@ import NotificationCard from "components/NotificationCard"
 const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; handelClick(): void; petition: any; update: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
-	const [image, setFilePreview] = useState({
-		type: "",
-		file: update?.image || "",
-		name: "",
-	})
+	const [previewImages, setFilePreview] = useState(update?.image || []);
+
 	const [body, setBody] = useState(update?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
 
@@ -31,31 +28,33 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
-		const reader = new FileReader()
-		if (files && files.length > 0) {
-			reader.readAsDataURL(files[0])
-			reader.onloadend = () => {
-				if (reader.result) {
-					const type = files[0].name.substr(files[0].name.length - 3)
-					// console.log(type)
-					setFilePreview({
-						type: type === "mp4" ? "video" : "image",
-						file: reader.result as string,
-						name: files[0].name,
-					})
-				}
-			}
+
+		if (files && files.length <= 6) {
+			const fileArray = Array.from(files);
+
+			fileArray.forEach((file) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => {
+					setFilePreview((prev) => [...prev, reader.result]);
+				};
+			});
+		} else {
 		}
+		uploadRef.current.value = null;
+
 	}
-	const clearFile = () => {
-		setFilePreview({
-			type: "",
-			file: "",
-			name: "",
-		})
-	}
+
+	const handleDelSelected = (index) => {
+		setFilePreview((prev) => {
+			const newPreviewImages = [...prev];
+			newPreviewImages.splice(index, 1);
+			return newPreviewImages;
+		});
+	};
+
 	const handleSubmit = async () => {
-		if (image.file === "" || body === "") {
+		if (previewImages.length < 0 || body === "") {
 			return toast.warn("Please fill all fields")
 		}
 		setLoading(true)
@@ -63,7 +62,7 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 			const { data } = await axios.post("petition/update", {
 				petitionId: petition._id,
 				body: body,
-				image: [image.file],
+				image: previewImages,
 				authorId: author.id,
 			})
 			// toast.success("Updates added successfulluy")
@@ -84,7 +83,7 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 			const { data } = await axios.put("petition/update", {
 				updateId: update._id,
 				body: body,
-				image: [...image.file],
+				image: previewImages,
 				authorId: author.id,
 			})
 			toast.success("Updates edited successfulluy")
@@ -122,15 +121,24 @@ const AddUpdates = ({ open, handelClick, petition, update }: { open: boolean; ha
 				</Modal.Body>
 
 				<Modal.Footer>
-					<input type="file" ref={uploadRef} className="d-none" onChange={handleImage} />
-					{image.file === "" ? null : (
-						<div className="relative w-20 h-20">
-							<img src={image.file} className="w-20 h-20" alt="" />
-							<div className="absolute top-1 right-1 w-6 h-6 rounded-full bg-danger text-sm text-center text-white">
-								<div className="mx-auto my-auto text-white" onClick={() => clearFile()}>
-									x
+					<input type="file" ref={uploadRef} multiple={true} className="d-none" onChange={handleImage} />
+					{previewImages.length > 0 && (
+						<div className="flex flex-wrap my-4 w-full">
+							{previewImages.map((url, index) => (
+								<div className="w-[100px] h-[100px] m-[3px]" key={index}>
+									<img
+										src={url}
+										alt={`Preview ${index}`}
+										className=" object-cover w-full h-full"
+									/>
+									<div
+										className="flex  cursor-pointer text-[red] justify-center items-center"
+										onClick={() => handleDelSelected(index)}
+									>
+										Delete
+									</div>
 								</div>
-							</div>
+							))}
 						</div>
 					)}
 					<div className="flex justify-between text-gray-500">
