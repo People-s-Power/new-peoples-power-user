@@ -189,6 +189,16 @@ const HomePage = () => {
 					</div>
 				</section>
 
+
+				<section className="py-6 sm:p-3">
+					<div className="lg:w-1/2 mx-auto text-center py-8 ">
+						<h3 className="lg:text-3xl text-xl text-[#00401C]">Create, Organize and Promote  Your Events</h3>
+						<p className="text-base my-2 text-[#00401C]"> start your impactful event and campaigns and let your community Participate in your events. send a reminder to your attendees to save the date in their calendars.</p>
+					</div>
+				</section>
+				<div className="p-3 bg-[#00401C] w-full">
+
+				</div>
 				{/* <section>
 					<div className="lg:flex my-10">
 						<div className="lg:w-1/2">
