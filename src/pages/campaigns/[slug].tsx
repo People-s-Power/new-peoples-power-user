@@ -100,11 +100,12 @@ const SingleCampaignPage = (): JSX.Element => {
 										<h1 className="m-0 p-0 text-warning fw-bold mb-3 fs-4">Explore Petition</h1>
 										<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
 											{
-												camp.image.slice(0, 4).map((image, index) =>
+												camp.image?.slice(0, 4).map((image, index) =>
 													<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
 												)
 											}
-										</div>										{/* <div className="d-flex  share-like align-items-center">
+										</div>									
+											{/* <div className="d-flex  share-like align-items-center">
 											<a
 												className={`btn rounded-circle me-5 like-btn 
                    								 ${isLiked ? "bg-sky text-primary" : "text-muted"}`}
