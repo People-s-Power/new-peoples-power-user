@@ -17,6 +17,7 @@ import { useQuery } from "@apollo/client"
 import { UPDATE_ORG, GET_ORGANIZATION } from "apollo/queries/orgQuery"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import FollowCard from "components/FollowCard"
 
 function Buildprofile(): React.ReactElement {
 	const user = useRecoilValue(UserAtom)
@@ -321,17 +322,18 @@ function Buildprofile(): React.ReactElement {
 											<div className="font-bold text-xl">Grow your feeds by following people and Organizations you may know</div>
 											(People and organizations with similar insterests or location with you)
 										</div>
-										<div className="flex flex-wrap">
+										<div className="flex flex-wrap justify-between">
 											{users.slice(0, 12).map((user, index) => (
-												<div key={index} className="lg:w-[25%] sm:w-1/2 lg:p-6 p-2">
-													<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-													<div className="text-xl py-2">{user.name} </div>
-													<div className="w-16 h-[1px] bg-gray-200"></div>
-													<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-													<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => follow(user)}>
-														+ Follow
-													</div>
-												</div>
+												<FollowCard key={index} user={user} />
+												// <div key={index} className="lg:w-[25%] sm:w-1/2 lg:p-6 p-2">
+												// 	<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+												// 	<div className="text-xl py-2">{user.name} </div>
+												// 	<div className="w-16 h-[1px] bg-gray-200"></div>
+												// 	<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
+												// 	<div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => follow(user)}>
+												// 		+ Follow
+												// 	</div>
+												// </div>
 											))}
 										</div>
 										<div className="text-center mx-auto my-8">

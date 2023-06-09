@@ -108,7 +108,7 @@ const connection = () => {
 						active === "followers" ? <p className="text-sm">You have {followers.length} followers who share their activities with you</p> : active === "following" ? <p className="text-sm">You are following {following.length} users who you share your activities with </p> : null
 					}
 				</div>
-				<div className="flex flex-wrap">
+				<div className="flex justify-between flex-wrap">
 					{active === "connect"
 						? users.map((user, index) =>
 							user._id !== author.id ? (
@@ -117,23 +117,24 @@ const connection = () => {
 						)
 						: active === "followers"
 							? followers.map((user, index) => (
-								<div key={index} className="lg:w-[25%] w-1/2 p-6">
-									<Link href={`user?page=${user._id}`}>
-										<div className="cursor-pointer">
-											<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-											<div className="lg:text-xl text-lg py-2">{user.name} </div>
-										</div>
-									</Link>
-									<div className="w-16 h-[1px] bg-gray-200"></div>
-									<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-									<Link href={`/messages?page=${user._id}`}>
-										<div className="text-sm border border-warning lg:p-3 p-2 sm:text-xs text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
-									</Link>
-								</div>
+								<FollowCard key={index} user={user} active={"followers"} />
+								// <div key={index} className="lg:w-[25%] w-1/2 p-6">
+								// 	<Link href={`user?page=${user._id}`}>
+								// 		<div className="cursor-pointer">
+								// 			<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+								// 			<div className="lg:text-xl text-lg py-2">{user.name} </div>
+								// 		</div>
+								// 	</Link>
+								// 	<div className="w-16 h-[1px] bg-gray-200"></div>
+								// 	<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
+								// 	<Link href={`/messages?page=${user._id}`}>
+								// 		<div className="text-sm border border-warning lg:p-3 p-2 sm:text-xs text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
+								// 	</Link>
+								// </div>
 							))
 							: active === "following"
 								? following.map((user, index) => (
-									<div key={index} className="lg:w-[25%]  w-1/2">
+									<div key={index} className="lg:w-[24%] border border-neutral-600 rounded-xl text-center my-2 bg-gray-300 w-1/2 p-6">
 										<Following user={user} getFollowing={() => getFollowing()} />
 									</div>
 								))
@@ -170,17 +171,18 @@ function Following({ user, getFollowing }) {
 		<div className="p-6">
 			<Link href={`user?page=${user._id}`}>
 				<div className="cursor-pointer">
-					<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
+					<img src={user.image} className="w-16 h-16 mx-auto rounded-full" alt="" />
 					<div className="lg:text-xl text-lg py-2">{user.name} </div>
 				</div>
 			</Link>
-			<div className="w-16 h-[1px] bg-gray-200"></div>
+			{/* <div className="w-16 h-[1px] bg-gray-200"></div> */}
 			<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
+			<p className='text-xs my-2'>{user.description}</p>
 			{loading ? <p className="text-xs text-gray-900">loading...</p> : <div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => unfollow(user._id)}>
 				Unfollow
 			</div>}
 			<Link href={`/messages?page=${user._id}`}>
-				<div className="lg:text-sm border border-warning lg:p-3 p-2 text-xs text-gray-900 my-6 text-center rounded--md cursor-pointer">Send message</div>
+				<div className="lg:text-xs border border-warning lg:p-3 p-2 text-xs text-gray-900 my-6 text-center rounded-full cursor-pointer">Send message</div>
 			</Link>
 		</div>
 	)

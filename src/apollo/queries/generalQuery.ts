@@ -407,6 +407,7 @@ export const FOLLOWERS = gql`
 			image
 			_id
 			followers
+			description
 		}
 	}
 `
@@ -417,6 +418,7 @@ export const FOLLOWING = gql`
 			image
 			_id
 			followers
+			description
 		}
 	}
 `
