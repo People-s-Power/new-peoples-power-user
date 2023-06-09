@@ -135,7 +135,7 @@ const CampaignPage: () => JSX.Element = () => {
 							</div>
 						</div>
 						{/* <CampaignSlider /> */}
-						<div className="campaign-list mt-8">
+						<div className="flex justify-between flex-wrap">
 							{queryCampaigns
 								.filter((camp) =>
 									camp.title

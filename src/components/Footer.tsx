@@ -37,18 +37,15 @@ const Footer = (): JSX.Element => {
 					</section>
 
 					<section className="d-flex justify-between mb-4 footer-list container mt-5">
+						<div className="w-20">
+							<img src="./images/lolo.jpeg" className="rounded-full" alt="" />
+						</div>
 						<ul className="lg:w-2/3 ">
-							<li className="mb-4 fs-4 fw-bold">About us</li>
-							<li className="">
-								<strong>{`THE PLAINT`}</strong> is a web-based technology for those
-								facing Social injustice and Human Right abuse. It is created
-								to inspire people to cause a change in their local
-								communities. The forum enables one or group to launch a
-								campaign for the change they want be it Social policy,
-								Government policies, Environment, Empowerment, Health,
-								Criminal justice and of course Human Right. <br />
+							{/* <li className="mb-4 fs-4 fw-bold">About us</li> */}
+							<li className="text-[#666666]">
+								CITIZEN PLAINT is a web-based technology that provides solutions to Citizens’ complaints through Expert attentions and petitions which wins. When citizens are not happy with government policies, and other personal and social challenges which amongst others include Health, Politics, Environment, Development, Government policies, Employment, Criminal Justice and Human Right, they voice out their challenges either through a complaint to an expert or petition to an authority who will address them. The complaints are made to the attention of other citizens and organizations with similar interests to for expert solutions  and to TAKE ACTION and cause a change...<br />
 								<Link href="/about">
-									<a className="text-center ">Learn More</a>
+									<a className="text-center text-warning">Learn More</a>
 								</Link>
 							</li>
 						</ul>
