@@ -27,34 +27,8 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import { GET_ACTIVE_PETITION, GET_PETITION } from "apollo/queries/petitionQuery"
 
-import { ICampaign, Strapi_Testimony } from "types/Applicant.types"
+// import { ICampaign, Strapi_Testimony } from "types/Applicant.types"
 
-const testimonies: Strapi_Testimony[] | null = [
-	{
-		id: "88uiwhkjhwjknmd",
-		author: "Anitha John",
-		company: "MJS Berhad",
-		job_position: "",
-		body: "I am very excited about this platform that can really protect and preserve every individual's humanity and ensure that every citizen can live a life of dignity and a life that is worthy of a human being.",
-		image: "anitha.jpg",
-	},
-	{
-		id: "88uiwhkjhwjknmd",
-		author: "Roselyn Marshall",
-		job_position: "",
-		company: "Legal Connect",
-		body: "I am sure the common citizen will now have hope. Thanks to the inventor of this wonder tools for social activism. I just can’t wait to have my campaign running and start galvanizing for individual support. With this I can now impact my local community.",
-		image: "rosy.jpg",
-	},
-	{
-		id: "88uiwhkjhwjknmd",
-		author: "G.B Evans",
-		company: "",
-		job_position: "",
-		body: "What an awesome technology. Big thanks to the CEO and before I die in silence it is high time I start voicing out the political challenges bedeviling my community. The underdevelopment, lack of basic amenities and the high level of criminality. I am pretty sure that with this platform I can win supporters who will join voices with me to campaign against these challenges. Kudos to People Power Technology.",
-		image: "john.jpg",
-	},
-]
 
 const HomePage = () => {
 	const [campaigns, setCamp] = useState([])
@@ -228,45 +202,6 @@ const HomePage = () => {
 }
 
 export default HomePage
-
-const SecondRowComp = ({ img, text1, text2, link }: { img: string; text1: string; text2: string; link?: string }): JSX.Element => {
-	return (
-		<div className="arrow second-row-cards">
-			<div className="container _second-row-cards  d-flex flex-column flex-md-row align-items-center">
-				<div>
-					<img src={`/images/${img}`} alt="" />
-				</div>
-				<Link href={link || "/"}>
-					<div className="c-pointer d-flex flex-column align-items-md-start align-items-center">
-						<span className="">{text1}</span>
-						<b className="fs-5">{text2}</b>
-					</div>
-				</Link>
-			</div>
-		</div>
-	)
-}
-
-const secondRowContent = [
-	// {
-	// 	img: "hands.svg",
-	// 	text1: "Download",
-	// 	text2: "Our Mobile App",
-	// 	link: "https://play.google.com/store/apps/details?id=com.gappsy.dashboard.www.android606daa4127835&hl=en",
-	// },
-	{
-		img: "donor.svg",
-		text1: "Suscribe",
-		text2: "Human Right Application",
-		link: "https://teams.peoplespow.com/",
-	},
-	{
-		img: "Bulls eye.svg",
-		text1: "Become",
-		text2: "A Staff",
-		link: "/about#career",
-	},
-]
 
 const Wrapper = styled.div`
 	.c-pointer {

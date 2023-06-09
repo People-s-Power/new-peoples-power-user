@@ -46,7 +46,13 @@ const EventCard = ({ event }: { event: any }): JSX.Element => {
                 </div>
             </div>
             <div className=' rounded-md shadow-sm'>
-                <img src={event.image} alt="" className='rounded-md w-full h-40' />
+                <div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
+                    {
+                        event.image.slice(0, 4).map((image, index) =>
+                            <img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
+                        )
+                    }
+                </div>
                 <div className='my-auto w-full p-4' >
                     <div className='text-xl my-3'>{event.name}</div>
                     <div className='text-sm'>
@@ -69,7 +75,7 @@ const EventCard = ({ event }: { event: any }): JSX.Element => {
                         <Dropdown title={<img className='' src="/images/edit.svg" alt="" />} noCaret>
                             <Dropdown.Item>Promote</Dropdown.Item>
                             <Dropdown.Item>Report post</Dropdown.Item>
-                            {event.author.id === author.id ? <Dropdown.Item>Edit</Dropdown.Item> : null }
+                            {event.author.id === author.id ? <Dropdown.Item>Edit</Dropdown.Item> : null}
                             <Dropdown.Item>Save</Dropdown.Item>
                         </Dropdown>
                     </div>

@@ -16,7 +16,7 @@ const CampaignCard = ({ camp }: { camp: any }): JSX.Element => {
 	return (
 		<div className="lg:w-[23%] my-2 overflow-hidden bg-[#FBFBFB] rounded-md w-full">
 			<a className="text-decoration-none link-dark">
-				<img src={camp?.image} className="card-image h-52 w-full" alt={camp?.title} />
+				<img src={camp?.image[0]} className="card-image h-52 w-full" alt={camp?.title} />
 				<div className="card-body p-3">
 					<p className="card-title fs-5 fw-bold text-[#4F4F4F] capitalize">
 						{camp?.title?.length > 30

@@ -120,7 +120,13 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					<div className="text-sm my-1">{event.author.description}</div>
 				</div>
 				<div className="text-xl my-3">{event.name}</div>
-				<img src={event.image} alt="" className="rounded-md w-full  object-cover h-80" />
+				<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
+					{
+						event.image.slice(0, 4).map((image, index) =>
+							<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
+						)
+					}
+				</div>
 				<div className="p-3 text-sm my-auto">
 					<div>
 						{event.author.name} created event for {event.startDate} AT {event.time}
@@ -138,7 +144,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 							{event.interested[0]?.name} and {event.interested?.length} others are attending
 						</div>
 					</div> : null}
-					
+
 					<div className="flex sm:mb-2">
 						{
 							event.author._id === author.id ?

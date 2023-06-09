@@ -135,7 +135,13 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 				</div>
 				<div className="p-2">
 					<p className="text-lg">{petition.title}</p>
-					<img className="w-full h-80 rounded-md object-cover	" src={petition.image} alt="" />
+					<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
+						{
+							petition.image.slice(0, 4).map((image, index) =>
+								<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
+							)
+						}
+					</div>
 					<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 					<div className="my-3 flex justify-end">
 						<Link href={`/campaigns/${petition?.slug}`}>
