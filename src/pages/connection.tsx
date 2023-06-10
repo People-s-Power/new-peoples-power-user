@@ -117,24 +117,28 @@ const connection = () => {
 						)
 						: active === "followers"
 							? followers.map((user, index) => (
-								<FollowCard key={index} user={user} active={"followers"} />
-								// <div key={index} className="lg:w-[25%] w-1/2 p-6">
-								// 	<Link href={`user?page=${user._id}`}>
-								// 		<div className="cursor-pointer">
-								// 			<img src={user.image} className="w-20 h-20 rounded-full" alt="" />
-								// 			<div className="lg:text-xl text-lg py-2">{user.name} </div>
-								// 		</div>
-								// 	</Link>
-								// 	<div className="w-16 h-[1px] bg-gray-200"></div>
-								// 	<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-								// 	<Link href={`/messages?page=${user._id}`}>
-								// 		<div className="text-sm border border-warning lg:p-3 p-2 sm:text-xs text-gray-900 my-6 text-center rounded-md cursor-pointer">Send message</div>
-								// 	</Link>
-								// </div>
+								<div key={index} className="p-6 lg:flex w-full justify-between">
+									<div className="flex">
+										<Link href={`user?page=${user._id}`}>
+											<div className="cursor-pointer">
+												<img src={user.image} className="w-20 h-20 mx-auto my-auto rounded-full" alt="" />
+											</div>
+										</Link>
+										<div className="ml-4 my-auto">
+											<div className="lg:text-xl text-lg py-2 ">{user.name}
+											</div>
+											<div className="text-xs text-gray-700 my-1">{user.followers.length} Followers</div>
+											<p className='text-xs my-2'>{user.description}</p>
+										</div>
+									</div>
+									<Link href={`/messages?page=${user._id}`}>
+										<div className="lg:text-xs border text-warning border-warning lg:p-3 p-2 text-xs h-10 my-auto lg:w-44 w-full my-6 text-center rounded-full cursor-pointer">Send message</div>
+									</Link>
+								</div>
 							))
 							: active === "following"
 								? following.map((user, index) => (
-									<div key={index} className="lg:w-[24%] border border-neutral-600 rounded-xl text-center my-2 bg-gray-300 w-1/2 p-6">
+									<div key={index} className="w-full">
 										<Following user={user} getFollowing={() => getFollowing()} />
 									</div>
 								))
@@ -168,21 +172,25 @@ function Following({ user, getFollowing }) {
 		}
 	}
 	return (
-		<div className="p-6">
-			<Link href={`user?page=${user._id}`}>
-				<div className="cursor-pointer">
-					<img src={user.image} className="w-16 h-16 mx-auto rounded-full" alt="" />
-					<div className="lg:text-xl text-lg py-2">{user.name} </div>
+		<div className="p-6 lg:flex justify-between">
+			<div className="flex">
+				<Link href={`user?page=${user._id}`}>
+					<div className="cursor-pointer">
+						<img src={user.image} className="w-20 h-20 mx-auto my-auto rounded-full" alt="" />
+					</div>
+				</Link>
+				<div className="ml-4 my-auto">
+					<div className="lg:text-xl text-lg py-2 flex">{user.name}
+						{loading ? <p className="text-xs p-2 text-gray-900">loading...</p> : <p className="text-xs p-2 cursor-pointer text-warning" onClick={() => unfollow(user._id)}>
+							Unfollow
+						</p>}
+					</div>
+					<div className="text-xs text-gray-700 my-1">{user.followers.length} Followers</div>
+					<p className='text-xs my-2'>{user.description}</p>
 				</div>
-			</Link>
-			{/* <div className="w-16 h-[1px] bg-gray-200"></div> */}
-			<div className="text-xs text-gray-700 my-3">{user.followers.length} Followers</div>
-			<p className='text-xs my-2'>{user.description}</p>
-			{loading ? <p className="text-xs text-gray-900">loading...</p> : <div className="text-xs cursor-pointer text-gray-900 my-6" onClick={() => unfollow(user._id)}>
-				Unfollow
-			</div>}
+			</div>
 			<Link href={`/messages?page=${user._id}`}>
-				<div className="lg:text-xs border border-warning lg:p-3 p-2 text-xs text-gray-900 my-6 text-center rounded-full cursor-pointer">Send message</div>
+				<div className="lg:text-xs border text-warning border-warning lg:p-3 p-2 text-xs h-10 my-auto lg:w-44 w-full my-6 text-center rounded-full cursor-pointer">Send message</div>
 			</Link>
 		</div>
 	)
