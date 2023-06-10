@@ -118,9 +118,9 @@ const CreatePost = ({
 
 	useEffect(() => {
 		if (open) {
-			const theHashtag = document.querySelector(".the-hash");
+			const theHashtag = document.querySelector(".the-hash") as HTMLDivElement;
 			console.log(theHashtag);
-			setCategory(theHashtag.innerText);
+			if(theHashtag) setCategory(theHashtag.innerText || "Add Category");
 		}
 	}, [open])
 
