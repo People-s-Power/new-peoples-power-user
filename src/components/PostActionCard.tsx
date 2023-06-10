@@ -29,6 +29,7 @@ export default function PostActionCard({
                 <div className="text">
                     <h1 className="text-2xl font-semibold">#{hashtag || "Social Policy"}</h1>
                     <p className="text-sm text-zinc-400 my-1">202240</p>
+										<div className="the-hash hidden">{hashtag}</div>
                     <button className="text-white bg-[#f9a826] p-3 py-2 rounded">Subscribe</button>
                 </div>
             </div>}

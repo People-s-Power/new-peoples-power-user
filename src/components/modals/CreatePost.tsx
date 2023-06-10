@@ -18,14 +18,12 @@ const CreatePost = ({
 	handelClick,
 	post,
 	handelPetition,
-	defaultCategory,
 	orgs,
 }: {
 	open: boolean
 	handelClick(): void
 	post: any
 	handelPetition(): void
-	defaultCategory?: string | undefined
 	orgs: any
 }): JSX.Element => {
 	const [filesPreview, setFilePreview] = useState<any>(post?.image || [])
@@ -36,7 +34,7 @@ const CreatePost = ({
 	const [loading, setLoading] = useState(false)
 	const [body, setBody] = useState(post?.body || "")
 	const uploadRef = useRef<HTMLInputElement>(null)
-	const [category, setCategory] = useState(defaultCategory || "Add Category")
+	const [category, setCategory] = useState("Add Category")
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
@@ -117,6 +115,14 @@ const CreatePost = ({
 			setLoading(false)
 		}
 	}
+
+	useEffect(() => {
+		if (open) {
+			const theHashtag = document.querySelector(".the-hash");
+			console.log(theHashtag);
+			setCategory(theHashtag.innerText);
+		}
+	}, [open])
 
 	useEffect(() => {
 		post === null ? setActive(author) : setActive(post.author)
