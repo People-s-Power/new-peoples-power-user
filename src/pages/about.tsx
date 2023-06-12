@@ -16,7 +16,7 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 			<Head>
 				<title>About</title>
 			</Head>
-					<FrontLayout showFooter={false}>
+			<FrontLayout showFooter={false}>
 
 				<div className="about-wrap">
 					<div className="who-we-are py-5">
@@ -24,23 +24,22 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 							<h1 className="text-secondary  fs-1 fw-bold">Who we are</h1>
 
 							{/* <iframe  width="100%" height="900" src="https://docs.google.com/document/d/e/2PACX-1vRx89kPjOl5zLjSUopJKxZocFUoVbBS1DwOhUSC_Hu1lPTZkU1lYUt3MFp8AVyX-PqzIvlsYEk4l-pY/pub?embedded=true"></iframe> */}
-
-							THE PLAINT is a web-based technology that converts citizens’ complaints into a petition and campaign which wins. When citizens are not happy with government policies, and other social challenges which amongst others include Health, Politics, Environment, Development, Government policies, Employment, Criminal Justice and Human Right, they voice out their challenges either through a post or petition and make their complaints to the attention of other citizens and organizations with similar interests to TAKE ACTION and cause a change. With the Citizens’ support, the complaint is petitioned to the appropriate persons, organizations and authorities who will resolve it.
-							<br />
-							<br />
-							The platform inspires one, group or organizations to cause a change in their local communities by airing their voices and start a campaign for the change that they want.
+							The Plaint is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard.
+							One of the main benefits of The Plaint is that it is open to anyone, regardless of their geographical location or financial background. This means that even those who lack easy access to professional help or cannot afford expensive therapy can still receive guidance from experts on the platform. The Plaint offers a more affordable and accessible solution to people seeking the advice of experts.
 
 							<br />
 							<br />
-							With thousands of professionals, virtual assistants, journalists, content writers, designers and social skilled workers using this technology, you can now leave the hassle of writing, designing, editing and organizing your campaigns and other administration with a Virtual Assistant. Citizen Plaint handles your campaigns, contents, designs, updates and other administrations while you focus on building strong and physical campaigns with momentum.
+							To ensure that those seeking solutions are matched with experts who have the appropriate skills and experience, The Plaint employs a rigorous vetting process. All experts who are listed on the platform have been carefully screened and verified, giving users peace of mind knowing that they are receiving advice from reputable professionals.
 
 							<br />
 							<br />
-							Citizen Plaint also helps you grow your followers and supporters through active campaigns and digital marketing.
+							The Plaint also offers prompt and convenient communication with experts. Users can submit their queries to experts 24/7, and the experts will respond to them as quickly as possible. This ensures that individuals do not have to wait for extended periods before receiving feedback or advice.
 
 							<br />
 							<br />
-							…the Citizen’ Voice
+							In conclusion, The Plaint is an excellent platform for personal and social solutions, providing a revolutionary approach to connecting with experts. With The Plaint, individuals can receive advice and solutions to their problems, regardless of their location or financial background, with a focus on privacy and convenience. The platform has the potential to help countless people work through their issues and achieve a better quality of life.
+							<br />
+
 						</div>
 					</div>
 					{/* ---------------------------------------------- */}

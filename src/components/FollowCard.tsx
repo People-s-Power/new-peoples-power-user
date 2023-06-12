@@ -34,7 +34,7 @@ const FollowCard = ({ user, active }: IProps) => {
     }
   }
   return (
-    <div className="lg:w-[24%] border border-neutral-600 rounded-xl text-center my-2 bg-gray-300 w-1/2 p-6">
+    <div className="lg:w-[19%] border border-neutral-600 rounded-xl text-center my-2 bg-gray-300 w-1/2 p-6">
       <Link href={`user?page=${user._id}`}>
         <div className="cursor-pointer">
           <img src={user.image} className="w-16 mx-auto h-16 rounded-full" alt="" />

@@ -119,13 +119,13 @@ const HomePage = () => {
 						</div>
 						<div>
 							<div className="flex justify-between flex-wrap">
-								{campaigns?.length >= 1 ? campaigns?.slice(0, 6).map((camp, i) => <CampCard camp={camp} key={i} />) : <div></div>}
+								{campaigns?.length >= 1 ? campaigns?.slice(0, 4).map((camp, i) => <CampCard camp={camp} key={i} />) : <div></div>}
 							</div>
 							<div className="lg:block hidden lg:w-[40%] mx-auto flex py-8 justify-between">
 								<Link href="/auth?mode=signup">
 									<a className="btn btn-warning btn-lg rounded-pill px-4  text-xs py-2 text-light font-weight-bolder fs-20 ">Start a Petition</a>
 								</Link>
-								<Link href="/about">
+								<Link href="/campaigns">
 									<button className="btn btn-lg border-warning font-weight-bold text-xs text-warning py-2 px-4 rounded-pill fs-20">Explore Petition</button>
 								</Link>
 							</div>
@@ -143,9 +143,11 @@ const HomePage = () => {
 							<div className="lg:block hidden">
 								<TeamSlide />
 							</div>
-							<button className="p-3 rounded-full text-warning border border-warning">Hire a Virtual Assistant</button>
+							<Link href="/auth?mode=login">
+								<button className="p-3 rounded-full text-warning border border-warning">Hire a Virtual Assistant</button>
+							</Link>
 						</div>
-						<div className="lg:block hidden w-[25%]">
+						<div className="lg:w-[25%]">
 							<img src="./images/assistant.png" alt="" />
 						</div>
 					</div>
@@ -154,12 +156,14 @@ const HomePage = () => {
 				<section className="bg-[#E0E0E0] sm:p-3 py-6">
 					<div className="lg:w-1/2 mx-auto text-center py-8 ">
 						<h3 className="lg:text-3xl text-xl text-[#00401C]">Create Your Organization</h3>
-						<p className="text-base my-2 text-[#00401C]">When you create your organization as a professional you receive hundreds of complaints sent to your inbox to attend to</p>
+						<p className="text-base my-2 text-[#00401C]"> Create a business page and describe how your product and services can resolve the issues and challenges  your prospective clients face. when you create a page you will be able to showcase Your Skills And expertise and also advertise your brands and services.</p>
 					</div>
 					<div className="lg:px-20 text-center">
-						<div className="w-[60%] lg:block hidden mx-auto text-center"><TeamSlide />
+						<div className="lg:w-[60%] mx-auto text-center"><TeamSlide />
 						</div>
-						<button className="p-3 rounded-full sm:w-40 text-warning border border-warning">Create</button>
+						<Link href="/auth?mode=login">
+							<button className="p-3 rounded-full sm:w-40 text-warning border border-warning">Create</button>
+						</Link>
 					</div>
 				</section>
 

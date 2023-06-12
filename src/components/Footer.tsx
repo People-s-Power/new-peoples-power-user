@@ -43,7 +43,8 @@ const Footer = (): JSX.Element => {
 						<ul className="lg:w-2/3 ">
 							{/* <li className="mb-4 fs-4 fw-bold">About us</li> */}
 							<li className="text-[#666666]">
-								CITIZEN PLAINT is a web-based technology that provides solutions to Citizens’ complaints through Expert attentions and petitions which wins. When citizens are not happy with government policies, and other personal and social challenges which amongst others include Health, Politics, Environment, Development, Government policies, Employment, Criminal Justice and Human Right, they voice out their challenges either through a complaint to an expert or petition to an authority who will address them. The complaints are made to the attention of other citizens and organizations with similar interests to for expert solutions  and to TAKE ACTION and cause a change...<br />
+								The Plaint is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard.
+								One of the main benefits of The Plaint is that it is open to anyone, regardless of their geographical location or financial background This means that even those who lack easy access to professional help or...<br />
 								<Link href="/about">
 									<a className="text-center text-warning">Learn More</a>
 								</Link>

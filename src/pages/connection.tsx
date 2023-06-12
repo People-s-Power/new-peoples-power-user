@@ -117,7 +117,7 @@ const connection = () => {
 						)
 						: active === "followers"
 							? followers.map((user, index) => (
-								<div key={index} className="p-6 lg:flex w-full justify-between">
+								<div key={index} className="p-6 lg:flex w-[60%] justify-between">
 									<div className="flex">
 										<Link href={`user?page=${user._id}`}>
 											<div className="cursor-pointer">
@@ -172,7 +172,7 @@ function Following({ user, getFollowing }) {
 		}
 	}
 	return (
-		<div className="p-6 lg:flex justify-between">
+		<div className="p-6 lg:flex w-[60%] justify-between">
 			<div className="flex">
 				<Link href={`user?page=${user._id}`}>
 					<div className="cursor-pointer">
