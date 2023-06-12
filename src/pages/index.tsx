@@ -181,7 +181,7 @@ const HomePage = () => {
 						if (feedItem.category.toLowerCase() === hstag.toLowerCase()) return true;
 						return false;
 					}
-					return true;
+					return false;
 				})
 			}
 			console.log(newArray)
@@ -320,7 +320,7 @@ const HomePage = () => {
 								<p className="my-4">My Interests <Link href={"/mycamp/profile"}><span className="cursor-pointer float-right">
 									<img src="/images/pencil.png" alt="" />
 								</span></Link></p>
-								{author?.interests.map((interst, i) => <p className="text-sm my-3 capitalize" key={i}>{interst}</p>)}
+								{author?.interests.map((interst, i) => <p className="text-sm my-3 capitalize cursor-pointer" key={i} onClick={() => filterItemsByInterest(interst)}>{interst}</p>)}
 							</div>
 						</div>
 						{/* <div className="text-left">
@@ -447,7 +447,7 @@ const HomePage = () => {
 					)}
 				</button>
 				<StartPetition open={openPetition} handelClick={handelPetition} orgs={orgs} data={null} />
-				<CreatePost open={openPost} handelClick={handelClick} defaultCategory={hashtag} orgs={orgs} handelPetition={handelPetition} post={null} />
+				<CreatePost open={openPost} handelClick={handelClick} orgs={orgs} handelPetition={handelPetition} post={null} />
 				<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 				<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
 				<CreateAdvert open={openAd} handelClick={handelAdClick} advert={null} />
