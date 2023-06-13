@@ -168,15 +168,40 @@ const HomePage = () => {
 				</section>
 
 
-				<section className="py-6 sm:p-3">
-					<div className="lg:w-1/2 mx-auto text-center py-8 ">
+				<section className="py-6">
+					<div className="lg:w-1/2 mx-auto text-center py-8 sm:px-3">
 						<h3 className="lg:text-3xl text-xl text-[#00401C]">Create, Organize and Promote  Your Events</h3>
 						<p className="text-base my-2 text-[#00401C]"> start your impactful event and campaigns and let your community Participate in your events. send a reminder to your attendees to save the date in their calendars.</p>
 					</div>
+					<div className="relative ">
+						<img className="w-full sm:h-52" src="/images/event.png" alt="" />
+						<div className="absolute lg:top-40 top-4 sm:p-3 w-full">
+							<div className="text-[#00401C] lg:text-2xl text-base text-center font-bold lg:w-[40%] mx-auto">
+								Reveal the identity of the imposter called <br />
+								Mr President
+							</div>
+							<div className="flex justify-evenly text-center lg:mt-10 mt-2  lg:w-[40%] mx-auto">
+								<div className="bg-white p-4 w-28 shadow-md">
+									<p className="text-base">-124</p>
+									<p className="text-xs">Days</p>
+								</div>
+								<div className="bg-white p-4 w-28 shadow-md">
+									<p className="text-base">04</p>
+									<p className="text-xs">Hours</p>
+								</div>
+								<div className="bg-white p-4 w-28 shadow-md">
+									<p className="text-base">00</p>
+									<p className="text-xs">Minutes</p>
+								</div>
+								<div className="bg-white p-4 w-28 shadow-md">
+									<p className="text-base">33</p>
+									<p className="text-xs">Seconds</p>
+								</div>
+							</div>
+						</div>
+					</div>
 				</section>
-				<div className="p-3 bg-[#00401C] w-full">
-
-				</div>
+				<div className="p-3 bg-[#00401C] w-full"></div>
 				{/* <section>
 					<div className="lg:flex my-10">
 						<div className="lg:w-1/2">
