@@ -419,7 +419,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 										</div>
 									</div>
 									<RepliesComp comment={comment} deleteComment={() => deleteComment(index)} />
-
 								</div>
 							</div>
 						))
@@ -452,8 +451,8 @@ export function RepliesComp({ comment, deleteComment }: any) {
 	const [loading2, setLoading2] = useState(false)
 	const author = useRecoilValue(UserAtom)
 	const [replies, setReplies] = useState(false)
-	const [commentLikes, setCommentLikes] = useState(comment.likes.length)
-	const [commmentReplies, setCommentReplies] = useState(comment.replies)
+	const [commentLikes, setCommentLikes] = useState(comment?.likes?.length)
+	const [commmentReplies, setCommentReplies] = useState(comment?.replies)
 
 	const replyBtn = async (comment) => {
 		try {
