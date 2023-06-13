@@ -99,8 +99,8 @@ const SingleCampaignPage = (): JSX.Element => {
 								<div className="sec-1 lg:pl-5 mb-5 left lg:w-[50%]">
 									<div className="top">
 										<h1 className="m-0 p-0 text-warning fw-bold mb-3 fs-4">Explore Petition</h1>
-										<ImageCarousel image={camp?.image} />
-										{/* <div className="d-flex  share-like align-items-center">
+										<ImageCarousel image={camp.image} />								
+											{/* <div className="d-flex  share-like align-items-center">
 											<a
 												className={`btn rounded-circle me-5 like-btn 
                    								 ${isLiked ? "bg-sky text-primary" : "text-muted"}`}
