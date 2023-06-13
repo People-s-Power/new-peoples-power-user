@@ -22,14 +22,14 @@ const ImageCarousel = ({ image }: { image: any }) => {
       <div className="relative">
         <div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
           {
-            image.slice(0, 4).map((image, index) =>
+            image.slice(0, 3).map((image, index) =>
               <img key={index} onClick={() => openImageViewer(index)} className="w-full cursor-pointer h-80 rounded-md object-cover" src={image} alt="" />
             )
           }
         </div>
         <div>
-          {image.length > 4 ? (
-            <div onClick={() => openImageViewer(0)} className="w-40 rounded-md h-full bg-black opacity-75 text-3xl text-white text-center absolute top-0 right-0 py-32 cursor-pointer">+{image.length - 4}</div>
+          {image.length > 3 ? (
+            <div onClick={() => openImageViewer(0)} className="w-[33%] rounded-md h-full bg-black opacity-75 text-3xl text-white text-center absolute top-0 right-0 py-32 cursor-pointer">+{image.length - 3}</div>
           ) : null}
         </div>
       </div>
