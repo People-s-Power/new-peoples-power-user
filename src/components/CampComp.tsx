@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import ReactTimeAgo from "react-time-ago"
 import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
@@ -12,6 +12,7 @@ import axios from "axios"
 import { print } from "graphql"
 import Link from "next/link"
 import UnHideComp from "./UnHideComp"
+import ImageCarousel from "./ImageCarousel"
 
 
 interface IProps {
@@ -30,6 +31,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 	const toggle = val => {
 		setShow(val)
 	}
+
 
 	function searchForValue(id) {
 		let matchingStrings = false;
@@ -102,13 +104,7 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 						</div>
 					)}
 					<div className="p-2">
-						<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
-							{
-								post.image.slice(0, 4).map((image, index) =>
-									<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
-								)
-							}
-						</div>
+						<ImageCarousel image={post.image} />
 						{author?.id === post.author?._id ? (
 							<div className="text-gray-400 p-1">Hello {author.name}, you can  resolve your complaint speedily by finding an expert or converting your complaint to a petition
 								<button className="border border-warning p-1 mt-1 mr-4 text-black rounded-md bg-white" onClick={() => open()}>Find Expert</button>

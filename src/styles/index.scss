@@ -37,6 +37,9 @@ body {
 		background: #ff9f2f;
 		border-radius: 30px;
 	}
+	.rs-dropdown-toggle, .rs-dropdown-toggle.rs-btn{
+		z-index: 0;
+	}
 	
 }
 .btn, button,input,textarea {

@@ -19,6 +19,7 @@ import Link from "next/link"
 import router, { useRouter } from "next/router"
 import { SINGLE_PETITION } from "apollo/queries/petitionQuery"
 import AddUpdates from "components/modals/AddUpdates"
+import ImageCarousel from "components/ImageCarousel"
 
 // const io = socket(SERVER_URL, {
 // 	extraHeaders: {
@@ -98,14 +99,8 @@ const SingleCampaignPage = (): JSX.Element => {
 								<div className="sec-1 lg:pl-5 mb-5 left lg:w-[50%]">
 									<div className="top">
 										<h1 className="m-0 p-0 text-warning fw-bold mb-3 fs-4">Explore Petition</h1>
-										<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
-											{
-												camp?.image?.slice(0, 4).map((image, index) =>
-													<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
-												)
-											}
-										</div>									
-											{/* <div className="d-flex  share-like align-items-center">
+										<ImageCarousel image={camp?.image} />
+										{/* <div className="d-flex  share-like align-items-center">
 											<a
 												className={`btn rounded-circle me-5 like-btn 
                    								 ${isLiked ? "bg-sky text-primary" : "text-muted"}`}

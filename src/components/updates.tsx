@@ -14,6 +14,7 @@ import Interaction from "./Interaction"
 import ReactTimeAgo from "react-time-ago"
 import HideComp from "./HideComp"
 import UnHideComp from "./UnHideComp"
+import ImageCarousel from "./ImageCarousel"
 
 const Updates = ({ updates }: { updates: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -105,13 +106,7 @@ const Updates = ({ updates }: { updates: any }): JSX.Element => {
 				</div>
 				<div className="text-sm p-2 leading-loose">{updates.petition?.title}</div>
 				<div className="p-2">
-					<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
-						{
-							updates.image.slice(0, 4).map((image, index) =>
-								<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
-							)
-						}
-					</div>
+					<ImageCarousel image={updates.image} />
 				</div>
 				<div className="font-bold text-lg">Petition Update</div>
 

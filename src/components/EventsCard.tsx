@@ -15,6 +15,7 @@ import HideComp from "./HideComp"
 import { FOLLOW } from "apollo/queries/generalQuery"
 import Link from "next/link"
 import UnHideComp from "./UnHideComp"
+import ImageCarousel from "./ImageCarousel"
 
 
 interface IProps {
@@ -120,13 +121,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					<div className="text-sm my-1">{event.author.description}</div>
 				</div>
 				<div className="text-xl my-3">{event.name}</div>
-				<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
-					{
-						event.image.slice(0, 4).map((image, index) =>
-							<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
-						)
-					}
-				</div>
+				<ImageCarousel image={event.image} />
 				<div className="p-3 text-sm my-auto">
 					<div>
 						{event.author.name} created event for {event.startDate} AT {event.time}

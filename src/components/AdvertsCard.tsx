@@ -13,6 +13,7 @@ import { FOLLOW } from "apollo/queries/generalQuery"
 import { print } from "graphql"
 import Link from "next/link"
 import UnHideComp from "./UnHideComp"
+import ImageCarousel from "./ImageCarousel"
 
 interface IProps {
 	advert: any;
@@ -100,13 +101,7 @@ const AdvertsComp = ({ advert, timeLine }: IProps): JSX.Element => {
 				)}
 				{/* <div className="text-sm p-2 leading-loose">{advert.message}</div> */}
 				<div className="p-2">
-					<div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
-						{
-							advert.image.slice(0, 4).map((image, index) =>
-								<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
-							)
-						}
-					</div>
+					<ImageCarousel image={advert.image} />
 				</div>
 				<div className="text-sm p-2 leading-loose">{advert.caption}</div>
 				<div className="pt-3 flex justify-between">

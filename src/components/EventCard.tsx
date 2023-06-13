@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRecoilValue } from "recoil";
 import { UserAtom } from "atoms/UserAtom";
 import { apollo } from "apollo";
+import ImageCarousel from './ImageCarousel';
 
 const EventCard = ({ event }: { event: any }): JSX.Element => {
     const author = useRecoilValue(UserAtom);
@@ -46,13 +47,7 @@ const EventCard = ({ event }: { event: any }): JSX.Element => {
                 </div>
             </div>
             <div className=' rounded-md shadow-sm'>
-                <div className="grid grid-flow-col auto-cols-auto grid-flow-row auto-rows-auto gap-1">
-                    {
-                        event.image.slice(0, 4).map((image, index) =>
-                            <img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
-                        )
-                    }
-                </div>
+                <ImageCarousel image={event.image} />
                 <div className='my-auto w-full p-4' >
                     <div className='text-xl my-3'>{event.name}</div>
                     <div className='text-sm'>
