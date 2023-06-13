@@ -1,16 +1,10 @@
-import { apolloStrapi } from "apollo";
-import { GET_STRAPI_ABOUT } from "apollo/queries/strapiQuery";
 import FrontLayout from "layout/FrontLayout";
-import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import React, { Fragment } from "react";
 import ReactMarkdown from "react-markdown";
-import { Strapi_About } from "types/Applicant.types";
 
-interface IProps {
-	about: Strapi_About;
-}
-const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
+
+const AboutPage = () => {
 	return (
 		<Fragment>
 			<Head>
@@ -434,24 +428,3 @@ const AboutPage: NextPage<IProps> = ({ about }: IProps): JSX.Element => {
 
 export default AboutPage;
 
-export const getStaticProps: GetStaticProps = async () => {
-	try {
-		const { data } = await apolloStrapi.query({
-			query: GET_STRAPI_ABOUT,
-		});
-		const about = data?.about;
-
-		return {
-			props: {
-				about,
-			},
-		};
-	} catch (error) {
-		console.log(error);
-		return {
-			props: {
-				about: null,
-			},
-		};
-	}
-};
