@@ -108,7 +108,8 @@ const CampComp: React.FC<IProps> = ({ post, open, openPetition, timeLine }: IPro
 									<img key={index} className="w-full h-80 rounded-md object-cover" src={image} alt="" />
 								)
 							}
-						</div>						{author?.id === post.author?._id ? (
+						</div>
+						{author?.id === post.author?._id ? (
 							<div className="text-gray-400 p-1">Hello {author.name}, you can  resolve your complaint speedily by finding an expert or converting your complaint to a petition
 								<button className="border border-warning p-1 mt-1 mr-4 text-black rounded-md bg-white" onClick={() => open()}>Find Expert</button>
 								<button className="border border-warning p-1 mt-1 text-black rounded-md bg-white" onClick={() => openPetition()}>Start Petition</button>
