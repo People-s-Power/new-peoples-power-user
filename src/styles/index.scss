@@ -27,6 +27,9 @@ html {
 aside::-webkit-scrollbar {
   width: 2px;
 }
+#popup::-webkit-scrollbar {
+  width: 2px;
+}
 body {
 	overflow-x: hidden;
 	font-family: 'Poppins', sans-serif;

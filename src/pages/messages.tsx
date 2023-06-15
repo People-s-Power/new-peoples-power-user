@@ -83,6 +83,7 @@ const messages = () => {
 			console.log(err.message)
 		},
 	})
+
 	const deleteChat = (id) => {
 		if (socket.connected) {
 			socket.emit('delete_dm', {
@@ -108,6 +109,7 @@ const messages = () => {
 			console.log(error)
 		}
 	}
+	
 	const sendFile = (id) => {
 		if (filesPreview.length > 0) {
 			setLoading(true)

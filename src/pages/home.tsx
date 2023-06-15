@@ -45,7 +45,7 @@ const HomePage = () => {
 	const user = useRecoilValue(UserAtom)
 
 	return (
-		<FrontLayout>
+		<FrontLayout msg={false}>
 			<Wrapper>
 				<section className="index">
 					<div className="lg:flex lg:mx-32 my-6 p-4">
