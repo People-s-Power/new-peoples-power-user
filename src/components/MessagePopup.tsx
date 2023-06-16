@@ -27,7 +27,7 @@ const MessagePopup = () => {
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef(null);
   const [message, setMessage] = useState<any>("")
-	const [typing, setTypingData] = useState("")
+  const [typing, setTypingData] = useState("")
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (filesPreview.length < 1) {
@@ -278,7 +278,7 @@ const MessagePopup = () => {
 
   return (
     <div id="popup" className="bg-white h-[70%] overflow-y-auto z-30">
-      <div className='fixed bg-white bottom-0 right-10 w-[30%]'>
+      <div className='fixed bg-white bottom-0 right-1 w-[25%]'>
         <div className="bg-warning">
           <div onClick={() => setDisplay(!display)} className="w-1/2 bg-black h-[10px] mx-auto cursor-pointer"></div>
           <div className="flex justify-evenly p-2">
@@ -293,14 +293,14 @@ const MessagePopup = () => {
                 </div>
               </div>
             </Whisper>
-            <input type="text" className="py-1 rounded-full w-1/2 text-sm border bg-transparent px-4 text-black" placeholder="Search" />
           </div>
         </div>
         <div className="bg-white">
           {
             display && messages ?
               <div className="p-3">
-                <p className="text-base font-bold">Message</p>
+                <input type="text" onChange={(e) => search(e.target.value)} className="py-2 rounded-full w-full text-sm border bg-transparent px-4 text-black" placeholder="Search" />
+                <p className="text-base mt-2 font-bold">Message</p>
                 {
                   messages.map((item, index) => (
                     <div key={index} className={
