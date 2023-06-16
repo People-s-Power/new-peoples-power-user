@@ -31,7 +31,11 @@ const Header = (): JSX.Element => {
 
 	useEffect(() => {
 		if (socket.connected) {
-			socket.emit("notifications", user?.id, (response) => {
+			socket.emit("notifications", {
+				userId: user?.id,
+				page: 1,
+				limit: 80
+			}, (response) => {
 				// console.log(response)
 				setCount(response.unReadCount)
 			})

@@ -277,9 +277,9 @@ const MessagePopup = () => {
   )
 
   return (
-    <div id="popup" className="bg-white h-[70%] overflow-y-auto z-30">
+    <div id="popup" className="bg-white h-[80%] overflow-y-auto z-30">
       <div className='fixed bg-white bottom-0 right-1 w-[25%]'>
-        <div className="bg-warning">
+        <div onClick={() => setDisplay(!display)} className="bg-warning">
           <div onClick={() => setDisplay(!display)} className="w-1/2 bg-black h-[10px] mx-auto cursor-pointer"></div>
           <div className="flex justify-evenly p-2">
             <Whisper placement="bottom" trigger="click" speaker={speaker}>
@@ -356,7 +356,15 @@ const MessagePopup = () => {
                   ))
                 }
               </div>
-              : null
+              : message === null &&
+              <div className="p-4 text-center">
+                <img className="w-40 mx-auto h-40 sm:hidden" src="/images/lolo.jpeg" alt="" />
+                <h5 className="my-4 sm:hidden">Chat with your connections.</h5>
+                <p className="sm:hidden">Go to My Connections and followers or following to send message.</p>
+                <Link href={'/connection?page=followers'}>
+                  <button className="bg-warning px-4 text-white p-2 my-4 rounded-sm">chat with connections</button>
+                </Link>
+              </div>
           }
         </div>
       </div>
@@ -429,7 +437,7 @@ const MessagePopup = () => {
                     <div className="flex relative">
                       <textarea
                         onChange={(e) => setMessage(e.target.value)}
-                        className="w-full h-32 text-sm p-2 border border-white"
+                        className="w-full h-32 text-sm p-2 bg-gray-300"
                         placeholder="Write a message"
                         value={message}
                         onFocus={() => sendTyping(show?.users[1]._id === active.id || active._id ? show.users[0]?._id : show?.users[1]?._id)}

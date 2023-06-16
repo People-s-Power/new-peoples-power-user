@@ -351,7 +351,7 @@ const messages = () => {
 	)
 
 	return (
-		<FrontLayout showFooter={false}>
+		<FrontLayout showFooter={false} msg={false}>
 			<div className="lg:flex lg:px-32 sm:p-6">
 				<div className="lg:w-[40%] overflow-y-auto h-full">
 					<div className="text-lg p-3">Messages</div>

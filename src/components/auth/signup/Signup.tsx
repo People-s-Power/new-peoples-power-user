@@ -75,7 +75,7 @@ export const SignupCom = ({
 		try {
 			const { data } = await axios.post("/auth/register", info);
 			cookie.set("user_id", data?.id);
-
+			
 			cookie.set(TOKEN_NAME, data?.token);
 			// router.push("/mycamp/profile");
 			window.location.href = '/buildprofile'
