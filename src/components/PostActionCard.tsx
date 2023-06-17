@@ -20,19 +20,19 @@ export default function PostActionCard({
 	handelOpenFindExpart,
 	count,
 	refresh,
-    hashtag
+	hashtag
 }: InferProps<typeof PostActionCardProp>): JSX.Element {
 	return (
 		<div className="border-b border-gray-300">
-            {hashtag && <div className="flex gap-3 px-3 py-2 mb-3 border-b border-b-zinc-200">
-                <div className="w-20 h-20 flex justify-center items-center rounded-full border border-zinc-400 text-2xl">#</div>
-                <div className="text">
-                    <h1 className="text-2xl font-semibold">#{hashtag || "Social Policy"}</h1>
-                    <p className="text-sm text-zinc-400 my-1">202240</p>
-										<div className="the-hash hidden">{hashtag}</div>
-                    <button className="text-white bg-[#f9a826] p-3 py-2 rounded">Subscribe</button>
-                </div>
-            </div>}
+			{hashtag && <div className="flex gap-3 px-3 py-2 mb-3 border-b border-b-zinc-200">
+				<div className="w-20 h-20 flex justify-center items-center rounded-full border border-zinc-400 text-2xl">#</div>
+				<div className="text">
+					<h1 className="text-2xl font-semibold">#{hashtag || "Social Policy"}</h1>
+					<p className="text-sm text-zinc-400 my-1">202240</p>
+					<div className="the-hash hidden">{hashtag}</div>
+					<button className="text-white bg-[#f9a826] p-3 py-2 rounded">Subscribe</button>
+				</div>
+			</div>}
 			<div className="flex justify-center">
 				<img src={authorImage ? authorImage : ""} className="w-14 h-14 mx-4 rounded-full" alt="" />
 				<div onClick={() => handelClick()} className="p-3 pl-8 rounded-full w-[80%] border border-black text-sm cursor-pointer">

@@ -109,7 +109,7 @@ const messages = () => {
 			console.log(error)
 		}
 	}
-	
+
 	const sendFile = (id) => {
 		if (filesPreview.length > 0) {
 			setLoading(true)
@@ -245,7 +245,7 @@ const messages = () => {
 				userId: active.id || active._id,
 			}, response => {
 				console.log('delete_message:', response),
-				getDm()
+					getDm()
 			});
 		}
 	}
@@ -511,7 +511,7 @@ const messages = () => {
 									<div className="flex relative">
 										<textarea
 											onChange={(e) => setMessage(e.target.value)}
-											className="w-full h-32 text-sm p-2 border border-white"
+											className="w-full h-32 text-sm p-2 border bg=gray-300 border-white"
 											placeholder="Write a message"
 											value={message}
 											onFocus={() => sendTyping(show?.users[1]._id === active.id || active._id ? show.users[0]?._id : show?.users[1]?._id)}

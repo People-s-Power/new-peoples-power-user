@@ -120,7 +120,7 @@ const CreatePost = ({
 		if (open) {
 			const theHashtag = document.querySelector(".the-hash") as HTMLDivElement;
 			console.log(theHashtag);
-			if(theHashtag) setCategory(theHashtag.innerText || "Add Category");
+			if (theHashtag) setCategory(theHashtag.innerText || "Add Category");
 		}
 	}, [open])
 
@@ -147,22 +147,42 @@ const CreatePost = ({
 		<>
 			<Modal open={open} onClose={handelClick}>
 				<Modal.Header>
-					<div className="border-b border-gray-200 p-3 w-full flex justify-between">
-						{/* <Modal.Title>Make a post</Modal.Title> */}
-						<div></div>
+					<div className="border-b border-gray-200 w-full flex justify-between">
 						{post === null ? (
-							<button onClick={handleSubmit} className="p-1 bg-warning text-white rounded-sm w-20">
+							<div className="p-2 w-full rounded-md">
+								<Whisper placement="bottom" trigger="click" speaker={speaker}>
+									<div className="flex">
+										<div className="flex cursor-pointer">
+											<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+											<div className="text-sm my-auto">{active?.name}</div>
+										</div>
+										<div className="my-auto">
+											<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#F7A607" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
+												<path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+											</svg>
+										</div>
+									</div>
+								</Whisper>
+							</div>
+						) : (
+							<div className="flex">
+								<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
+								<div className="text-sm">{active?.name}</div>
+							</div>
+						)}
+						{post === null ? (
+							<button onClick={handleSubmit} className="p-1 h-8 my-auto bg-warning text-white rounded-sm w-20">
 								{loading ? "Loading..." : "Post"}
 							</button>
 						) : (
-							<button onClick={handleUpdate} className="p-1 bg-warning text-white rounded-sm w-20">
+							<button onClick={handleUpdate} className="p-1 h-8 my-auto bg-warning text-white rounded-sm w-20">
 								{loading ? "Loading..." : "Update"}
 							</button>
 						)}
 					</div>
 				</Modal.Header>
 				<Modal.Body>
-					{post === null ? (
+					{/* {post === null ? (
 						<div className="p-2 w-full rounded-md">
 							<Whisper placement="bottom" trigger="click" speaker={speaker}>
 								<div className="flex">
@@ -183,7 +203,7 @@ const CreatePost = ({
 							<img src={active?.image} className="w-10 h-10 rounded-full mr-4" alt="" />
 							<div className="text-sm">{active?.name}</div>
 						</div>
-					)}
+					)} */}
 					<textarea
 						value={body}
 						onChange={(e) => setBody(e.target.value)}

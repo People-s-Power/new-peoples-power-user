@@ -24,6 +24,11 @@ const Header = (): JSX.Element => {
 
 
 	useEffect(() => {
+		const route = window.location.pathname
+		console.log(route)
+		if (route === '/about' || '/campaigns' || '/events' || '/contact') {
+			return
+		}
 		if (token === undefined && window.location.pathname !== "/home") {
 			window.location.href = `/home`
 		}

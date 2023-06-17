@@ -95,12 +95,12 @@ const Footer = (): JSX.Element => {
 									<i className="fas fa-map-marker-alt"></i>163A Okporo Rd,
 									Rumuodara 500102, Port Harcourt
 								</li> */}
-							<Link href="/contact">
+							{/* <Link href="/contact">
 								<button className="btn btn-warning px-4 fw-bold my-3 text-light rounded-pill">
 									Get in Touch
 									<i className="fas fa-long-arrow-alt-right ms-2"></i>
 								</button>
-							</Link>
+							</Link> */}
 						</ul>
 
 						{/* </div> */}

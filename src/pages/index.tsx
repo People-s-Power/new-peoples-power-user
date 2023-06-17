@@ -322,6 +322,12 @@ const HomePage = () => {
 								</span></Link></p>
 								{author?.interests.map((interst, i) => <p className="text-sm my-3 capitalize cursor-pointer" key={i} onClick={() => filterItemsByInterest(interst)}>{interst}</p>)}
 							</div>
+							<Link href="/contact">
+								<button className="btn btn-warning px-4 fw-bold my-3 text-light rounded-pill">
+									Get in Touch
+									<i className="fas fa-long-arrow-alt-right ms-2"></i>
+								</button>
+							</Link>
 						</div>
 						{/* <div className="text-left">
 							<Dropdown title="My Interests">
@@ -330,6 +336,7 @@ const HomePage = () => {
 								))}
 							</Dropdown>
 						</div> */}
+
 					</aside>
 				)}
 
