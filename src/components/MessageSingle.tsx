@@ -4,6 +4,7 @@ import { socket } from "pages/_app"
 import { Dropdown } from "rsuite";
 import { Loader } from "rsuite"
 import Link from "next/link";
+import Online from "./Online";
 
 const MessageSingle = ({ messages, active, close }: { messages: any, active: any, close: any }) => {
   const [filesPreview, setFilePreview] = useState<any>([])
@@ -127,7 +128,7 @@ const MessageSingle = ({ messages, active, close }: { messages: any, active: any
   }
 
   return (
-    <div className={`w-[32%] bg-white shadow-xl ${hidden && 'h-[65px] mt-auto mb-0'}`}>
+    <div className={`w-[32%] bg-white shadow-xl mx-2 ${hidden && 'h-[65px] mt-auto mb-0'}`}>
       <div onClick={() => setHidden(!hidden)} className="w-1/2 h-[10px] mx-auto cursor-pointer bg-gray-400"></div>
       <div className="border-b border-gray-200 flex justify-between py-1 px-2">
         {show && <div className="flex">
@@ -137,7 +138,11 @@ const MessageSingle = ({ messages, active, close }: { messages: any, active: any
           }
           <div className="ml-4 my-auto">
             {
-              show.type === "consumer-to-consumer" ? <div className="text-sm">{show.users[0]._id === active.id ? show.users[1].name : show.users[0].name}</div> : <div className="text-sm">{show.users[0]._id === active._id ? show.users[1].name : show.users[0].name}</div>
+              show.type === "consumer-to-consumer" ? <div className="text-sm flex">
+                <Online id={show.users[0]._id === active.id || active._id ? show.users[1]._id : show.users[0]._id} />
+                {show.users[0]._id === active.id ? show.users[1].name : show.users[0].name}</div> : <div className="text-sm flex">
+                <Online id={show.users[0]._id === active.id || active._id ? show.users[1]._id : show.users[0]._id} />
+                {show.users[0]._id === active._id ? show.users[1].name : show.users[0].name}</div>
             }
             <div className="text-xs">
               <ReactTimeAgo date={new Date(show.updatedAt)} />
