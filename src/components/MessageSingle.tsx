@@ -127,7 +127,7 @@ const MessageSingle = ({ messages, active, close }: { messages: any, active: any
   }
 
   return (
-    <div className={`w-[32%] bg-white shadow-xl ${hidden && 'h-[65px]'}`}>
+    <div className={`w-[32%] bg-white shadow-xl ${hidden && 'h-[65px] mt-auto mb-0'}`}>
       <div onClick={() => setHidden(!hidden)} className="w-1/2 h-[10px] mx-auto cursor-pointer bg-gray-400"></div>
       <div className="border-b border-gray-200 flex justify-between py-1 px-2">
         {show && <div className="flex">
@@ -145,7 +145,7 @@ const MessageSingle = ({ messages, active, close }: { messages: any, active: any
             <p className="text-sm text-center py-1">{typing}</p>
           </div>
         </div>}
-        <img onClick={() => close()} src="/images/close.png" className="w-3 my-auto h-3" alt="" />
+        <img onClick={() => close()} src="/images/close.png" className="w-3 my-auto h-3 cursor-pointer" alt="" />
       </div>
 
       {hidden === false &&
