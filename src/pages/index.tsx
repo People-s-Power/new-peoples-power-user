@@ -318,7 +318,7 @@ const HomePage = () => {
 							</div>
 							<div className="text-left sm:p-3">
 								<p className="my-4">My Interests <Link href={"/mycamp/profile"}><span className="cursor-pointer float-right">
-									<img src="/images/pencil.png" alt="" />
+									<img src="/images/pencil.png" className="w-6 h-6" alt="" />
 								</span></Link></p>
 								{author?.interests.map((interst, i) => <p className="text-sm my-3 capitalize cursor-pointer" key={i} onClick={() => filterItemsByInterest(interst)}>{interst}</p>)}
 							</div>
