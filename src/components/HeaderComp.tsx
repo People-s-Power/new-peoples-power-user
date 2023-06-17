@@ -68,16 +68,21 @@ const Header = (): JSX.Element => {
 								<h6>{text}</h6>
 							</a>
 						</Link>
-						<menu
-							className="menu btn d-flex d-md-none flex-column"
-							onClick={() => setMenu(!menu)}
-							id="button"
-							role="button"
-						>
-							<div className="bars"></div>
-							<div className="bars"></div>
-							<div className="bars"></div>
-						</menu>
+						<div className="flex d-md-none">
+							<Link href={'/messages'}>
+								<img className=" w-8 h-8 my-auto" src="/images/chat-icon.png" alt="" />
+							</Link>
+							<menu
+								className="menu btn d-flex d-md-none flex-column"
+								onClick={() => setMenu(!menu)}
+								id="button"
+								role="button"
+							>
+								<div className="bars"></div>
+								<div className="bars"></div>
+								<div className="bars"></div>
+							</menu>
+						</div>
 					</div>
 					<ul className=" nav d-none d-md-flex">
 						{/* {navItems(Boolean(user)).map((nav, i) => (

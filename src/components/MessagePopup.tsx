@@ -204,7 +204,7 @@ const MessagePopup = () => {
         </div>
         <div className="bg-white">
           {
-            display && messages ?
+            display && messages.length >= 1 ?
               <div className="p-3">
                 <input type="text" onChange={(e) => search(e.target.value)} className="py-2 rounded-full w-full text-sm border bg-transparent px-4 text-black" placeholder="Search" />
                 <p className="text-base mt-2 font-bold">Message</p>
