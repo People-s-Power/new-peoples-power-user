@@ -25,12 +25,12 @@ export default function PostActionCard({
 	return (
 		<div className="border-b border-gray-300">
 			{hashtag && <div className="flex gap-3 px-3 py-2 mb-3 border-b border-b-zinc-200">
-				<div className="w-20 h-20 flex justify-center items-center rounded-full border border-zinc-400 text-2xl">#</div>
-				<div className="text">
+				<div className="lg:w-32 lg:h-32 w-20 h-20 flex justify-center lg:ml-20 items-center rounded-full border border-zinc-400 text-4xl font-bold">#</div>
+				<div className="text lg:mt-10">
 					<h1 className="text-2xl font-semibold">#{hashtag || "Social Policy"}</h1>
 					<p className="text-sm text-zinc-400 my-1">202240</p>
 					<div className="the-hash hidden">{hashtag}</div>
-					<button className="text-white bg-[#f9a826] p-3 py-2 rounded">Subscribe</button>
+					<button className="text-white bg-[#f9a826] p-3 py-2 rounded">+ Follow</button>
 				</div>
 			</div>}
 			<div className="flex justify-center">
