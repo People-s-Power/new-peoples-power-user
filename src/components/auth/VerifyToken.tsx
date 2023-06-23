@@ -15,12 +15,12 @@ const VerifyToken = (): JSX.Element => {
 		e.preventDefault();
 		try {
 			setLoading(true);
-			await axios.post("/auth/verify-token", { token });
+			await axios.post("//verify-token", { token });
 			toast(
 				"Your account has been verified. Continue to login with your password",
 			);
-			router.push("/auth");
-			// router.push(`/auth?mode=change password&&id=${data}`);
+			router.push("/");
+			// router.push(`/?mode=change password&&id=${data}`);
 			setLoading(false);
 		} catch (error) {
 			const e = error as any;
@@ -84,11 +84,11 @@ const ResendVerification = ({ onSuccess }: { onSuccess(): void }) => {
 		e.preventDefault();
 		try {
 			setLoading(true);
-			const { data } = await axios.post("/auth/resend-token", { email });
+			const { data } = await axios.post("//resend-token", { email });
 			toast(`Verification message sent to ${email}`);
 			onSuccess();
 			console.log(data);
-			// router.push(`/auth?mode=change password&&id=${data}`);
+			// router.push(`/?mode=change password&&id=${data}`);
 		} catch (error) {
 			const e = error as any;
 			if (e?.response?.data) {

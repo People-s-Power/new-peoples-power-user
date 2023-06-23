@@ -20,7 +20,7 @@ const RegisterComp = (): JSX.Element => {
 				<h2 className="text-secondary fw-bold">Sign Up</h2>
 				<p className="m-0 mb-3 fs-5">
 					Already have an account
-					<Link href="/auth">
+					<Link href="/">
 						<a className="text-warning fw-bold c-hand ms-2">Log In </a>
 					</Link>
 				</p>
@@ -30,7 +30,7 @@ const RegisterComp = (): JSX.Element => {
 				privacy.
 			</p>
 			<SignupCom onSucess={(d) => console.log(d)} />
-			<Link href="/auth?mode=login">
+			<Link href="/?mode=login">
 				<a className="text-decoration-none text-center d-block">
 					Login instead
 				</a>
@@ -73,7 +73,7 @@ export const SignupCom = ({
 		// if (info.password !== info.password2) return alert("Passwords must match");
 		setLoading(true);
 		try {
-			const { data } = await axios.post("/auth/register", info);
+			const { data } = await axios.post("//register", info);
 			cookie.set("user_id", data?.id);
 			
 			cookie.set(TOKEN_NAME, data?.token);

@@ -153,7 +153,7 @@ const Header = (): JSX.Element => {
 						</li>
 						<li className="nav-item">
 							{!user ? (
-								<Link href="/auth">
+								<Link href="/">
 									<button className="p-2 font-black px-5 mt-2 join rounded-pill bg-warning text-white">
 										Join
 									</button>
@@ -220,7 +220,7 @@ const Header = (): JSX.Element => {
 						</Dropdown>
 					</div>
 					{!user ? (
-						<Link href="/auth">
+						<Link href="/">
 							<button className="btn px-5 join rounded-pill bg-warning text-white font-weight-bold">
 								Join
 							</button>

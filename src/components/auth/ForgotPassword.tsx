@@ -17,7 +17,7 @@ const ForgotPassword = (): JSX.Element => {
 			setLoading(true);
 			await axios.post("/auth/forgot-password", { email });
 			toast("An email has been sent to you with your verification code");
-			router.push("/auth?mode=verify token");
+			router.push("/?mode=verify token");
 			setLoading(false);
 		} catch (error) {
 			console.log(error);

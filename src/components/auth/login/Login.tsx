@@ -24,14 +24,14 @@ const LoginPage = (): JSX.Element => {
 						<h2 className="text-secondary fw-bold">Sign In</h2>
 						<p className="m-0 mb-3 fs-5">
 							Don't have an account
-							<Link href="/auth?mode=signup">
+							<Link href="/?mode=signup">
 								<a className="text-warning fw-bold c-hand ms-2">create one</a>
 							</Link>
 						</p>
 					</div>
 					<p className="fs-5 mb-3">Sign in with your social media accounts for easy syncing and more secure privacy.</p>
-					<LoginComp onSuccess={(data) => ((window.location.href = `/`), localStorage.setItem("page", user?.id))} />
-					<Link href="/auth?mode=forgot password">
+					<LoginComp onSuccess={(data) => ((window.location.href = `/feeds`), localStorage.setItem("page", user?.id))} />
+					<Link href="/?mode=forgot password">
 						<a className="text-decoration-none text-center d-block">Forgot Password</a>
 					</Link>
 				</div>

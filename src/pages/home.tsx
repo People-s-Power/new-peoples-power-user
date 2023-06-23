@@ -57,7 +57,7 @@ const HomePage = () => {
 								What are your personal and Social Complaints? The Plaint is your no. 1 platform for personal and social solution. Post your Complaint for people to get in touch and have your issues resolved.
 							</p>
 							<div className="btn-holder d-flex flex-wrap" style={{ gap: "1rem" }}>
-								<Link href="/auth?mode=signup">
+								<Link href="/?mode=signup">
 									<a className="btn btn-warning btn-lg rounded-pill text-xs px-4 py-2 text-light font-weight-bolder fs-20 ">Post your Complaint</a>
 								</Link>
 								<Link href="/about">
@@ -122,7 +122,7 @@ const HomePage = () => {
 								{campaigns?.length >= 1 ? campaigns?.slice(0, 4).map((camp, i) => <CampCard camp={camp} key={i} />) : <div></div>}
 							</div>
 							<div className="lg:block hidden lg:w-[40%] mx-auto flex py-8 justify-between">
-								<Link href="/auth?mode=signup">
+								<Link href="/?mode=signup">
 									<a className="btn btn-warning btn-lg rounded-pill px-4  text-xs py-2 text-light font-weight-bolder fs-20 ">Start a Petition</a>
 								</Link>
 								<Link href="/campaigns">
@@ -143,7 +143,7 @@ const HomePage = () => {
 							<div className="lg:block hidden">
 								<TeamSlide />
 							</div>
-							<Link href="/auth?mode=login">
+							<Link href="/?mode=login">
 								<button className="p-3 rounded-full text-warning border border-warning">Hire a Virtual Assistant</button>
 							</Link>
 						</div>
@@ -161,7 +161,7 @@ const HomePage = () => {
 					<div className="lg:px-20 text-center">
 						<div className="lg:w-[60%] mx-auto text-center"><TeamSlide />
 						</div>
-						<Link href="/auth?mode=login">
+						<Link href="/?mode=login">
 							<button className="p-3 rounded-full sm:w-40 text-warning border border-warning">Create</button>
 						</Link>
 					</div>

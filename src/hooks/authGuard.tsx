@@ -64,7 +64,7 @@ const authGuard = (
 				console.log(error?.message);
 
 				if (ctx?.res) {
-					ctx.res.writeHead(307, { Location: "/auth?mode=login" });
+					ctx.res.writeHead(307, { Location: "/?mode=login" });
 					ctx.res.end();
 				}
 			}
