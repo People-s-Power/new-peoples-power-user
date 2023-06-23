@@ -83,13 +83,13 @@ const HomePage = () => {
 								<p className="text-xl text-white">Expert Service</p>
 							</div>
 						</div>
-						<div className="flex justify-around p-3 bg-[#666666] px-3 lg:w-1/2">
+						{/* <div className="flex justify-around p-3 bg-[#666666] px-3 lg:w-1/2">
 							<img src="./images/app.png" className="w-28 h-28 my-auto" alt="" />
 							<div className="text-white my-auto">
 								<span className="text-sm text-white">Download Our</span>
 								<p className="text-xl text-white">Mobile App</p>
 							</div>
-						</div>
+						</div> */}
 						<div className="flex justify-around p-3 bg-[#777777] px-3 lg:w-1/2">
 							<div className="text-center my-auto">
 								<span className="text-sm text-white">Become a</span>

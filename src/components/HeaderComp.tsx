@@ -76,9 +76,11 @@ const Header = (): JSX.Element => {
 							</a>
 						</Link>
 						<div className="flex d-md-none">
-							<Link href={'/messages'}>
-								<img className=" w-8 h-8 my-auto" src="/images/chat-icon.png" alt="" />
-							</Link>
+							{
+								user && <Link href={'/messages'}>
+									<img className=" w-8 h-8 my-auto" src="/images/chat-icon.png" alt="" />
+								</Link>
+							}
 							<menu
 								className="menu btn d-flex d-md-none flex-column"
 								onClick={() => setMenu(!menu)}

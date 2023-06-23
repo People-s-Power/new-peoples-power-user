@@ -277,6 +277,13 @@ const HomePage = () => {
 						<div className="overflow-y-auto h-[500px]">
 							<div className="border-b border-gray-200 px-3">
 								{/* <a href="https://teamapp-6jfl6.ondigitalocean.app/" target="_blank"> */}
+								<div className="flex justify-between my-2">
+									<div className="text-sm my-auto">Post Complaint</div>
+									<div onClick={() => handelClick()} className="text-center cursor-pointer">
+										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
+										<span className="text-xs text-center">post</span>
+									</div>
+								</div>
 								<Link href={"/about#career"}>
 									<div className="flex justify-between my-2">
 										<div className="text-sm my-auto">Become Virtual Assistant</div>
@@ -287,13 +294,13 @@ const HomePage = () => {
 									</div>
 								</Link>
 								{/* </a> */}
-								<div className="flex justify-between my-2">
+								{/* <div className="flex justify-between my-2">
 									<div className="text-sm my-auto">Event</div>
 									<div onClick={() => handelEventClick()} className="text-center cursor-pointer">
 										<div className="bg-gray-100 mx-auto pt-[1px] rounded-full w-6 h-6 text-base font-bold">+</div>
 										<span className="text-xs text-center">create</span>
 									</div>
-								</div>
+								</div> */}
 								<div className="flex justify-between my-2">
 									<div className="text-sm my-auto">Become a Service Provider</div>
 									<Link href={"/org/create"}>
@@ -322,12 +329,14 @@ const HomePage = () => {
 								</span></Link></p>
 								{author?.interests.map((interst, i) => <p className="text-sm my-3 capitalize cursor-pointer" key={i} onClick={() => filterItemsByInterest(interst)}>{interst}</p>)}
 							</div>
-							<Link href="/contact">
-								<button className="btn btn-warning px-4 fw-bold my-3 text-light rounded-pill">
-									Get in Touch
-									<i className="fas fa-long-arrow-alt-right ms-2"></i>
-								</button>
-							</Link>
+							<div className="fixed bottom-2 left-20">
+								<Link href="/contact">
+									<button className="btn btn-warning px-4 fw-bold my-3 text-light rounded-pill">
+										Get in Touch
+										<i className="fas fa-long-arrow-alt-right ms-2"></i>
+									</button>
+								</Link>
+							</div>
 						</div>
 						{/* <div className="text-left">
 							<Dropdown title="My Interests">
