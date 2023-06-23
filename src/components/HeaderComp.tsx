@@ -22,14 +22,16 @@ const Header = (): JSX.Element => {
 	// })
 	const token = cookie.get(TOKEN_NAME)
 
-
 	useEffect(() => {
 		const route = window.location.pathname
-		console.log(route)
+		// console.log(route)
 		if (route === '/about' || '/campaigns' || '/events' || '/contact') {
 			return
 		}
-		if (token === undefined && window.location.pathname !== "/home") {
+	}, [])
+
+	useEffect(() => {
+		if (token === undefined && window.location.pathname !== "/home" && user === null) {
 			window.location.href = `/home`
 		}
 	}, [])

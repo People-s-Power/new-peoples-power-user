@@ -75,7 +75,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 				<title>{`THE PLAINT`}</title>
 				<meta
 					name="description"
-					content="THE PLAINT, is a non-governmental organization formed in 2015 with the sole aim of addressing the causes of criminality and advancing the cause of human rights, the Foundation has between June 2017 till date defended over 500 Fundamental Right Matters of people whose fundamental right has been."
+					content="The Plaint is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard."
 				/>
 				<Script src="../scripts/wisernotify.js"></Script>
 			</Head>
