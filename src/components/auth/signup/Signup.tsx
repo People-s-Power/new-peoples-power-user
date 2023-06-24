@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import cookie from "js-cookie";
-import { TOKEN_NAME } from "utils/constants";
+import { HTTP_URI, TOKEN_NAME } from "utils/constants";
 import { useRouter } from 'next/router'
 import { Loader } from "rsuite";
 import GoogleAuthComp from "../GoogleAuth";
@@ -73,9 +73,9 @@ export const SignupCom = ({
 		// if (info.password !== info.password2) return alert("Passwords must match");
 		setLoading(true);
 		try {
-			const { data } = await axios.post("//register", info);
+			const { data } = await axios.post(HTTP_URI + "/auth/register", info);
 			cookie.set("user_id", data?.id);
-			
+
 			cookie.set(TOKEN_NAME, data?.token);
 			// router.push("/mycamp/profile");
 			window.location.href = '/buildprofile'
