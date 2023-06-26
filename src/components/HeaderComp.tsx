@@ -57,7 +57,7 @@ const Header = (): JSX.Element => {
 	if (typeof window !== 'undefined') { }
 
 	const navItems = (loggedIn: boolean) => [
-		{ title: "Home", link: loggedIn ? `/` : "auth" },
+		{ title: "Home", link: loggedIn ? `/feeds` : "auth" },
 		{ title: "My Profile", link: loggedIn ? `/user?page=${user.id}` : "auth" },
 		{ title: "Messages", link: "/messages" },
 		{ title: "My Connection", link: "/connection" },
