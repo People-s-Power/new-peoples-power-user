@@ -319,6 +319,7 @@ const messages = () => {
 			socket.on('typing', function (data) {
 				console.log('typing', data);
 				setTypingData(data)
+				setTimeout(() => setTypingData(''), 4000)
 			});
 		}
 	}
