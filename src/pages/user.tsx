@@ -168,7 +168,7 @@ const user = () => {
 		client: apollo,
 		variables: { authorId: query.page },
 		onCompleted: (data) => {
-			// console.log(data)
+			console.log(data)
 			setPosts(data.myPosts)
 		},
 		onError: (err) => console.log(err),
@@ -313,7 +313,7 @@ const user = () => {
 									<div className="py-3 mb-4 d-flex">
 										<div className="pro-img-wrap rounded-circle position-relative">
 											<input type="file" ref={uploadRef} onChange={handleImg} />
-											<button className="btn p-0 z-50" onClick={uploadFileToServer}>
+											<button className="btn p-0 z-40" onClick={uploadFileToServer}>
 												<i
 													className={`fas fs-5 d-flex align-items-center justify-content-center  rounded-circle  text-secondary ${img ? "fa-save" : "fa-pencil-alt"
 														}`}

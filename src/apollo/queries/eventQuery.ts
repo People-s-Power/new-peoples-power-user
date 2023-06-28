@@ -12,6 +12,10 @@ export const GET_EVENTS = gql`
 				image
 				description
 			}
+			asset{
+				url
+				type
+  	  }
 			comments{
         _id
         content
@@ -169,6 +173,10 @@ export const MY_EVENT = gql`
 				email
 				image
 			}
+			asset{
+				url
+				type
+  	  }
 			description
 			startDate
 			endDate
@@ -261,6 +269,10 @@ export const EVENT = gql`
 				email
 				image
 			}
+			asset{
+				url
+				type
+  	  }
 			description
 			startDate
 			endDate

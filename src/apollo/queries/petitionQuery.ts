@@ -12,6 +12,10 @@ export const GET_PETITION = gql`
 					description
 					image
 				}
+				asset{
+					url
+					type
+				}
 				body
 				category
 				createdAt
@@ -106,6 +110,10 @@ export const MY_PETITION = gql`
 			views
 			slug
 			createdAt
+			asset{
+				url
+				type
+  	  }
 			comments{
         _id
         content
@@ -156,6 +164,10 @@ export const SINGLE_PETITION = gql`
     aim
     body
     target
+		asset{
+			url
+			type
+		}
     slug
     comments{
 			_id
@@ -211,6 +223,10 @@ export const SINGLE_PETITION_ID = gql`
 					email
 					description
 					image
+				}
+				asset{
+					url
+					type
 				}
 				body
 				category

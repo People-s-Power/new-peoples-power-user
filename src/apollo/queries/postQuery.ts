@@ -39,6 +39,10 @@ export const GET_POSTS = gql`
 				author
 				body
 			}
+			asset{
+				url
+				type
+  	  }
 			image
 			likes
 			shares
@@ -58,6 +62,10 @@ export const GET_USER_POSTS = gql`
 			createdAt
 			views
 			image
+			asset{
+				url
+				type
+  	  }
 			likes {
 				_id
 				name
@@ -111,6 +119,10 @@ export const GET_POST = gql`
 			body
 			createdAt
 			image
+			asset{
+				url
+				type
+  	  }
 			likes {
 				_id
 				name

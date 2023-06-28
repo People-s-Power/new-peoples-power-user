@@ -88,6 +88,10 @@ export const MY_ADVERTS = gql`
 			action
 			image
 			views
+			asset{
+				url
+				type
+  	  }
 			likes {
 				name
 			}
@@ -138,6 +142,10 @@ export const ADVERT = gql`
 			likes {
 				name
 			}
+			asset{
+				url
+				type
+  	  }
 			__typename
 			author {
 				_id
