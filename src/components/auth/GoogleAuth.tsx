@@ -44,7 +44,7 @@ const GoogleAuthComp = ({
 
 	return (
 		<GoogleLogin
-			clientId={GOOGLE_CLIENT_ID || ""}
+			clientId={'887697567363-9ok08i91989vf3naqcdh7f2qg8558k1m.apps.googleusercontent.com'}
 			onSuccess={googleAuth}
 			onFailure={(e) => console.log(e)}
 			render={(props: { onClick(): void }) => (

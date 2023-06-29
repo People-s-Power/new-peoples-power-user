@@ -22,7 +22,7 @@ export enum CampaignMessage {
 	All = "all-campaign-notice",
 }
 
-export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || ""
+export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "887697567363-9ok08i91989vf3naqcdh7f2qg8558k1m.apps.googleusercontent.com"
 
 export enum IEnvironments {
 	GOOGLE_CLIENT_ID = "GOOGLE_CLIENT_ID",

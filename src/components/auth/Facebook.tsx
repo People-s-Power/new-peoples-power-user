@@ -42,7 +42,7 @@ const Facebook = ({ onSuccess }:{
  
     return (
       <FacebookProvider
-        appId="511095437173808"
+        appId="1183907008954124"
         className='p-2 bg-blue rounded-xl'
       >
         <LoginButton
