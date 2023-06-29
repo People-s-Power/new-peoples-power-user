@@ -14,14 +14,14 @@ const ImageViewer = ({ src, currentIndex, onClose }: { src: Asset, currentIndex:
 
   return (
     <div className='fixed w-full h-screen left-0 right-0 z-50 top-0 bg-black'>
-      <div className='flex justify-between mt-32'>
+      <div className='flex justify-between lg:mt-20 mt-40'>
         <div className='my-auto p-2' onClick={() => index === 0 ? null : setIndex(index - 1)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ffffff" className="bi bi-caret-left-fill" viewBox="0 0 16 16">
             <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
           </svg>
         </div>
-        <div className='w-[80%]'>
-          {src[index]?.type === 'image' ? <img className="w-auto mx-auto" src={src[index]?.url} /> : src[index]?.type === 'video' ?
+        <div className='w-[60%]'>
+          {src[index]?.type === 'image' ? <img className="mx-auto my-auto" src={src[index]?.url} /> : src[index]?.type === 'video' ?
             <video controls className="w-full">
               <source src={src[index]?.url} type="video/mp4" />
             </video> : null}

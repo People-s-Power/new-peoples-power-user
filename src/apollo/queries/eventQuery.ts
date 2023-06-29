@@ -71,8 +71,7 @@ export const UPDATE_EVENT = gql`
 		$startDate: String!
 		$time: String!
 		$type: String!
-		$imageFile: [String!]!
-	) {
+$assets: [AssetInput!]!	) {
 		updateEvent(
 			name: $name
 			description: $description
@@ -80,8 +79,7 @@ export const UPDATE_EVENT = gql`
 			startDate: $startDate
 			time: $time
 			type: $type
-			imageFile: $imageFile
-			authorId: $authorId
+assets: $assets			authorId: $authorId
 			eventId: $eventId
 		) {
 			_id
@@ -120,8 +118,7 @@ export const CREATE_EVENT = gql`
 		$startDate: String!
 		$time: String!
 		$type: String!
-		$imageFile: [String!]!
-		$audience: String!
+$assets: [AssetInput!]!		$audience: String!
 	) {
 		createEvent(
 			name: $name
@@ -130,8 +127,7 @@ export const CREATE_EVENT = gql`
 			startDate: $startDate
 			time: $time
 			type: $type
-			imageFile: $imageFile
-			author: $author
+assets: $assets			author: $author
 			audience: $audience
 		) {
 			_id

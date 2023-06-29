@@ -119,7 +119,17 @@ const PromoteComp = (): JSX.Element => {
 							<div>
 								<div className="card">
 									<div className="card-Image">
-										<img src={campaign?.image} className="w-full h-1/2 object-cover" alt="" />
+										{
+											campaign?.asset[0].type === 'image' ?
+												<img className="w-full h-80 rounded-md object-cover" src={campaign?.asset[0].url} alt="" />
+												: <video
+													src={campaign?.asset[0].url}
+													autoPlay muted
+													className="embed-responsive-item w-full object-cover h-80"
+												>
+													<source src={campaign?.asset[0].url} type="video/mp4" />
+												</video>
+										}
 									</div>
 									<div className="card-body">
 										<h4 className="fw-bold">{campaign?.title}</h4>

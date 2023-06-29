@@ -211,16 +211,16 @@ export const GET_ALL = gql`
 				body
 				_id
 				asset{
-      url
-      type
-    }
+					url
+					type
+				}
 				petition {
 					_id
 					title
 					asset{
-      url
-      type
-    }
+						url
+						type
+					}
 					image
 					excerpt
 					aim
@@ -342,9 +342,9 @@ export const GET_ALL = gql`
 			events {
 				_id
 				asset{
-      url
-      type
-    }
+					url
+					type
+				}
 				audience
 				author {
 					_id
@@ -529,11 +529,19 @@ mutation unhide($authorId: ID!, $itemId: ID!){
 export const UPDATES = gql`
 	query getUpdate($id: ID!) {
 		getUpdate(id: $id) {
-			body
+				body
 				_id
+				asset{
+					url
+					type
+				}
 				petition {
 					_id
 					title
+					asset{
+						url
+						type
+					}
 					image
 					excerpt
 					aim
@@ -541,10 +549,6 @@ export const UPDATES = gql`
 					body
 					slug
 					status
-					asset{
-						url
-						type
-					}
 					createdAt
 					updatedAt
 					comments{
@@ -554,16 +558,15 @@ export const UPDATES = gql`
 						authorId
 						authorImage
 						authorEmail
-						date
+						
 						replies{
 							_id
-							 _id
 						content
 						authorName
 						authorId
 						authorImage
 						authorEmail
-						date
+						createdAt
 						}
 						likes
 						createdAt
@@ -596,21 +599,19 @@ export const UPDATES = gql`
 						authorId
 						authorImage
 						authorEmail
-						date
+						
 						replies{
 							_id
-							 _id
 						content
 						authorName
 						authorId
 						authorImage
 						authorEmail
-						date
+						createdAt
 						}
 						likes
 						createdAt
 					}
-
 					category
 					region
 					author {
@@ -628,16 +629,16 @@ export const UPDATES = gql`
 					authorId
 					authorImage
 					authorEmail
-					date
+					
 					replies{
 						_id
-						 _id
 					content
 					authorName
 					authorId
 					authorImage
 					authorEmail
-					date
+					createdAt
+					likes
 					}
 					likes
 					createdAt
@@ -657,6 +658,6 @@ export const UPDATES = gql`
 					image
 				}
 				__typename
-		}
+			}
 	}
 `

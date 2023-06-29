@@ -206,6 +206,10 @@ export const SINGLE_PETITION = gql`
     updates{
       body
       image
+			asset{
+				url
+				type
+			}
       createdAt
 			_id
     }

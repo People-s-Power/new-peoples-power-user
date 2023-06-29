@@ -9,14 +9,12 @@ export const UPDATE_ADVERT = gql`
 		$duration: String!
 		$email: String!
 		$link: String!
-		$imageFile: [String!]!
-		$advertId: ID!
+$assets: [AssetInput!]!		$advertId: ID!
 	) {
 		updateAd(
 			authorId: $authorId
 			caption: $caption
-			imageFile: $imageFile
-			message: $message
+assets: $assets			message: $message
 			action: $action
 			duration: $duration
 			email: $email
@@ -48,13 +46,11 @@ export const CREATE_ADVERT = gql`
 		$duration: String!
 		$email: String!
 		$link: String!
-		$imageFile: [String!]!
-	) {
+$assets: [AssetInput!]!	) {
 		createdAd(
 			author: $author
 			caption: $caption
-			imageFile: $imageFile
-			message: $message
+assets: $assets			message: $message
 			action: $action
 			duration: $duration
 			email: $email
