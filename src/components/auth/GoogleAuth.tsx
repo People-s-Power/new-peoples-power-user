@@ -18,7 +18,6 @@ const GoogleAuthComp = ({
 	const [loading, setLoading] = useState(false);
 	const [user, setUser] = useState(null)
 	const [profile, setProfile] = useState(null)
-	const GOOGLE_CLIENT_ID = Cookies.get(IEnvironments.GOOGLE_CLIENT_ID);
 
 	const googleAuth = async () => {
 		setLoading(true);
@@ -53,7 +52,7 @@ const GoogleAuthComp = ({
 					})
 					.then((res) => {
 						setProfile(res.data);
-						// console.log(res.data)
+						console.log(res.data)
 						googleAuth()
 					})
 					.catch((err) => console.log(err));
@@ -64,8 +63,8 @@ const GoogleAuthComp = ({
 
 	const login = useGoogleLogin({
 		onSuccess: (codeResponse) => {
-			console.log(codeResponse)
-			// setUser(codeResponse)
+			// console.log(codeResponse)
+			setUser(codeResponse)
 		},
 		onError: (error) => console.log('Login Failed:', error)
 	});
