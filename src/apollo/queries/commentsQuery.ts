@@ -18,8 +18,10 @@ export const REPLY_COMMENT = gql`
   }
 `
 export const REMOVE_REPLY = gql`
-  mutation replyComment($authorId: ID!, $commentId: ID!, $replyId: ID!){
-    replyComment(authorId: $authorId, commentId: $commentId, replyId: $replyId)
+  mutation removeReply($authorId: ID!, $commentId: ID!, $replyId: ID!){
+    removeReply(authorId: $authorId, commentId: $commentId, replyId: $replyId){
+      _id
+    }
   }
 `
 export const LIKE_REPLY = gql`
@@ -34,3 +36,10 @@ export const EDIT_COMMENT = gql`
     }
   }
 `
+export const EDIT_REPLY = gql`
+  mutation editReply($authorId: ID!, $commentId: ID!, $content: String!, $replyId: ID!){
+    editReply(authorId: $authorId, commentId: $commentId, content: $content, replyId: $replyId)
+    
+  }
+`
+

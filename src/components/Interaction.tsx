@@ -25,7 +25,7 @@ import StartPetition from "./modals/StartPetition"
 import CreateVictories from "./modals/CreateVictories"
 import { useRouter } from "next/router"
 import { DELETE_VICTORIES } from "apollo/queries/victories"
-import { LIKE_COMMENT, LIKE_REPLY, REMOVE_COMMENT, REPLY_COMMENT, EDIT_COMMENT } from "apollo/queries/commentsQuery"
+import { LIKE_COMMENT, LIKE_REPLY, REMOVE_COMMENT, REPLY_COMMENT, EDIT_COMMENT, REMOVE_REPLY, EDIT_REPLY } from "apollo/queries/commentsQuery"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const router = useRouter()
@@ -251,6 +251,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				},
 			})
 			console.log(data)
+			setAllComment(allComment.slice(0, index))
 		}
 		catch (err) {
 			console.log(err)
@@ -475,6 +476,7 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 	const [replies, setReplies] = useState(false)
 	const [commentLikes, setCommentLikes] = useState(comment?.likes?.length)
 	const [commmentReplies, setCommentReplies] = useState(comment?.replies)
+	const [single, setNewSingle] = useState(null)
 
 	const replyBtn = async (comment) => {
 		try {
@@ -502,22 +504,6 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 		}
 	}
 
-	// const deleteReply = async (index) => {
-	// 	try {
-	// 		const { data } = await axios.post(SERVER_URL + "/graphql", {
-	// 			query: print(REMOVE_COMMENT),
-	// 			variables: {
-	// 				authorId: author.id,
-	// 				commentId: post.comment[index]._id,
-	// 				replyId: post._id
-	// 			},
-	// 		})
-	// 		console.log(data)
-	// 	}
-	// 	catch (err) {
-	// 		console.log(err)
-	// 	}
-	// }
 	const likeComment = async (comment) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -552,6 +538,47 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 		}
 	}
 
+	const removeReply = async (index) => {
+		try {
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(REMOVE_REPLY),
+				variables: {
+					authorId: author.id,
+					commentId: comment._id,
+					replyId: commmentReplies[index]._id,
+				},
+			})
+			console.log(data)
+			setCommentReplies(commmentReplies.slice(0, index))
+		}
+		catch (err) {
+			console.log(err)
+		}
+	}
+
+	const editReply = async () => {
+		try {
+			setLoading2(true)
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(EDIT_REPLY),
+				variables: {
+					authorId: author.id,
+					commentId: comment._id,
+					replyId: single._id,
+					content: reply
+				},
+			})
+			setLoading2(false)
+			setNewSingle(null)
+			setReply("")
+			console.log(data)
+		}
+		catch (err) {
+			console.log(err)
+		}
+	}
+
+
 	return (
 		<div>
 			<div className="flex my-1 text-sm">
@@ -582,7 +609,7 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 							placeholder={"Reply comment"}
 						/>
 						<div className="absolute top-4 right-6">
-							{loading2 ? <Loader /> : <img src="./images/send.png" onClick={(e) => replyBtn(comment)} className="w-6 h-6 cursor-pointer" alt="" />}
+							{loading2 ? <Loader /> : <img src="./images/send.png" onClick={(e) => { single === null ? replyBtn(comment) : editReply() }} className="w-6 h-6 cursor-pointer" alt="" />}
 						</div>
 					</div>
 					{commmentReplies?.length > 0 ?
@@ -602,6 +629,16 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 									<div className="flex my-1 text-sm">
 										{/* <div onClick={() => setReplies(!replies)}><span className="mr-1">{comment.replies?.length}</span> Reply</div> */}
 										<div onClick={(e) => likeReply(comment, index)} className="cursor-pointer"><span className="mx-1">{reply.likes?.length}</span> Likes</div>
+										{
+											author.id === reply.authorId ? <div onClick={() => { setReply(reply.content), setNewSingle(reply) }} className="cursor-pointer mx-4">
+												Edit
+											</div> : null
+										}
+										{
+											author.id === reply.authorId ? <div onClick={() => removeReply(index)} className="cursor-pointer text-red-500">
+												Delete
+											</div> : null
+										}
 									</div>
 								</div>
 							</div>
