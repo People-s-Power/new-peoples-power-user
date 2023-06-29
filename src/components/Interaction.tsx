@@ -25,7 +25,7 @@ import StartPetition from "./modals/StartPetition"
 import CreateVictories from "./modals/CreateVictories"
 import { useRouter } from "next/router"
 import { DELETE_VICTORIES } from "apollo/queries/victories"
-import { LIKE_COMMENT, LIKE_REPLY, REMOVE_COMMENT, REPLY_COMMENT } from "apollo/queries/commentsQuery"
+import { LIKE_COMMENT, LIKE_REPLY, REMOVE_COMMENT, REPLY_COMMENT, EDIT_COMMENT } from "apollo/queries/commentsQuery"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const router = useRouter()
@@ -55,6 +55,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const [open, setOpen] = useState(false)
 	const [update, setUpdate] = useState(null)
 	const [victories, setVictories] = useState(null)
+	const [single, setSingle] = useState(null)
 
 	useQuery(GET_ORGANIZATIONS, {
 		variables: { ID: author?.id },
@@ -218,6 +219,25 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		}
 	}
 
+	const editComment = async () => {
+		try {
+			setLoading(true)
+			const { data } = await axios.post(SERVER_URL + "/graphql", {
+				query: print(EDIT_COMMENT),
+				variables: {
+					authorId: author.id,
+					commentId: single._id,
+					content: content
+				},
+			})
+			console.log(data)
+			setLoading(false)
+			setContent("")
+			setSingle(null)
+		} catch (err) {
+			console.log(err)
+		}
+	}
 
 
 	const deleteComment = async (index) => {
@@ -312,14 +332,14 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 											Celebrate Victory
 										</Dropdown.Item>
 										{isOwner(post.author._id) ?
-										<Dropdown.Item
-											onClick={() => {
-												handelUpdates(), setUpdate(null)
-											}}
-										>
-											Update
-										</Dropdown.Item>
-										: null }
+											<Dropdown.Item
+												onClick={() => {
+													handelUpdates(), setUpdate(null)
+												}}
+											>
+												Update
+											</Dropdown.Item>
+											: null}
 										<Link href={`/report?page=${post?.slug}`}>
 											<Dropdown.Item>Report</Dropdown.Item>
 										</Link>
@@ -403,7 +423,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 							placeholder={post.__typename === "Petition" ? "What is your reason for endorsing this Petition?" : "Write a comment"}
 						/>
 						<div className="absolute top-4 right-6">
-							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => commentBtn(post._id)} className="w-6 h-6 cursor-pointer" alt="" />}
+							{loading ? <Loader /> : <img src="./images/send.png" onClick={(e) => single === null ? commentBtn(post._id) : editComment()} className="w-6 h-6 cursor-pointer" alt="" />}
 						</div>
 					</div>
 					{allComment?.length > 0
@@ -420,7 +440,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 											<ReactTimeAgo date={new Date(comment.createdAt)} />{" "}
 										</div>
 									</div>
-									<RepliesComp comment={comment} deleteComment={() => deleteComment(index)} />
+									<RepliesComp comment={comment} setSingle={() => { setSingle(comment), setContent(single?.content) }} deleteComment={() => deleteComment(index)} />
 								</div>
 							</div>
 						))
@@ -448,7 +468,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 
 export default CampComp
 
-export function RepliesComp({ comment, deleteComment }: any) {
+export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 	const [reply, setReply] = useState("")
 	const [loading2, setLoading2] = useState(false)
 	const author = useRecoilValue(UserAtom)
@@ -535,8 +555,13 @@ export function RepliesComp({ comment, deleteComment }: any) {
 	return (
 		<div>
 			<div className="flex my-1 text-sm">
-				<div className="cursor-pointer" onClick={() => setReplies(!replies)}><span className="mr-1">{commmentReplies.length}</span> Reply</div>
+				<div className="cursor-pointer" onClick={() => setReplies(!replies)}><span className="mr-1">{commmentReplies?.length}</span> Reply</div>
 				<div onClick={(e) => likeComment(comment)} className="mx-4 cursor-pointer"><span className="mx-1">{commentLikes}</span> Likes</div>
+				{
+					author.id === comment.authorId ? <div onClick={() => setSingle()} className="cursor-pointer mr-4">
+						Edit
+					</div> : null
+				}
 				{
 					author.id === comment.authorId ? <div onClick={() => deleteComment()} className="cursor-pointer text-red-500">
 						Delete

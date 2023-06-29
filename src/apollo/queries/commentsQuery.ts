@@ -27,3 +27,10 @@ export const LIKE_REPLY = gql`
     likeandUnlikeReply(authorId: $authorId, commentId: $commentId, replyId: $replyId)
   }
 `
+export const EDIT_COMMENT = gql`
+  mutation editComment($authorId: ID!, $commentId: ID!, $content: String!){
+    editComment(authorId: $authorId, commentId: $commentId, content: $content){
+      _id
+    }
+  }
+`
