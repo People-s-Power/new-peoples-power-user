@@ -53,7 +53,7 @@ const GoogleAuthComp = ({
 					})
 					.then((res) => {
 						setProfile(res.data);
-						console.log(res.data)
+						// console.log(res.data)
 						googleAuth()
 					})
 					.catch((err) => console.log(err));
@@ -65,7 +65,7 @@ const GoogleAuthComp = ({
 	const login = useGoogleLogin({
 		onSuccess: (codeResponse) => {
 			console.log(codeResponse)
-			setUser(codeResponse)
+			// setUser(codeResponse)
 		},
 		onError: (error) => console.log('Login Failed:', error)
 	});
