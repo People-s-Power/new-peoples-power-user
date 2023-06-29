@@ -45,8 +45,7 @@ const Facebook = ({ onSuccess }: {
   // 1269676020167482
   return (
     <FacebookLogin
-      appId="1269676020167482"
-      autoLoad
+      appId="799422665107203"
       callback={responseFacebook}
       cssClass="m-[10px]"
       textButton=''

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react"
 import PropTypes, { InferProps } from "prop-types"
 import axios from "axios"
+import { Loader } from "rsuite"
+import { useRecoilValue, useSetRecoilState } from "recoil"
+import { UserAtom } from "atoms/UserAtom"
 
 const PostActionCardProp = {
 	authorImage: PropTypes.string,
@@ -23,7 +26,10 @@ export default function PostActionCard({
 	refresh,
 	hashtag
 }: InferProps<typeof PostActionCardProp>): JSX.Element {
+	const author = useRecoilValue(UserAtom)
 	const [list, setCount] = useState(0)
+	const [loading, setLoading] = useState(false)
+	const [subs, setSubs] = useState(null)
 
 	useEffect(() => {
 		const getCount = async () => {
@@ -31,10 +37,21 @@ export default function PostActionCard({
 				.then(function (response) {
 					console.log(response.data)
 					setCount(response.data.hashSubCount)
+					setSubs(response.data.mySubs)
 				})
 		}
 		getCount();
-	}, [hashtag])
+	}, [hashtag, subs])
+
+	const addHashTag = async () => {
+		setLoading(true)
+		await axios.post(`rpost/add-hashsub`, {
+			hashtag
+		}).then(function (response) {
+			console.log(response.data)
+			setLoading(false)
+		})
+	}
 	return (
 		<div className="border-b border-gray-300">
 			{hashtag && <div className="flex gap-3 px-3 py-2 mb-3 border-b border-b-zinc-200">
@@ -43,7 +60,10 @@ export default function PostActionCard({
 					<h1 className="text-2xl font-semibold">#{hashtag || "Social Policy"}</h1>
 					<p className="text-sm text-zinc-400 my-1">{list}</p>
 					<div className="the-hash hidden">{hashtag}</div>
-					<button className="text-white bg-[#f9a826] p-3 py-2 rounded">+ Follow</button>
+					{
+						subs?.some(sub => sub.hashtag === hashtag && sub.subscriber === author.id) ? null :
+							<button onClick={() => addHashTag()} className="text-white bg-[#f9a826] p-3 py-2 rounded">{loading ? <Loader /> : "+ Follow"}</button>
+					}
 				</div>
 			</div>}
 			<div className="flex justify-center">
