@@ -25,7 +25,7 @@ const ImageCarousel = ({ image }: { image: any }) => {
             image?.slice(0, 3).map((image, index) =>
               image.type === 'image' ?
                 <img key={index} onClick={() => openImageViewer(index)} className="w-full cursor-pointer h-80 rounded-md object-cover" src={image.url} alt="" />
-                : image.type === 'video' ? <video key={index} onClick={() => openImageViewer(index)} autoPlay muted loop className="w-full h-80 object-cover rounded-md">
+                : image.type === 'video' ? <video key={index} onClick={() => openImageViewer(index)} autoPlay controls muted loop className="w-full h-80 object-cover rounded-md">
                   <source src={image.url} type="video/mp4" />
                 </video> : null
             )
