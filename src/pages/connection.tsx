@@ -154,14 +154,15 @@ export default connection
 function Following({ user, getFollowing }) {
 	const author = useRecoilValue(UserAtom)
 	const [loading, setLoading] = useState(false)
+
 	const unfollow = async (id) => {
 		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(UNFOLLOW),
+				query: print(FOLLOW),
 				variables: {
 					followerId: author.id,
-					unfollowId: id,
+					followId: id,
 				},
 			})
 			console.log(data)

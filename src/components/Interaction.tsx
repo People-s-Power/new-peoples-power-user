@@ -239,7 +239,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 		}
 	}
 
-
 	const deleteComment = async (index) => {
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
