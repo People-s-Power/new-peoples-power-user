@@ -25,7 +25,7 @@ const Facebook = ({ onSuccess }: {
         name: profile.name,
         firstName: name[0],
         lastName: name[1],
-        image: profile.picture
+        image: profile.picture.data.url
       }
       const { data } = await axios.post("/auth/google-facebook", payload)
       console.log(data)
