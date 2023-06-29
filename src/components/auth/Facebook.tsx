@@ -13,17 +13,19 @@ const Facebook = ({ onSuccess }: {
 }): JSX.Element => {
   const [errorMsg, setErrorMsg] = useState()
   const [loading, setLoading] = useState(false)
+  const [profile, setProfile] = useState(null)
 
-  const handleResponse = async (e: any) => {
+  const handleResponse = async () => {
     try {
       setLoading(true);
-      const { profile } = e
+      const name = profile.name.split(" ")
       const payload = {
         facebookId: profile.id,
         email: profile.email,
-        firstName: profile.first_name,
-        lastName: profile.last_name,
-        image: profile.picture.data.url
+        name: profile.name,
+        firstName: name[0],
+        lastName: name[1],
+        image: profile.picture
       }
       const { data } = await axios.post("/auth/google-facebook", payload)
       console.log(data)
@@ -41,6 +43,8 @@ const Facebook = ({ onSuccess }: {
   }
   const responseFacebook = (response) => {
     console.log(response);
+    setProfile(response)
+    handleResponse()
   }
   // 1269676020167482
   return (
@@ -49,6 +53,7 @@ const Facebook = ({ onSuccess }: {
       callback={responseFacebook}
       cssClass="m-[10px]"
       textButton=''
+      fields="name,email,picture"
       icon={<span>
         <svg
           width="29"
