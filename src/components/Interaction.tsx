@@ -493,6 +493,7 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 			setCommentReplies([{
 				authorName: author.name,
 				authorImage: author.image,
+				authorId: author.id,
 				content: reply,
 				createdAt: new Date(),
 			}, ...commmentReplies])
