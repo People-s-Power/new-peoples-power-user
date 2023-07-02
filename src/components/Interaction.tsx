@@ -251,7 +251,8 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				},
 			})
 			console.log(data)
-			setAllComment(allComment.slice(0, index))
+			allComment.splice(index, 1)
+			// setAllComment(newComment)
 		}
 		catch (err) {
 			console.log(err)
@@ -549,7 +550,8 @@ export function RepliesComp({ comment, deleteComment, setSingle }: any) {
 				},
 			})
 			console.log(data)
-			setCommentReplies(commmentReplies.slice(0, index))
+			commmentReplies.splice(index, 1)
+			// setCommentReplies(newComment)
 		}
 		catch (err) {
 			console.log(err)
