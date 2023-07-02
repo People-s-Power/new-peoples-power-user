@@ -158,6 +158,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 				{
 					authorName: author.name,
 					authorImage: author.image,
+					authorId: author.id,
 					content: content,
 					_id: data.data.comment._id,
 					createdAt: new Date(),
