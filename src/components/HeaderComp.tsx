@@ -15,6 +15,7 @@ const Header = (): JSX.Element => {
 	const user = useRecoilValue(UserAtom);
 	const [menu, setMenu] = useState(false);
 	const [count, setCount] = useState(0);
+	const [messageCount, setMessageCount] = useState(0)
 	// const socket = io(SERVER_URL, {
 	// 	query: {
 	// 		user_id: user?.id,
@@ -46,6 +47,19 @@ const Header = (): JSX.Element => {
 				// console.log(response)
 				setCount(response.unReadCount)
 			})
+
+		}
+	}, [user])
+	useEffect(() => {
+		if (socket.connected) {
+			socket.emit('unread_count', {
+				userId: user?.id
+			}, (response) => {
+				console.log('unread_count:', response)
+				setMessageCount(response)
+
+			}
+			);
 		}
 	}, [user])
 
@@ -59,7 +73,7 @@ const Header = (): JSX.Element => {
 	const navItems = (loggedIn: boolean) => [
 		{ title: "Home", link: loggedIn ? `/feeds` : "auth" },
 		{ title: "My Profile", link: loggedIn ? `/user?page=${user.id}` : "auth" },
-		{ title: "Messages", link: "/messages" },
+		// { title: "Messages", link: "/messages" },
 		{ title: "My Connection", link: "/connection" },
 		// { title: "Explore", link: "campaigns" },
 	];
@@ -182,7 +196,21 @@ const Header = (): JSX.Element => {
 
 										</div>
 									</Link>
-									<div className='p-1'></div>
+									{/* <div className='p-1'></div> */}
+									<Link href="/messages">
+										<div
+											className='notify-bell pt-3 group cursor-pointer relative'
+
+										>
+											{/* <img src="/images/ci_notification-outline-dot.svg" alt="" /> */}
+											{messageCount > 0 && (
+												<div className="text-white text-[8px] absolute text-center px-1 bg-red-500 h-[15px] font-semibold top-3 right-2 rounded-full">{messageCount > 100 ? "99+" : messageCount}</div>
+											)}
+											<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" className="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+												<path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+											</svg>
+										</div>
+									</Link>
 									<UserMenu />
 								</div>
 							)}
@@ -247,6 +275,20 @@ const Header = (): JSX.Element => {
 									>
 										<path d="M256 32V51.2C329 66.03 384 130.6 384 208V226.8C384 273.9 401.3 319.2 432.5 354.4L439.9 362.7C448.3 372.2 450.4 385.6 445.2 397.1C440 408.6 428.6 416 416 416H32C19.4 416 7.971 408.6 2.809 397.1C-2.353 385.6-.2883 372.2 8.084 362.7L15.5 354.4C46.74 319.2 64 273.9 64 226.8V208C64 130.6 118.1 66.03 192 51.2V32C192 14.33 206.3 0 224 0C241.7 0 256 14.33 256 32H256zM224 512C207 512 190.7 505.3 178.7 493.3C166.7 481.3 160 464.1 160 448H288C288 464.1 281.3 481.3 269.3 493.3C257.3 505.3 240.1 512 224 512z" /></svg>
 
+								</div>
+							</Link>
+							<Link href="/messages">
+								<div
+									className='notify-bell pt-3 group cursor-pointer relative'
+
+								>
+									{/* <img src="/images/ci_notification-outline-dot.svg" alt="" /> */}
+									{messageCount > 0 && (
+										<div className="text-white text-[8px] absolute text-center px-1 bg-red-500 h-[15px] font-semibold top-3 right-2 rounded-full">{messageCount > 100 ? "99+" : messageCount}</div>
+									)}
+									<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" className="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+										<path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+									</svg>
 								</div>
 							</Link>
 						</div>

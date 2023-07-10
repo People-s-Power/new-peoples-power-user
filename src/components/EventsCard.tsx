@@ -165,7 +165,7 @@ const EventsCard = ({ event, timeLine }: IProps) => {
 					<div className="p-2">
 						<input type="text" onChange={(e) => { }} className="p-3 lg:w-96 w-full rounded-full  pl-10 mb-4 text-sm" placeholder="Search" />
 						{
-							interestedIn.length > 0 ?
+							interestedIn?.length > 0 ?
 								interestedIn.map((item, index) => (
 									<div key={index} className='lg:flex w-full my-3 justify-between'>
 										<div className="flex">

@@ -119,19 +119,19 @@ const connection = () => {
 							? followers.map((user, index) => (
 								<div key={index} className="p-6 lg:flex w-[60%] justify-between">
 									<div className="flex">
-										<Link href={`user?page=${user._id}`}>
+										<Link href={`user?page=${user?._id}`}>
 											<div className="cursor-pointer">
-												<img src={user.image} className="w-20 h-20 mx-auto my-auto rounded-full" alt="" />
+												<img src={user?.image} className="w-20 h-20 mx-auto my-auto rounded-full" alt="" />
 											</div>
 										</Link>
 										<div className="ml-4 my-auto">
-											<div className="lg:text-xl text-lg py-2 ">{user.name}
+											<div className="lg:text-xl text-lg py-2 ">{user?.name}
 											</div>
-											<div className="text-xs text-gray-700 my-1">{user.followers.length} Followers</div>
-											<p className='text-xs my-2'>{user.description}</p>
+											<div className="text-xs text-gray-700 my-1">{user?.followers?.length} Followers</div>
+											<p className='text-xs my-2'>{user?.description}</p>
 										</div>
 									</div>
-									<Link href={`/messages?page=${user._id}`}>
+									<Link href={`/messages?page=${user?._id}`}>
 										<div className="lg:text-xs border text-warning border-warning lg:p-3 p-2 text-xs h-10 my-auto lg:w-44 w-full my-6 text-center rounded-full cursor-pointer">Send message</div>
 									</Link>
 								</div>
@@ -175,22 +175,22 @@ function Following({ user, getFollowing }) {
 	return (
 		<div className="p-6 lg:flex w-[60%] justify-between">
 			<div className="flex">
-				<Link href={`user?page=${user._id}`}>
+				<Link href={`user?page=${user?._id}`}>
 					<div className="cursor-pointer">
-						<img src={user.image} className="w-20 h-20 mx-auto my-auto rounded-full" alt="" />
+						<img src={user?.image} className="w-20 h-20 mx-auto my-auto rounded-full" alt="" />
 					</div>
 				</Link>
 				<div className="ml-4 my-auto">
-					<div className="lg:text-xl text-lg py-2 flex">{user.name}
+					<div className="lg:text-xl text-lg py-2 flex">{user?.name}
 						{loading ? <p className="text-xs p-2 text-gray-900">loading...</p> : <p className="text-xs p-2 cursor-pointer text-warning" onClick={() => unfollow(user._id)}>
 							Unfollow
 						</p>}
 					</div>
-					<div className="text-xs text-gray-700 my-1">{user.followers.length} Followers</div>
-					<p className='text-xs my-2'>{user.description}</p>
+					<div className="text-xs text-gray-700 my-1">{user?.followers?.length} Followers</div>
+					<p className='text-xs my-2'>{user?.description}</p>
 				</div>
 			</div>
-			<Link href={`/messages?page=${user._id}`}>
+			<Link href={`/messages?page=${user?._id}`}>
 				<div className="lg:text-xs border text-warning border-warning lg:p-3 p-2 text-xs h-10 my-auto lg:w-44 w-full my-6 text-center rounded-full cursor-pointer">Send message</div>
 			</Link>
 		</div>
