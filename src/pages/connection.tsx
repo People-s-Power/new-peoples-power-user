@@ -159,10 +159,10 @@ function Following({ user, getFollowing }) {
 		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
-				query: print(FOLLOW),
+				query: print(UNFOLLOW),
 				variables: {
 					followerId: author.id,
-					followId: id,
+					unfollowId: id,
 				},
 			})
 			console.log(data)

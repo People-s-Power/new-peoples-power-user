@@ -17,9 +17,9 @@ const GoogleAuthComp = ({
 }): JSX.Element => {
 	const [loading, setLoading] = useState(false);
 	const [user, setUser] = useState(null)
-	const [profile, setProfile] = useState(null)
+	// const [profile, setProfile] = useState(null)
 
-	const googleAuth = async () => {
+	const googleAuth = async (profile) => {
 		setLoading(true);
 		try {
 			const { data } = await axios.post("/auth/google-facebook", {
@@ -33,6 +33,7 @@ const GoogleAuthComp = ({
 			cookie.set("user_id", data.id);
 			cookie.set(TOKEN_NAME, data?.token);
 			onSuccess(data);
+			console.log(data)
 			setLoading(false);
 		} catch (error) {
 			console.log(error);
@@ -42,21 +43,21 @@ const GoogleAuthComp = ({
 
 	useEffect(
 		() => {
-			if (user) {
-				axios
-					.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-						headers: {
-							Authorization: `Bearer ${user.access_token}`,
-							Accept: 'application/json'
-						}
-					})
-					.then((res) => {
-						setProfile(res.data);
-						console.log(res.data)
-						googleAuth()
-					})
-					.catch((err) => console.log(err));
-			}
+			// if (user) {
+			axios
+				.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user?.access_token}`, {
+					headers: {
+						Authorization: `Bearer ${user?.access_token}`,
+						Accept: 'application/json'
+					}
+				})
+				.then((res) => {
+					// setProfile();
+					// console.log(res.data)
+					googleAuth(res.data)
+				})
+				.catch((err) => console.log(err));
+			// }
 		},
 		[user]
 	);
