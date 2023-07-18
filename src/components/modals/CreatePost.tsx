@@ -215,7 +215,7 @@ const CreatePost = ({
 				</Modal.Body>
 				<div className="z-40">
 					<Dropdown placement="topStart" title={<div className="text-sm text-warning">{category}</div>}>
-						{/* <Dropdown.Item onClick={() => setCategory("Human right awareness")}>Human right awareness</Dropdown.Item>
+						<Dropdown.Item onClick={() => setCategory("Human right awareness")}>Human right awareness</Dropdown.Item>
 						<Dropdown.Item onClick={() => setCategory("Social Policy")}>Social Policy</Dropdown.Item>
 						<Dropdown.Item onClick={() => setCategory("Criminal Justice")}>Criminal Justice</Dropdown.Item>
 						<Dropdown.Item onClick={() => setCategory("Human Right Action")}>Human Right Action</Dropdown.Item>
@@ -224,7 +224,7 @@ const CreatePost = ({
 						<Dropdown.Item onClick={() => setCategory("Health")}>Health</Dropdown.Item>
 						<Dropdown.Item onClick={() => setCategory("Politics")}>Politics</Dropdown.Item>
 						<Dropdown.Item onClick={() => setCategory("Disability")}>Disability</Dropdown.Item>
-						<Dropdown.Item onClick={() => setCategory("Equality")}>Equality</Dropdown.Item> */}
+						<Dropdown.Item onClick={() => setCategory("Equality")}>Equality</Dropdown.Item>
 					</Dropdown>
 				</div>
 				<Modal.Footer>
