@@ -284,7 +284,7 @@ const PromoteForm = ({ campaign, view, endorse, message }: { campaign: any; view
 		currency,
 		publicKey: "pk_live_13530a9fee6c7840c5f511e09879cbb22329dc28",
 		metadata: {
-			purpose: location === "inbox" ? PaymentPurposeEnum.MESSAGE : null,
+			purpose: view === true ? PaymentPurposeEnum.VIEWS : endorse === true ? PaymentPurposeEnum.ENDORSE : PaymentPurposeEnum.MESSAGE,
 			key: query.slug,
 			numberOfViews: views,
 			name: user?.name,
