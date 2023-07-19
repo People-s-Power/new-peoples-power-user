@@ -11,6 +11,7 @@ export const GET_ALL = gql`
 				duration
 				link
 				action
+				promoted
 				image
 				asset{
       url
@@ -101,6 +102,7 @@ export const GET_ALL = gql`
 			petitions {
 				aim
 				addedFrom
+				promoted
 				author {
 					_id
 					name
@@ -163,6 +165,7 @@ export const GET_ALL = gql`
 				_id
 				body
 				createdAt
+				promoted
 				image
 				asset{
       url
@@ -341,6 +344,7 @@ export const GET_ALL = gql`
 
 			events {
 				_id
+				promoted
 				asset{
 					url
 					type
