@@ -22,6 +22,9 @@ import FollowCard from "components/FollowCard"
 function Buildprofile(): React.ReactElement {
 	const [countries, setCountries] = useState([])
 	const [cities, setCities] = useState([])
+	const [country, setCountry] = useState("")
+	const [city, setCity] = useState("")
+	
 	const [step, setStep] = React.useState(0)
 	const onChange = (nextStep: any) => {
 		setStep(nextStep < 0 ? 0 : nextStep > 4 ? 4 : nextStep)
@@ -29,8 +32,6 @@ function Buildprofile(): React.ReactElement {
 	const router = useRouter()
 	const [users, setUsers] = useState<IUser[]>([])
 	const uploadRef = useRef<HTMLInputElement>(null)
-	const [country, setCountry] = useState("")
-	const [city, setCity] = useState("")
 	const [description, setDescription] = useState("")
 	const [myInterest, setMyInterest] = useState<string[]>([])
 	const user = useRecoilValue(UserAtom)
