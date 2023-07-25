@@ -24,7 +24,7 @@ function Buildprofile(): React.ReactElement {
 	const [cities, setCities] = useState([])
 	const [country, setCountry] = useState("")
 	const [city, setCity] = useState("")
-	
+
 	const [step, setStep] = React.useState(0)
 	const onChange = (nextStep: any) => {
 		setStep(nextStep < 0 ? 0 : nextStep > 4 ? 4 : nextStep)
@@ -146,7 +146,7 @@ function Buildprofile(): React.ReactElement {
 				name: user.name,
 				phone: user.phone,
 				country,
-				city,
+				state: city,
 				description,
 				interests: myInterest,
 			})
