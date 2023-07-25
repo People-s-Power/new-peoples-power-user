@@ -93,7 +93,7 @@ export const SignupCom = ({
 			<h4 className="text-center">Sign Up</h4>
 			<div className="flex justify-center center w-[88px] m-auto">
 				{/* <Facebook onSuccess={() => (window.location.href = "/mycamp")} /> */}
-				<GoogleAuthComp onSuccess={() => (window.location.href = "/buildprofile")} />
+				<GoogleAuthComp mode="signup" onSuccess={() => (window.location.href = "/buildprofile")} />
 			</div>
 			<form className="" onSubmit={handleLogin}>
 				<div className="mb-1">
