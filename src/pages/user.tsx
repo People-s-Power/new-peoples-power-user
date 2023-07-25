@@ -302,7 +302,7 @@ const user = () => {
 						{`THE PLAINT`} || {user?.name}{" "}
 					</title>
 				</Head>
-				<div className="lg:mx-40">
+				<div className="lg:mx-52">
 					<div className="rounded-md ">
 						<div className="relative ">
 							<div>

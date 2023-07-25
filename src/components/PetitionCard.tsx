@@ -149,7 +149,7 @@ const PetitionComp = ({ petition, timeLine }: IProps): JSX.Element => {
 					<div className="text-sm p-2 leading-loose">{petition.excerpt}</div>
 					<div className="my-3 flex justify-end">
 						<Link href={`/campaigns/${petition?.slug}`}>
-							<button className="p-2 ml-auto w-40 bg-warning text-white">View Full Petiton</button>
+							<button className="p-2 ml-auto w-40 bg-warning text-white">View Full Petition</button>
 						</Link>
 					</div>
 				</div>

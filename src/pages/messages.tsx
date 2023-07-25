@@ -504,7 +504,7 @@ const messages = () => {
 					{
 						show?.messages[show.messages.length - 1].type === "advert" ? <div className="fixed bottom-5 text-center w-[45%] bg-white">
 							<a href={show.messages[show.messages.length - 1].link}>
-								<button className="p-2 bg-warning w-44 mx-auto text-white rounded-md">Sign Up</button>
+								<button className="p-2 bg-warning w-44 mx-auto text-white rounded-md">Learn More</button>
 							</a>
 						</div> :
 							show?.blocked !== true ? (show !== null || query.page !== undefined ? (

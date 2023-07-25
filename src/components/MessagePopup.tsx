@@ -185,7 +185,7 @@ const MessagePopup = () => {
       <div className="flex fixed justify-end left-0 bottom-0 w-[70%]">
         {show.length > 0 && show.slice(0, 3).map((single, index) => <MessageSingle close={() => close(index)} key={index} active={active} messages={single} />)}
       </div>
-      <div className='fixed bg-white bottom-0 right-1 w-[25%]'>
+      <div className={!display ? 'fixed bg-white bottom-0 right-1 w-[25%]' : 'fixed bg-white bottom-0 right-1 w-[25%] h-[60%] overflow-y-auto'}>
         <div onClick={() => setDisplay(!display)} className="bg-warning">
           <div onClick={() => setDisplay(!display)} className="w-1/2 bg-black h-[10px] mx-auto cursor-pointer"></div>
           <div className="flex justify-evenly p-2">
@@ -204,7 +204,7 @@ const MessagePopup = () => {
         </div>
         <div className="bg-white">
           {
-            display && messages.length >= 1 ?
+            display && messages?.length >= 1 ?
               <div className="p-3">
                 <input type="text" onChange={(e) => search(e.target.value)} className="py-2 rounded-full w-full text-sm border bg-transparent px-4 text-black" placeholder="Search" />
                 <p className="text-base mt-2 font-bold">Message</p>

@@ -19,6 +19,7 @@ const FollowCard = ({ user, active }: IProps) => {
   const author = useRecoilValue(UserAtom)
 
   const follow = async (id) => {
+    setLoading(true)
     try {
       const { data } = await axios.post(SERVER_URL + "/graphql", {
         query: print(FOLLOW),

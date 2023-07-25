@@ -140,6 +140,7 @@ function Buildprofile(): React.ReactElement {
 			}
 		}
 	}
+
 	const handleSubmit = async () => {
 		try {
 			const { data } = await axios.put("/user/update", {
@@ -152,14 +153,12 @@ function Buildprofile(): React.ReactElement {
 			})
 			console.log(data)
 			toast.success("Profile Updates Successfully!")
-			router.push(`/`)
+			router.push(`/feeds`)
 		} catch (error) {
 			console.log(error)
 			toast.warn("Oops an error occured!")
 		}
 	}
-
-
 
 	const locationNext = () => {
 		city && country !== "" ? onNext() : null
@@ -216,7 +215,7 @@ function Buildprofile(): React.ReactElement {
 												</div>
 											</div>
 											<div>
-												<div>City</div>
+												<div>State</div>
 												<div>
 													{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
 													<Select options={cities} onChange={(e: any) => setCity(e?.value)} />

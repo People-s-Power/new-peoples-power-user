@@ -271,8 +271,16 @@ const HomePage = () => {
 									</div>
 								</div>
 							</Whisper>
-							<div className="text-base font-light">{active?.name}</div>
-							<div className="text-xs px-3">{active?.description?.substring(0, 100) + "..."}</div>
+							<div className="flex justify-center">
+								<div>
+									<div className="text-base font-light">{active?.name}</div>
+									<div className="text-xs px-3">{active?.description?.substring(0, 100) + "..."}</div>
+								</div>
+
+								<Link href={"/mycamp/profile"}><span className="cursor-pointer">
+									<img src="/images/pencil.png" className="w-4 h-4 my-auto" alt="" />
+								</span></Link>
+							</div>
 						</div>
 						<div className="overflow-y-auto h-[400px]">
 							<div className="border-b border-gray-200 px-3">

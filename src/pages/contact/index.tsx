@@ -21,7 +21,7 @@ const ContactPage = () => {
 	const handleFormSubmit = (e: any) => {
 		setLoading(true)
 		e.preventDefault();
-		fetch("https://formsubmit.co/ajax/evansb45@yahoo.com", {
+		fetch("https://formsubmit.co/ajax/info@theplaint.com", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -55,7 +55,7 @@ const ContactPage = () => {
 			<Head>
 				<title>Contact Us</title>
 			</Head>
-					<FrontLayout showFooter={false}>
+			<FrontLayout showFooter={false}>
 
 				<div>
 					{/* <Div className="d-flex container flex-column-reverse flex-sm-row py-3">

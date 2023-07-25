@@ -35,7 +35,7 @@ export default function PostActionCard({
 		const getCount = async () => {
 			await axios.get(`rpost/hashtag-subs?hashtag=${hashtag}`)
 				.then(function (response) {
-					console.log(response.data)
+					// console.log(response.data)
 					setCount(response.data.hashSubCount)
 					setSubs(response.data.mySubs)
 				})
@@ -48,7 +48,7 @@ export default function PostActionCard({
 		await axios.post(`rpost/add-hashsub`, {
 			hashtag
 		}).then(function (response) {
-			console.log(response.data)
+			// console.log(response.data)
 			setLoading(false)
 		})
 	}
