@@ -94,6 +94,10 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 
 
 	const createPetition = async () => {
+		if (title === "" || category === "" || aim === "" || target === "" || body === "") {
+			toast.warn("Please fill all fields!")
+			return
+		}
 		try {
 			setLoading(true)
 			const { data } = await axios.post("/petition", {

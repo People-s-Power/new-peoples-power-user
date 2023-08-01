@@ -49,6 +49,10 @@ const create = () => {
 	]
 
 	const handleSubmit = async () => {
+		if (orgName === "" || orgEmail === "" || orgPhone === "" || orgDes === "" || orgWeb === "" || category === "") {
+			toast.warn("Please fill all fields!")
+			return
+		}
 		try {
 			setLoading(true)
 			const { data } = await axios.post(SERVER_URL + "/graphql", {

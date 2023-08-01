@@ -9,6 +9,8 @@ import { useRecoilValue } from "recoil"
 import { UserAtom } from "atoms/UserAtom"
 import NotificationCard from "components/NotificationCard"
 import Select from "react-select"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handelClick(): void; event: any, orgs: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -85,6 +87,10 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 	}, [author !== null])
 
 	const handleSubmit = async () => {
+		if (name === "" || des === "" || endDate === "" || startDate === "" || time === "" || type === "" || type === "" ) {
+			toast.warn("Please fill all fields!")
+			return
+		}
 		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -98,8 +104,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					time: time,
 					type: type,
 					assets: previewImages,
-					// country: country,
-					// state: city,
+					country: author.country,
+					state: author.city,
 					audience: ""
 				},
 			})
@@ -133,8 +139,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					time: time,
 					type: type,
 					assets: previewImages,
-					// country: country,
-					// state: city
+					country: author.country,
+					state: author.city,
 					// audience: audience,
 				},
 			})
@@ -327,6 +333,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 			{
 				notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />
 			}
+			<ToastContainer />
 		</>
 	)
 }

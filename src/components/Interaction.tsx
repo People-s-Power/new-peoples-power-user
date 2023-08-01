@@ -53,7 +53,6 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const [allComment, setAllComment] = useState(post.comments)
 	const [loading, setLoading] = useState(false)
 	const [orgs, setOrgs] = useState<IOrg[]>([])
-	const [open, setOpen] = useState(false)
 	const [update, setUpdate] = useState(null)
 	const [victories, setVictories] = useState(null)
 	const [single, setSingle] = useState(null)
@@ -284,13 +283,13 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<div className="text-sm my-auto ml-2">{allComment?.length} {post.__typename === "Petition" ? "Reasons" : "Comments"} </div>
 				</div>
 
-				<CampaignShareMenuList camp={post}>
+				<CampaignShareMenuList camp={post} orgs={orgs}>
 					<div className="flex  cursor-pointer">
 						<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
 						<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
 					</div>
 				</CampaignShareMenuList>
-				
+
 				{/* <div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
@@ -469,9 +468,7 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 			<CreateAdvert open={openAd} handelClick={handelAdClick} advert={post} />
 			<AddUpdates open={openUpdates} handelClick={handelUpdates} petition={post} update={update} />
 			<CreateVictories open={openVictory} handelClick={handelVictory} victory={victories} />
-
 			<ToastContainer />
-			<ShareModal open={open} handelClick={() => setOpen(!open)} single={post} orgs={orgs} />
 		</div>
 	)
 }

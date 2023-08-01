@@ -12,6 +12,8 @@ import NotificationCard from "components/NotificationCard"
 import notifications from "pages/notifications"
 import FindExpartModal from "./FindExpartModal"
 import CreateEvent from "./CreateEvent"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const CreatePost = ({
 	open,
@@ -66,6 +68,10 @@ const CreatePost = ({
 
 	const handleSubmit = async () => {
 		if (category === "Add Category") return
+		if (body === "" || category === "") {
+			toast.warn("Please fill all fields!")
+			return
+		}
 		setLoading(true)
 		try {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
@@ -330,6 +336,7 @@ const CreatePost = ({
 			{notication && <NotificationCard hide={notication} msg={msg} link={link} close={() => setNotication(!notication)} />}
 			<FindExpartModal author={author} open={openFindExpart} handelClose={() => setOpenFindExpart(false)} orgs={orgs} />
 			<CreateEvent open={openEvent} handelClick={handelEventClick} event={null} orgs={orgs} />
+			<ToastContainer />
 		</>
 	)
 }
