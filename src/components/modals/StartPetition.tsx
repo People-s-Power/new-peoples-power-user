@@ -24,36 +24,36 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 	const [aim, setAim] = useState(data?.aim || "")
 	const [target, setTarget] = useState(data?.target || "")
 	const [body, setBody] = useState(data?.body || "")
-	const [countries, setCountries] = useState([])
-	const [cities, setCities] = useState([])
-	const [country, setCountry] = useState("")
-	const [city, setCity] = useState("")
+	// const [countries, setCountries] = useState([])
+	// const [cities, setCities] = useState([])
+	// const [country, setCountry] = useState("")
+	// const [city, setCity] = useState("")
 
-	useEffect(() => {
-		// Get countries
-		// getUsers()
-		axios
-			.get(window.location.origin + "/api/getCountries")
-			.then((res) => {
-				const calculated = res.data.map((country: any) => ({ label: country, value: country }))
-				setCountries(calculated)
-			})
-			.catch((err) => console.log(err))
-	}, [])
+	// useEffect(() => {
+	// 	// Get countries
+	// 	// getUsers()
+	// 	axios
+	// 		.get(window.location.origin + "/api/getCountries")
+	// 		.then((res) => {
+	// 			const calculated = res.data.map((country: any) => ({ label: country, value: country }))
+	// 			setCountries(calculated)
+	// 		})
+	// 		.catch((err) => console.log(err))
+	// }, [])
 
-	useEffect(() => {
-		// Get countries
-		// getUsers()
-		if (country) {
-			axios
-				.get(`${window.location.origin}/api/getState?country=${country}`)
-				.then((res) => {
-					const calculated = res.data.map((state: any) => ({ label: state, value: state }))
-					setCities(calculated)
-				})
-				.catch((err) => console.log(err))
-		}
-	}, [country])
+	// useEffect(() => {
+	// 	// Get countries
+	// 	// getUsers()
+	// 	if (country) {
+	// 		axios
+	// 			.get(`${window.location.origin}/api/getState?country=${country}`)
+	// 			.then((res) => {
+	// 				const calculated = res.data.map((state: any) => ({ label: state, value: state }))
+	// 				setCities(calculated)
+	// 			})
+	// 			.catch((err) => console.log(err))
+	// 	}
+	// }, [country])
 
 	const handleDelSelected = (index) => {
 		setFilePreview((prev) => {
@@ -104,8 +104,8 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 				target: target,
 				body: body,
 				author: active._id || active.id,
-				country: country,
-				state: city
+				country: author.country,
+				state: author.city
 			})
 			console.log(data)
 			setLoading(false)
@@ -135,8 +135,8 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 				target: target,
 				body: body,
 				id: id,
-				country: country,
-				state: city
+				country: author.country,
+				state: author.city
 			})
 			console.log(data)
 			setLoading(false)
@@ -291,22 +291,20 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 							placeholder="Type the issue that you are complaining about"
 						/>
 					</div>
-					<div className="lg:flex my-2 justify-between">
+					{/* <div className="lg:flex my-2 justify-between">
 						<div className="w-[45%] text-xs">
 							<div className="my-1">Country</div>
 							<div>
-								{/* <input onChange={(e) => setCountry(e.target.value)} type="text" className="rounded-sm" placeholder="Nigeria" /> */}
 								<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
 							</div>
 						</div>
 						<div className="w-[45%] text-xs">
 							<div className="my-1">City</div>
 							<div>
-								{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
 								<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="z-40">
 						<Dropdown placement="topStart" title={<div className="text-sm text-warning">{category}</div>}>
 							<Dropdown.Item onClick={() => setCategory("Human right awareness")}>Human right awareness</Dropdown.Item>

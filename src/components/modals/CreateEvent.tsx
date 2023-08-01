@@ -27,36 +27,36 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
 	const [link, setLink] = useState("")
-	const [countries, setCountries] = useState([])
-	const [cities, setCities] = useState([])
-	const [country, setCountry] = useState("")
-	const [city, setCity] = useState("")
+	// const [countries, setCountries] = useState([])
+	// const [cities, setCities] = useState([])
+	// const [country, setCountry] = useState("")
+	// const [city, setCity] = useState("")
 
-	useEffect(() => {
-		// Get countries
-		// getUsers()
-		axios
-			.get(window.location.origin + "/api/getCountries")
-			.then((res) => {
-				const calculated = res.data.map((country: any) => ({ label: country, value: country }))
-				setCountries(calculated)
-			})
-			.catch((err) => console.log(err))
-	}, [])
+	// useEffect(() => {
+	// 	// Get countries
+	// 	// getUsers()
+	// 	axios
+	// 		.get(window.location.origin + "/api/getCountries")
+	// 		.then((res) => {
+	// 			const calculated = res.data.map((country: any) => ({ label: country, value: country }))
+	// 			setCountries(calculated)
+	// 		})
+	// 		.catch((err) => console.log(err))
+	// }, [])
 
-	useEffect(() => {
-		// Get countries
-		// getUsers()
-		if (country) {
-			axios
-				.get(`${window.location.origin}/api/getState?country=${country}`)
-				.then((res) => {
-					const calculated = res.data.map((state: any) => ({ label: state, value: state }))
-					setCities(calculated)
-				})
-				.catch((err) => console.log(err))
-		}
-	}, [country])
+	// useEffect(() => {
+	// 	// Get countries
+	// 	// getUsers()
+	// 	if (country) {
+	// 		axios
+	// 			.get(`${window.location.origin}/api/getState?country=${country}`)
+	// 			.then((res) => {
+	// 				const calculated = res.data.map((state: any) => ({ label: state, value: state }))
+	// 				setCities(calculated)
+	// 			})
+	// 			.catch((err) => console.log(err))
+	// 	}
+	// }, [country])
 
 	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
@@ -98,8 +98,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					time: time,
 					type: type,
 					assets: previewImages,
-					country: country,
-					state: city,
+					// country: country,
+					// state: city,
 					audience: ""
 				},
 			})
@@ -133,8 +133,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					time: time,
 					type: type,
 					assets: previewImages,
-					country: country,
-					state: city
+					// country: country,
+					// state: city
 					// audience: audience,
 				},
 			})
@@ -291,22 +291,20 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 							<input type="time" onChange={(e) => setTime(e.target.value)} className="w-full border border-gray-700 text-sm" />
 						</div>
 					</div>
-					<div className="lg:flex my-2 justify-between">
+					{/* <div className="lg:flex my-2 justify-between">
 						<div className="w-[45%] text-xs">
 							<div className="my-1">Country</div>
 							<div>
-								{/* <input onChange={(e) => setCountry(e.target.value)} type="text" className="rounded-sm" placeholder="Nigeria" /> */}
 								<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
 							</div>
 						</div>
 						<div className="w-[45%] text-xs">
 							<div className="my-1">City</div>
 							<div>
-								{/* <input onChange={(e) => setCity(e.target.value)} type="text" className="rounded-sm" placeholder="Lagis" /> */}
 								<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="flex justify-between mt-2">
 						<div className="w-[45%] text-sm">
 							<div className="text-sm my-1">End date</div>
