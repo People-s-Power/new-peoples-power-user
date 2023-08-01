@@ -26,6 +26,7 @@ import CreateVictories from "./modals/CreateVictories"
 import { useRouter } from "next/router"
 import { DELETE_VICTORIES } from "apollo/queries/victories"
 import { LIKE_COMMENT, LIKE_REPLY, REMOVE_COMMENT, REPLY_COMMENT, EDIT_COMMENT, REMOVE_REPLY, EDIT_REPLY } from "apollo/queries/commentsQuery"
+import { CampaignShareMenuList } from "./campaign-comp/Share"
 
 const CampComp = ({ post }: { post: any }): JSX.Element => {
 	const router = useRouter()
@@ -283,10 +284,17 @@ const CampComp = ({ post }: { post: any }): JSX.Element => {
 					<div className="text-sm my-auto ml-2">{allComment?.length} {post.__typename === "Petition" ? "Reasons" : "Comments"} </div>
 				</div>
 
-				<div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
+				<CampaignShareMenuList camp={post}>
+					<div className="flex  cursor-pointer">
+						<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
+						<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
+					</div>
+				</CampaignShareMenuList>
+				
+				{/* <div className="flex  cursor-pointer" onClick={() => setOpen(!open)}>
 					<img className="w-8 h-8 sm:w-6 sm:h-6 sm:my-auto" src="/images/home/icons/clarity_share-line.svg" alt="" />
 					<div className="text-sm my-auto ml-2">{post?.shares} Shares</div>
-				</div>
+				</div> */}
 				<Dropdown placement="leftStart" title={<img className="h-6 w-6" src="/images/edit.svg" alt="" />} noCaret>
 					{(() => {
 						switch (post.__typename) {
