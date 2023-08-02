@@ -69,6 +69,10 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 
 	const [preview, setPreview] = useState(false)
 	const handelPreview = () => {
+		if (title === "" || category === "" || aim === "" || target === "" || body === "" || previewImages.length === 0) {
+			toast.warn("Please fill all fields!")
+			return
+		}
 		handelClick()
 		setPreview(!preview)
 	}
@@ -94,10 +98,7 @@ const StartPetition = ({ open, handelClick, data, orgs }: { open: boolean; hande
 
 
 	const createPetition = async () => {
-		if (title === "" || category === "" || aim === "" || target === "" || body === "") {
-			toast.warn("Please fill all fields!")
-			return
-		}
+
 		try {
 			setLoading(true)
 			const { data } = await axios.post("/petition", {

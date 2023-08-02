@@ -28,6 +28,12 @@ export const CampaignShareMenuList = ({
       </span>
       <ul className="dropdown-menu m-0 ">
         <li className="dropdown-menu-item mb-2 ">
+          <button className="btn py-0 d-flex justify-start" onClick={() => setOpen(!open)}>
+            <img src="/images/lolo.jpeg" className='w-6 h-6 me-2' alt="" />
+            <span>Timeline</span>
+          </button>
+        </li>
+        <li className="dropdown-menu-item mb-2 ">
           <FacebookShareButton url={`${BASEURL}/${camp.__typename}?page=${camp?._id}`}>
             <button className="btn py-0 ">
               <i className="fab fa-facebook-f text-facebook me-2"></i>
@@ -50,11 +56,7 @@ export const CampaignShareMenuList = ({
             </button>
           </WhatsappShareButton>
         </li>
-        <li>
-          <button onClick={() => setOpen(!open)}>
-            Timeline
-          </button>
-        </li>
+
       </ul>
       <ShareModal open={open} handelClick={() => setOpen(!open)} single={camp} orgs={orgs} />
     </div>

@@ -87,7 +87,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 	}, [author !== null])
 
 	const handleSubmit = async () => {
-		if (name === "" || des === "" || endDate === "" || startDate === "" || time === "" || type === "" || type === "" ) {
+		if (name === "" || des === "" || endDate === "" || startDate === "" || time === "" || type === "" || type === "" || previewImages.length === 0 ) {
 			toast.warn("Please fill all fields!")
 			return
 		}
