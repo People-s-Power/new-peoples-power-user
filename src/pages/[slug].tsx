@@ -110,6 +110,7 @@ const Single = () => {
       console.log(e.response)
     }
   }
+
   useEffect(() => {
     // console.log(router.query)
     if (router.query.slug === "Advert") {
@@ -128,7 +129,7 @@ const Single = () => {
     else if (router.query.slug === "Petition") {
       petition()
     }
-  }, [])
+  })
 
   return (
     <FrontLayout showFooter={false}>
