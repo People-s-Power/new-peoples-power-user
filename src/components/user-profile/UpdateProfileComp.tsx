@@ -87,6 +87,8 @@ const UpdateProfileComp = (): JSX.Element => {
 			toast.warn("Oops an error occured!")
 		}
 	}
+	const isLargeNumber = (element) => element.value === user?.country;
+
 	return (
 		<form onSubmit={handleSubmit} className="lg:w-[300px] mx-auto">
 			<div className=" mb-3 g-md-4 g-2">
@@ -166,8 +168,7 @@ const UpdateProfileComp = (): JSX.Element => {
 					<label className="form-label fw-bold" htmlFor="country">
 						Country
 					</label>
-					<Select options={countries} onChange={(e: any) => setCountry(e?.value)} />
-
+					{countries.length !== 0 && user !== undefined ? <Select defaultValue={countries[countries?.findIndex(isLargeNumber)]} options={countries} onChange={(e: any) => setCountry(e?.value)} /> : null}
 					{/* <input type="text" className="form-control" name="country" placeholder={user?.country} value={info?.country} onChange={handleChange} /> */}
 				</div>
 
