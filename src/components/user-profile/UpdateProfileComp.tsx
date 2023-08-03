@@ -38,10 +38,12 @@ const UpdateProfileComp = (): JSX.Element => {
 			[name]: value,
 		})
 	}
+
 	useEffect(() => {
 		console.log(user);
 		if (!info) setInfo(user)
 	}, [])
+
 	useEffect(() => {
 		// Get countries
 		axios
@@ -49,6 +51,7 @@ const UpdateProfileComp = (): JSX.Element => {
 			.then((res) => {
 				const calculated = res.data.map((country: any) => ({ label: country, value: country }))
 				setCountries(calculated)
+				setCountry(user?.country)
 			})
 			.catch((err) => console.log(err))
 	}, [])
@@ -65,6 +68,11 @@ const UpdateProfileComp = (): JSX.Element => {
 				.catch((err) => console.log(err))
 		}
 	}, [country])
+
+	const isLargeNumber = (element) => element.value === user?.country;
+
+	const getUserState = (element) => element.value === user?.state;
+
 
 	const handleSubmit = async (e: React.FormEvent & any) => {
 		e.preventDefault()
@@ -87,8 +95,6 @@ const UpdateProfileComp = (): JSX.Element => {
 			toast.warn("Oops an error occured!")
 		}
 	}
-	const isLargeNumber = (element) => element.value === user?.country;
-
 	return (
 		<form onSubmit={handleSubmit} className="lg:w-[300px] mx-auto">
 			<div className=" mb-3 g-md-4 g-2">
@@ -176,7 +182,8 @@ const UpdateProfileComp = (): JSX.Element => {
 					<label className="form-label fw-bold" htmlFor="city">
 						City
 					</label>
-					<Select options={cities} onChange={(e: any) => setCity(e?.value)} />
+					{cities.length !== 0 && user !== undefined ? <Select defaultValue={cities[cities?.findIndex(getUserState)]} options={cities} onChange={(e: any) => setCity(e?.value)} />
+						: null}
 				</div>
 			</div>
 
