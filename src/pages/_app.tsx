@@ -78,7 +78,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 					name="description"
 					content="The Plaint is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard."
 				/>
-				<meta property="og:image" content="/favicon.ico" />
 				<Script src="../scripts/wisernotify.js"></Script>
 			</Head>
 			<ApolloProvider client={client}>
