@@ -176,6 +176,8 @@ enum CampaignStatusEnum {
 }
 
 export interface ICampaign extends Document {
+	comments: SetStateAction<IEndorsement[]>
+	updates: SetStateAction<Update[]>
   __typename: any
 	asset: any
 	name: string
