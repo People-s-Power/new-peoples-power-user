@@ -46,7 +46,6 @@ export enum AssetEnum {
 
 
 export const getServerSideProps: GetServerSideProps<{ repo: ICampaign }> = async (ctx) => {
-	// try {
 	const slug = ctx?.query?.slug
 	const { data } = await axios.post(SERVER_URL + "/graphql", {
 		query: print(SINGLE_PETITION),
@@ -59,11 +58,6 @@ export const getServerSideProps: GetServerSideProps<{ repo: ICampaign }> = async
 			repo: data.data.getPetition
 		},
 	};
-	// }
-	// catch (err) {
-	// 	console.log(err)
-	// }
-
 }
 
 const SingleCampaignPage = ({ repo, }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element => {
