@@ -17,131 +17,84 @@ import { print } from "graphql"
 import { UPDATES } from 'apollo/queries/generalQuery';
 import { SINGLE_PETITION, SINGLE_PETITION_ID } from 'apollo/queries/petitionQuery';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { Head } from 'next/document';
 import { ICampaign } from 'types/Applicant.types';
+import Head from "next/head"
 
 
 export const getServerSideProps: GetServerSideProps<{ repo: ICampaign }> = async (ctx) => {
   const slug = ctx?.query?.slug
   const page = ctx?.query?.page
-  let single
-
-  const fetchAdvert = async () => {
-    try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(ADVERT),
-        variables: {
-          advertId: page,
-        },
-      })
-      // console.log(data)
-      single = data.data.advert
-    } catch (e) {
-      console.log(e.response)
-    }
-  }
-
-  const fetchVictory = async () => {
-    try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(VICTORY),
-        variables: {
-          id: page,
-        },
-      })
-      // console.log(data)
-      single = data.data.victory
-    } catch (e) {
-      console.log(e.response)
-    }
-  }
-  const fetchPost = async () => {
-    try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(GET_POST),
-        variables: {
-          id: page,
-        },
-      })
-      // console.log(data)
-      single = data.data.getPost
-    } catch (e) {
-      console.log(e.response)
-    }
-  }
-
-  const fetchEvent = async () => {
-    try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(EVENT),
-        variables: {
-          eventId: page,
-        },
-      })
-      console.log(data)
-      single = data.data.event
-    } catch (e) {
-      console.log(e.response)
-    }
-  }
-  const fetchUpdate = async () => {
-    try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(UPDATES),
-        variables: {
-          id: page,
-        },
-      })
-      console.log(data)
-      single = data.data.getUpdate
-    } catch (e) {
-      console.log(e.response)
-    }
-  }
-
-  const petition = async () => {
-    try {
-      const { data } = await axios.post(SERVER_URL + "/graphql", {
-        query: print(SINGLE_PETITION_ID),
-        variables: {
-          id: page,
-        },
-      })
-      console.log(data)
-      single = data.data.getPetitionByID
-    } catch (e) {
-      console.log(e.response)
-    }
-  }
 
   if (slug === "Advert") {
-    fetchAdvert()
+    const { data } = await axios.post(SERVER_URL + "/graphql", {
+      query: print(ADVERT),
+      variables: {
+        advertId: page,
+      },
+    })
+    return {
+      props: {
+        repo: data.data.advert
+      },
+    }
   } else if (slug === "Victory") {
-    fetchVictory()
+    const { data } = await axios.post(SERVER_URL + "/graphql", {
+      query: print(VICTORY),
+      variables: {
+        id: page,
+      },
+    })
+    return {
+      props: {
+        repo: data.data.victory
+      },
+    }
   } else if (slug === "Post") {
-    fetchPost()
+    const { data } = await axios.post(SERVER_URL + "/graphql", {
+      query: print(GET_POST),
+      variables: {
+        id: page,
+      },
+    })
+    return {
+      props: {
+        repo: data.data.getPost
+      },
+    }
   }
   else if (slug === "Event") {
-    fetchEvent()
+    const { data } = await axios.post(SERVER_URL + "/graphql", {
+      query: print(EVENT),
+      variables: {
+        eventId: page,
+      },
+    })
+    console.log(data)
+    return {
+      props: {
+        repo: data.data.event
+      },
+    }
   }
   else if (slug === "Update") {
-    fetchUpdate()
+    const { data } = await axios.post(SERVER_URL + "/graphql", {
+      query: print(UPDATES),
+      variables: {
+        id: page,
+      },
+    })
+    return {
+      props: {
+        repo: data.data.getUpdate
+      },
+    }
   }
-  else if (slug === "Petition") {
-    petition()
-  }
-
-  return {
-    props: {
-      repo: single
-    },
-  };
 }
 
 const Single = ({ repo, }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const [single, setData] = useState<any>(null)
-  // console.log(router);
+  console.log(repo);
 
 
   const fetchAdvert = async () => {
@@ -255,9 +208,9 @@ const Single = ({ repo, }: InferGetServerSidePropsType<typeof getServerSideProps
   return (
     <Fragment>
       <Head>
-        <title>{repo?.__typename} || {repo?.title}</title>
+        <title>{repo?.__typename} || {repo?.title || repo?.body}</title>
         <meta name="description" content={repo?.body} />
-        <meta name="image" content={repo?.asset[0]} />
+        {/* <meta name="image" content={repo?.asset[0]} /> */}
       </Head>
       <FrontLayout showFooter={false}>
         <div className='lg:w-1/2 sm:p-6 mx-auto'>
