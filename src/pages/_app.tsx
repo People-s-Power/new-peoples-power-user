@@ -74,7 +74,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 				<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"></meta>
 				<meta name="keywords" content="human right, activist, campaign, Nigeria" />
 				<link rel="icon" type="image/png" href="/images/logo.png"/>
-
 				<title>{`THE PLAINT`}</title>
 				<meta
 					name="description"

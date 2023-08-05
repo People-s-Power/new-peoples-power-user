@@ -208,7 +208,7 @@ const Single = ({ repo, }: InferGetServerSidePropsType<typeof getServerSideProps
   return (
     <Fragment>
       <Head>
-        <title>{repo?.__typename} || {repo?.title || repo?.body}</title>
+        <title>{repo?.__typename} || {repo?.title || repo?.body || repo?.caption || repo?.name}</title>
         <meta name="description" content={repo?.body} />
         {/* <meta name="image" content={repo?.asset[0]} /> */}
       </Head>
