@@ -43,8 +43,8 @@ const Footer = (): JSX.Element => {
 						<ul className="lg:w-2/3 ">
 							{/* <li className="mb-4 fs-4 fw-bold">About us</li> */}
 							<li className="text-[#666666]">
-								The Plaint is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard.
-								One of the main benefits of The Plaint is that it is open to anyone, regardless of their geographical location or financial background This means that even those who lack easy access to professional help or...<br />
+								EXPERTHUB is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard.
+								One of the main benefits of EXPERTHUB is that it is open to anyone, regardless of their geographical location or financial background This means that even those who lack easy access to professional help or...<br />
 								<Link href="/about">
 									<a className="text-center text-warning">Learn More</a>
 								</Link>
@@ -124,7 +124,7 @@ const Footer = (): JSX.Element => {
 					|
 					<Link href="/">
 						<a>
-							&nbsp; &copy;{new Date().getFullYear()} {`THE PLAINT`}, All rights
+							&nbsp; &copy;{new Date().getFullYear()} {`EXPERTHUB`}, All rights
 							reserved.
 						</a>
 					</Link>

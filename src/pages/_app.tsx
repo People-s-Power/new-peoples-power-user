@@ -74,10 +74,10 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 				<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"></meta>
 				<meta name="keywords" content="human right, activist, campaign, Nigeria" />
 				<link rel="icon" type="image/png" href="/images/log1.jpg"/>
-				<title>{`THE PLAINT`}</title>
+				<title>{`EXPERTHUB`}</title>
 				<meta
 					name="description"
-					content="The Plaint is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard."
+					content="EXPERTHUB is a web-based technology and innovative platform that provides a space for individuals to voice their personal or social issues and connect with experts who can offer relevant solutions. The platform creates a forum where people can freely discuss their concerns and feel heard."
 				/>
 				<Script src="../scripts/wisernotify.js"></Script>
 			</Head>

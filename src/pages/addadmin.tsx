@@ -229,7 +229,7 @@ const addadmin = () => {
 		<FrontLayout showFooter={false}>
 			<>
 				<Head>
-					<title>{`THE PLAINT`} || Add Admin </title>
+					<title>{`EXPERTHUB`} || Add Admin </title>
 				</Head>
 				<div className="sm:px-6">
 					<div onClick={() => router.back()} className="cursor-pointer lg:ml-20">

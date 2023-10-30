@@ -72,7 +72,7 @@ const Header = (): JSX.Element => {
 	}, [user])
 
 	const { pathname } = useRouter();
-	const text = `THE PLAINT`
+	const text = `EXPERTHUB`
 	// const token = cookie.get(TOKEN_NAME);
 
 	// eslint-disable-next-line no-empty
