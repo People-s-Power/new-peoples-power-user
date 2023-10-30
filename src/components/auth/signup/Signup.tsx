@@ -6,7 +6,7 @@ import { HTTP_URI, TOKEN_NAME } from "utils/constants";
 import { useRouter } from 'next/router'
 import { Loader } from "rsuite";
 import GoogleAuthComp from "../GoogleAuth";
-import Facebook from "../Facebook";
+// import Facebook from "../Facebook";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

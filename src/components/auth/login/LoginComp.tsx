@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Loader } from "rsuite";
 import { TOKEN_NAME } from "utils/constants";
 import GoogleAuthComp from "../GoogleAuth";
-import Facebook from "../Facebook";
+// import Facebook from "../Facebook";
 import { useRouter } from 'next/router'
 
 import { ToastContainer, toast } from 'react-toastify';
