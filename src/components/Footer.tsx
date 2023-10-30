@@ -38,7 +38,7 @@ const Footer = (): JSX.Element => {
 
 					<section className="d-flex justify-between mb-4 footer-list container mt-5">
 						<div className="w-20">
-							<img src="./images/lolo.jpeg" className="rounded-full" alt="" />
+							<img src="./images/logo1.jpg" className="rounded-full" alt="" />
 						</div>
 						<ul className="lg:w-2/3 ">
 							{/* <li className="mb-4 fs-4 fw-bold">About us</li> */}
