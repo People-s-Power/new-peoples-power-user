@@ -1,4 +1,3 @@
-// /* eslint-disable react/no-unescaped-entities */
 // import React, { useState } from 'react'
 // import axios from "axios";
 // import cookie from "js-cookie";
