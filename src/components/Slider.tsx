@@ -1,12 +1,12 @@
 import React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import { Strapi_Testimony } from "types/Applicant.types";
+// import { Strapi_Testimony } from "types/Applicant.types";
 
 const TestimonySlide = ({
 	testimonies,
 }: {
-	testimonies: Strapi_Testimony[];
+	testimonies: any[];
 }): JSX.Element => {
 	const settings = {
 		dots: true,
@@ -32,7 +32,7 @@ const TestimonySlide = ({
 
 export default TestimonySlide;
 
-const SlideComp = ({ testimony }: { testimony: Strapi_Testimony }) => {
+const SlideComp = ({ testimony }: { testimony: any }) => {
 	return (
 		<Wrapper className="slidecontainer px-3 m-0">
 			<div className="container wrapper">
