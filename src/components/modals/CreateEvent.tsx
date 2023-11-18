@@ -11,6 +11,7 @@ import NotificationCard from "components/NotificationCard"
 import Select from "react-select"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import * as CreateMeeting from "plugins/createMeeting"
 
 const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handelClick(): void; event: any, orgs: any }): JSX.Element => {
 	const author = useRecoilValue(UserAtom)
@@ -28,7 +29,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 	const [active, setActive] = useState<any>(author)
 	const [notication, setNotication] = useState(false)
 	const [msg, setMsg] = useState("")
-	const [link, setLink] = useState("")
+	const [link, setLink] = useState("")    
+	const [meetingLink, setMeetingsLink] = useState(event?.meetingLink || "");
 	// const [countries, setCountries] = useState([])
 	// const [cities, setCities] = useState([])
 	// const [country, setCountry] = useState("")
@@ -106,7 +108,8 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					assets: previewImages,
 					country: author.country,
 					state: author.city,
-					audience: ""
+					audience: "",
+					meetingLink: meetingLink
 				},
 			})
 			console.log(data)
@@ -141,6 +144,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 					assets: previewImages,
 					country: author.country,
 					state: author.city,
+					meetingLink: meetingLink
 					// audience: audience,
 				},
 			})
@@ -279,6 +283,15 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 							</div>
 						</div>
 					</div>
+					{type === "online" && <CreateMeeting.ViewBox
+						theme={"dropdowm"}
+						userId={author?.id}
+						meetingLink={meetingLink}
+						setMeetingsLink={setMeetingsLink}
+						setStartDate={setStartDate}
+						setEndDate={setEndDate}
+						setTime={setTime}
+					/>}
 					<div className="mt-2">
 						<div className="text-sm my-1">Title of Event</div>
 						<input value={name} onChange={(e) => setName(e.target.value)} type="text" className="p-1 border border-gray-700 w-full rounded-sm" />
@@ -287,7 +300,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 						<div className="text-sm my-1">About event</div>
 						<textarea value={des} onChange={(e) => setDes(e.target.value)} className="p-1 border border-gray-700 w-full h-20 rounded-sm" />
 					</div>
-					<div className="flex justify-between mt-2">
+					{type !== "online" && <div className="flex justify-between mt-2">
 						<div className="w-[45%]">
 							<div className="text-sm my-1">Date</div>
 							<input onChange={(e) => setStartDate(e.target.value)} type="date" className="w-full border border-gray-700 text-sm" />
@@ -296,7 +309,7 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 							<div className="text-sm my-1">Time</div>
 							<input type="time" onChange={(e) => setTime(e.target.value)} className="w-full border border-gray-700 text-sm" />
 						</div>
-					</div>
+					</div>}
 					{/* <div className="lg:flex my-2 justify-between">
 						<div className="w-[45%] text-xs">
 							<div className="my-1">Country</div>
@@ -311,12 +324,12 @@ const CreateEvent = ({ open, handelClick, event, orgs }: { open: boolean; handel
 							</div>
 						</div>
 					</div> */}
-					<div className="flex justify-between mt-2">
+					{type !== "online" && <div className="flex justify-between mt-2">
 						<div className="w-[45%] text-sm">
 							<div className="text-sm my-1">End date</div>
 							<input type="date" onChange={(e) => setEndDate(e.target.value)} className="w-full border border-gray-700 text-sm" />
 						</div>
-					</div>
+					</div>}
 				</Modal.Body>
 				<Modal.Footer>
 					{event === null ? (

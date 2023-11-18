@@ -4,6 +4,11 @@ import "@fortawesome/fontawesome-free/css/all.css"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "rsuite/dist/rsuite.min.css"
 import "styles/style.scss"
+import "../plugins/theme/styles/CSS.css";
+import "../plugins/theme/styles/animate.css";
+import 'react-dropdown/style.css';
+// import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
 import Head from "next/head"
 import Router from "next/router"
 import Nprogress from "nprogress"
@@ -30,6 +35,7 @@ import TimeAgo from "javascript-time-ago"
 
 import en from "javascript-time-ago/locale/en.json"
 import ru from "javascript-time-ago/locale/ru.json"
+import MsalProvider from "../plugins/theme/modules/MsalProvider"; 
 
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(ru)
@@ -68,6 +74,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	})
 	// const client = useApollo(pageProps.apollo);
 	return (
+		<MsalProvider>  
 		<Fragment>
 			<Head>
 				<meta charSet="utf-8" />
@@ -94,6 +101,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			</ApolloProvider>
 
 		</Fragment>
+		</MsalProvider>
 	)
 }
 
