@@ -417,7 +417,7 @@ export function DropdownTheme(params: ZTModal_interface) {
     const RenderBody = () => {
         return (
             <Block style={s2.body}>
-                {signedIn ?
+                {!signedIn ?
                     <Block style={s2.options}>
                         <Block className={"scaleOnHover pinchOnClick " + classByScale} style={s2.option_} onTouch={() => { inProgress === "none" ? RequestAuth() : null }}>
                             <Img framework={"NEXTJS"} style={s2.optionThumnail} src={require("../icons/user.png")} />

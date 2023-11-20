@@ -6,29 +6,29 @@ import { Easing, Animation, CustomAnimation, Direction } from "../modules";
 export interface ZTModal_interface {
   style?: CSSProperties,
   framework?: "REACTJS" | "NEXTJS" | "REACT-NATIVE",
-  setShowModal: any,
-  setMeetingsHost_?: any,
-  meetingsFN?: any,
-  userId?: any,
-  meetingLink?: any,
-  setMeetingsLink?: any,
-  setStartDate: any,
-  setEndDate: any
-  setTime: any,
-};
-
-export interface meetings_interface {
-  style?: CSSProperties,
-  theme: "dropdowm" | "modal",
   setShowModal?: any,
   setMeetingsHost_?: any,
   meetingsFN?: any,
   userId?: any,
   meetingLink?: any,
   setMeetingsLink?: any,
-  setStartDate: any,
-  setEndDate: any
-  setTime: any,
+  setStartDate?: any,
+  setEndDate?: any
+  setTime?: any,
+};
+
+export interface meetings_interface {
+  style?: CSSProperties,
+  theme?: "dropdowm" | "modal",
+  setShowModal?: any,
+  setMeetingsHost_?: any,
+  meetingsFN?: any,
+  userId?: any,
+  meetingLink?: any,
+  setMeetingsLink?: any,
+  setStartDate?: any,
+  setEndDate?: any
+  setTime?: any,
 };
 
 
@@ -45,7 +45,7 @@ export type F_ELEMENTS_IMGInterface = {
   className?: any,
   id?: any,
   style?: CSSProperties,
-  framework: "REACTJS" | "NEXTJS" | "REACT-NATIVE",
+  framework?: "REACTJS" | "NEXTJS" | "REACT-NATIVE",
   children?: ReactNode
   src?: string,
   onTouch?: any,
@@ -93,7 +93,7 @@ export type F_RNext_IMGInterface = {
   children?: ReactNode,
   src?: string,
   onTouch?: any,
-  framework: "REACTJS" | "NEXTJS" | "REACT-NATIVE",
+  framework?: "REACTJS" | "NEXTJS" | "REACT-NATIVE",
 };
 export type F_RNext_AnimatedBlockInterface = {
   ref?: any,
