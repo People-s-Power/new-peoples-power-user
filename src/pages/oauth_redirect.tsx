@@ -21,7 +21,7 @@ const Oauth_redirect = () => {
             if (noOfAtempts > 4) {
                 setTimeout(() => {
                     incrementNoOfAtempts(noOfAtempts+1);
-                    StoreZoomToken(token, author.id);
+                    StoreZoomToken(token, author?.id);
                 }, 2000);
             } else {
                 setMessage("Error getting userId, make sure you're loggedIn")
@@ -56,7 +56,7 @@ const Oauth_redirect = () => {
         const expires_in = urlSearchParams.get('expires_in');
         if (access_token) {
             const token = { access_token, expires_in };
-            StoreZoomToken(token, author.id);
+            StoreZoomToken(token, author?.id);
         }
     }, []);
 
@@ -64,7 +64,7 @@ const Oauth_redirect = () => {
     return (
         <div>
             <h1>{message}</h1>
-            <h1>user: {JSON.stringify(author.id)}</h1>
+            <h1>user: {JSON.stringify(author?.id)}</h1>
         </div>
     )
 }
