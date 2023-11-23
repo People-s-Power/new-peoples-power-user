@@ -30,6 +30,7 @@ const Oauth_redirect = () => {
                 }, 5000);
             }
         } else {
+            setMessage("Signing In to zoom as you!");
             try {
                 const headers = {
                     'Content-Type': 'application/json',
