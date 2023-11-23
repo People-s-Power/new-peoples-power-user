@@ -11,6 +11,7 @@ const Oauth_redirect = () => {
     const [message, setMessage] = useState("Running ..");
     const [active, setActive] = useState<any>(author);
     const [noOfAtempts, incrementNoOfAtempts] = useState(0);
+    const [access_token, setAccess_token] = useState(null);
 
     useEffect(() => {
         setActive(author);
@@ -74,6 +75,7 @@ const Oauth_redirect = () => {
         const expires_in = urlSearchParams.get('expires_in');
         if (access_token) {
             const token = { access_token, expires_in };
+            setAccess_token(token);
             setTimeout(() => {
                 StoreZoomToken(token, author?.id);
             }, 3000);
@@ -90,6 +92,7 @@ const Oauth_redirect = () => {
         <div>
             <h1>{message}</h1>
             <h1>user: {JSON.stringify(author?.id)}</h1>
+            {access_token && <button style={{color: "blue"}} onClick={() => {StoreZoomToken(access_token, author?.id);}}>Signin to zoom</button>}
         </div>
     )
 }
