@@ -19,14 +19,16 @@ const Oauth_redirect = () => {
     const StoreZoomToken = async (token: any, id: any) => {
         setMessage("");
         if (!author) {
-            if (noOfAtempts > 4) {
+            if (noOfAtempts < 4) {
                 setTimeout(() => {
                     incrementNoOfAtempts(noOfAtempts+1);
                     StoreZoomToken(token, author?.id);
                 }, 2000);
             } else {
                 setMessage("Error getting userId, make sure you're loggedIn");
-                window.status = 'failed';
+                setTimeout(() => {
+                    notifyParent("failed");
+                }, 5000);
             }
         } else {
             try {
@@ -43,16 +45,22 @@ const Oauth_redirect = () => {
                 } else {
                     // return error message
                     setMessage(response.data);
-                    window.status = 'completed';
+                    notifyParent("completed");
                 }
             } catch (error) {
                 // return error message
-                // setMessage(error)
+                setMessage(error)
                 console.error(error);
-                window.status = 'failed';
+                setTimeout(() => {
+                    notifyParent("failed");
+                }, 5000);
             }
         }
     }
+
+    const notifyParent = (message:string) => {
+        window.opener.postMessage({ status: message }, '*');
+      };
 
     useEffect(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -68,7 +76,7 @@ const Oauth_redirect = () => {
     return (
         <div>
             <h1>{message}</h1>
-            {/* <h1>user: {JSON.stringify(author?.id)}</h1> */}
+            <h1>user: {JSON.stringify(author?.id)}</h1>
         </div>
     )
 }

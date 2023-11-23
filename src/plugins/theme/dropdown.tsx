@@ -191,7 +191,7 @@ export function DropdownTheme(params: ZTModal_interface) {
     const [teamsIN, setTeamsIn] = useState("");
     const [signedIn, updateSignedIn] = useState(meetingsHost === "zoom" ? zoomIN : teamsIN);
     const [noOfAtempts, incrementNoOfAtempts] = useState(0);
-    const popupWindow = useRef(null);
+    const [popUpWindow, setPopUpWindow] = useState(null);
     const [popUpInterval, setPopUpInterval] = useState(null);
 
 
@@ -250,32 +250,33 @@ export function DropdownTheme(params: ZTModal_interface) {
             const response = await axios.get(`${SERVER_URL_ztAPI}/authorize_zoom${_ext}`);
 
             const authUrl = response.data;
-            const newPopupWindow = window.open(authUrl, 'Zoom Auth', 'width=600,height=600');
-            popupWindow.current = newPopupWindow;
+            const newPopUpWindow = window.open(authUrl, 'Zoom Auth', 'width=600,height=600');
+            setPopUpWindow(newPopUpWindow);
         } catch (error) {
             console.error(error);
         }
     };
-    const RequestAuth_zoom_popUpInterval = async () => {
-        if (popUpInterval) {
-            setPopUpInterval(null);
-            RequestAuth_zoom_popUpInterval()
-        } else {
-            let interval = setInterval(() => {
-                if (popupWindow.current && popupWindow.current.status === "completed") {
-                    popupWindow.current.close();
-                    clearInterval(interval);
-                    setPopUpInterval(null);
-                    isUserSignedIn_zoomApi(params.userId, "startUp");
-                } else if (popupWindow.current && popupWindow.current.status === "failed") {
-                    popupWindow.current.close();
-                    clearInterval(interval)
-                    setPopUpInterval(null);
-                }
-            }, 2000);
-            setPopUpInterval(interval)
+    const closePopUpWindow = () => {
+        if (popUpWindow) {
+            popUpWindow.close();
+            setPopUpWindow(null);
         }
-    }
+    };
+    useEffect(() => {
+        const handleMessage = (event) => {
+            if (event.data.status === 'valueToCheck') {
+                closePopUpWindow();
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            // Cleanup: remove the event listener
+            window.removeEventListener('message', handleMessage);
+        };
+    }, [popUpWindow]);
+
     const RequestAuth_teams = async () => {
         try {
             // Use the existing loginPopup method to initiate the login process
