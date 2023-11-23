@@ -19,7 +19,7 @@ const Oauth_redirect = () => {
     const StoreZoomToken = async (token: any, id: any) => {
         if (!id) {
             setMessage("We couldn't get your information.");
-            if (noOfAtempts < 4) {
+            if (noOfAtempts <= 4) {
                 setTimeout(() => {
                     setMessage("Retrying ...");
                     const increment = noOfAtempts + 1
@@ -74,7 +74,9 @@ const Oauth_redirect = () => {
         const expires_in = urlSearchParams.get('expires_in');
         if (access_token) {
             const token = { access_token, expires_in };
-            StoreZoomToken(token, author?.id);
+            setTimeout(() => {
+                StoreZoomToken(token, author?.id);
+            }, 3000);
         } else {
             setMessage("no redirect code provided");
             setTimeout(() => {
