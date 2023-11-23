@@ -17,10 +17,13 @@ const Oauth_redirect = () => {
     }, [author !== null]);
 
     const StoreZoomToken = async (token: any, id: any) => {
-        if (!author) {
+        if (!id) {
+            setMessage("We couldn't get your information.");
             if (noOfAtempts < 4) {
                 setTimeout(() => {
-                    incrementNoOfAtempts(noOfAtempts+1);
+                    setMessage("Retrying ...");
+                    const increment = noOfAtempts + 1
+                    incrementNoOfAtempts(increment);
                     StoreZoomToken(token, author?.id);
                 }, 2000);
             } else {
