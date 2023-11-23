@@ -1,7 +1,7 @@
-import React, { CSSProperties, createRef, useEffect, useState } from "react";
+import React, { CSSProperties, createRef, useEffect, useRef, useState } from "react";
 import { AnimatedBlock, Block, Img, Span, String } from "./modules/F_ELEMENTS_v0.1";
 import { ZTModal_interface } from "./types/types";
-import { options, s2, serviceLogo, dropdown_services, ValuePiece, Value, duration_options, _ext } from "./modules/includes";
+import { options, s2, serviceLogo, dropdown_services, ValuePiece, Value, duration_options, _ext, SERVER_URL_ztAPI } from "./modules/includes";
 // import "./styles/CSS.css";
 
 // install these packages or add them to your package.json and run npm install 
@@ -190,8 +190,9 @@ export function DropdownTheme(params: ZTModal_interface) {
     const [zoomIN, setZoomIn] = useState("");
     const [teamsIN, setTeamsIn] = useState("");
     const [signedIn, updateSignedIn] = useState(meetingsHost === "zoom" ? zoomIN : teamsIN);
-    const [popupWindow, setPopupWindow] = useState(null);
     const [noOfAtempts, incrementNoOfAtempts] = useState(0);
+    const popupWindow = useRef(null);
+    const [popUpInterval, setPopUpInterval] = useState(null);
 
 
 
@@ -220,7 +221,7 @@ export function DropdownTheme(params: ZTModal_interface) {
                 const data = {
                     id: id,
                 };
-                const response = await axios.post(`http://localhost:4000/api/isUserSignedIn_zoomApi${_ext}`, data, { headers });
+                const response = await axios.post(`${SERVER_URL_ztAPI}/isUserSignedIn_zoomApi${_ext}`, data, { headers });
                 if (response.data.email) {
                     const email = response.data.email;
                     setZoomIn(email);
@@ -246,17 +247,35 @@ export function DropdownTheme(params: ZTModal_interface) {
     }
     const RequestAuth_zoom = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/api/authorize_zoom${_ext}`);
+            const response = await axios.get(`${SERVER_URL_ztAPI}/authorize_zoom${_ext}`);
 
             const authUrl = response.data;
-            // window.location.href = authUrl;
-            // const zoomAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI`;
             const newPopupWindow = window.open(authUrl, 'Zoom Auth', 'width=600,height=600');
-            setPopupWindow(newPopupWindow);
+            popupWindow.current = newPopupWindow;
         } catch (error) {
             console.error(error);
         }
     };
+    const RequestAuth_zoom_popUpInterval = async () => {
+        if (popUpInterval) {
+            setPopUpInterval(null);
+            RequestAuth_zoom_popUpInterval()
+        } else {
+            let interval = setInterval(() => {
+                if (popupWindow.current && popupWindow.current.status === "completed") {
+                    popupWindow.current.close();
+                    clearInterval(interval);
+                    setPopUpInterval(null);
+                    isUserSignedIn_zoomApi(params.userId, "startUp");
+                } else if (popupWindow.current && popupWindow.current.status === "failed") {
+                    popupWindow.current.close();
+                    clearInterval(interval)
+                    setPopUpInterval(null);
+                }
+            }, 2000);
+            setPopUpInterval(interval)
+        }
+    }
     const RequestAuth_teams = async () => {
         try {
             // Use the existing loginPopup method to initiate the login process
@@ -300,7 +319,7 @@ export function DropdownTheme(params: ZTModal_interface) {
                 'Content-Type': 'application/json',
             };
             const data = { id, start_time, duration: duration.value };
-            const response = await axios.post('http://localhost:4000/api/createZoomMeeting', data, { headers });
+            const response = await axios.post(`${SERVER_URL_ztAPI}/createZoomMeeting`, data, { headers });
             if (response.data) {
                 // alert(JSON.stringify(response.data));
                 params.setMeetingsLink(response.data.join_url)
@@ -478,11 +497,6 @@ export function DropdownTheme(params: ZTModal_interface) {
 
     return (
         <>
-            <p>
-                date format: "{JSON.stringify(Date_)}",
-                {/* end date: "{endDate}", */}
-                time: "{timeValue}"
-            </p>
             <Block className={modalVisbility_ ? "popUpFocused" : "popUpBlur"} style={s2.popUp}>
                 {RenderHead()}
                 {RenderBody()}

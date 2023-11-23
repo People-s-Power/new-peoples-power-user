@@ -13,6 +13,8 @@ export const s2 = ZTModalContainer_dropdown;
 // export const _ext = ".php";
 export const _ext = "";
 
+export const SERVER_URL_ztAPI = "https://apiv5-xacq2.ondigitalocean.app/api/v5/zoomMeetings";
+
 // Duration options -->
 export const duration_options = [
     { value: "15", label: '15 minutes' },

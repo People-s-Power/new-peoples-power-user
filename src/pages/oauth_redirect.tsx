@@ -4,6 +4,7 @@ import axios from 'axios';
 import * as _ from 'plugins/createMeeting';
 import { UserAtom } from 'atoms/UserAtom';
 import { useRecoilValue } from 'recoil';
+import { SERVER_URL_ztAPI } from 'plugins/theme/modules/includes';
 
 const Oauth_redirect = () => {
     const author = useRecoilValue(UserAtom);
@@ -24,7 +25,8 @@ const Oauth_redirect = () => {
                     StoreZoomToken(token, author?.id);
                 }, 2000);
             } else {
-                setMessage("Error getting userId, make sure you're loggedIn")
+                setMessage("Error getting userId, make sure you're loggedIn");
+                window.status = 'failed';
             }
         } else {
             try {
@@ -35,17 +37,19 @@ const Oauth_redirect = () => {
                     token: token,
                     id: id
                 };
-                const response = await axios.post(`http://localhost:4000/api/StoreZoomToken${_._ext}`, data, { headers });
+                const response = await axios.post(`${SERVER_URL_ztAPI}/StoreZoomToken${_._ext}`, data, { headers });
                 if (response.data === "Access token stored successfully") {
                     //close popup
                 } else {
                     // return error message
-                    setMessage(response.data)
+                    setMessage(response.data);
+                    window.status = 'completed';
                 }
             } catch (error) {
                 // return error message
-                setMessage(error)
+                // setMessage(error)
                 console.error(error);
+                window.status = 'failed';
             }
         }
     }
@@ -64,7 +68,7 @@ const Oauth_redirect = () => {
     return (
         <div>
             <h1>{message}</h1>
-            <h1>user: {JSON.stringify(author?.id)}</h1>
+            {/* <h1>user: {JSON.stringify(author?.id)}</h1> */}
         </div>
     )
 }
