@@ -17,7 +17,6 @@ const Oauth_redirect = () => {
     }, [author !== null]);
 
     const StoreZoomToken = async (token: any, id: any) => {
-        setMessage("");
         if (!author) {
             if (noOfAtempts < 4) {
                 setTimeout(() => {
@@ -42,20 +41,20 @@ const Oauth_redirect = () => {
                 const response = await axios.post(`${SERVER_URL_ztAPI}/StoreZoomToken${_._ext}`, data, { headers });
                 if (response.data === "Access token stored successfully") {
                     //close popup
-                    setMessage(response.data);
+                    setMessage(JSON.stringify(response.data));
                     setTimeout(() => {
                         window.close();
                     }, 2000);
                 } else {
                     // return error message
-                    setMessage(response.data);
+                    setMessage(JSON.stringify(response.data));
                     setTimeout(() => {
                         window.close();
                     }, 2000);
                 }
             } catch (error) {
                 // return error message
-                setMessage(error)
+                setMessage(JSON.stringify(error))
                 console.error(error);
                 setTimeout(() => {
                     window.close();
