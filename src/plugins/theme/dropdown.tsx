@@ -192,7 +192,7 @@ export function DropdownTheme(params: ZTModal_interface) {
     const [signedIn, updateSignedIn] = useState(meetingsHost === "zoom" ? zoomIN : teamsIN);
     const [noOfAtempts, incrementNoOfAtempts] = useState(0);
     const [popUpWindow, setPopUpWindow] = useState(null);
-    const [popUpInterval, setPopUpInterval] = useState(null);
+    const popUpWindowRef = useRef(null);
 
 
 
@@ -250,8 +250,7 @@ export function DropdownTheme(params: ZTModal_interface) {
             const response = await axios.get(`${SERVER_URL_ztAPI}/authorize_zoom${_ext}`);
 
             const authUrl = response.data;
-            const newPopUpWindow = window.open(authUrl, 'Zoom Auth', 'width=600,height=600');
-            setPopUpWindow(newPopUpWindow);
+            popUpWindowRef.current = window.open(authUrl, 'Zoom Auth', 'width=600,height=600');
         } catch (error) {
             console.error(error);
         }
@@ -263,19 +262,17 @@ export function DropdownTheme(params: ZTModal_interface) {
         }
     };
     useEffect(() => {
-        const handleMessage = (event) => {
-            if (event.data.status === 'valueToCheck') {
-                closePopUpWindow();
+        const intervalId = setInterval(() => {
+            if (popUpWindowRef.current && popUpWindowRef.current.closed) {
+                clearInterval(intervalId);
+                isUserSignedIn_zoomApi(params.userId, "startUp");
             }
-        };
-
-        window.addEventListener('message', handleMessage);
+        }, 1000);
 
         return () => {
-            // Cleanup: remove the event listener
-            window.removeEventListener('message', handleMessage);
+            clearInterval(intervalId);
         };
-    }, [popUpWindow]);
+    }, []);
 
     const RequestAuth_teams = async () => {
         try {

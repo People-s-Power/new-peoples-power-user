@@ -27,7 +27,7 @@ const Oauth_redirect = () => {
             } else {
                 setMessage("Error getting userId, make sure you're loggedIn");
                 setTimeout(() => {
-                    notifyParent("failed");
+                    window.close();
                 }, 5000);
             }
         } else {
@@ -42,25 +42,28 @@ const Oauth_redirect = () => {
                 const response = await axios.post(`${SERVER_URL_ztAPI}/StoreZoomToken${_._ext}`, data, { headers });
                 if (response.data === "Access token stored successfully") {
                     //close popup
+                    setMessage(response.data);
+                    setTimeout(() => {
+                        window.close();
+                    }, 2000);
                 } else {
                     // return error message
                     setMessage(response.data);
-                    notifyParent("completed");
+                    setTimeout(() => {
+                        window.close();
+                    }, 2000);
                 }
             } catch (error) {
                 // return error message
                 setMessage(error)
                 console.error(error);
                 setTimeout(() => {
-                    notifyParent("failed");
+                    window.close();
                 }, 5000);
             }
         }
     }
 
-    const notifyParent = (message:string) => {
-        window.opener.postMessage({ status: message }, '*');
-      };
 
     useEffect(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -69,6 +72,11 @@ const Oauth_redirect = () => {
         if (access_token) {
             const token = { access_token, expires_in };
             StoreZoomToken(token, author?.id);
+        } else {
+            setMessage("no redirect code provided");
+            setTimeout(() => {
+                window.close();
+            }, 5000);
         }
     }, []);
 
