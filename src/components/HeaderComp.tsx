@@ -35,7 +35,7 @@ const Header = (): JSX.Element => {
 		const route = window.location.pathname
 
 		if (token === undefined && user === null) {
-			if (route === "/about" || route === "/campaigns" || route === "/events" || route === "/contact" || route === "/home") {
+			if (route === "/about" || route === "/campaigns" || route === "/events" || route === "/contact" || route === "/home" || route === "/docs/CreatingEventDoc") {
 				console.log(true)
 			} else {
 				window.location.href = "/home"

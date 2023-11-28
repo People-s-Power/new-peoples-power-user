@@ -39,6 +39,18 @@ const config = () => {
             NEXT_PUBLIC_FX_ACCESS_KEY: process.env.NEXT_PUBLIC_FX_ACCESS_KEY,
             META: meta(),
         },
+        async rewrites() {
+            return [
+                {
+                    source: '/api/v5/zoomMeetings/redirect_zoom/:path*',
+                    destination: 'https://apiv5-xacq2.ondigitalocean.app/api/v5/zoomMeetings/redirect_zoom/:path*',
+                },
+                {
+                    source: '/api/v5/zoomMeetings/zoom-webhooks/:path*',
+                    destination: 'https://apiv5-xacq2.ondigitalocean.app/api/v5/zoomMeetings/zoom-webhooks/:path*',
+                },
+            ];
+        },
     };
 };
 
