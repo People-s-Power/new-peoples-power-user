@@ -4,7 +4,7 @@
 
 export const config = {
   appId: '65875f4c-eb67-4127-a870-ba4e468d366f',
-  redirectUri: 'http://localhost:3000',
+  redirectUri: 'https://www.experthubllc.com/',
   // scopes: ['openid', 'profile', 'user.read', 'email'],
   scopes: ['https://graph.microsoft.com/.default'],
   authority: 'https://login.microsoftonline.com/common',
