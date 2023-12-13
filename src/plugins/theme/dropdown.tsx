@@ -301,6 +301,28 @@ export function DropdownTheme(params: ZTModal_interface) {
             // await handleLogin();
         }
     };
+    const acquireTeamsAccessToken_returnType = async () => {
+        alert("Starting to Access Token");
+        try {
+            const tokenResponse = await instance.acquireTokenSilent({
+                scopes: config.scopes,
+                account: accounts[0]
+            });
+            set_teams_access_token(tokenResponse.accessToken);
+            alert("Token Response: " + JSON.stringify(tokenResponse));
+            const type = {status: "done", message: tokenResponse.accessToken};
+            return type;
+            // await createTeamsMeeting(tokenResponse.accessToken);
+        } catch (error) {
+            const type = {status: "error", message: 'Error acquiring access token: ' + error}
+            console.error(type.message);
+            alert(type.message);
+            return type;
+
+            // If token refresh fails, prompt the user to log in again
+            // await handleLogin();
+        }
+    };
 
     //create meetings functions
     const createMeeting = async () => {
@@ -330,8 +352,22 @@ export function DropdownTheme(params: ZTModal_interface) {
     }
     const createTeamsMeeting = async () => {
         if (!teams_access_token) {
-            await acquireTeamsAccessToken();
-            createTeamsMeeting();
+            alert("No Access Token");
+            const accessToken = await acquireTeamsAccessToken_returnType();
+            if (accessToken.status === "done") {
+                alert("Access Token acquired successfully");
+                createTeamsMeeting_withAccessToken(accessToken.message);
+            } else {
+                alert(accessToken.message)
+            }
+        } else {
+            createTeamsMeeting_withAccessToken(teams_access_token);
+        }
+    };
+    
+    const createTeamsMeeting_withAccessToken = async (accessToken: any) => {
+        if (!accessToken) {
+            alert("No Access Token after acquiring");
         } else {
             const datestring = Date_ ? Date_.toLocaleString().slice(0, 10) : new Date().toLocaleString().slice(0, 10);
             const start_time = returnStartTime(datestring, timeValue, selectedTimezone);
@@ -339,7 +375,7 @@ export function DropdownTheme(params: ZTModal_interface) {
             try {
                 const client = Client.init({
                     authProvider: (done) => {
-                        done(null, teams_access_token);
+                        done(null, accessToken);
                     },
                 });
 
