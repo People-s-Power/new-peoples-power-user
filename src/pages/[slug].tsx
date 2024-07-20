@@ -15,7 +15,7 @@ import { GET_POST } from 'apollo/queries/postQuery';
 import { EVENT } from 'apollo/queries/eventQuery';
 import { print } from "graphql"
 import { UPDATES } from 'apollo/queries/generalQuery';
-import { SINGLE_PETITION, SINGLE_PETITION_ID } from 'apollo/queries/petitionQuery';
+import { SINGLE_PETITION_ID } from 'apollo/queries/petitionQuery';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { ICampaign } from 'types/Applicant.types';
 import Head from "next/head"
@@ -91,7 +91,7 @@ export const getServerSideProps: GetServerSideProps<{ repo: ICampaign }> = async
   }
 }
 
-const Single = ({ repo, }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Single = ({ repo, }: any) => {
   const router = useRouter();
   const [single, setData] = useState<any>(null)
   console.log(repo);

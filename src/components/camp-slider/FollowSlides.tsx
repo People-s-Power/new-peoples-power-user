@@ -107,7 +107,7 @@ const FollowSlides = () => {
 					<div className="text-center font-bold text-lg my-3">Grow Your Feed</div>
 					<SliderTwo {...settings}>
 						{users.map((user, i) =>
-							user._id !== author?.id ? (
+							user?._id !== author?.id ? (
 								<div key={i} className="my-4 w-1/2 text-center border px-1 py-3">
 									<img src={user.image} className="w-12 mx-auto h-12 rounded-full" alt="" />
 									<div className="">
