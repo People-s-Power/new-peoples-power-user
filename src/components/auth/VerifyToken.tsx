@@ -16,10 +16,8 @@ const VerifyToken = (): JSX.Element => {
 		try {
 			setLoading(true)
 			await axios.post("/auth/reset-password", { otp: token.trim(), newPassword: newPassword.trim() })
-			// toast("Your account has been verified. Continue to login with your password")
 			toast("Your password has been reset");
 			router.push("/")
-			// router.push(`/?mode=change password&&id=${data}`);
 			setLoading(false)
 		} catch (error) {
 			const e = error as any
