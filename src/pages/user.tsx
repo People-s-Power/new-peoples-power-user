@@ -250,23 +250,23 @@ const user = () => {
 		// 	router.push("/")
 		// }
 		try {
-			axios
-				.get(`/user/single/${query.page}`)
-				.then(function (response) {
-					setUser(response.data.user)
-					// setCampaigns(response.data.Petitions)
-					// console.log(response.data)
-					response.data.user.orgOperating.map((operating: any) => {
-						setOrgId(operating)
-						refetch()
-					})
-				})
-				.catch(function (error) {
-					if (error?.response.data.statusCode === 404) {
-						router.push(`org?page=${query.page}`)
-					}
-					console.log(error.response)
-				})
+			// axios
+			// 	.get(`/user/single/${query.page}`)
+			// 	.then(function (response) {
+			// 		setUser(response.data.user)
+			// 		// setCampaigns(response.data.Petitions)
+			// 		// console.log(response.data)
+			// 		response.data.user.orgOperating.map((operating: any) => {
+			// 			setOrgId(operating)
+			// 			refetch()
+			// 		})
+			// 	})
+			// 	.catch(function (error) {
+			// 		if (error?.response.data.statusCode === 404) {
+			// 			router.push(`org?page=${query.page}`)
+			// 		}
+			// 		console.log(error.response)
+			// 	})
 		} catch (error) {
 			console.log(error)
 		}

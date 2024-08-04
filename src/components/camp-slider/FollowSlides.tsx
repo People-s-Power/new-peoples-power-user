@@ -45,8 +45,8 @@ const FollowSlides = () => {
 			const { data } = await axios.post(SERVER_URL + "/graphql", {
 				query: print(FOLLOW),
 				variables: {
-					followerId: author.id,
-					followId: user._id,
+					followerId: author?.id,
+					followId: user?._id,
 				},
 			})
 			console.log(data)
@@ -109,9 +109,9 @@ const FollowSlides = () => {
 						{users.map((user, i) =>
 							user?._id !== author?.id ? (
 								<div key={i} className="my-4 w-1/2 text-center border px-1 py-3">
-									<img src={user.image} className="w-12 mx-auto h-12 rounded-full" alt="" />
+									<img src={user?.image ?? ""} className="w-12 mx-auto h-12 rounded-full" alt="" />
 									<div className="">
-										<div className="text-base font-light">{user.name} </div>
+										<div className="text-base font-light">{user?.name ?? ""} </div>
 										<div className="text-xs"></div>
 										<div className="flex cursor-pointer justify-between px-4 py-1 text-xs border border-black w-32 mx-auto mt-2 rounded-md">
 											<div className="text-lg">+</div>

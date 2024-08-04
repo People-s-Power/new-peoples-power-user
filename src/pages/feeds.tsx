@@ -66,17 +66,17 @@ const HomePage = () => {
 		}
 	}, [])
 
-	useQuery(GET_ORGANIZATIONS, {
-		variables: { ID: author?.id },
-		client: apollo,
-		onCompleted: (data) => {
-			// console.log(data.getUserOrganizations)
-			setOrgs(data.getUserOrganizations)
-		},
-		onError: (err) => {
-			// console.log(err)
-		},
-	})
+	// useQuery(GET_ORGANIZATIONS, {
+	// 	variables: { ID: author?.id },
+	// 	client: apollo,
+	// 	onCompleted: (data) => {
+	// 		// console.log(data.getUserOrganizations)
+	// 		setOrgs(data.getUserOrganizations)
+	// 	},
+	// 	onError: (err) => {
+	// 		// console.log(err)
+	// 	},
+	// })
 	useEffect(() => {
 		setActive(author)
 	}, [author === null])
@@ -107,13 +107,13 @@ const HomePage = () => {
 
 	const getSingle = () => {
 		try {
-			axios.get(`/user/single/${author?.id}`).then(function (response) {
-				// console.log(response.data.user.orgOperating)
-				response.data.user.orgOperating.map((operating: any) => {
-					setOrgId(operating)
-					refetch()
-				})
-			})
+			// axios.get(`/user/single/${author?.id}`).then(function (response) {
+			// 	// console.log(response.data.user.orgOperating)
+			// 	response.data.user.orgOperating.map((operating: any) => {
+			// 		setOrgId(operating)
+			// 		refetch()
+			// 	})
+			// })
 		} catch (error) {
 			console.log(error)
 		}

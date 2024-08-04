@@ -129,7 +129,12 @@ const Layout = ({ children }: { children: React.ReactChild }) => {
 		// getEnvironments()
 		async function getUser() {
 			try {
-				const { data } = await axios.get("/auth/me")
+				const { data } = await axios.get("/auth/me", {
+					// headers: {
+					// 	cookie: token || "",
+					// 	authorization: "Bearer " + token,
+					// },
+				})
 				cookie.set("user_id", data?.id)
 				setUser(data)
 			} catch (error) {

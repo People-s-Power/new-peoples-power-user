@@ -47,13 +47,15 @@ const MessagePopup = () => {
 
   const getSingle = () => {
     try {
-      axios.get(`/user/single/${user?.id}`).then(function (response) {
-        // console.log(response.data.user.orgOperating)
-        response.data.user.orgOperating.map((operating: any) => {
-          setOrgId(operating)
-          refetch()
+      if(user?.id) {
+        axios.get(`/user/single/${user?.id}`).then(function (response) {
+          // console.log(response.data.user.orgOperating)
+          response.data.user.orgOperating.map((operating: any) => {
+            setOrgId(operating)
+            refetch()
+          })
         })
-      })
+      }
     } catch (error) {
       console.log(error)
     }

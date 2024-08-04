@@ -1,6 +1,7 @@
 
 export const TOKEN_NAME = "__ed_KEY"
 export const SERVER_URL = "https://api.experthubllc.com"
+// export const SERVER_URL = "http://localhost:8005"
 // process.env.NODE_ENV === "production"
 // 	? "https://edfhr.org"
 // 	: "http://localhost:8000";

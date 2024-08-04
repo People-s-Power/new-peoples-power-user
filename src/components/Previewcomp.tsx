@@ -56,18 +56,20 @@ const previewcamp = ({
   });
 
   useEffect(() => {
-    try {
-      axios.get(`/user/single/${author.id}`)
-        .then(function (response) {
-          response.data.user.orgOperating.map((operating: any) => {
-            setOrgId(operating)
-            refetch()
+    if(author?.id) {
+      try {
+        axios.get(`/user/single/${author.id}`)
+          .then(function (response) {
+            response.data.user.orgOperating.map((operating: any) => {
+              setOrgId(operating)
+              refetch()
+            })
           })
-        })
-        .catch(function (error) {
-        })
-    } catch (error) {
-      console.log(error);
+          .catch(function (error) {
+          })
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [])
   const { refetch } = useQuery(GET_ORGANIZATION, {
